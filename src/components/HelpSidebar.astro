@@ -124,3 +124,22 @@ const nav = [
     }
   }
 </style>
+
+<script is:inline>
+  (function () {
+    const KEY = 'help-sidebar-scroll';
+    const sidebar = document.getElementById('help-sidebar');
+    if (!sidebar) return;
+
+    // Restore scroll position immediately on load.
+    const saved = sessionStorage.getItem(KEY);
+    if (saved) sidebar.scrollTop = parseInt(saved, 10);
+
+    // Save scroll position before leaving the page.
+    sidebar.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        sessionStorage.setItem(KEY, sidebar.scrollTop);
+      });
+    });
+  })();
+</script>
