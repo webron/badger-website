@@ -9,7 +9,7 @@ const b = import.meta.env.BASE_URL.replace(/\/$/, '');
       <a href={`${b}/glossary`} style="font-size:0.875rem;color:var(--text-muted);">Glossary</a>
     </div>
     <p style="font-size:0.8rem;color:var(--text-muted);margin:0;">
-      &copy; {new Date().getFullYear()} Badger. All rights reserved.
+      &copy; {new Date().getUTCFullYear()} Badger. All rights reserved.
     </p>
   </div>
 </footer>
