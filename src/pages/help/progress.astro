@@ -58,7 +58,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The Overview tab shows analytics across all your training.</p>
 
   <h3 id="weekly-volume">Weekly volume</h3>
-  <p>A <strong>Volume</strong> card at the top of the Overview tab shows how many sets you've logged per muscle group in the current training window (7 days by default, or your routine's cycle length if you have an active routine). Each muscle group appears as a horizontal bar scaled relative to the most-trained group, colored by category, with the exact set count on the right. Categories with no sets in the window are hidden.</p>
+  <p>A <strong>Volume</strong> card at the top of the Overview tab shows how many sets you've logged per muscle group in the current training window (7 days by default, or your routine's cycle length if you have an active routine). Each muscle group appears as a horizontal bar colored by category, with the set count color-coded by training zone.</p>
+
+  <h4>Volume zones (MEV/MRV)</h4>
+  <p>Each bar background shows research-based volume zones:</p>
+  <ul>
+    <li><strong>Amber zone</strong> — below MEV (Minimum Effective Volume): not enough stimulus for meaningful adaptation.</li>
+    <li><strong>Green zone</strong> — MEV to MRV: the productive training range.</li>
+    <li><strong>Red zone</strong> — above MRV (Maximum Recoverable Volume): more than you can recover from before the next session.</li>
+  </ul>
+  <p>A small legend at the bottom of the card explains the zones. Categories with no sets in the window are hidden.</p>
+
+  <h4>Weekly targets</h4>
+  <p>Tap the <strong>⚙</strong> icon in the card header to set optional personal targets per muscle group. Each target appears as a vertical tick on the bar and a <code>/target</code> suffix next to the set count. Leave a category blank to rely on MEV/MRV zones only.</p>
 
   <h3>Activity card</h3>
   <ul>
