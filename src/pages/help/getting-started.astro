@@ -1,0 +1,67 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Getting Started" description="How to install Badger, configure your preferences, and log your first workout.">
+  <h1>Getting started</h1>
+
+  <p>Badger is a local-first workout tracker — your data lives on your device, no account required. This guide covers everything you need to start logging training within a few minutes of installing.</p>
+
+  <hr />
+
+  <h2>Installation</h2>
+  <p>Download Badger from the Google Play Store. On first launch you'll go through a short setup:</p>
+  <ol>
+    <li><strong>Weight unit</strong> — Choose kilograms or pounds. This sets the default for all exercises, though individual exercises can override it.</li>
+    <li><strong>FitNotes import</strong> — If you're coming from FitNotes, you can import your workout history here. You can also do this later in Settings.</li>
+  </ol>
+  <p>That's it. You're dropped straight into the home screen.</p>
+
+  <h2 id="first-workout">Your first workout</h2>
+  <p>Badger organizes training around <strong>workouts</strong> (a day's session) and <strong>exercises</strong> (movements within that session). Here's the basic flow:</p>
+
+  <ol>
+    <li>From the <strong>Home</strong> tab, tap <strong>New workout</strong>. This creates a workout for today and opens the exercise picker.</li>
+    <li>Find the exercise you want. You can scroll by category, search by name, or filter by muscle group or equipment type.</li>
+    <li>Tap an exercise to add it to your workout. You'll land on the <strong>training screen</strong>.</li>
+    <li>Enter your weight and reps (or whatever fields apply to your exercise type), then tap the <strong>checkmark</strong> to log the set.</li>
+    <li>The rest timer starts automatically. When it finishes, log your next set.</li>
+    <li>When you're done, tap <strong>Add exercise</strong> to move to the next movement, or use the exercise list (tap the exercise name in the header) to navigate between exercises.</li>
+    <li>Back on the home screen, tap <strong>End workout</strong> when your session is complete. This stamps the end time and shows your workout summary.</li>
+  </ol>
+
+  <div class="callout">
+    <strong>Tip:</strong> Badger starts a workout timer when you log your first set (if auto-start is enabled in Settings). You can also start it manually by tapping the timer chip in the top-right of the home screen.
+  </div>
+
+  <h2>Setting up a routine</h2>
+  <p>If you train on a fixed program, setting up a routine makes starting workouts faster — it pre-fills exercises and weights for you.</p>
+  <ol>
+    <li>Go to the <strong>You</strong> tab → <strong>Routines</strong>.</li>
+    <li>Tap the <strong>+</strong> button to create a new routine, or browse the built-in programs (StrongLifts, 5/3/1, PPL, and others are pre-installed).</li>
+    <li>Long-press a routine and tap <strong>Set active</strong>. The routine's days appear on the Home screen.</li>
+    <li>Tap a day's row to preview the workout, adjust any weights, then tap <strong>Start</strong>.</li>
+  </ol>
+  <p>See <a href="/help/routines">Routines</a> for the full details.</p>
+
+  <h2 id="importing">Importing from FitNotes</h2>
+  <p>If you have a FitNotes backup file, Badger can import your entire workout history:</p>
+  <ol>
+    <li>Go to <strong>Settings → Import from FitNotes</strong>.</li>
+    <li>The file picker opens automatically. Select your <code>.fitnotes</code> backup file.</li>
+    <li>Badger shows a preview: exercise count, workout count, date range, and any exercises it couldn't match.</li>
+    <li>Choose whether your FitNotes backup stored weights in kg or lbs, then confirm the import.</li>
+  </ol>
+  <p>Exercises are matched by name. Any exercises that didn't match are created automatically and placed in a default category — you can edit them afterwards in the exercise library.</p>
+
+  <h2>Key concepts</h2>
+  <p>A few terms that come up throughout the app:</p>
+  <ul>
+    <li><strong>Working set</strong> — A regular logged set at your training weight.</li>
+    <li><strong>Warmup set</strong> — A lighter set done before working sets. Toggle the warmup chip before logging.</li>
+    <li><strong>RPE</strong> — Rate of Perceived Exertion (1–10). How hard did the set feel? Optional per-set field.</li>
+    <li><strong>RIR</strong> — Reps in Reserve (0–5). How many more reps could you have done? Optional per-set field.</li>
+    <li><strong>1RM</strong> — One-rep max. Badger estimates this from your sets using the Epley formula.</li>
+  </ul>
+  <p>Full definitions in the <a href="/glossary">Glossary</a>.</p>
+</HelpLayout>

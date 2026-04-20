@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+}
+
+const {
+  title,
+  description = 'Badger is a local-first workout tracker for Android. Log sets, track progress, and manage routines — no account required.',
+  canonical,
+} = Astro.props;
+
+const fullTitle = title === 'Badger' ? 'Badger' : `${title} — Badger`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/assets/icon.png" />
+    <!-- TODO: replace with actual favicon once assets are provided -->
+  </head>
+  <body>
+    <slot />
+    <script is:inline>
+      // Apply saved theme before paint to avoid flash
+      (function () {
+        const saved = localStorage.getItem('theme');
+        if (saved) {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      })();
+    </script>
+  </body>
+</html>

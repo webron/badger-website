@@ -1,0 +1,83 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Gyms & Equipment" description="How to manage gyms, machines, attachments, and grip types in Badger.">
+  <h1>Gyms & Equipment</h1>
+
+  <p>Badger lets you track which gym, machine, and attachment you used for each exercise. This unlocks machine-scoped progress tracking — your cable row on the low pulley and your cable row on the high cable are treated as separate performance histories.</p>
+
+  <hr />
+
+  <h2>Managing gyms</h2>
+  <p>Go to <strong>You → Gyms</strong> to manage your gym list.</p>
+  <ul>
+    <li>Tap <strong>+</strong> to create a gym.</li>
+    <li>Tap a gym to edit its name or notes, or to set it as the default.</li>
+    <li>The <strong>default gym</strong> is automatically used when starting a workout if you have only one gym, or if a default is set among multiple.</li>
+    <li>Gyms can be <strong>archived</strong> (hidden from pickers but preserved for historical data) instead of deleted.</li>
+  </ul>
+
+  <h2 id="machines">Machines</h2>
+  <p>Go to <strong>You → Machines</strong> to manage machines.</p>
+  <ul>
+    <li>Tap <strong>+</strong> to create a machine (e.g. "Cable station", "Leg press", "Smith machine").</li>
+    <li>Each machine has two toggles: <strong>Uses attachments</strong> and <strong>Uses grip types</strong>.</li>
+    <li>On the machine's detail screen, use the <strong>Available at</strong> section to link the machine to one or more gyms.</li>
+  </ul>
+
+  <h3>Linking machines to exercises</h3>
+  <p>You can link a machine to an exercise to indicate compatibility. This controls which machines appear in the "Set machine" picker in the training screen.</p>
+  <p>To link: open the exercise in the library → <strong>Edit</strong> → scroll to <strong>Compatible machines</strong> → tap to add or remove machines.</p>
+
+  <h2>Attachments</h2>
+  <p>Attachments are cable/pulley accessories (e.g. "Straight bar", "Rope", "V-bar", "D-handle"). Go to <strong>You → Attachments</strong> to manage them.</p>
+  <ul>
+    <li>Tap <strong>+</strong> to create an attachment.</li>
+    <li>Link attachments to gyms via the <strong>Available at</strong> section on each attachment's detail screen.</li>
+  </ul>
+  <p>Attachments are available in the machine picker only when the current machine has <strong>Uses attachments</strong> enabled.</p>
+
+  <h2 id="grip-types">Grip types</h2>
+  <p>When a machine has <strong>Uses grip types</strong> enabled, a row of grip chips appears in the training screen for that exercise. Select your grip before or after logging sets:</p>
+  <ul>
+    <li>Overhand</li>
+    <li>Underhand</li>
+    <li>Neutral</li>
+    <li>Wide</li>
+    <li>Close</li>
+    <li>Hammer</li>
+  </ul>
+  <p>Tap the active chip again to clear the selection. The grip is stored on the workout exercise record and shown in the history tab.</p>
+  <p>You can also set a <strong>default grip type</strong> per routine exercise in the predefined sets screen — this gets pre-filled when starting a routine workout.</p>
+
+  <h2 id="workout-context">Gym context during workouts</h2>
+
+  <h3>Automatic gym assignment</h3>
+  <p>When a workout is created, Badger tries to set the gym automatically:</p>
+  <ul>
+    <li>If you have only one gym → that gym is used.</li>
+    <li>If you have a default gym → that gym is used.</li>
+    <li>If you have multiple gyms with no default → no gym is set (you can assign it manually).</li>
+  </ul>
+  <p>If a routine day has a <strong>default gym</strong> configured, that overrides the above when starting from a routine.</p>
+
+  <h3>Changing the gym mid-workout</h3>
+  <p>The current gym name appears in the training screen's header bar. To change it: tap <strong>⋮ → Change gym…</strong> and select a different gym.</p>
+
+  <h3>Setting a machine for an exercise</h3>
+  <p>Tap <strong>⋮ → Set machine…</strong> to pick a machine and (if applicable) an attachment. The picker shows machines compatible with the current exercise at the current gym.</p>
+  <p>Badger remembers the last attachment used for each exercise + machine combination and pre-selects it next time.</p>
+
+  <h2>Progress filtering by machine</h2>
+  <p>On the Progress screen, if you've used the same exercise on multiple machines, a row of filter chips appears. Select a specific machine to see only that machine's history, or select <strong>All</strong> to see combined data.</p>
+  <p>The most recently used machine is selected by default. The same filter applies to PRs — they're scoped per machine when a machine is set.</p>
+
+  <h2>Routine defaults</h2>
+  <p>You can set default equipment at the routine level to avoid re-selecting it each session:</p>
+  <ul>
+    <li><strong>Routine day → Default gym</strong> — Pre-sets the workout gym when starting from this day.</li>
+    <li><strong>Routine exercise → Default machine & attachment</strong> — Pre-sets the machine for that exercise when starting from a routine.</li>
+    <li><strong>Routine exercise → Default grip type</strong> — Pre-sets the grip for that exercise.</li>
+  </ul>
+</HelpLayout>

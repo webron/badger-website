@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Badger" description="Badger is a local-first workout tracker for Android. Log sets, track progress, and manage routines — no account required.">
+  <Header currentPath="/" />
+
+  <!-- Hero -->
+  <section style="max-width:1100px;margin:0 auto;padding:5rem 1.5rem 4rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem;">
+    <!-- TODO: replace with stacked logo asset (badger + wordmark, dark/light variants) once provided -->
+    <div style="width:88px;height:88px;background:var(--color-accent);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">
+      🦡
+    </div>
+
+    <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:700;margin:0;line-height:1.15;color:var(--text);">
+      Track your training.<br />No fluff.
+    </h1>
+
+    <p style="font-size:1.1rem;color:var(--text-secondary);max-width:520px;margin:0;line-height:1.6;">
+      Badger is a workout tracker built for people who take training seriously. Log sets, monitor progress, run your programs — everything stays on your device.
+    </p>
+
+    <div id="download" style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-top:0.5rem;">
+      <!-- TODO: replace href with actual Play Store URL once published -->
+      <a
+        href="#"
+        style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--color-accent);color:#fff;font-weight:600;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+      >
+        ↓ Download for Android
+      </a>
+      <a
+        href="/help/getting-started"
+        style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface);border:1px solid var(--border);color:var(--text);font-weight:500;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+      >
+        Read the docs →
+      </a>
+    </div>
+  </section>
+
+  <!-- Screenshot placeholder -->
+  <section style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;">
+    <div style="background:var(--surface);border:1px dashed var(--border);border-radius:12px;height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:var(--text-muted);">
+      <!-- TODO: Add 3 app screenshots side by side: training screen, progress screen, home screen -->
+      <span style="font-size:2rem;">📱</span>
+      <span style="font-size:0.875rem;">Screenshots coming soon</span>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;">
+    <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 2.5rem;color:var(--text);text-align:center;">What's in the app</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">
+      {[
+        {
+          title: 'Detailed logging',
+          body: 'Weight, reps, time, distance — whatever the exercise needs. Warmup sets, RPE, RIR, and tempo tracking included.',
+        },
+        {
+          title: 'Rest timer',
+          body: 'Auto-starts after each working set. Per-exercise defaults, per-session overrides, and sound or vibration alerts.',
+        },
+        {
+          title: 'Routines & programs',
+          body: 'Build your own programs or use one of the 7 built-in ones (StrongLifts, 5/3/1, PPL, and more). Supersets, scheduled days, and predefined sets included.',
+        },
+        {
+          title: 'Progress tracking',
+          body: 'Estimated 1RM, PR detection, 12+ graph types per exercise, 26-week activity heatmap, and weekly volume by muscle group.',
+        },
+        {
+          title: 'Gym & equipment',
+          body: 'Track which gym and machine you used for each exercise. Machine-scoped PRs, attachment defaults, and grip type tracking.',
+        },
+        {
+          title: 'Plate calculator',
+          body: 'Barbell, machine, and single-lever modes. Finds the best plate combination from your available plates automatically.',
+        },
+        {
+          title: 'No account required',
+          body: 'Your data stays on your device. Export to CSV or back up the full database anytime. Import from FitNotes if you\'re switching over.',
+        },
+        {
+          title: 'Deload detection',
+          body: 'Optional automatic deload scheduling. Detects fatigue via time, RPE/RIR, or stalled performance, and reduces weights when you start your next session.',
+        },
+      ].map(f => (
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;">
+          <h3 style="font-size:1rem;font-weight:600;margin:0 0 0.5rem;color:var(--text);">{f.title}</h3>
+          <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;line-height:1.6;">{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;text-align:center;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3rem 2rem;">
+      <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 0.75rem;color:var(--text);">Ready to start?</h2>
+      <p style="color:var(--text-secondary);margin:0 0 1.5rem;max-width:400px;display:inline-block;line-height:1.6;">
+        Download Badger for Android. No sign-up, no subscription, no data leaving your device.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;">
+        <a
+          href="#"
+          style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--color-accent);color:#fff;font-weight:600;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+        >
+          ↓ Download for Android
+        </a>
+        <a
+          href="/help/getting-started"
+          style="display:inline-flex;align-items:center;gap:0.5rem;background:transparent;border:1px solid var(--border);color:var(--text);font-weight:500;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+        >
+          Getting started guide →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

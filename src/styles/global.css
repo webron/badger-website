@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Exo 2', system-ui, sans-serif;
+
+  /* Accent */
+  --color-accent: #2E7E90;
+  --color-accent-light: #3a9ab0;
+  --color-accent-dim: rgba(46, 126, 144, 0.15);
+
+  /* Dark palette */
+  --color-dark-bg: #0F0F0F;
+  --color-dark-surface: #1A1A1A;
+  --color-dark-surface-alt: #242424;
+  --color-dark-border: #3A3A3A;
+  --color-dark-border-subtle: #222222;
+  --color-dark-text: #F2F2F2;
+  --color-dark-text-secondary: #A0A0A0;
+  --color-dark-text-muted: #666666;
+
+  /* Light palette */
+  --color-light-bg: #F5F5F5;
+  --color-light-surface: #FFFFFF;
+  --color-light-surface-alt: #F0F0F0;
+  --color-light-border: #E0E0E0;
+  --color-light-border-subtle: #D8D8D8;
+  --color-light-text: #111111;
+  --color-light-text-secondary: #333333;
+  --color-light-text-muted: #666666;
+}
+
+:root {
+  --bg: var(--color-dark-bg);
+  --surface: var(--color-dark-surface);
+  --surface-alt: var(--color-dark-surface-alt);
+  --border: var(--color-dark-border);
+  --border-subtle: var(--color-dark-border-subtle);
+  --text: var(--color-dark-text);
+  --text-secondary: var(--color-dark-text-secondary);
+  --text-muted: var(--color-dark-text-muted);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: var(--color-light-bg);
+    --surface: var(--color-light-surface);
+    --surface-alt: var(--color-light-surface-alt);
+    --border: var(--color-light-border);
+    --border-subtle: var(--color-light-border-subtle);
+    --text: var(--color-light-text);
+    --text-secondary: var(--color-light-text-secondary);
+    --text-muted: var(--color-light-text-muted);
+  }
+}
+
+[data-theme="dark"] {
+  --bg: var(--color-dark-bg);
+  --surface: var(--color-dark-surface);
+  --surface-alt: var(--color-dark-surface-alt);
+  --border: var(--color-dark-border);
+  --border-subtle: var(--color-dark-border-subtle);
+  --text: var(--color-dark-text);
+  --text-secondary: var(--color-dark-text-secondary);
+  --text-muted: var(--color-dark-text-muted);
+}
+
+[data-theme="light"] {
+  --bg: var(--color-light-bg);
+  --surface: var(--color-light-surface);
+  --surface-alt: var(--color-light-surface-alt);
+  --border: var(--color-light-border);
+  --border-subtle: var(--color-light-border-subtle);
+  --text: var(--color-light-text);
+  --text-secondary: var(--color-light-text-secondary);
+  --text-muted: var(--color-light-text-muted);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent-light);
+  text-decoration: underline;
+}
+
+/* Prose styles for help pages */
+.prose h1 { font-size: 1.875rem; font-weight: 700; margin: 0 0 1.5rem; color: var(--text); }
+.prose h2 { font-size: 1.375rem; font-weight: 600; margin: 2.5rem 0 1rem; color: var(--text); padding-top: 0.5rem; }
+.prose h3 { font-size: 1.125rem; font-weight: 600; margin: 2rem 0 0.75rem; color: var(--text); }
+.prose h4 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--text-secondary); }
+.prose p { margin: 0 0 1rem; line-height: 1.7; color: var(--text-secondary); }
+.prose ul, .prose ol { margin: 0 0 1rem 1.5rem; color: var(--text-secondary); }
+.prose li { margin-bottom: 0.4rem; line-height: 1.6; }
+.prose strong { color: var(--text); font-weight: 600; }
+.prose code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.875em;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  color: var(--color-accent-light);
+}
+.prose hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+.prose a { color: var(--color-accent); }
+.prose a:hover { color: var(--color-accent-light); }
+
+/* Tip / note callout */
+.callout {
+  background: var(--color-accent-dim);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0 6px 6px 0;
+  padding: 0.75rem 1rem;
+  margin: 1.25rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+.callout strong { color: var(--text); }

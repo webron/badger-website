@@ -1,0 +1,119 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Routines" description="How to create routines, set up training days, use predefined sets, and start routine workouts in Badger.">
+  <h1>Routines</h1>
+
+  <p>A routine is a saved training program — a collection of days, each with its own exercises and (optionally) predefined sets. When you start a workout from a routine, Badger pre-fills your exercises and suggests weights based on your previous performance.</p>
+
+  <hr />
+
+  <h2>Routine list</h2>
+  <p>Go to <strong>You → Routines</strong> to see your routines. They can be organized into folders. The <strong>active routine</strong> appears at the top with an accent border — it's the one shown on the home screen.</p>
+
+  <h3>Active routine</h3>
+  <p>Only one routine can be active at a time. To set one as active, long-press it and tap <strong>Set active</strong>. The active routine's days appear on the home screen as tappable rows.</p>
+
+  <h3>Folders</h3>
+  <p>Tap the folder icon in the top bar to create a folder. Long-press a routine to move it into a folder. Routines not in any folder appear under "Other".</p>
+
+  <h2 id="creating">Creating a routine</h2>
+  <ol>
+    <li>Tap the <strong>+</strong> button and enter a name.</li>
+    <li>Tap the routine to open it.</li>
+    <li>Tap <strong>Add day</strong> to create your first training day.</li>
+    <li>Tap a day to open it, then tap <strong>Add exercise</strong> to add movements.</li>
+    <li>Tap an exercise row to configure its predefined sets.</li>
+  </ol>
+
+  <h3>Day scheduling</h3>
+  <p>Tap the <strong>calendar icon</strong> on a day row to assign it to specific days of the week. The day will appear as "scheduled" on the home screen on those days. Scheduled days are shown as abbreviated weekday labels (Mon, Wed, Fri, etc.).</p>
+  <p>If two days share the same weekday, a warning appears in the routine detail screen.</p>
+
+  <h3>Day options</h3>
+  <p>Each day has additional settings accessible via its <strong>⋮ menu</strong>:</p>
+  <ul>
+    <li><strong>Inter-exercise rest</strong> — Rest duration when switching between exercises within this day.</li>
+    <li><strong>Default gym</strong> — Pre-set which gym this day is performed at.</li>
+    <li><strong>Notes</strong> — Freeform notes for the day.</li>
+  </ul>
+
+  <h2 id="predefined-sets">Predefined sets</h2>
+  <p>Tap an exercise row within a routine day to open its predefined sets. Each set can have:</p>
+  <ul>
+    <li><strong>Weight</strong> — A specific value, or "Copy from previous" to use the weight from your most recent session.</li>
+    <li><strong>Reps</strong> — A specific value, or "Copy from previous".</li>
+    <li><strong>Warmup flag</strong> — Mark the set as a warmup.</li>
+  </ul>
+  <p>Sets can be reordered by dragging.</p>
+
+  <h3>Per-exercise overrides in routines</h3>
+  <p>Each routine exercise also has override settings separate from the predefined sets:</p>
+  <ul>
+    <li>Rest override (working sets)</li>
+    <li>Rest override (warmup sets)</li>
+    <li>Weight increment override</li>
+    <li>Notes override</li>
+    <li>Tempo</li>
+    <li>Default machine & attachment</li>
+    <li>Default grip type (if machine has grip types enabled)</li>
+  </ul>
+
+  <h2 id="starting">Starting a routine workout</h2>
+  <p>From the <strong>home screen</strong>, tap a day row under your active routine. This opens the <strong>routine log preview</strong>, which shows:</p>
+  <ul>
+    <li>All exercises for the day with their resolved sets (predefined weights, or weights copied from your last session)</li>
+    <li>An estimated workout duration</li>
+    <li>A <strong>DeloadInfoBar</strong> at the top if a deload week is active (showing the applied reductions)</li>
+  </ul>
+  <p>You can check or uncheck exercises to include or exclude them before starting. You can also tap <strong>Swap</strong> on any exercise to replace it with a different one — this changes the preview only, not the routine itself.</p>
+  <p>Tap <strong>Start</strong> to begin the workout.</p>
+
+  <h3>Weight source</h3>
+  <p>On the routine detail screen, a segmented control sets how Badger determines starting weights:</p>
+  <ul>
+    <li><strong>Last performance</strong> (default) — Use the weight from your most recent workout for each exercise, regardless of where the workout came from.</li>
+    <li><strong>Routine defaults</strong> — Use the predefined set weights only. If a set is set to "Copy from previous," it uses the predefined value.</li>
+    <li><strong>Routine defaults then last</strong> — Try predefined weights first; if not set, fall back to last performance.</li>
+  </ul>
+
+  <h3>History scope</h3>
+  <p>Controls which previous workouts are considered when looking up "last performance":</p>
+  <ul>
+    <li><strong>Any workout</strong> (default) — Look at all previous workouts.</li>
+    <li><strong>This routine</strong> — Only look at workouts started from this same routine. Useful for running multiple programs simultaneously without them interfering with each other.</li>
+  </ul>
+
+  <h2>Supersets in routines</h2>
+  <p>Exercises within a routine day can be grouped into supersets. Use the <strong>⋮ menu</strong> in the routine detail screen to group exercises. Grouped exercises share a color bar in the exercise list and will auto-advance in the training screen.</p>
+
+  <h2>Duplicating a routine</h2>
+  <p>Long-press a routine → <strong>Duplicate</strong>. A prompt asks for the copy's name. The duplicate includes all days, exercises, predefined sets, and group assignments.</p>
+
+  <h2 id="programs">Built-in programs</h2>
+  <p>Badger ships with 7 pre-built programs in 3 folders:</p>
+
+  <h3>Beginner</h3>
+  <ul>
+    <li><strong>StrongLifts 5×5</strong> — Two alternating full-body days (A and B), 5 sets of 5 reps on the major compound lifts. Add weight every session.</li>
+    <li><strong>Starting Strength</strong> — Similar structure to StrongLifts, with slight exercise differences and 3×5 progression.</li>
+  </ul>
+
+  <h3>Intermediate</h3>
+  <ul>
+    <li><strong>GZCLP</strong> — Three-tier approach: heavy compound lifts (T1), medium compounds (T2), and accessory work (T3). Progressive rep schemes per tier.</li>
+    <li><strong>5/3/1 BBB</strong> — Wendler's 5/3/1 main sets followed by Boring But Big 5×10 volume work at 50% of training max.</li>
+  </ul>
+
+  <h3>Splits</h3>
+  <ul>
+    <li><strong>PPL 6-Day</strong> — Push/Pull/Legs twice per week.</li>
+    <li><strong>Upper/Lower 4-Day</strong> — Two upper-body and two lower-body days per week.</li>
+    <li><strong>Full Body 3-Day</strong> — Three full-body sessions per week.</li>
+  </ul>
+
+  <div class="callout">
+    <strong>Note:</strong> Built-in programs use standard exercise names. If you've renamed or customized exercises, you may need to swap them in the routine after installing.
+  </div>
+</HelpLayout>

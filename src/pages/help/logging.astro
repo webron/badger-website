@@ -1,0 +1,105 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Logging Workouts" description="How to log sets, use the rest timer, manage warmups, and track intensity in Badger.">
+  <h1>Logging workouts</h1>
+
+  <p>The training screen is where you spend most of your time. It has three tabs: <strong>Log</strong> (set entry), <strong>Graph</strong> (progress chart), and <strong>History</strong> (past sessions for this exercise). Swipe left or right to switch between them.</p>
+
+  <hr />
+
+  <h2>Logging a set</h2>
+  <p>The Log tab shows input fields at the top and your logged sets below. The fields shown depend on the exercise type — a barbell exercise shows weight and reps; a plank shows only time; a row machine might show weight and time.</p>
+  <ol>
+    <li>Enter your weight and reps (or duration, distance, etc.) using the <strong>+/−</strong> steppers or by tapping the field and typing.</li>
+    <li>Tap the <strong>✓ checkmark</strong> to save the set.</li>
+  </ol>
+  <p>The set appears in the list below. The rest timer starts automatically if you have that setting enabled.</p>
+
+  <h3>Editing and deleting sets</h3>
+  <p>Tap a set row to load it into the input fields for editing. Tap the checkmark again to update it. To deselect without saving, tap the same row again.</p>
+  <p>Long-press a set row to delete it. A confirmation dialog appears before deletion.</p>
+
+  <h3>Repeat last set</h3>
+  <p>The <strong>repeat button</strong> (next to the checkmark) copies your last working set in one tap — useful when you're doing multiple sets at the same weight and reps.</p>
+
+  <h2 id="set-types">Warmup sets</h2>
+  <p>The <strong>warmup chip</strong> above the input fields toggles whether the current set is a warmup. Warmup sets are displayed with a "W" badge instead of a set number, and are excluded from volume calculations, PR checks, and progress graphs.</p>
+  <p>You can also let Badger generate warmup sets automatically:</p>
+  <ul>
+    <li>Tap the <strong>⋮ menu</strong> in the top right → <strong>Add warmup sets</strong>.</li>
+    <li>A sheet shows three suggested warmup sets: 40% × 8, 60% × 5, 80% × 3 of your working weight. Each is pre-checked — uncheck any you don't want.</li>
+    <li>Confirm to insert them at the start of your set list.</li>
+  </ul>
+  <p>The "Add warmup sets" option is hidden once warmup sets already exist for that exercise.</p>
+
+  <h2>Intensity tracking (RPE & RIR)</h2>
+  <p>Two optional fields appear below the main inputs:</p>
+  <ul>
+    <li><strong>RPE (Rate of Perceived Exertion)</strong> — How hard did the set feel, on a scale of 1–10. 10 is a true max effort.</li>
+    <li><strong>RIR (Reps in Reserve)</strong> — How many more reps could you have done, 0–5. 0 means you hit failure.</li>
+  </ul>
+  <p>Both are optional and can be used independently. They're hidden when the warmup toggle is active. Logged values appear as small badges on each set row.</p>
+
+  <h2 id="rest-timer">Rest timer</h2>
+  <p>The rest timer shows as a compact banner at the bottom of the screen. It counts down to zero, then plays a sound and/or vibration (configurable in Settings).</p>
+
+  <h3>Timer controls</h3>
+  <ul>
+    <li><strong>Skip</strong> — Dismiss the timer early.</li>
+    <li><strong>+30s</strong> — Add 30 seconds to the current countdown.</li>
+    <li><strong>Rest chip</strong> — Tap the chip that shows the current duration to set a one-session override. Use the Reset button in that dialog to go back to the default.</li>
+  </ul>
+
+  <h3>How rest duration is determined</h3>
+  <p>Badger uses the following priority order:</p>
+  <ol>
+    <li>One-session override (set via the rest chip dialog)</li>
+    <li>Routine-day inter-exercise rest (when switching between exercises in a superset group)</li>
+    <li>Exercise default rest (set in Exercise Settings)</li>
+    <li>Global default (set in Settings → Rest Timer)</li>
+    <li>Last used duration</li>
+    <li>90-second fallback</li>
+  </ol>
+  <p>Warmup sets use a separate, shorter rest duration — configurable per exercise or globally in Settings.</p>
+  <p>The rest timer does <em>not</em> start after the last working set of your last exercise.</p>
+
+  <h2>Skipping sets</h2>
+  <p>If you need to skip a set (injury, time constraint, etc.), long-press it and select <strong>Skip</strong>. Skipped sets are shown with strikethrough text and excluded from all calculations. You can also skip or unskip all sets for an exercise at once via the <strong>⋮ menu</strong>.</p>
+
+  <h2 id="supersets">Supersets & exercise groups</h2>
+  <p>Exercises can be grouped into supersets. When exercises are in the same group:</p>
+  <ul>
+    <li>A colored bar appears on the left side of each exercise card.</li>
+    <li>After logging a set for one exercise in the group, Badger automatically switches to the next exercise (no rest timer between them).</li>
+    <li>After the last exercise in the group, the rest timer starts and you cycle back to the first exercise.</li>
+  </ul>
+  <p>Groups are created and managed in the routine detail screen, or via the exercise list ⋮ menu in the training screen.</p>
+
+  <h2>Personal records</h2>
+  <p>When a working set beats your all-time estimated 1RM for that exercise (on the same machine, if one is set), a trophy badge appears on the set row. A brief notification also appears at the bottom of the screen.</p>
+
+  <h2>Progressive overload suggestions</h2>
+  <p>If you've completed every working set in your last <em>N</em> sessions for an exercise (configurable in Settings → Training), Badger shows a banner suggesting you increase the weight by your configured increment. Tap the suggestion to apply it, or dismiss it.</p>
+
+  <h2>Exercise navigation</h2>
+  <p>Tap the <strong>exercise name in the header</strong> to open the exercise list for your current workout. From there you can:</p>
+  <ul>
+    <li>Tap any exercise to switch to it.</li>
+    <li>Drag to reorder exercises.</li>
+    <li>Tap <strong>Add exercise</strong> to add another movement.</li>
+  </ul>
+
+  <h2>Training screen menu (⋮)</h2>
+  <p>The top-right menu offers additional actions for the current exercise:</p>
+  <ul>
+    <li><strong>Replace exercise</strong> — Swap the current exercise for a different one. Existing sets remain attached.</li>
+    <li><strong>Plate calculator</strong> — Opens the plate calculator pre-filled with your current weight.</li>
+    <li><strong>Warmup calculator</strong> — Reference tool showing 40/60/80% warmup weights.</li>
+    <li><strong>Add warmup sets</strong> — Insert suggested warmup sets.</li>
+    <li><strong>Exercise settings</strong> — Open the exercise notes screen to adjust defaults, notes, and muscle assignments.</li>
+    <li><strong>Change gym</strong> — Switch which gym is associated with this workout.</li>
+    <li><strong>Set machine</strong> — Assign a machine and attachment to the current exercise.</li>
+  </ul>
+</HelpLayout>

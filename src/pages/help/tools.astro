@@ -1,0 +1,79 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Tools & Calculators" description="Plate calculator, warmup calculator, and deload settings in Badger.">
+  <h1>Tools & Calculators</h1>
+
+  <hr />
+
+  <h2>Plate calculator</h2>
+  <p>The plate calculator figures out which plates to load for a given target weight. Access it from the training screen via <strong>⋮ → Plate calculator</strong> — it opens pre-filled with your current working weight.</p>
+
+  <h3>Modes</h3>
+  <ul>
+    <li><strong>Dual-loaded (Barbell)</strong> — Splits the weight symmetrically across both sides. The bar weight is subtracted first, then the remaining weight is divided by two. Default bar weight is 20 kg; configurable per exercise.</li>
+    <li><strong>Machine (symmetric)</strong> — Target weight divided by two per side. Used for plate-loaded machines where weight is symmetric but you enter the total load.</li>
+    <li><strong>Single lever</strong> — Full target weight on one side. Used for single-arm/single-leg machines or lever-style equipment.</li>
+  </ul>
+
+  <h3>Plate configuration</h3>
+  <p>Tap the settings icon to configure your available plates — weight, color, and quantity limit per plate type. Plates can be enabled or disabled. The calculator uses a greedy algorithm: it always picks the largest available plate that fits, within your quantity limits.</p>
+
+  <h3>Remaining weight</h3>
+  <p>If the target weight can't be matched exactly with your available plates, the calculator shows the remaining weight and the closest achievable load.</p>
+
+  <h2 id="warmup-calc">Warmup calculator</h2>
+  <p>Access via <strong>⋮ → Warmup calculator</strong> in the training screen. This is a reference tool — it shows you what 40%, 60%, and 80% of your current working weight look like as warmup sets (at 8, 5, and 3 reps respectively), rounded to a practical plate increment.</p>
+  <p>To actually insert these as sets, use <strong>⋮ → Add warmup sets</strong> instead.</p>
+
+  <h2 id="deload">Deload</h2>
+  <p>Deload is an opt-in feature that detects when you may be accumulating too much fatigue and schedules a lighter training week. Go to <strong>Settings → Training → Deload</strong> to configure it.</p>
+
+  <h3>Enabling deload</h3>
+  <p>Toggle <strong>Enable deload detection</strong> on. All sub-settings are greyed out until this is enabled.</p>
+
+  <h3>Detection methods</h3>
+  <p>Any one of the following can trigger a deload. Each method can be enabled or disabled independently:</p>
+  <ul>
+    <li>
+      <strong>Time-based</strong> — Triggers after a set number of weeks since your last deload. Default: every 4 weeks. Range: 4–8 weeks.
+    </li>
+    <li>
+      <strong>RPE/RIR-based</strong> — Triggers when your average RIR for every week in a rolling window is at or below a threshold (default: ≤ 1 RIR over 2–4 weeks). Requires that you log RIR on your sets.
+    </li>
+    <li>
+      <strong>Performance-based</strong> — Triggers when no exercise has improved over your last N sessions (default: 3 sessions). Detects a stall across the board.
+    </li>
+  </ul>
+
+  <h3>Deload schedule</h3>
+  <p>When a trigger fires, the next Monday is set as the start of your deload week (if today is Monday, it uses the following Monday). A banner appears on the home screen:</p>
+  <ul>
+    <li><strong>Scheduled</strong> (before the week starts) — "Deload week next week."</li>
+    <li><strong>Active</strong> (during the deload week) — "Deload week — weights and sets are reduced this week."</li>
+  </ul>
+  <p>Both banners are dismissible.</p>
+
+  <h3>Automatic reductions</h3>
+  <p>When a deload week is active and you start a routine workout, Badger automatically applies reductions to the predefined sets:</p>
+  <ul>
+    <li><strong>Weight reduction</strong> — Sets weights to a percentage of your normal load (configurable, e.g. 50%).</li>
+    <li><strong>Set reduction</strong> — Removes a number of sets per exercise (configurable). Warmup sets are never removed.</li>
+    <li><strong>Minimum sets</strong> — A floor below which sets won't be removed.</li>
+  </ul>
+  <p>The routine log preview shows a summary of the applied reductions. You can edit any value before tapping Start.</p>
+
+  <div class="callout">
+    <strong>Note:</strong> Deload reductions are applied once per routine log preview. Swapping an exercise after the preview opens doesn't retroactively reduce the replacement.
+  </div>
+
+  <h2>Body tracker</h2>
+  <p>The body tracker lets you log measurements over time (body weight, body fat %, or any custom measurement). Access it via <strong>You → Body tracker</strong>.</p>
+  <ul>
+    <li><strong>Track tab</strong> — Enter today's values for each measurement type.</li>
+    <li><strong>History tab</strong> — Chronological log; swipe to delete entries.</li>
+    <li><strong>Graph tab</strong> — Line chart per measurement type; switch between types using the chips.</li>
+  </ul>
+  <p>Measurement types are user-defined — tap <strong>+</strong> to add a new one.</p>
+</HelpLayout>

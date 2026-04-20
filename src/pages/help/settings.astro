@@ -1,0 +1,72 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Settings & Data" description="Settings overview, backup, restore, and data export in Badger.">
+  <h1>Settings & Data</h1>
+
+  <p>Go to <strong>You → Settings</strong> to access all preferences.</p>
+
+  <hr />
+
+  <h2>General</h2>
+  <ul>
+    <li><strong>Theme</strong> — Light, Dark, or System (follows your device setting).</li>
+    <li><strong>Accent color</strong> — Choose from a preset palette or pick a custom color. The accent applies globally throughout the app.</li>
+    <li><strong>Unit system</strong> — Kilograms or pounds. This is the default for all exercises; individual exercises can override it.</li>
+    <li><strong>Calendar week start</strong> — Monday, Sunday, or Saturday.</li>
+    <li><strong>Default weight increment</strong> — Used by the progressive overload suggestion and stepper buttons when no per-exercise increment is set.</li>
+    <li><strong>Default history view</strong> — Whether the calendar on the home screen defaults to list or calendar view.</li>
+  </ul>
+
+  <h2>Training</h2>
+  <ul>
+    <li><strong>Track personal records</strong> — Toggle PR detection and badges. Disable if you prefer not to see PR notifications.</li>
+    <li><strong>Auto-select next set</strong> — When opening an exercise, automatically highlight the next incomplete set.</li>
+    <li><strong>Auto-advance to next exercise</strong> — After completing the last set of an exercise, automatically navigate to the next one.</li>
+    <li><strong>Keep screen on</strong> — Prevents your device from sleeping during a workout.</li>
+    <li><strong>Haptic feedback</strong> — Vibration on interactions and timer events.</li>
+    <li><strong>Muscle balance warnings</strong> — Toggle the muscle balance warning system on or off.</li>
+    <li><strong>Progressive overload trigger</strong> — How many consecutive sessions with all sets complete before a weight increase is suggested (1–10).</li>
+    <li><strong>Deload</strong> — Opens the deload configuration screen. See <a href="/help/tools#deload">Deload</a>.</li>
+  </ul>
+
+  <h2>Rest timer</h2>
+  <ul>
+    <li><strong>Default rest time</strong> — Duration used when no exercise-specific or session override is set (30s–300s).</li>
+    <li><strong>Default warmup rest</strong> — Duration for warmup sets (15s–120s).</li>
+    <li><strong>Auto-start on set completion</strong> — Automatically starts the rest timer when you log a working set.</li>
+    <li><strong>Sound</strong> — Play a sound when the timer ends. When enabled, choose from several preset sounds (with preview).</li>
+    <li><strong>Vibration</strong> — Vibrate when the timer ends.</li>
+  </ul>
+
+  <h2>Workout timer</h2>
+  <ul>
+    <li><strong>Auto-start on first set</strong> — Automatically starts the elapsed workout timer when you log your first set.</li>
+  </ul>
+
+  <h2>Notifications</h2>
+  <ul>
+    <li><strong>Workout reminders</strong> — Schedule a daily notification to remind you to train. Configure the time, how many minutes before to notify, and which days to send it.</li>
+  </ul>
+
+  <h2 id="backup">Backup & restore</h2>
+  <p>Your workout data is stored locally in a SQLite database. You should back it up regularly.</p>
+
+  <h3>Backup</h3>
+  <p>Go to <strong>Settings → Backup database</strong>. This exports a snapshot of your database as a <code>.workout_backup</code> file and opens the system share sheet so you can save it to Google Drive, your files app, or send it elsewhere.</p>
+
+  <h3>Restore</h3>
+  <p>Go to <strong>Settings → Restore database</strong>. Select a <code>.workout_backup</code> file. This replaces your current database with the backup. <strong>All current data will be overwritten</strong> — make sure you back up first if needed.</p>
+
+  <h2 id="export">Exporting data</h2>
+  <p>Go to <strong>Settings → Export workout data</strong>. This generates a CSV file with one row per logged set, including date, exercise name, weight, reps, duration, warmup flag, RPE, RIR, and more. The file is shared via the system share sheet.</p>
+
+  <h2>Deleting data</h2>
+  <ul>
+    <li><strong>Delete all workout history</strong> — Permanently deletes all workouts and sets. A confirmation dialog is required. This does not delete exercises or routines.</li>
+  </ul>
+
+  <h2>Importing from FitNotes</h2>
+  <p>Go to <strong>Settings → Import from FitNotes</strong>. See <a href="/help/getting-started#importing">Getting started → Importing from FitNotes</a> for details.</p>
+</HelpLayout>

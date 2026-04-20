@@ -1,0 +1,83 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Progress Tracking" description="How to view exercise progress, personal records, graphs, and muscle balance in Badger.">
+  <h1>Progress tracking</h1>
+
+  <p>The Progress screen has two tabs: <strong>Exercises</strong> (per-exercise data and history) and <strong>Overview</strong> (analytics across all your training).</p>
+
+  <hr />
+
+  <h2>Exercises tab</h2>
+  <p>The Exercises tab lists all exercises. Tap any exercise to open its detailed progress screen. The list includes a sticky search bar and filter chips — same search and filter behavior as the exercise library.</p>
+  <p>Exercises sort by recency by default (most recently trained first). Tap the sort icon to switch to alphabetical order.</p>
+
+  <h2 id="prs">Personal records</h2>
+  <p>Badger tracks your <strong>estimated 1RM</strong> as the benchmark for PRs. The formula used is the Epley formula:</p>
+  <p><code>Estimated 1RM = weight × (1 + reps / 30)</code></p>
+  <p>When you log a working set that produces a higher estimated 1RM than your previous best, the set is marked as a PR with a trophy badge. A brief notification also appears at the bottom of the training screen.</p>
+  <p>PRs are <strong>machine-scoped</strong>: if you have a machine set on the current exercise, the PR is compared only against other sessions on the same machine. If no machine is set, all history is compared.</p>
+
+  <h2>Exercise progress screen</h2>
+  <p>Tap any exercise from the Progress tab to see its detailed history.</p>
+
+  <h3>Stats row</h3>
+  <ul>
+    <li><strong>Estimated 1RM</strong> — Your current best estimated 1RM.</li>
+    <li><strong>30-day change</strong> — Percentage change in estimated 1RM over the last 30 days.</li>
+    <li><strong>Last session</strong> — Date and brief summary of your most recent workout for this exercise.</li>
+  </ul>
+
+  <h2 id="graphs">Graphs</h2>
+  <p>A line chart below the stats row shows your progress over time. Tap the graph type chips to switch between metrics:</p>
+  <ul>
+    <li><strong>Estimated 1RM</strong> — Calculated best 1RM per session.</li>
+    <li><strong>Max weight</strong> — Heaviest weight logged in each session.</li>
+    <li><strong>Workout volume</strong> — Total volume (weight × reps) per session.</li>
+    <li><strong>Total reps</strong> — Total reps across all working sets per session.</li>
+    <li><strong>Max reps</strong> — Most reps in a single set per session.</li>
+    <li><strong>Weight at N reps</strong> — Heaviest weight logged at a specific rep count.</li>
+    <li><strong>Rep maxes</strong> — Best weight for each rep count over time.</li>
+    <li><strong>Max distance / Total distance / Max time / Total time / Max speed / Max pace</strong> — For distance and time-based exercises.</li>
+  </ul>
+
+  <h3>Graph controls</h3>
+  <ul>
+    <li><strong>Data points</strong> — Toggle markers on/off.</li>
+    <li><strong>Trend line</strong> — Overlay a linear trend line.</li>
+    <li><strong>Y from 0</strong> — Force the Y axis to start at zero.</li>
+    <li><strong>Share</strong> — Export the chart as an image via the system share sheet.</li>
+  </ul>
+  <p>Tap a data point to see its exact values below the chart. Use the left/right arrows to step through individual points. Tap the detail area to open the full workout summary for that session.</p>
+
+  <h3>Machine filter</h3>
+  <p>If you've used the exercise on multiple machines, a row of filter chips appears above the chart. Filter by a specific machine or select <strong>All</strong> for combined data. The most recently used machine is selected by default.</p>
+
+  <h2>Overview tab</h2>
+  <p>The Overview tab shows analytics across all your training.</p>
+
+  <h3>Activity card</h3>
+  <ul>
+    <li><strong>Training frequency chart</strong> — Workouts per week as a bar chart.</li>
+    <li><strong>Activity heatmap</strong> — 26 weeks of daily activity in a GitHub-style grid. Switch between three metrics using the chips: <strong>Sets</strong> (number of non-skipped sets), <strong>Volume</strong> (total weight × reps, kg-normalized), and <strong>Duration</strong> (session length in minutes).</li>
+  </ul>
+
+  <h3 id="muscle-balance">Muscle balance</h3>
+  <p>Badger tracks how often you train each muscle group and flags imbalances. You'll see colored dots on the weekly volume chips on the home screen when a muscle group needs attention.</p>
+  <p>On the Overview tab, a <strong>Muscle balance card</strong> appears when any muscle group is flagged. It shows:</p>
+  <ul>
+    <li>Each muscle group's status (OK, warning, or neglected)</li>
+    <li>When it was last trained</li>
+    <li>Set count within the rolling window</li>
+  </ul>
+  <p>Tap <strong>+ Log exercise</strong> on a flagged muscle group to jump directly to the exercise picker filtered to that category.</p>
+  <p>Muscle balance warnings can be turned off in <strong>Settings → Training → Muscle balance warnings</strong>.</p>
+
+  <h2>History in the training screen</h2>
+  <p>The <strong>History tab</strong> in the training screen shows all previous sessions for the current exercise, newest first. Expand a session row to see its sets. From there you can:</p>
+  <ul>
+    <li>View the full workout summary.</li>
+    <li>Copy that session's sets to your current workout.</li>
+  </ul>
+</HelpLayout>

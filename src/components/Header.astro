@@ -1,0 +1,49 @@
+---
+interface Props {
+  currentPath?: string;
+}
+const { currentPath = '' } = Astro.props;
+const isHelp = currentPath.startsWith('/help') || currentPath === '/glossary';
+---
+
+<header style="background:var(--surface);border-bottom:1px solid var(--border);">
+  <nav style="max-width:1100px;margin:0 auto;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+    <a href="/" style="display:flex;align-items:center;gap:0.6rem;font-weight:700;font-size:1.1rem;color:var(--text);text-decoration:none;">
+      <!-- TODO: replace img with actual horizontal logo asset once provided -->
+      <span style="color:var(--color-accent);font-size:1.3rem;">●</span>
+      Badger
+    </a>
+
+    <div style="display:flex;align-items:center;gap:1.5rem;">
+      <a href="/help" style={`font-size:0.9rem;font-weight:500;color:${isHelp ? 'var(--color-accent)' : 'var(--text-secondary)'};text-decoration:none;`}>
+        Help
+      </a>
+      <a href="/glossary" style={`font-size:0.9rem;font-weight:500;color:${currentPath === '/glossary' ? 'var(--color-accent)' : 'var(--text-secondary)'};text-decoration:none;`}>
+        Glossary
+      </a>
+      <a
+        href="#download"
+        style="background:var(--color-accent);color:#fff;font-size:0.875rem;font-weight:600;padding:0.4rem 1rem;border-radius:6px;text-decoration:none;white-space:nowrap;"
+      >
+        Get the app
+      </a>
+      <button
+        id="theme-toggle"
+        aria-label="Toggle theme"
+        style="background:none;border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.5rem;cursor:pointer;color:var(--text-secondary);font-size:0.85rem;line-height:1;"
+      >
+        ◐
+      </button>
+    </div>
+  </nav>
+</header>
+
+<script is:inline>
+  const btn = document.getElementById('theme-toggle');
+  btn?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+</script>

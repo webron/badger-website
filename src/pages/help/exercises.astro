@@ -1,0 +1,104 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Exercises" description="How to use the exercise library, search and filter exercises, and create custom exercises in Badger.">
+  <h1>Exercises</h1>
+
+  <p>Badger ships with around 367 exercises across 8 categories. You can use them as-is, customize them, or create your own.</p>
+
+  <hr />
+
+  <h2>Exercise library</h2>
+  <p>The <strong>Exercises</strong> tab shows your full exercise library grouped by category. At the top is a <strong>Favorites</strong> row — exercises you've starred for quick access.</p>
+  <p>A <strong>Recently trained</strong> row appears below Favorites, showing up to 8 exercises you've used recently. It's hidden while you're actively searching.</p>
+
+  <h2 id="search-filter">Search & filtering</h2>
+  <p>The search bar at the top searches across all exercise names. Typing narrows the list in real time.</p>
+
+  <h3>Muscle filter</h3>
+  <p>Tap the <strong>muscle icon</strong> to open the muscle filter. You'll see an interactive body diagram at the top with a scrollable list below it.</p>
+  <ul>
+    <li>Tap a region on the body diagram to filter by that muscle group.</li>
+    <li>Tap a muscle group header in the list to select the whole group.</li>
+    <li>Tap a specific muscle to narrow to just that muscle.</li>
+    <li>An active filter shows as a pill below the search bar. Tap it to clear.</li>
+  </ul>
+
+  <h3>Equipment filter</h3>
+  <p>Tap the <strong>equipment icon</strong> to filter by equipment type: barbell, dumbbell, cable, machine, bodyweight, kettlebell, band, or other. An active filter shows as a pill below the search bar.</p>
+
+  <h2 id="creating">Creating exercises</h2>
+  <p>Tap the <strong>+</strong> button in the exercise library or via <strong>Add exercise → Create new</strong> in the workout flow.</p>
+
+  <h3>Required fields</h3>
+  <ul>
+    <li><strong>Name</strong> — Exercise name.</li>
+    <li><strong>Category</strong> — One of the 8 categories (Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, Cardio).</li>
+    <li><strong>Exercise type</strong> — Determines which fields appear when logging (see below).</li>
+  </ul>
+
+  <h3>Optional fields</h3>
+  <ul>
+    <li><strong>Weight unit</strong> — kg or lbs. Defaults to your global setting but can be overridden per exercise.</li>
+    <li><strong>Default increment</strong> — How much weight to add when using the progressive overload suggestion.</li>
+    <li><strong>Default rest (working sets)</strong> — Rest timer duration for working sets of this exercise.</li>
+    <li><strong>Default rest (warmup sets)</strong> — Rest timer duration after warmup sets.</li>
+    <li><strong>Primary & secondary muscles</strong> — Assign muscles using the body diagram. Used for muscle balance tracking and filtering.</li>
+    <li><strong>Plate calculator mode</strong> — Barbell (dual-loaded), Machine (symmetric), or Single lever. Sets how the plate calculator splits the weight.</li>
+    <li><strong>Bar weight</strong> — Override the default bar weight for the plate calculator.</li>
+    <li><strong>Compatible machines</strong> — Link this exercise to machines available at your gyms. Used to filter machine options in the training screen.</li>
+    <li><strong>Default graph</strong> — Which progress graph to show first on the Progress screen.</li>
+    <li><strong>Notes</strong> — Freeform notes (form cues, machine settings, links, etc.).</li>
+  </ul>
+
+  <h2 id="types">Exercise types</h2>
+  <p>The exercise type determines which fields appear when you're logging a set.</p>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.875rem;margin:1rem 0;">
+    <thead>
+      <tr style="border-bottom:1px solid var(--border);">
+        <th style="text-align:left;padding:0.4rem 0.5rem;color:var(--text);font-weight:600;">Type</th>
+        <th style="text-align:left;padding:0.4rem 0.5rem;color:var(--text);font-weight:600;">Fields logged</th>
+        <th style="text-align:left;padding:0.4rem 0.5rem;color:var(--text);font-weight:600;">Typical use</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        ['Weight + Reps', 'Weight, reps', 'Most strength exercises'],
+        ['Reps Only', 'Reps', 'Bodyweight (push-ups, pull-ups)'],
+        ['Time Only', 'Duration', 'Plank, dead hang, cardio machines'],
+        ['Weight + Time', 'Weight, duration', 'Farmer carry, weighted plank'],
+        ['Distance + Time', 'Distance, duration', 'Running, rowing'],
+        ['Weight + Distance', 'Weight, distance', 'Sled push'],
+        ['Reps + Time', 'Reps, duration', 'Circuit-style timed sets'],
+        ['Reps + Distance', 'Reps, distance', 'Broad jumps'],
+        ['Weight Only', 'Weight', 'Static holds'],
+        ['Distance Only', 'Distance', 'Walking, cycling distance'],
+      ].map(([type, fields, use]) => (
+        <tr style="border-bottom:1px solid var(--border-subtle);">
+          <td style="padding:0.4rem 0.5rem;color:var(--text);font-weight:500;">{type}</td>
+          <td style="padding:0.4rem 0.5rem;color:var(--text-secondary);">{fields}</td>
+          <td style="padding:0.4rem 0.5rem;color:var(--text-muted);">{use}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2>Favorites</h2>
+  <p>Tap the heart icon on any exercise row to add it to Favorites. Favorites appear at the top of the exercise library for quick access. The same heart icon removes it from Favorites.</p>
+
+  <h2>Exercise settings (per workout)</h2>
+  <p>From the training screen, tap <strong>⋮ → Exercise settings</strong> to open the exercise notes screen. This lets you set per-exercise overrides for the current session and beyond:</p>
+  <ul>
+    <li>Freeform notes</li>
+    <li>Default weight increment</li>
+    <li>Default rest durations (working + warmup)</li>
+    <li>Bar weight for plate calculator</li>
+    <li>Tempo (e.g. "3-1-2-0")</li>
+    <li>Muscle assignments</li>
+  </ul>
+
+  <h2>Deleting exercises</h2>
+  <p>Open an exercise in the library → tap <strong>Edit</strong> → scroll to the bottom and tap <strong>Delete</strong>. A confirmation dialog warns that deletion removes all workout history for that exercise.</p>
+</HelpLayout>
