@@ -1,6 +1,5 @@
 ---
 import HelpLayout from '../layouts/HelpLayout.astro';
-const b = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <HelpLayout title="Glossary" description="Plain-English definitions of fitness and app-specific terms used in Badger: RPE, RIR, 1RM, deload, warmup sets, and more.">
@@ -44,7 +43,7 @@ const b = import.meta.env.BASE_URL.replace(/\/$/, '');
     <li>Keep the same weights but do fewer sets</li>
     <li>Reduce both</li>
   </ul>
-  <p>Badger can detect when a deload is likely needed and schedule one automatically. See <a href={`${b}/help/tools#deload`}>Deload</a>.</p>
+  <p>Badger can detect when a deload is likely needed and schedule one automatically. See <a href={`/help/tools#deload`}>Deload</a>.</p>
 
   <h3>Progressive overload</h3>
   <p>The principle of gradually increasing the demands on your body over time — typically by adding weight, reps, or sets. Without progressive overload, training adaptations stall. It's the fundamental driver of long-term strength and muscle gains.</p>

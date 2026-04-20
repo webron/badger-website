@@ -1,6 +1,5 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
-const b = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <HelpLayout title="Getting Started" description="How to install Badger, configure your preferences, and log your first workout.">
@@ -43,7 +42,7 @@ const b = import.meta.env.BASE_URL.replace(/\/$/, '');
     <li>Long-press a routine and tap <strong>Set active</strong>. The routine's days appear on the Home screen.</li>
     <li>Tap a day's row to preview the workout, adjust any weights, then tap <strong>Start</strong>.</li>
   </ol>
-  <p>See <a href={`${b}/help/routines`}>Routines</a> for the full details.</p>
+  <p>See <a href={`/help/routines`}>Routines</a> for the full details.</p>
 
   <h2 id="importing">Importing from FitNotes</h2>
   <p>If you have a FitNotes backup file, Badger can import your entire workout history:</p>
@@ -64,5 +63,5 @@ const b = import.meta.env.BASE_URL.replace(/\/$/, '');
     <li><strong>RIR</strong> — Reps in Reserve (0–5). How many more reps could you have done? Optional per-set field.</li>
     <li><strong>1RM</strong> — One-rep max. Badger estimates this from your sets using the Epley formula.</li>
   </ul>
-  <p>Full definitions in the <a href={`${b}/glossary`}>Glossary</a>.</p>
+  <p>Full definitions in the <a href={`/glossary`}>Glossary</a>.</p>
 </HelpLayout>
