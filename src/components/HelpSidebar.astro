@@ -85,7 +85,7 @@ const nav = [
 ];
 ---
 
-<aside id="help-sidebar" style="width:220px;flex-shrink:0;">
+<aside id="help-sidebar" style="width:220px;flex-shrink:0;position:sticky;top:1.5rem;max-height:calc(100vh - 3rem);overflow-y:auto;">
   <nav>
     {nav.map(section => (
       <div style="margin-bottom:1.5rem;">
