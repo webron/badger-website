@@ -1,5 +1,6 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
+const b = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <HelpLayout title="Help" description="Documentation and help guides for the Badger workout tracker app.">
@@ -11,27 +12,27 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Getting started</h2>
   <ul>
-    <li><a href="/help/getting-started">Quick start guide</a> — Install, set up your preferences, and log your first workout.</li>
-    <li><a href="/help/getting-started#importing">Importing from FitNotes</a> — Bring over your existing workout history.</li>
+    <li><a href={`${b}/help/getting-started`}>Quick start guide</a> — Install, set up your preferences, and log your first workout.</li>
+    <li><a href={`${b}/help/getting-started#importing`}>Importing from FitNotes</a> — Bring over your existing workout history.</li>
   </ul>
 
   <h2>Core features</h2>
   <ul>
-    <li><a href="/help/logging">Logging workouts</a> — Sets, reps, warmups, rest timer, supersets, and more.</li>
-    <li><a href="/help/exercises">Exercises</a> — Browse, search, filter, and create exercises.</li>
-    <li><a href="/help/routines">Routines</a> — Build programs, schedule training days, and start routine workouts.</li>
-    <li><a href="/help/progress">Progress tracking</a> — PRs, graphs, heatmaps, and muscle balance.</li>
+    <li><a href={`${b}/help/logging`}>Logging workouts</a> — Sets, reps, warmups, rest timer, supersets, and more.</li>
+    <li><a href={`${b}/help/exercises`}>Exercises</a> — Browse, search, filter, and create exercises.</li>
+    <li><a href={`${b}/help/routines`}>Routines</a> — Build programs, schedule training days, and start routine workouts.</li>
+    <li><a href={`${b}/help/progress`}>Progress tracking</a> — PRs, graphs, heatmaps, and muscle balance.</li>
   </ul>
 
   <h2>Equipment & settings</h2>
   <ul>
-    <li><a href="/help/gyms">Gyms & equipment</a> — Manage gyms, machines, attachments, and grip types.</li>
-    <li><a href="/help/tools">Tools & calculators</a> — Plate calculator, warmup calculator, and deload.</li>
-    <li><a href="/help/settings">Settings & data</a> — Preferences, backup, restore, and export.</li>
+    <li><a href={`${b}/help/gyms`}>Gyms & equipment</a> — Manage gyms, machines, attachments, and grip types.</li>
+    <li><a href={`${b}/help/tools`}>Tools & calculators</a> — Plate calculator, warmup calculator, and deload.</li>
+    <li><a href={`${b}/help/settings`}>Settings & data</a> — Preferences, backup, restore, and export.</li>
   </ul>
 
   <h2>Reference</h2>
   <ul>
-    <li><a href="/glossary">Glossary</a> — Plain-English explanations of RPE, RIR, 1RM, deload, and other terms used in the app.</li>
+    <li><a href={`${b}/glossary`}>Glossary</a> — Plain-English explanations of RPE, RIR, 1RM, deload, and other terms used in the app.</li>
   </ul>
 </HelpLayout>

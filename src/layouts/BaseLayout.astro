@@ -27,7 +27,7 @@ const fullTitle = title === 'Badger' ? 'Badger' : `${title} — Badger`;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="/assets/icon.png" />
+    <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/assets/icon.png`} />
     <!-- TODO: replace with actual favicon once assets are provided -->
   </head>
   <body>

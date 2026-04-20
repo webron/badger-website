@@ -3,82 +3,83 @@ interface Props {
   currentPath: string;
 }
 const { currentPath } = Astro.props;
+const b = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const nav = [
   {
     label: 'Getting Started',
     items: [
-      { href: '/help/getting-started', label: 'Quick start' },
-      { href: '/help/getting-started#first-workout', label: 'Your first workout' },
-      { href: '/help/getting-started#importing', label: 'Importing from FitNotes' },
+      { href: `${b}/help/getting-started`, label: 'Quick start' },
+      { href: `${b}/help/getting-started#first-workout`, label: 'Your first workout' },
+      { href: `${b}/help/getting-started#importing`, label: 'Importing from FitNotes' },
     ],
   },
   {
     label: 'Logging Workouts',
     items: [
-      { href: '/help/logging', label: 'Logging sets' },
-      { href: '/help/logging#set-types', label: 'Warmup & working sets' },
-      { href: '/help/logging#rest-timer', label: 'Rest timer' },
-      { href: '/help/logging#supersets', label: 'Supersets' },
+      { href: `${b}/help/logging`, label: 'Logging sets' },
+      { href: `${b}/help/logging#set-types`, label: 'Warmup & working sets' },
+      { href: `${b}/help/logging#rest-timer`, label: 'Rest timer' },
+      { href: `${b}/help/logging#supersets`, label: 'Supersets' },
     ],
   },
   {
     label: 'Exercises',
     items: [
-      { href: '/help/exercises', label: 'Exercise library' },
-      { href: '/help/exercises#search-filter', label: 'Search & filters' },
-      { href: '/help/exercises#creating', label: 'Creating exercises' },
-      { href: '/help/exercises#types', label: 'Exercise types' },
+      { href: `${b}/help/exercises`, label: 'Exercise library' },
+      { href: `${b}/help/exercises#search-filter`, label: 'Search & filters' },
+      { href: `${b}/help/exercises#creating`, label: 'Creating exercises' },
+      { href: `${b}/help/exercises#types`, label: 'Exercise types' },
     ],
   },
   {
     label: 'Routines',
     items: [
-      { href: '/help/routines', label: 'Overview' },
-      { href: '/help/routines#creating', label: 'Creating routines' },
-      { href: '/help/routines#predefined-sets', label: 'Predefined sets' },
-      { href: '/help/routines#starting', label: 'Starting a routine workout' },
-      { href: '/help/routines#programs', label: 'Built-in programs' },
+      { href: `${b}/help/routines`, label: 'Overview' },
+      { href: `${b}/help/routines#creating`, label: 'Creating routines' },
+      { href: `${b}/help/routines#predefined-sets`, label: 'Predefined sets' },
+      { href: `${b}/help/routines#starting`, label: 'Starting a routine workout' },
+      { href: `${b}/help/routines#programs`, label: 'Built-in programs' },
     ],
   },
   {
     label: 'Gyms & Equipment',
     items: [
-      { href: '/help/gyms', label: 'Managing gyms' },
-      { href: '/help/gyms#machines', label: 'Machines & attachments' },
-      { href: '/help/gyms#grip-types', label: 'Grip types' },
-      { href: '/help/gyms#workout-context', label: 'Gym context in workouts' },
+      { href: `${b}/help/gyms`, label: 'Managing gyms' },
+      { href: `${b}/help/gyms#machines`, label: 'Machines & attachments' },
+      { href: `${b}/help/gyms#grip-types`, label: 'Grip types' },
+      { href: `${b}/help/gyms#workout-context`, label: 'Gym context in workouts' },
     ],
   },
   {
     label: 'Progress',
     items: [
-      { href: '/help/progress', label: 'Exercise progress' },
-      { href: '/help/progress#prs', label: 'Personal records' },
-      { href: '/help/progress#graphs', label: 'Graphs & charts' },
-      { href: '/help/progress#muscle-balance', label: 'Muscle balance' },
+      { href: `${b}/help/progress`, label: 'Exercise progress' },
+      { href: `${b}/help/progress#prs`, label: 'Personal records' },
+      { href: `${b}/help/progress#graphs`, label: 'Graphs & charts' },
+      { href: `${b}/help/progress#muscle-balance`, label: 'Muscle balance' },
     ],
   },
   {
     label: 'Tools',
     items: [
-      { href: '/help/tools', label: 'Plate calculator' },
-      { href: '/help/tools#warmup-calc', label: 'Warmup calculator' },
-      { href: '/help/tools#deload', label: 'Deload' },
+      { href: `${b}/help/tools`, label: 'Plate calculator' },
+      { href: `${b}/help/tools#warmup-calc`, label: 'Warmup calculator' },
+      { href: `${b}/help/tools#deload`, label: 'Deload' },
     ],
   },
   {
     label: 'Settings & Data',
     items: [
-      { href: '/help/settings', label: 'Settings overview' },
-      { href: '/help/settings#backup', label: 'Backup & restore' },
-      { href: '/help/settings#export', label: 'Exporting data' },
+      { href: `${b}/help/settings`, label: 'Settings overview' },
+      { href: `${b}/help/settings#backup`, label: 'Backup & restore' },
+      { href: `${b}/help/settings#export`, label: 'Exporting data' },
     ],
   },
   {
     label: 'Reference',
     items: [
-      { href: '/glossary', label: 'Glossary' },
+      { href: `${b}/glossary`, label: 'Glossary' },
     ],
   },
 ];
@@ -93,8 +94,8 @@ const nav = [
         </p>
         <ul style="list-style:none;margin:0;padding:0;">
           {section.items.map(item => {
-            const base = item.href.split('#')[0];
-            const active = currentPath === base || currentPath === item.href;
+            const itemPath = item.href.split('#')[0];
+            const active = currentPath === itemPath || currentPath === item.href;
             return (
               <li>
                 <a
