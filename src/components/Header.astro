@@ -10,10 +10,8 @@ const isGlossary = currentPath.endsWith('/glossary');
 
 <header style="background:var(--surface);border-bottom:1px solid var(--border);">
   <nav style="max-width:1100px;margin:0 auto;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
-    <a href={`${b}/`} style="display:flex;align-items:center;gap:0.6rem;font-weight:700;font-size:1.1rem;color:var(--text);text-decoration:none;">
-      <!-- TODO: replace with actual horizontal logo asset once provided -->
-      <span style="color:var(--color-accent);font-size:1.3rem;">●</span>
-      Badger
+    <a href={`${b}/`} style="display:flex;align-items:center;text-decoration:none;">
+      <img src={`${b}/assets/badger_logo_final.svg`} alt="Badger" height="32" style="display:block;" />
     </a>
 
     <div style="display:flex;align-items:center;gap:1.5rem;">
