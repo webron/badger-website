@@ -95,11 +95,13 @@ const nav = [
 ];
 ---
 
-<aside id="help-sidebar" style="width:220px;flex-shrink:0;position:sticky;top:1.5rem;max-height:calc(100vh - 3rem);overflow-y:auto;">
-  <div style="margin-bottom:1.25rem;">
+<aside id="help-sidebar" style="width:220px;flex-shrink:0;position:sticky;top:1.5rem;max-height:calc(100vh - 3rem);display:flex;flex-direction:column;">
+  <!-- Search pinned at top — never scrolls away -->
+  <div style="flex-shrink:0;margin-bottom:0.75rem;">
     <Search id="help-search" uiOptions={{ showImages: false, showSubResults: false, excerptLength: 12 }} />
   </div>
-  <nav>
+  <!-- Nav scrolls independently -->
+  <nav id="help-sidebar-nav" style="overflow-y:auto;flex:1;">
     {nav.map(section => (
       <div style="margin-bottom:1.5rem;">
         <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin:0 0 0.5rem;padding-left:0.75rem;">
@@ -186,17 +188,15 @@ const nav = [
 <script is:inline>
   (function () {
     const KEY = 'help-sidebar-scroll';
-    const sidebar = document.getElementById('help-sidebar');
-    if (!sidebar) return;
+    const nav = document.getElementById('help-sidebar-nav');
+    if (!nav) return;
 
-    // Restore scroll position immediately on load.
     const saved = sessionStorage.getItem(KEY);
-    if (saved) sidebar.scrollTop = parseInt(saved, 10);
+    if (saved) nav.scrollTop = parseInt(saved, 10);
 
-    // Save scroll position before leaving the page.
-    sidebar.querySelectorAll('a').forEach(function (a) {
+    nav.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', function () {
-        sessionStorage.setItem(KEY, sidebar.scrollTop);
+        sessionStorage.setItem(KEY, nav.scrollTop);
       });
     });
   })();
