@@ -54,6 +54,28 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Machine filter</h3>
   <p>If you've used the exercise on multiple machines, a row of filter chips appears above the chart. Filter by a specific machine or select <strong>All</strong> for combined data. The most recently used machine is selected by default.</p>
 
+  <h2 id="plateau-detection">Plateau detection</h2>
+  <p>When plateau detection is enabled, Badger monitors your estimated 1RM trend and surfaces a banner on the exercise progress screen when progress has stalled.</p>
+  <p>A plateau is flagged when <strong>both</strong> conditions are met:</p>
+  <ul>
+    <li>Your estimated 1RM trend has been flat or declining (slope below +0.5% per session)</li>
+    <li>At least 3 weeks have elapsed across the detection window</li>
+  </ul>
+  <p>When a plateau is detected, the banner shows how long the stall has been running and offers three suggestions:</p>
+  <ul>
+    <li>Try a deload week — with a shortcut to your deload settings</li>
+    <li>Switch your rep range (e.g. if you've been doing 8–10 reps, try 4–6 for a few weeks)</li>
+    <li>Swap for a variation that targets the same muscles from a different angle</li>
+  </ul>
+  <p>The <strong>Today screen</strong> also shows a compact card listing up to two plateauing exercises. Tap an exercise name to jump to its progress screen.</p>
+  <p>Plateau detection is <strong>off by default</strong>. Enable it in <strong>Settings → Training → Plateau detection</strong>. You can also adjust the <strong>sensitivity</strong> — how many sessions are included in the detection window:</p>
+  <ul>
+    <li><strong>Conservative</strong> — requires ~10 sessions of flat progress</li>
+    <li><strong>Balanced</strong> (default) — requires ~8 sessions</li>
+    <li><strong>Sensitive</strong> — triggers after ~6 sessions</li>
+  </ul>
+  <p>Plateau detection only applies to weighted exercises (barbell, dumbbell, etc.) since it relies on estimated 1RM data.</p>
+
   <h2>Overview tab</h2>
   <p>The Overview tab shows analytics across all your training.</p>
 
