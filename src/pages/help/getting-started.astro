@@ -44,15 +44,24 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ol>
   <p>See <a href={`/help/routines`}>Routines</a> for the full details.</p>
 
-  <h2 id="importing">Importing from FitNotes</h2>
-  <p>If you have a FitNotes backup file, Badger can import your entire workout history:</p>
+  <h2 id="importing">Importing from another app</h2>
+  <p>Badger can import your full workout history from FitNotes, Strong, and Hevy. Go to <strong>Settings → Data</strong> and tap the relevant import row. The flow is the same for all three:</p>
   <ol>
-    <li>Go to <strong>Settings → Import from FitNotes</strong>.</li>
-    <li>The file picker opens automatically. Select your <code>.fitnotes</code> backup file.</li>
-    <li>Badger shows a preview: exercise count, workout count, date range, and any exercises it couldn't match.</li>
-    <li>Choose whether your FitNotes backup stored weights in kg or lbs, then confirm the import.</li>
+    <li>Tap the import row. The file picker opens automatically.</li>
+    <li>Select your exported CSV (or <code>.fitnotes</code> backup for FitNotes).</li>
+    <li>Badger shows a preview: exercises, workout days, sets, and weight unit. Any exercises already in your library are reused by name — duplicates are avoided automatically.</li>
+    <li>Tap <strong>Import</strong> to confirm.</li>
   </ol>
-  <p>Exercises are matched by name. Any exercises that didn't match are created automatically and placed in a default category — you can edit them afterwards in the exercise library.</p>
+  <p>New exercises are placed in an "Imported" category. Sets are appended to any existing workouts on the same date — nothing is overwritten. You can edit exercises and reassign categories in the exercise library afterwards.</p>
+
+  <h3 id="importing-fitnotes">FitNotes</h3>
+  <p>Export from FitNotes via <strong>Settings → Backup</strong> to produce a <code>.fitnotes</code> file, then select it in Badger.</p>
+
+  <h3 id="importing-strong">Strong</h3>
+  <p>In Strong, go to <strong>Profile → Settings → Export Data</strong> to generate a <code>strong.csv</code> file. Badger detects the weight unit automatically from the column header (<code>Weight (kg)</code> vs <code>Weight (lbs)</code>) and handles both comma-delimited (most locales) and semicolon-delimited (some European locales) exports.</p>
+
+  <h3 id="importing-hevy">Hevy</h3>
+  <p>In Hevy, go to <strong>Profile → Settings → Export Data → Export as CSV</strong>. Badger detects the weight unit (<code>weight_kg</code> vs <code>weight_lbs</code>) and imports warmup sets correctly (Hevy marks them with <code>set_type = warmup</code>).</p>
 
   <h2>Key concepts</h2>
   <p>A few terms that come up throughout the app:</p>

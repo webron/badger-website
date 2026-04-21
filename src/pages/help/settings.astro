@@ -71,6 +71,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Delete all workout history</strong> — Permanently deletes all workouts and sets. A confirmation dialog is required. This does not delete exercises or routines.</li>
   </ul>
 
-  <h2>Importing from FitNotes</h2>
-  <p>Go to <strong>Settings → Import from FitNotes</strong>. See <a href={`/help/getting-started#importing`}>Getting started → Importing from FitNotes</a> for details.</p>
+  <h2 id="importing">Importing workout history</h2>
+  <p>Badger can import your full history from FitNotes, Strong, and Hevy. Each option appears under <strong>Settings → Data</strong>:</p>
+  <ul>
+    <li><strong>Import from FitNotes</strong> — Select a <code>.fitnotes</code> backup file.</li>
+    <li><strong>Import from Strong</strong> — Select a Strong CSV export. Weight unit is detected automatically from the column header.</li>
+    <li><strong>Import from Hevy</strong> — Select a Hevy CSV export. Warmup sets are imported correctly.</li>
+  </ul>
+  <p>See <a href={`/help/getting-started#importing`}>Getting started → Importing from another app</a> for the full walkthrough.</p>
 </HelpLayout>
