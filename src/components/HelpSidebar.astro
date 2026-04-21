@@ -1,4 +1,6 @@
 ---
+import Search from 'astro-pagefind/components/Search';
+
 interface Props {
   currentPath: string;
 }
@@ -94,6 +96,9 @@ const nav = [
 ---
 
 <aside id="help-sidebar" style="width:220px;flex-shrink:0;position:sticky;top:1.5rem;max-height:calc(100vh - 3rem);overflow-y:auto;">
+  <div style="margin-bottom:1.25rem;">
+    <Search id="help-search" uiOptions={{ showImages: false, showSubResults: false, excerptLength: 12 }} />
+  </div>
   <nav>
     {nav.map(section => (
       <div style="margin-bottom:1.5rem;">
@@ -124,6 +129,51 @@ const nav = [
     ))}
   </nav>
 </aside>
+
+<style is:global>
+  /* Pagefind UI theme — mapped to site CSS variables */
+  #help-search {
+    --pagefind-ui-scale: 0.8;
+    --pagefind-ui-primary: var(--color-accent);
+    --pagefind-ui-text: var(--text);
+    --pagefind-ui-background: var(--surface);
+    --pagefind-ui-border: var(--border);
+    --pagefind-ui-tag: var(--surface-alt);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 6px;
+    --pagefind-ui-font: inherit;
+  }
+
+  /* Tighten result list spacing for the narrow sidebar */
+  #help-search .pagefind-ui__results {
+    position: absolute;
+    z-index: 50;
+    width: 220px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  #help-search .pagefind-ui__result {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  #help-search .pagefind-ui__result:last-child {
+    border-bottom: none;
+  }
+
+  #help-search .pagefind-ui__result-title {
+    font-size: 0.8125rem;
+  }
+
+  #help-search .pagefind-ui__result-excerpt {
+    font-size: 0.75rem;
+  }
+</style>
 
 <style>
   @media (max-width: 768px) {

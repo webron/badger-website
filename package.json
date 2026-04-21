@@ -12,8 +12,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@pagefind/default-ui": "^1.5.2",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.8",
+    "astro-pagefind": "^1.8.6",
     "tailwindcss": "^4.2.2"
   }
 }
