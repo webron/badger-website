@@ -9,6 +9,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <hr />
 
+  <h2 id="today-screen">Today screen</h2>
+  <p>The <strong>Today screen</strong> (home tab) is your daily hub. It shows the current date, an optional workout timer in the app bar, and several cards depending on your state:</p>
+  <ul>
+    <li>If you have an active routine, your routine days appear at the top with a Start button for each. Tap a day to open the routine log preview before starting.</li>
+    <li><strong>This Week</strong> — A compact card showing how many days you've trained this week, plus muscle-balance warnings if any groups haven't been trained for a while. Visible whenever you're on the Today screen — whether mid-workout or between sessions.</li>
+    <li><strong>Weekly volume chips</strong> — Colored chips showing sets logged per muscle category this week. Colored dots indicate groups that need attention. Tap any chip to open the muscle balance detail sheet.</li>
+    <li><strong>Monthly report</strong> — During the first two weeks of a new month, a dismissible card shows last month's highlights: workout count, total volume (with % change vs the month before), and how many exercises you tried for the first time. Tap × to dismiss it.</li>
+    <li><strong>Deload banner</strong> and <strong>Plateau card</strong> appear here when those features are active (see <a href={`/help/tools#deload`}>Deload</a> and <a href={`/help/progress#plateau-detection`}>Plateau detection</a>).</li>
+  </ul>
+
+  <hr />
+
   <h2>Logging a set</h2>
   <p>The Log tab shows input fields at the top and your logged sets below. The fields shown depend on the exercise type — a barbell exercise shows weight and reps; a plank shows only time; a row machine might show weight and time.</p>
   <ol>

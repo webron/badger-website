@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Exercises" description="How to use the exercise library, search and filter exercises, and create custom exercises in Badger.">
   <h1>Exercises</h1>
 
-  <p>Badger ships with around 367 exercises across 8 categories. You can use them as-is, customize them, or create your own.</p>
+  <p>Badger ships with around 367 exercises across 8 categories. You can use them as-is, customize them, create your own exercises, or add custom categories to organise niche movements.</p>
 
   <hr />
 
@@ -28,13 +28,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Equipment filter</h3>
   <p>Tap the <strong>equipment icon</strong> to filter by equipment type: barbell, dumbbell, cable, machine, bodyweight, kettlebell, band, or other. An active filter shows as a pill below the search bar.</p>
 
+  <h2 id="categories">Categories</h2>
+  <p>Exercises are grouped into categories. Badger includes 8 built-in categories: Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, and Cardio.</p>
+  <p>You can also create your own. At the bottom of the exercise library's category list, tap <strong>New category</strong> to name it and pick a color. Custom categories work everywhere — the exercise picker, filters, and the weekly volume card on the Today screen. They don't appear in the muscle heatmap since they have no muscle-group mapping, but everything else works normally.</p>
+  <p>To rename or change the color of any category (built-in or custom), tap the <strong>pencil icon</strong> next to it. To delete a category, tap the <strong>trash icon</strong> — this permanently deletes the category and all exercises in it.</p>
+  <p>Drag the handle on a category row to reorder the list.</p>
+
   <h2 id="creating">Creating exercises</h2>
   <p>Tap the <strong>+</strong> button in the exercise library or via <strong>Add exercise → Create new</strong> in the workout flow.</p>
 
   <h3>Required fields</h3>
   <ul>
     <li><strong>Name</strong> — Exercise name.</li>
-    <li><strong>Category</strong> — One of the 8 categories (Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, Cardio).</li>
+    <li><strong>Category</strong> — One of the built-in categories, or a custom one you've created.</li>
     <li><strong>Exercise type</strong> — Determines which fields appear when logging (see below).</li>
   </ul>
 
