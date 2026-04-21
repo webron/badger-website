@@ -1,0 +1,78 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="History" description="How to view your past workouts, use the calendar view, filter by category, and browse per-exercise history in Badger.">
+  <h1>History</h1>
+
+  <p>The <strong>History</strong> tab (the calendar icon in the bottom nav) shows every workout you've logged. You can browse by list or calendar, filter by exercise category, and dive into full workout details.</p>
+
+  <hr />
+
+  <h2 id="views">List view and calendar view</h2>
+  <p>Two tabs at the top of the History screen switch between views.</p>
+
+  <h3>List view</h3>
+  <p>All your workouts in reverse-chronological order, newest first. Each card shows:</p>
+  <ul>
+    <li><strong>Date</strong> — day of week and date (today's card says "Today").</li>
+    <li><strong>Exercise count and set count</strong> — e.g. "3 exercises · 12 sets".</li>
+    <li><strong>Exercise pills</strong> — a row of small chips, one per exercise, each with a colored dot matching the exercise's category color. This gives a quick visual read of what muscle groups you trained.</li>
+  </ul>
+  <p>Tap a card to expand it. The expanded view shows each exercise with its set count and top weight (e.g. "4 sets · 100 kg × 5"). Exercises in a superset show a colored left border.</p>
+
+  <p>Three action buttons appear at the bottom of an expanded card:</p>
+  <ul>
+    <li><strong>Copy to today</strong> — opens a sheet to copy this workout's exercises to a new workout today. You can deselect exercises you don't want to copy.</li>
+    <li><strong>Full details</strong> — opens the <a href={`/help/logging#summary`}>workout summary screen</a> with every set, weight, rep count, notes, and duration.</li>
+    <li><strong>Save as routine</strong> — saves this workout as a new routine day, pre-filled with all the exercises and their set/rep counts.</li>
+  </ul>
+
+  <div class="callout">
+    <strong>Infinite scroll:</strong> The list loads in pages. Keep scrolling and older workouts load automatically.
+  </div>
+
+  <h3>Calendar view</h3>
+  <p>A month calendar where days with logged workouts show small colored dots — one dot per exercise category trained that day. Tap any day to see a summary of that day's workout below the calendar.</p>
+  <ul>
+    <li>Today is outlined with the accent color.</li>
+    <li>Use the left and right arrows to move between months.</li>
+    <li>Tap <strong>Today</strong> in the top-right to jump back to the current month and select today.</li>
+    <li>Days with scheduled routine days (but no workout yet logged) show a faint dot as a reminder.</li>
+  </ul>
+
+  <h2 id="filtering">Filtering workouts</h2>
+  <p>Tap the filter icon in the top-right to open the filter sheet. You can filter by one or more exercise categories:</p>
+  <ul>
+    <li>Tap any category chip to toggle it on or off. Active filters are highlighted in the category's color.</li>
+    <li>When two or more categories are selected, a <strong>Match any / Match all</strong> toggle appears. "Match any" shows workouts that include at least one of the selected categories. "Match all" shows only workouts that include all of them.</li>
+    <li>Tap <strong>Clear all</strong> to remove all filters at once.</li>
+  </ul>
+  <p>An active filter is signalled by a small dot on the filter icon. The list updates in real time as you toggle chips.</p>
+
+  <p>The filter sheet also has a <strong>Display Options</strong> section with a toggle to show or hide the category dots on the calendar view.</p>
+
+  <h2 id="workout-details">Workout details</h2>
+  <p>Tapping <strong>Full details</strong> on any list card (or <strong>View summary</strong> from the calendar day view) opens the workout summary screen. This shows the complete record of the session:</p>
+  <ul>
+    <li>Workout date, start time, end time, and total duration.</li>
+    <li>Every exercise in order, with each set listed — weight, reps, warmup/working badge, and any RPE or RIR notes.</li>
+    <li>Gym and machine recorded for the session, if any.</li>
+    <li>Any workout-level comment you added when ending the session.</li>
+  </ul>
+
+  <h2 id="per-exercise">Per-exercise history</h2>
+  <p>You can also view history for a single exercise. From the <a href={`/help/progress`}>Progress tab</a>, select an exercise and open the <strong>History</strong> tab on its detail screen. This shows every session where that exercise was logged, newest first.</p>
+  <p>Each entry in the per-exercise history shows:</p>
+  <ul>
+    <li>The workout date.</li>
+    <li>Each set logged for that exercise, with warmup sets and working sets distinguished by badge (W for warmup, numbered for working sets).</li>
+    <li>Weight, reps, duration, or distance — whatever fields apply to the exercise type.</li>
+    <li>RPE and RIR values, if recorded.</li>
+  </ul>
+  <p>Tap any entry to jump to that workout's full summary.</p>
+
+  <div class="callout">
+    <strong>Machine filter:</strong> If you've tracked the same exercise on multiple machines, a chip row appears at the top of the exercise detail screen letting you filter history to a specific machine. This keeps cable and machine progress separate when you train the same movement on different equipment.
+  </div>
+</HelpLayout>
