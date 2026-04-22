@@ -40,6 +40,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Use the left and right arrows to move between months.</li>
     <li>Tap <strong>Today</strong> in the top-right to jump back to the current month and select today.</li>
     <li>Days with scheduled routine days (but no workout yet logged) show a faint dot as a reminder.</li>
+    <li><strong>Long-press a past day</strong> to log a workout for that date. A confirmation dialog appears; tapping confirm creates a workout dated to that day and jumps straight into the exercise picker. Useful if you forgot to log during the session. Future dates are ignored.</li>
   </ul>
 
   <h2 id="filtering">Filtering workouts</h2>
@@ -62,6 +63,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Gym and machine recorded for the session, if any.</li>
     <li>Any workout-level comment you added when ending the session.</li>
   </ul>
+
+  <h3>Planned vs. actual (routine workouts only)</h3>
+  <p>When a workout was started from a routine day, each logged working set shows the planned weight and reps directly beneath it (e.g. <code>planned: 80 kg × 8</code>). Any set you performed beyond the routine's prescription shows a <strong>bonus</strong> badge.</p>
+  <p>If you met or exceeded the plan anywhere in the session, a compact wins card appears above the stats row — for example:</p>
+  <ul>
+    <li>"3 sets exceeded plan"</li>
+    <li>"2 of 5 exercises: all sets met or exceeded plan"</li>
+  </ul>
+  <p>The wins card only shows positive outcomes. There is no overall adherence percentage — a bad session shouldn't need a score. Comparison uses an estimated 1RM for weight + reps sets (so more weight, more reps, or both count as a win), and the relevant scalar for reps-only, time-only, and distance exercises. Free workouts (not started from a routine) show the summary unchanged.</p>
 
   <h2 id="per-exercise">Per-exercise history</h2>
   <p>You can also view history for a single exercise. From the <a href={`/help/progress`}>Progress tab</a>, select an exercise and open the <strong>History</strong> tab on its detail screen. This shows every session where that exercise was logged, newest first.</p>
