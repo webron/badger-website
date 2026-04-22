@@ -1,0 +1,80 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Privacy Policy" description="Badger privacy policy — what we store, what leaves your device, and your rights.">
+  <h1>Privacy Policy</h1>
+
+  <p><strong>Last updated:</strong> 2026-04-21</p>
+
+  <p>
+    Badger is a local-first workout tracker. We designed it to keep your training data
+    on your device. This policy explains exactly what that means, what leaves the device,
+    and your rights.
+  </p>
+
+  <h2>Data stored only on your device</h2>
+  <p>The following is stored in a local SQLite database on your phone and is never sent to us:</p>
+  <ul>
+    <li>Workouts, sets, and exercises (including weight, reps, distance, duration, RPE, RIR, notes, comments).</li>
+    <li>Routines, routine days, and predefined sets.</li>
+    <li>Body measurements and body-weight history.</li>
+    <li>Gyms, machines, attachments, and their links to exercises.</li>
+    <li>All app settings, preferences, and the debug log ring buffer.</li>
+  </ul>
+
+  <h2>Data that can leave your device only when you initiate it</h2>
+  <p>Nothing leaves your device unless you explicitly trigger an action:</p>
+  <ul>
+    <li><strong>Manual backups</strong> — you tap <em>Manual backup</em> in Settings to open the system share sheet and save a <code>.workout_backup</code> file wherever you choose.</li>
+    <li><strong>CSV exports</strong> — workout history CSV exports open the share sheet.</li>
+    <li><strong>Debug log exports</strong> — the last ~500 lines of in-memory logs can be exported as a plain-text file via the share sheet.</li>
+    <li><strong>Feedback emails</strong> — the Send feedback screen opens your email client with a pre-filled draft to <code>feedback@badger.fit</code>. You review and send it from your own email app.</li>
+  </ul>
+
+  <h2>Third parties present in the app</h2>
+  <ul>
+    <li><strong>Google Fonts</strong> (Inter) — fetched at runtime when the app first renders text. Google may log the request as part of its standard font serving.</li>
+    <li><strong>Firebase Auth + Cloud Firestore</strong> — included for optional future cloud sync. Not used by default. No data is sent to Firestore unless a future version enables it and you opt in.</li>
+    <li><strong>Google Sign-In + Google Drive API</strong> — scaffolded for future Drive backups. Not currently used.</li>
+  </ul>
+
+  <h2>What we explicitly do not do</h2>
+  <ul>
+    <li>No analytics, metrics, or telemetry.</li>
+    <li>No advertising or ad-tracking SDKs.</li>
+    <li>No user profiling or behavioural tracking.</li>
+    <li>No third-party SDKs beyond those listed above.</li>
+  </ul>
+
+  <h2>Your rights</h2>
+  <p>
+    Because your workout data stays on your device, deleting the app removes all of it.
+    If you have emailed us feedback that included personal information and want it deleted
+    from our mailbox, email <a href="mailto:privacy@badger.fit">privacy@badger.fit</a>.
+  </p>
+
+  <h3>California residents (CCPA/CPRA)</h3>
+  <p>
+    If you are a California resident, you have the right to know what personal information
+    we have collected, to request deletion, and to opt out of the sale or sharing of your
+    personal information. We do not sell or share personal information. To exercise these
+    rights, email <a href="mailto:privacy@badger.fit">privacy@badger.fit</a>.
+  </p>
+
+  <h2>Children</h2>
+  <p>Badger is not directed at children under 13 and we do not knowingly collect information from them.</p>
+
+  <h2>Updates</h2>
+  <p>
+    If we change this policy we will update the <strong>Last updated</strong> date at the top
+    and, for material changes, call it out in the app. Continued use of the app after an
+    update constitutes acceptance.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Privacy questions: <a href="mailto:privacy@badger.fit">privacy@badger.fit</a><br />
+    General: <a href="mailto:hello@badger.fit">hello@badger.fit</a>
+  </p>
+</HelpLayout>
