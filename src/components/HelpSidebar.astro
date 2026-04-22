@@ -105,11 +105,16 @@ const nav = [
 
 <aside id="help-sidebar">
   <!-- Search pinned at top — never scrolls away -->
-  <div style="flex-shrink:0;margin-bottom:0.75rem;">
+  <div class="help-search-wrap">
     <Search id="help-search" uiOptions={{ showImages: false, showSubResults: false, excerptLength: 12, pageSize: 20 }} />
   </div>
-  <!-- Nav scrolls independently -->
-  <nav id="help-sidebar-nav" style="overflow-y:auto;flex:1;">
+  <!-- Nav: scrolls independently on desktop, collapsible on mobile -->
+  <details id="help-nav-details" open>
+    <summary class="help-nav-toggle">
+      <span class="help-nav-toggle-label">Browse help topics</span>
+      <svg class="help-nav-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </summary>
+    <nav id="help-sidebar-nav">
     {nav.map(section => (
       <div style="margin-bottom:1.5rem;">
         <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin:0 0 0.5rem;padding-left:0.75rem;">
@@ -137,7 +142,8 @@ const nav = [
         </ul>
       </div>
     ))}
-  </nav>
+    </nav>
+  </details>
 </aside>
 
 <style is:global>
@@ -202,15 +208,93 @@ const nav = [
     display: flex;
     flex-direction: column;
   }
+
+  .help-search-wrap {
+    flex-shrink: 0;
+    margin-bottom: 0.75rem;
+  }
+
+  /* details acts as a normal flex child — behaves as a plain block on desktop */
+  #help-nav-details {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #help-nav-details > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  #help-nav-details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #help-sidebar-nav {
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  /* Desktop: hide the summary, keep the nav always visible.
+     The inline script removes `open` on mobile — on desktop it stays open. */
+  @media (min-width: 769px) {
+    #help-nav-details > summary {
+      display: none;
+    }
+  }
+
+  /* Mobile: sidebar becomes a static, full-width block above content.
+     Summary turns into a tappable "Browse help topics" bar. */
   @media (max-width: 768px) {
     #help-sidebar {
-      display: none;
+      width: 100%;
+      position: static;
+      max-height: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .help-nav-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .help-nav-toggle-icon {
+      transition: transform 0.15s ease;
+    }
+
+    #help-nav-details[open] .help-nav-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    #help-sidebar-nav {
+      margin-top: 0.5rem;
+      padding: 0.5rem 0;
+      max-height: 70vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
     }
   }
 </style>
 
 <script is:inline>
   (function () {
+    // Default the mobile disclosure to closed; leave it open on desktop.
+    const details = document.getElementById('help-nav-details');
+    if (details && window.matchMedia('(max-width: 768px)').matches) {
+      details.removeAttribute('open');
+    }
+
+    // Preserve nav scroll position across clicks.
     const KEY = 'help-sidebar-scroll';
     const nav = document.getElementById('help-sidebar-nav');
     if (!nav) return;
