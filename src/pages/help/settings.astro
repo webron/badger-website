@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Settings & Data" description="Settings overview, backup, restore, and data export in Badger.">
   <h1>Settings & Data</h1>
 
-  <p>Go to <strong>You → Settings</strong> to access all preferences.</p>
+  <p>Go to <strong>You → Settings</strong> to access all preferences. The <strong>You → Data &amp; backup</strong> shortcut opens the same screen and scrolls straight to the Data section.</p>
 
   <hr />
 
@@ -51,28 +51,27 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Workout reminders</strong> — Schedule a daily notification to remind you to train. Configure the time, how many minutes before to notify, and which days to send it.</li>
   </ul>
 
-  <h2 id="backup">Backup & restore</h2>
+  <h2 id="data">Data &amp; backup</h2>
+  <p>All the rows below live in the <strong>Data</strong> section of Settings. Tap <strong>You → Data &amp; backup</strong> to jump straight to it.</p>
+
+  <h3 id="backup">Backup &amp; restore</h3>
   <p>Your workout data is stored locally in a SQLite database. You should back it up regularly.</p>
-
-  <h3>Backup</h3>
-  <p>Go to <strong>Settings → Backup database</strong>. This exports a snapshot of your database as a <code>.workout_backup</code> file and opens the system share sheet so you can save it to Google Drive, your files app, or send it elsewhere.</p>
-
-  <h3>Restore</h3>
-  <p>Go to <strong>Settings → Restore database</strong>. Select a <code>.workout_backup</code> file. This replaces your current database with the backup. <strong>All current data will be overwritten</strong> — make sure you back up first if needed.</p>
-
-  <h2 id="export">Exporting data</h2>
-  <p>Go to <strong>Settings → Export workout data</strong>. This generates a CSV file with one row per logged set, including date, exercise name, weight, reps, duration, warmup flag, RPE, RIR, and more. The file is shared via the system share sheet.</p>
-
-  <h2>Debug logs</h2>
-  <p>Go to <strong>Settings → Export debug logs</strong> to share a plain-text file containing the app's recent activity log. The log captures the last ~500 lines written during the current session — useful for diagnosing unexpected behaviour or reporting bugs to support. It does not contain personal health or workout data.</p>
-
-  <h2>Deleting data</h2>
   <ul>
-    <li><strong>Delete all workout history</strong> — Permanently deletes all workouts and sets. A confirmation dialog is required. This does not delete exercises or routines.</li>
+    <li><strong>Manual backup</strong> — Exports a snapshot of your database as a <code>.workout_backup</code> file and opens the system share sheet so you can save it to Google Drive, your files app, or send it elsewhere.</li>
+    <li><strong>Restore from backup</strong> — Select a <code>.workout_backup</code> file. This replaces your current database with the backup. <strong>All current data will be overwritten</strong> — make sure you back up first if needed.</li>
   </ul>
 
-  <h2 id="importing">Importing workout history</h2>
-  <p>Badger can import your full history from FitNotes, Strong, and Hevy. Each option appears under <strong>Settings → Data</strong>:</p>
+  <h3 id="export">Exporting data</h3>
+  <p><strong>Export workout data</strong> generates a CSV file with one row per logged set, including date, exercise name, weight, reps, duration, warmup flag, RPE, RIR, and more. The file is shared via the system share sheet.</p>
+
+  <h3>Debug logs</h3>
+  <p><strong>Export debug logs</strong> shares a plain-text file containing the app's recent activity log. The log captures the last ~500 lines written during the current session — useful for diagnosing unexpected behaviour or reporting bugs to support. It does not contain personal health or workout data.</p>
+
+  <h3>Deleting data</h3>
+  <p><strong>Delete all workout history</strong> — Permanently deletes all workouts and sets. A confirmation dialog is required. This does not delete exercises or routines.</p>
+
+  <h3 id="importing">Importing workout history</h3>
+  <p>Badger can import your full history from FitNotes, Strong, and Hevy. Each option appears in the same Data section:</p>
   <ul>
     <li><strong>Import from FitNotes</strong> — Select a <code>.fitnotes</code> backup file.</li>
     <li><strong>Import from Strong</strong> — Select a Strong CSV export. Weight unit is detected automatically from the column header.</li>
