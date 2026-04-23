@@ -1,0 +1,77 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Moving to a new phone" description="How to carry your Badger workout history, routines, and settings to a new Android phone.">
+  <h1>Moving to a new phone</h1>
+
+  <p>
+    Badger stores everything locally on your device. There's no account and no
+    automatic cloud sync, so moving to a new phone is a deliberate two-step
+    process: export a backup on the old phone, import it on the new one.
+  </p>
+
+  <h2>What a backup contains</h2>
+  <p>A <code>.workout_backup</code> file contains your full local database:</p>
+  <ul>
+    <li>Every workout, set, warmup, comment, RPE, and RIR.</li>
+    <li>Your full exercise library, including custom exercises and categories.</li>
+    <li>All routines, days, and predefined sets.</li>
+    <li>Body measurements and body-weight history.</li>
+    <li>Gyms, machines, attachments, and their links to exercises.</li>
+  </ul>
+  <p>
+    App settings (accent color, weight unit, theme, notification preferences)
+    are not yet included in backups — you'll re-enter those once on the new
+    phone.
+  </p>
+
+  <h2>Step 1 — Back up on the old phone</h2>
+  <ol>
+    <li>Open Badger.</li>
+    <li>Go to <strong>You → Settings → Data</strong>.</li>
+    <li>Tap <strong>Manual backup</strong>. The system share sheet opens.</li>
+    <li>Save the <code>.workout_backup</code> file somewhere you'll be able to reach from the new phone — Google Drive, email-to-self, WhatsApp, a USB transfer, or your preferred cloud storage app.</li>
+  </ol>
+  <p>
+    Do this <em>after</em> your last workout on the old phone. Anything you log
+    after taking the backup will not be carried over.
+  </p>
+
+  <h2>Step 2 — Install Badger on the new phone</h2>
+  <ol>
+    <li>Install Badger from the Google Play Store.</li>
+    <li>Go through the short onboarding (weight unit, import options). You can skip the in-app import step at the end — we'll restore instead.</li>
+  </ol>
+
+  <h2>Step 3 — Restore the backup</h2>
+  <ol>
+    <li>Make sure the backup file from Step 1 is reachable on the new phone (saved in Files, Drive, or attached to an email you've opened).</li>
+    <li>Open Badger → <strong>You → Settings → Data</strong>.</li>
+    <li>Tap <strong>Restore from backup</strong>.</li>
+    <li>Pick the <code>.workout_backup</code> file. Badger will confirm — tap <strong>Restore</strong>.</li>
+    <li>The app replaces its current database with the one from the backup and restarts. When it comes back up, all of your history is there.</li>
+  </ol>
+
+  <div class="callout warning">
+    <strong>Restore replaces your local data.</strong> If you've already logged
+    something on the new phone before restoring, that data will be lost. If
+    you're uncertain, take a manual backup of the new-phone state first.
+  </div>
+
+  <h2>A note on cloud backup</h2>
+  <p>
+    Badger will add opt-in auto-backup to Google Drive in a future update.
+    Until then, taking a manual backup after each workout (or at least weekly)
+    is the safest way to protect against losing data if a phone is lost,
+    stolen, or damaged. Manual backups go to the destination you pick — Badger
+    itself never sends the file anywhere automatically.
+  </p>
+
+  <h2>Troubleshooting</h2>
+  <ul>
+    <li><strong>The picker doesn't see my file.</strong> Move the backup into your phone's main <em>Downloads</em> or <em>Documents</em> folder, or open it directly from your cloud app's share sheet ("Open with Badger").</li>
+    <li><strong>Restore fails with a format error.</strong> The file may have been truncated during transfer — re-export on the old phone and move it again via a different channel.</li>
+    <li><strong>Old phone is dead, no backup.</strong> Unfortunately there's no way to recover the data in v1. Cloud auto-backup is the planned fix.</li>
+  </ul>
+</HelpLayout>
