@@ -8,9 +8,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p><strong>Last updated:</strong> 2026-04-22</p>
 
   <p>
-    Badger is a local-first workout tracker. We designed it to keep your training data
-    on your device. This policy explains exactly what that means, what leaves the device,
-    and your rights.
+    Badger is a local-first workout tracker. The canonical copy of your training data
+    lives on your device. A pseudonymous mirror is also kept in Google Cloud Firestore
+    so the same account can be restored if you reinstall the app. This policy explains
+    what is stored where, what leaves the device, and your rights.
   </p>
 
   <h2>Data stored only on your device</h2>
@@ -24,8 +25,34 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>The most recent crash report, if Badger terminated unexpectedly. Saved as a plain-text file (<code>crash_report.txt</code>) containing the exception, stack trace, and the last ~500 lines of the in-memory log buffer. Only the latest crash is kept — a new crash overwrites the previous file, and sending it via feedback (see below) deletes it.</li>
   </ul>
 
+  <h2>Data sent automatically to Firebase / Cloud Firestore</h2>
+  <p>
+    On first launch, the app initialises Firebase and creates an anonymous Firebase
+    Authentication user — a random pseudonymous identifier tied to the device, not to
+    your name, email, phone number, or any other personally identifying information.
+    After that, the app mirrors your workout data to Google Cloud Firestore under
+    that identifier as you use it. The following is sent:
+  </p>
+  <ul>
+    <li>Workouts (date, timestamps, workout-level comment, source routine day, gym).</li>
+    <li>Workout exercises (exercise id, order, grouping, rest overrides, tempo, machine/attachment, grip type).</li>
+    <li>Workout sets (weight, reps, distance, duration, warmup flag, skipped flag, complete flag, comment, RPE, RIR, sort order).</li>
+    <li>Deletions of any of the above.</li>
+  </ul>
+  <p>
+    On first run a one-time backfill pushes your existing local workout history to
+    Firestore; subsequent changes are pushed as they happen. Other local data —
+    routines, predefined sets, exercise library edits, body measurements, settings,
+    debug logs, and crash reports — is <strong>not</strong> sent to Firestore.
+  </p>
+  <p>
+    Firestore data is subject to Google's privacy practices for Firebase. The
+    pseudonymous identifier is not linked to your Google account, email, or any
+    other personal profile unless a future version of the app adds sign-in.
+  </p>
+
   <h2>Data that can leave your device only when you initiate it</h2>
-  <p>Nothing leaves your device unless you explicitly trigger an action:</p>
+  <p>In addition to the automatic mirror above, you can export data manually:</p>
   <ul>
     <li><strong>Manual backups</strong> — you tap <em>Manual backup</em> in Settings to open the system share sheet and save a <code>.workout_backup</code> file wherever you choose.</li>
     <li><strong>CSV exports</strong> — workout history CSV exports open the share sheet.</li>
@@ -36,7 +63,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Third parties present in the app</h2>
   <ul>
     <li><strong>Google Fonts</strong> (Inter) — fetched at runtime when the app first renders text. Google may log the request as part of its standard font serving.</li>
-    <li><strong>Firebase Auth + Cloud Firestore</strong> — included for optional future cloud sync. Not used by default. No data is sent to Firestore unless a future version enables it and you opt in.</li>
+    <li><strong>Firebase Authentication + Cloud Firestore</strong> — used on every launch for anonymous sign-in and workout sync as described above.</li>
     <li><strong>Google Sign-In + Google Drive API</strong> — scaffolded for future Drive backups. Not currently used.</li>
   </ul>
 
@@ -50,9 +77,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Your rights</h2>
   <p>
-    Because your workout data stays on your device, deleting the app removes all of it.
-    If you have emailed us feedback that included personal information and want it deleted
-    from our mailbox, email <a href="mailto:privacy@badger.fit">privacy@badger.fit</a>.
+    Deleting the app removes the local copy of your data. The Firestore mirror
+    remains under the anonymous identifier that was associated with your install;
+    to have that mirror deleted, email
+    <a href="mailto:privacy@badger.fit">privacy@badger.fit</a> from the address
+    you want us to reply to. If you have emailed us feedback that included personal
+    information and want it deleted from our mailbox, email the same address.
   </p>
 
   <h3>California residents (CCPA/CPRA)</h3>
