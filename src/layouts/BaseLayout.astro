@@ -9,11 +9,13 @@ interface Props {
 
 const {
   title,
-  description = 'Badger is a local-first workout tracker for Android. Log sets, track progress, and manage routines — no account required.',
+  description = 'Badger is a workout tracker. Log sets, run your programs, and track what your training is actually doing.',
   canonical,
 } = Astro.props;
 
 const fullTitle = title === 'Badger' ? 'Badger' : `${title} — Badger`;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
 ---
 
 <!doctype html>
@@ -23,7 +25,22 @@ const fullTitle = title === 'Badger' ? 'Badger' : `${title} — Badger`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{fullTitle}</title>
-    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content="Badger" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />

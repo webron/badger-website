@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://badger.fit/sitemap-index.xml
