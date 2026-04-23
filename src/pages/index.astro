@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<BaseLayout title="Badger" description="Badger is a local-first workout tracker for Android. Log sets, track progress, and manage routines — no account required.">
+<BaseLayout title="Badger" description="Badger is a workout tracker. Log sets, run your programs, and track what your training is actually doing.">
   <Header currentPath={Astro.url.pathname} />
 
   <!-- Hero -->
@@ -12,11 +12,11 @@ import Footer from '../components/Footer.astro';
     <img src={`/assets/badger_logo_stacked.svg`} alt="Badger" width="120" style="display:block;" />
 
     <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:700;margin:0;line-height:1.15;color:var(--text);">
-      Track your training.<br />No fluff.
+      A workout tracker.
     </h1>
 
     <p style="font-size:1.1rem;color:var(--text-secondary);max-width:520px;margin:0;line-height:1.6;">
-      Badger is a workout tracker built for people who take training seriously. Log sets, monitor progress, run your programs — everything stays on your device.
+      Log sets, run your programs, and see what your training is actually doing. Built for lifters who pay attention to the details.
     </p>
 
     <div id="download" style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-top:0.5rem;">
@@ -76,8 +76,12 @@ import Footer from '../components/Footer.astro';
           body: 'Barbell, machine, and single-lever modes. Finds the best plate combination from your available plates automatically.',
         },
         {
-          title: 'No account required',
-          body: 'Your data stays on your device. Export to CSV or back up the full database anytime. Import from FitNotes if you\'re switching over.',
+          title: 'Planned vs. actual',
+          body: 'When you finish a routine workout, the summary shows what you hit against what the routine asked for — set by set, with wins highlighted.',
+        },
+        {
+          title: 'Bring your history',
+          body: 'Import from FitNotes, Strong, or Hevy. Export to CSV or back up the full database anytime.',
         },
         {
           title: 'Deload detection',
@@ -97,7 +101,7 @@ import Footer from '../components/Footer.astro';
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3rem 2rem;">
       <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 0.75rem;color:var(--text);">Ready to start?</h2>
       <p style="color:var(--text-secondary);margin:0 0 1.5rem;max-width:400px;display:inline-block;line-height:1.6;">
-        Download Badger for Android. No sign-up, no subscription, no data leaving your device.
+        Badger is free. Available on Android, with iOS planned.
       </p>
       <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;">
         <a
