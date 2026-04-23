@@ -38,16 +38,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>CSV exports</strong> — workout history CSV exports open the share sheet.</li>
     <li><strong>Debug log exports</strong> — the last ~500 lines of in-memory logs can be exported as a plain-text file via the share sheet.</li>
     <li><strong>Feedback emails</strong> — the Send feedback screen opens your email client with a pre-filled draft to <code>feedback@badger.fit</code>. You review and send it from your own email app. If a crash occurred since the last launch, a toggle offers to attach the stored crash report; you can also attach diagnostic logs. Nothing is sent automatically — you always hand-off to your mail app and press send.</li>
+    <li><strong>Cloud backup (opt-in)</strong> — when you enable <em>Cloud backup</em> in Settings, Badger signs in to your Google account (using Google Sign-In) and uploads backup archives to a hidden <em>app-data</em> folder on your Google Drive. The folder is private to Badger — it is not visible in the Drive UI and cannot be accessed by other apps. Badger requests only the <code>drive.appdata</code> scope (no access to your other Drive files). Backups contain your local SQLite database and a sanitised copy of your app settings (excluding any authentication tokens). Up to 5 rolling backups are kept plus event backups before destructive actions. You can disable cloud backup, delete all cloud backups, or revoke Badger's access from your Google account at any time. No data goes anywhere else.</li>
   </ul>
 
   <h2>Third parties present in the app</h2>
   <ul>
     <li><strong>Google Fonts</strong> (Inter) — fetched at runtime when the app first renders text. Google may log the request as part of its standard font serving.</li>
+    <li><strong>Google Drive</strong> — only used when you opt in to cloud backup (see above). Data is stored in Badger's private app-data folder on <em>your</em> Drive; it is not shared with us or with any other party.</li>
   </ul>
   <p>
-    No analytics SDKs, no advertising SDKs, no crash-reporting SDKs. Firebase and
-    Google Drive integrations are scaffolded in the codebase for possible future
-    features but are not initialised or used in this version.
+    No analytics SDKs, no advertising SDKs, no crash-reporting SDKs. Firebase integration
+    is scaffolded in the codebase for possible future features but is not initialised or
+    used in this version.
   </p>
 
   <h2>What we explicitly do not do</h2>
@@ -55,7 +57,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>No analytics, metrics, or telemetry.</li>
     <li>No advertising or ad-tracking SDKs.</li>
     <li>No user profiling or behavioural tracking.</li>
-    <li>No account, no sign-in, no cloud sync in this version.</li>
+    <li>No account required to use Badger. Google Sign-In is only used if you opt in to cloud backup, and only to upload/download your own backup files to your own Drive.</li>
+    <li>No cloud sync of live workout data — only opt-in backup archives.</li>
     <li>No third-party SDKs beyond Google Fonts (see above).</li>
   </ul>
 
