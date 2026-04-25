@@ -36,12 +36,27 @@ import Footer from '../components/Footer.astro';
     </div>
   </section>
 
-  <!-- Screenshot placeholder -->
-  <section style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;">
-    <div style="background:var(--surface);border:1px dashed var(--border);border-radius:12px;height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:var(--text-muted);">
-      <!-- TODO: Add 3 app screenshots side by side: training screen, progress screen, home screen -->
-      <span style="font-size:2rem;">📱</span>
-      <span style="font-size:0.875rem;">Screenshots coming soon</span>
+  <!-- Screenshots -->
+  <section style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;overflow:hidden;">
+    <div style="display:flex;justify-content:center;align-items:flex-end;gap:1.5rem;flex-wrap:nowrap;">
+      {[
+        { src: '/assets/screenshots/badger-1-today.png', alt: 'Today screen showing active workout', scale: '0.88' },
+        { src: '/assets/screenshots/badger-2-training.png', alt: 'Training screen with live set logging', scale: '1' },
+        { src: '/assets/screenshots/badger-6-progress-exercise.png', alt: 'Progress screen with exercise graph and PRs', scale: '0.88' },
+      ].map(s => (
+        <div style={`flex:0 0 auto;width:clamp(160px,22vw,240px);transform:scale(${s.scale});transform-origin:bottom center;`}>
+          <div style="border-radius:36px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.45);border:3px solid rgba(255,255,255,0.08);background:#111;">
+            <img
+              src={s.src}
+              alt={s.alt}
+              width="1080"
+              height="2400"
+              style="display:block;width:100%;height:auto;"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
