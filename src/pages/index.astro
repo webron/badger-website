@@ -22,10 +22,10 @@ import Footer from '../components/Footer.astro';
     <div id="download" style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-top:0.5rem;">
       <!-- TODO: replace href with actual Play Store URL once published -->
       <a
-        href="#"
+        href="#beta"
         style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--color-accent);color:#fff;font-weight:600;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
       >
-        ↓ Download for Android
+        Request early access
       </a>
       <a
         href={`/help/getting-started`}
@@ -110,6 +110,51 @@ import Footer from '../components/Footer.astro';
       ))}
     </div>
   </section>
+
+  <!-- Beta signup -->
+  <section id="beta" style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;text-align:center;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3rem 2rem;">
+      <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 0.75rem;color:var(--text);">Join the beta</h2>
+      <p style="color:var(--text-secondary);margin:0 0 1.5rem;max-width:420px;display:inline-block;line-height:1.6;">
+        Badger is in early access on Android. Leave your email and I'll add you to the beta and send you the install link.
+      </p>
+      <form
+        id="beta-form"
+        action="https://formspree.io/f/xvzdjgrb"
+        method="POST"
+        style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;max-width:480px;margin:0 auto;"
+      >
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="your@gmail.com"
+          style="flex:1;min-width:220px;padding:0.75rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.95rem;outline:none;"
+        />
+        <button
+          type="submit"
+          style="padding:0.75rem 1.5rem;border-radius:8px;background:var(--color-accent);color:#fff;font-weight:600;font-size:0.95rem;border:none;cursor:pointer;white-space:nowrap;"
+        >
+          Request access
+        </button>
+      </form>
+      <p id="beta-thanks" style="display:none;color:var(--color-accent);margin:1rem 0 0;font-size:0.95rem;">Thanks! I'll be in touch soon.</p>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('beta-form') as HTMLFormElement;
+    const thanks = document.getElementById('beta-thanks') as HTMLElement;
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+      if (res.ok) {
+        form.style.display = 'none';
+        thanks.style.display = 'block';
+      }
+    });
+  </script>
 
   <!-- CTA -->
   <section style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;text-align:center;">
