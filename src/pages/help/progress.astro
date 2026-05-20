@@ -21,7 +21,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>PRs and progress graphs are also <strong>shared across linked exercises</strong>. If you've linked two exercises (see <a href="/help/exercises/#linking">Linked exercises</a>), a new best on either one counts as a PR on both, and the progress graphs combine their history.</p>
 
   <h2>Exercise progress screen</h2>
-  <p>Tap any exercise from the Progress tab to see its detailed history.</p>
+  <p>Tap any exercise from the Progress tab to see its detailed history. The screen has two tabs: <strong>Graph</strong> (charts and stats) and <strong>History</strong> (a chronological list of every logged session, with editable set rows).</p>
 
   <h3>Stats row</h3>
   <ul>
@@ -112,10 +112,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Tap <strong>+ Log exercise</strong> on a flagged muscle group to jump directly to the exercise picker filtered to that category.</p>
   <p>Muscle balance warnings can be turned off in <strong>Settings → Training → Muscle balance warnings</strong>.</p>
 
+  <h2>Exercise progress History tab</h2>
+  <p>On the Exercise Progress screen, a <strong>History tab</strong> sits alongside the graph view. It shows every session where that exercise was logged, newest first, with the same set-level detail as the History tab in the training screen.</p>
+  <p><strong>Tap any set row</strong> in the history list to open an edit sheet. You can correct weight, reps, RPE, RIR, the warmup flag, and more. Changes persist immediately and update the graphs.</p>
+  <p>If you've used the exercise on multiple machines, a machine filter chip row appears at the top of the history list — select a specific machine to scope the display.</p>
+
   <h2>History in the training screen</h2>
-  <p>The <strong>History tab</strong> in the training screen shows all previous sessions for the current exercise, newest first. Expand a session row to see its sets. From there you can:</p>
+  <p>The <strong>History tab</strong> in the training screen (swipe right from the Log tab) shows all previous sessions for the current exercise, newest first. Skipped sets are excluded from the display. From there you can:</p>
   <ul>
-    <li>View the full workout summary.</li>
+    <li>View the full workout summary by tapping the session header.</li>
     <li>Copy that session's sets to your current workout.</li>
+    <li><strong>Tap any set row</strong> to edit that set inline — correct weight, reps, or any other field.</li>
   </ul>
 </HelpLayout>

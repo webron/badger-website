@@ -74,17 +74,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The wins card only shows positive outcomes. There is no overall adherence percentage — a bad session shouldn't need a score. Comparison uses an estimated 1RM for weight + reps sets (so more weight, more reps, or both count as a win), and the relevant scalar for reps-only, time-only, and distance exercises. Free workouts (not started from a routine) show the summary unchanged.</p>
 
   <h2 id="per-exercise">Per-exercise history</h2>
-  <p>You can also view history for a single exercise. From the <a href={`/help/progress`}>Progress tab</a>, select an exercise and open the <strong>History</strong> tab on its detail screen. This shows every session where that exercise was logged, newest first.</p>
+  <p>You can also view history for a single exercise. From the <a href={`/help/progress`}>Progress tab</a>, select an exercise and open the <strong>History</strong> tab on its detail screen. This shows every session where that exercise was logged, newest first. The same History tab appears in the <strong>training screen</strong> while you're mid-workout — swipe to the History tab to see past sessions for the exercise you're currently logging.</p>
   <p>Each entry in the per-exercise history shows:</p>
   <ul>
-    <li>The workout date.</li>
+    <li>The workout date and gym/machine used, if any.</li>
     <li>Each set logged for that exercise, with warmup sets and working sets distinguished by badge (W for warmup, numbered for working sets).</li>
     <li>Weight, reps, duration, or distance — whatever fields apply to the exercise type.</li>
     <li>RPE and RIR values, if recorded.</li>
   </ul>
+  <p>Skipped sets are excluded from the history display.</p>
   <p>Tap any entry to jump to that workout's full summary.</p>
 
+  <h3>Editing sets from history</h3>
+  <p>In the per-exercise History tab (both in the training screen and on the Exercise Progress screen), <strong>tap any set row</strong> to open an edit sheet. You can correct weight, reps, duration, distance, RPE, RIR, the warmup flag, and the set comment. Changes save immediately and update the progress graphs.</p>
+
   <div class="callout">
-    <strong>Machine filter:</strong> If you've tracked the same exercise on multiple machines, a chip row appears at the top of the exercise detail screen letting you filter history to a specific machine. This keeps cable and machine progress separate when you train the same movement on different equipment.
+    <strong>Machine filter:</strong> If you've tracked the same exercise on multiple machines, a chip row appears at the top of the history list letting you filter to a specific machine. This keeps cable and machine progress separate when you train the same movement on different equipment.
   </div>
 </HelpLayout>

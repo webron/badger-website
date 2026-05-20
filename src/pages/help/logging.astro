@@ -98,6 +98,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>The card expands automatically when you log an exercise that has personal notes.</p>
 
+  <h3>Machine-scoped notes</h3>
+  <p>When a machine is set, your personal notes become machine-specific. This means you can save different setup cues for the same exercise on different machines — for example, different seat-height reminders for two leg-press machines at the same gym.</p>
+  <p>The Exercise Settings screen title changes to <strong>"Notes · MachineName"</strong> when machine-scoped, making it clear which machine the notes apply to. Machine notes are shown in the notes card in the training screen alongside global instructions; global exercise notes are shown separately when both exist. Non-notes settings (increment, rest, instructions, muscle assignments) always apply globally to the exercise regardless of machine.</p>
+
   <h2>Per-set comments</h2>
   <p>Each set row has a comment icon on the right. Tap it to add or edit a comment for that set.</p>
   <ul>
@@ -115,7 +119,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>When a working set beats your all-time estimated 1RM for that exercise (on the same machine, if one is set), a trophy badge appears on the set row, a SnackBar notification appears at the bottom of the screen, and a haptic pulse fires (if haptics are enabled in Settings).</p>
 
   <h2>Progressive overload suggestions</h2>
-  <p>If you've completed every working set in your last <em>N</em> sessions for an exercise (configurable in Settings → Training), Badger shows a banner suggesting you increase the weight by your configured increment. Tap the suggestion to apply it, or dismiss it.</p>
+  <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Training, default: 3).</p>
+  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid — so the suggestion always lands on a weight the machine can actually produce. Tap × to dismiss the suggestion for this session.</p>
+  <p>The suggestion is <strong>machine-scoped</strong>: it looks at history for the same machine you currently have set. Switching machines gives you a fresh suggestion based on that machine's history.</p>
 
   <h2>Exercise navigation</h2>
   <p>Tap the <strong>exercise name in the header</strong> to open the exercise list for your current workout. From there you can:</p>
@@ -134,6 +140,6 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Add warmup sets</strong> — Insert suggested warmup sets.</li>
     <li><strong>Exercise settings</strong> — Open the exercise notes screen to adjust defaults, notes, and muscle assignments.</li>
     <li><strong>Change gym</strong> — Switch which gym is associated with this workout.</li>
-    <li><strong>Set machine</strong> — Assign a machine and attachment to the current exercise.</li>
+    <li><strong>Set machine</strong> — Assign a machine and attachment to the current exercise. At the bottom of the machine picker, tap <strong>New machine…</strong> to create one inline without navigating away. Similarly, at the bottom of the attachment picker, tap <strong>New attachment…</strong> to add a new attachment on the spot.</li>
   </ul>
 </HelpLayout>
