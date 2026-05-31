@@ -31,7 +31,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="categories">Categories</h2>
   <p>Exercises are grouped into categories. Badger includes 8 built-in categories: Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, and Cardio.</p>
   <p>You can also create your own. At the bottom of the exercise library's category list, tap <strong>New category</strong> to name it and pick a color. Custom categories work everywhere — the exercise picker, filters, and the weekly volume card on the Today screen. They don't appear in the muscle heatmap since they have no muscle-group mapping, but everything else works normally.</p>
-  <p>To rename or change the color of any category (built-in or custom), tap the <strong>pencil icon</strong> next to it. To delete a category, tap the <strong>trash icon</strong> — this permanently deletes the category and all exercises in it.</p>
+  <p>To rename or change the color of any category (built-in or custom), tap the <strong>pencil icon</strong> next to it. To delete a category, tap the <strong>trash icon</strong>. A category can only be deleted when it's <strong>empty</strong> — if it still contains exercises, Badger tells you how many and asks you to move or delete them first, so nothing is removed by accident.</p>
   <p>Drag the handle on a category row to reorder the list.</p>
 
   <h2 id="creating">Creating exercises</h2>
@@ -118,5 +118,5 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2>Deleting exercises</h2>
-  <p>Open an exercise in the library → tap <strong>Edit</strong> → scroll to the bottom and tap <strong>Delete</strong>. A confirmation dialog warns that deletion removes all workout history for that exercise.</p>
+  <p>Open an exercise in the library → tap <strong>Edit</strong> → scroll to the bottom and tap <strong>Delete</strong>. To protect your history, Badger won't delete an exercise that's still in use: if it appears in any logged workouts or routines, you'll see a note telling you how many of each, and the delete is blocked. Remove it from those routines and delete the related workouts first if you really want it gone. An exercise with no history attached deletes immediately after you confirm.</p>
 </HelpLayout>
