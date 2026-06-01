@@ -34,7 +34,6 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Day options</h3>
   <p>Each day has additional settings accessible via its <strong>⋮ menu</strong>:</p>
   <ul>
-    <li><strong>Inter-exercise rest</strong> — Rest duration when switching between exercises within this day.</li>
     <li><strong>Default gym</strong> — Pre-set which gym this day is performed at.</li>
     <li><strong>Notes</strong> — Freeform notes for the day. When you start a workout from this day, the notes appear as a dismissable banner at the top of the training screen (useful for "Focus on pause reps today" or "Deload — 50% intensity" reminders). Dismissing the banner hides it for the current workout only; starting a new workout from the same day shows it again.</li>
   </ul>
@@ -54,14 +53,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Per-exercise overrides in routines</h3>
   <p>Each routine exercise also has override settings separate from the predefined sets:</p>
   <ul>
-    <li>Rest override (working sets)</li>
-    <li>Rest override (warmup sets)</li>
     <li>Weight increment override</li>
     <li>Notes override</li>
     <li>Tempo</li>
     <li>Default machine & attachment</li>
     <li>Default grip type (if machine has grip types enabled)</li>
   </ul>
+  <p><strong>Rest time is a property of the exercise, not the routine.</strong> Set a working/warmup rest on the exercise itself (Exercise → settings) and it applies everywhere you train it. A routine exercise still has a "Rest (seconds)" field, but it's only a fallback — it applies when the exercise has no rest configured, and never overrides the exercise's own rest.</p>
 
   <h2 id="starting">Starting a routine workout</h2>
   <p>From the <strong>home screen</strong>, tap a day row under your active routine. This opens the <strong>routine log preview</strong>, which shows:</p>
