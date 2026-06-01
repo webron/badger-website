@@ -194,27 +194,20 @@ const nav = [
 </style>
 
 <style>
+  /* Desktop: a plain sticky column. We do NOT cap the height with an internal
+     scroll, because that scroll relied on a flex chain running through the
+     <details> element, which does not establish a reliable flex height context,
+     so the nav would spill past the footer. With no cap, the sidebar's full
+     height stays in the flex flow and the footer always lands below it. */
   #help-sidebar {
     width: 220px;
     flex-shrink: 0;
     position: sticky;
     top: 1.5rem;
-    max-height: calc(100vh - 3rem);
-    display: flex;
-    flex-direction: column;
   }
 
   .help-search-wrap {
-    flex-shrink: 0;
     margin-bottom: 0.75rem;
-  }
-
-  /* details acts as a normal flex child - behaves as a plain block on desktop */
-  #help-nav-details {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
   }
 
   #help-nav-details > summary {
@@ -223,15 +216,6 @@ const nav = [
   }
   #help-nav-details > summary::-webkit-details-marker {
     display: none;
-  }
-
-  #help-sidebar-nav {
-    overflow-y: auto;
-    flex: 1;
-    /* Required so the flex item can shrink below its content height and the
-       internal scroll actually engages; without it the long nav overflows the
-       sticky sidebar's max-height and spills past the footer. */
-    min-height: 0;
   }
 
   /* Desktop: hide the summary, keep the nav always visible.
