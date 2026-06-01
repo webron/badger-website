@@ -99,7 +99,7 @@ const nav = [
 ---
 
 <aside id="help-sidebar">
-  <!-- Search pinned at top — never scrolls away -->
+  <!-- Search pinned at top - never scrolls away -->
   <div class="help-search-wrap">
     <Search id="help-search" uiOptions={{ showImages: false, showSubResults: false, excerptLength: 12, pageSize: 20 }} />
   </div>
@@ -142,7 +142,7 @@ const nav = [
 </aside>
 
 <style is:global>
-  /* Pagefind UI theme — mapped to site CSS variables */
+  /* Pagefind UI theme - mapped to site CSS variables */
   #help-search {
     --pagefind-ui-scale: 0.8;
     --pagefind-ui-primary: var(--color-accent);
@@ -209,7 +209,7 @@ const nav = [
     margin-bottom: 0.75rem;
   }
 
-  /* details acts as a normal flex child — behaves as a plain block on desktop */
+  /* details acts as a normal flex child - behaves as a plain block on desktop */
   #help-nav-details {
     flex: 1;
     min-height: 0;
@@ -228,10 +228,14 @@ const nav = [
   #help-sidebar-nav {
     overflow-y: auto;
     flex: 1;
+    /* Required so the flex item can shrink below its content height and the
+       internal scroll actually engages; without it the long nav overflows the
+       sticky sidebar's max-height and spills past the footer. */
+    min-height: 0;
   }
 
   /* Desktop: hide the summary, keep the nav always visible.
-     The inline script removes `open` on mobile — on desktop it stays open. */
+     The inline script removes `open` on mobile - on desktop it stays open. */
   @media (min-width: 769px) {
     #help-nav-details > summary {
       display: none;

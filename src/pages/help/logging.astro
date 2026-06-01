@@ -13,16 +13,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The <strong>Today screen</strong> (home tab) is your daily hub. It shows the current date, an optional workout timer in the app bar, and several cards depending on your state:</p>
   <ul>
     <li>If you have an active routine, your routine days appear at the top with a Start button for each. Tap a day to open the routine log preview before starting.</li>
-    <li><strong>This Week</strong> — A compact card showing how many days you've trained this week, plus muscle-balance warnings if any groups haven't been trained for a while. Visible whenever you're on the Today screen — whether mid-workout or between sessions.</li>
-    <li><strong>Weekly volume chips</strong> — Colored chips showing sets logged per muscle category this week. Colored dots indicate groups that need attention. Tap any chip to open the muscle balance detail sheet.</li>
-    <li><strong>Monthly report</strong> — During the first two weeks of a new month, a dismissible card shows last month's highlights: workout count, total volume (with % change vs the month before), and how many exercises you tried for the first time. Tap × to dismiss it.</li>
+    <li><strong>This Week</strong> - A compact card showing how many days you've trained this week, plus muscle-balance warnings if any groups haven't been trained for a while. Visible whenever you're on the Today screen - whether mid-workout or between sessions.</li>
+    <li><strong>Weekly volume chips</strong> - Colored chips showing sets logged per muscle category this week. Colored dots indicate groups that need attention. Tap any chip to open the muscle balance detail sheet.</li>
+    <li><strong>Monthly report</strong> - During the first two weeks of a new month, a dismissible card shows last month's highlights: workout count, total volume (with % change vs the month before), and how many exercises you tried for the first time. Tap × to dismiss it.</li>
     <li><strong>Deload banner</strong> and <strong>Plateau card</strong> appear here when those features are active (see <a href={`/help/tools#deload`}>Deload</a> and <a href={`/help/progress#plateau-detection`}>Plateau detection</a>).</li>
   </ul>
 
   <hr />
 
   <h2>Logging a set</h2>
-  <p>The Log tab shows input fields at the top and your logged sets below. The fields shown depend on the exercise type — a barbell exercise shows weight and reps; a plank shows only time; a row machine might show weight and time.</p>
+  <p>The Log tab shows input fields at the top and your logged sets below. The fields shown depend on the exercise type - a barbell exercise shows weight and reps; a plank shows only time; a row machine might show weight and time.</p>
   <ol>
     <li>Enter your weight and reps (or duration, distance, etc.) using the <strong>+/−</strong> steppers or by tapping the field and typing.</li>
     <li>Tap the <strong>✓ checkmark</strong> to save the set.</li>
@@ -34,14 +34,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Long-press a set row to delete it. A confirmation dialog appears before deletion.</p>
 
   <h3>Repeat last set</h3>
-  <p>The <strong>repeat button</strong> (next to the checkmark) copies your last working set in one tap — useful when you're doing multiple sets at the same weight and reps.</p>
+  <p>The <strong>repeat button</strong> (next to the checkmark) copies your last working set in one tap - useful when you're doing multiple sets at the same weight and reps.</p>
 
   <h2 id="set-types">Warmup sets</h2>
   <p>The <strong>warmup chip</strong> above the input fields toggles whether the current set is a warmup. Warmup sets are displayed with a "W" badge instead of a set number, and are excluded from volume calculations, PR checks, and progress graphs.</p>
   <p>You can also let Badger generate warmup sets automatically:</p>
   <ul>
     <li>Tap the <strong>⋮ menu</strong> in the top right → <strong>Add warmup sets</strong>.</li>
-    <li>A sheet shows three suggested warmup sets: 40% × 8, 60% × 5, 80% × 3 of your working weight. Each is pre-checked — uncheck any you don't want.</li>
+    <li>A sheet shows three suggested warmup sets: 40% × 8, 60% × 5, 80% × 3 of your working weight. Each is pre-checked - uncheck any you don't want.</li>
     <li>Confirm to insert them at the start of your set list.</li>
   </ul>
   <p>The "Add warmup sets" option is hidden once warmup sets already exist for that exercise.</p>
@@ -49,8 +49,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Intensity tracking (RPE & RIR)</h2>
   <p>Two optional fields appear below the main inputs:</p>
   <ul>
-    <li><strong>RPE (Rate of Perceived Exertion)</strong> — How hard did the set feel, on a scale of 1–10. 10 is a true max effort.</li>
-    <li><strong>RIR (Reps in Reserve)</strong> — How many more reps could you have done, 0–5. 0 means you hit failure.</li>
+    <li><strong>RPE (Rate of Perceived Exertion)</strong> - How hard did the set feel, on a scale of 1-10. 10 is a true max effort.</li>
+    <li><strong>RIR (Reps in Reserve)</strong> - How many more reps could you have done, 0-5. 0 means you hit failure.</li>
   </ul>
   <p>Both are optional and can be used independently. They're hidden when the warmup toggle is active. Logged values appear as small badges on each set row.</p>
 
@@ -59,9 +59,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Timer controls</h3>
   <ul>
-    <li><strong>Skip</strong> — Dismiss the timer early.</li>
-    <li><strong>+30s</strong> — Add 30 seconds to the current countdown.</li>
-    <li><strong>Rest chip</strong> — Tap the chip that shows the current duration to set a one-session override. Use the Reset button in that dialog to go back to the default.</li>
+    <li><strong>Skip</strong> - Dismiss the timer early.</li>
+    <li><strong>+30s</strong> - Add 30 seconds to the current countdown.</li>
+    <li><strong>Rest chip</strong> - Tap the chip that shows the current duration to set a one-session override. Use the Reset button in that dialog to go back to the default.</li>
   </ul>
 
   <h3>How rest duration is determined</h3>
@@ -74,7 +74,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Last used duration</li>
     <li>90-second fallback</li>
   </ol>
-  <p>Warmup sets use a separate, shorter rest duration — configurable per exercise or globally in Settings.</p>
+  <p>Warmup sets use a separate, shorter rest duration - configurable per exercise or globally in Settings.</p>
   <p>The rest timer does <em>not</em> start after the last working set of your last exercise.</p>
 
   <h2>Skipping sets</h2>
@@ -92,14 +92,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Notes card</h2>
   <p>A collapsible card appears above the set input for exercises that have notes or technique instructions. Tap it to navigate to the full exercise notes screen. The card shows:</p>
   <ul>
-    <li><strong>NOTES</strong> — your personal reminders for this exercise (form cues, machine settings, etc.).</li>
-    <li><strong>INSTRUCTIONS</strong> — built-in technique cues (pre-filled for all built-in exercises).</li>
-    <li><strong>GRIP</strong> — the currently selected grip type, when a machine with grip types is active. A quick reminder so you set up consistently every session.</li>
+    <li><strong>NOTES</strong> - your personal reminders for this exercise (form cues, machine settings, etc.).</li>
+    <li><strong>INSTRUCTIONS</strong> - built-in technique cues (pre-filled for all built-in exercises).</li>
+    <li><strong>GRIP</strong> - the currently selected grip type, when a machine with grip types is active. A quick reminder so you set up consistently every session.</li>
   </ul>
   <p>The card expands automatically when you log an exercise that has personal notes.</p>
 
   <h3>Machine-scoped notes</h3>
-  <p>When a machine is set, your personal notes become machine-specific. This means you can save different setup cues for the same exercise on different machines — for example, different seat-height reminders for two leg-press machines at the same gym.</p>
+  <p>When a machine is set, your personal notes become machine-specific. This means you can save different setup cues for the same exercise on different machines - for example, different seat-height reminders for two leg-press machines at the same gym.</p>
   <p>The Exercise Settings screen title changes to <strong>"Notes · MachineName"</strong> when machine-scoped, making it clear which machine the notes apply to. Machine notes are shown in the notes card in the training screen alongside global instructions; global exercise notes are shown separately when both exist. Non-notes settings (increment, rest, instructions, muscle assignments) always apply globally to the exercise regardless of machine.</p>
 
   <h2>Per-set comments</h2>
@@ -120,7 +120,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Progressive overload suggestions</h2>
   <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Training, default: 3).</p>
-  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid — so the suggestion always lands on a weight the machine can actually produce. Tap × to dismiss the suggestion for this session.</p>
+  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. Tap × to dismiss the suggestion for this session.</p>
   <p>The suggestion is <strong>machine-scoped</strong>: it looks at history for the same machine you currently have set. Switching machines gives you a fresh suggestion based on that machine's history.</p>
 
   <h2>Exercise navigation</h2>
@@ -134,19 +134,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Training screen menu (⋮)</h2>
   <p>The top-right menu offers additional actions for the current exercise:</p>
   <ul>
-    <li><strong>Replace exercise</strong> — Swap the current exercise for a different one. Existing sets remain attached.</li>
-    <li><strong>Plate calculator</strong> — Opens the plate calculator pre-filled with your current weight.</li>
-    <li><strong>Warmup calculator</strong> — Reference tool showing 40/60/80% warmup weights.</li>
-    <li><strong>Add warmup sets</strong> — Insert suggested warmup sets.</li>
-    <li><strong>Exercise settings</strong> — Open the exercise notes screen to adjust defaults, notes, and muscle assignments.</li>
-    <li><strong>Change gym</strong> — Switch which gym is associated with this workout.</li>
-    <li><strong>Set machine</strong> — Assign a machine and attachment to the current exercise. At the bottom of the machine picker, tap <strong>New machine…</strong> to create one inline without navigating away. Similarly, at the bottom of the attachment picker, tap <strong>New attachment…</strong> to add a new attachment on the spot.</li>
+    <li><strong>Replace exercise</strong> - Swap the current exercise for a different one. Existing sets remain attached.</li>
+    <li><strong>Plate calculator</strong> - Opens the plate calculator pre-filled with your current weight.</li>
+    <li><strong>Warmup calculator</strong> - Reference tool showing 40/60/80% warmup weights.</li>
+    <li><strong>Add warmup sets</strong> - Insert suggested warmup sets.</li>
+    <li><strong>Exercise settings</strong> - Open the exercise notes screen to adjust defaults, notes, and muscle assignments.</li>
+    <li><strong>Change gym</strong> - Switch which gym is associated with this workout.</li>
+    <li><strong>Set machine</strong> - Assign a machine and attachment to the current exercise. At the bottom of the machine picker, tap <strong>New machine…</strong> to create one inline without navigating away. Similarly, at the bottom of the attachment picker, tap <strong>New attachment…</strong> to add a new attachment on the spot.</li>
   </ul>
 
   <h2 id="resuming">Resuming a workout</h2>
   <p>Forgot an exercise after you'd already finished? Open <strong>today's</strong> workout summary and tap <strong>Resume workout</strong> to reopen it and add what you missed. (Resume is only offered for today's workout.)</p>
-  <p>The elapsed timer behaves like a stopwatch: it picks up where it left off when you log the first set of the new exercise, so the idle time between finishing and resuming is <em>not</em> counted — only the extra active time is added. Adding a single set resumes and finishes almost instantly, so it adds essentially no time. Editing or re-marking sets on a finished workout never changes its recorded duration.</p>
+  <p>The elapsed timer behaves like a stopwatch: it picks up where it left off when you log the first set of the new exercise, so the idle time between finishing and resuming is <em>not</em> counted - only the extra active time is added. Adding a single set resumes and finishes almost instantly, so it adds essentially no time. Editing or re-marking sets on a finished workout never changes its recorded duration.</p>
 
   <h2 id="exercise-order">Exercise order</h2>
-  <p>Did the exercises out of order — say a machine was free, so you jumped ahead? Badger records the order you <em>actually</em> performed them. As you complete the first set of each exercise, it slides into place in your done-so-far sequence; exercises you haven't started yet stay queued after. Your workout and its history then show the real order you trained, while your routine's planned order is left untouched for next time. You can still drag-reorder, and a drag sticks afterward if you want to nudge something.</p>
+  <p>Did the exercises out of order - say a machine was free, so you jumped ahead? Badger records the order you <em>actually</em> performed them. As you complete the first set of each exercise, it slides into place in your done-so-far sequence; exercises you haven't started yet stay queued after. Your workout and its history then show the real order you trained, while your routine's planned order is left untouched for next time. You can still drag-reorder, and a drag sticks afterward if you want to nudge something.</p>
 </HelpLayout>

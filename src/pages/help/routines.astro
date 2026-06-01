@@ -5,12 +5,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Routines" description="How to create routines, set up training days, use predefined sets, and start routine workouts in Badger.">
   <h1>Routines</h1>
 
-  <p>A routine is a saved training program — a collection of days, each with its own exercises and (optionally) predefined sets. When you start a workout from a routine, Badger pre-fills your exercises and suggests weights based on your previous performance.</p>
+  <p>A routine is a saved training program - a collection of days, each with its own exercises and (optionally) predefined sets. When you start a workout from a routine, Badger pre-fills your exercises and suggests weights based on your previous performance.</p>
 
   <hr />
 
   <h2>Routine list</h2>
-  <p>Go to <strong>You → Routines</strong> to see your routines. They can be organized into folders. The <strong>active routine</strong> appears at the top with an accent border — it's the one shown on the home screen.</p>
+  <p>Go to <strong>You → Routines</strong> to see your routines. They can be organized into folders. The <strong>active routine</strong> appears at the top with an accent border - it's the one shown on the home screen.</p>
 
   <h3>Active routine</h3>
   <p>Only one routine can be active at a time. To set one as active, long-press it and tap <strong>Set active</strong>. The active routine's days appear on the home screen as tappable rows.</p>
@@ -34,21 +34,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Day options</h3>
   <p>Each day has additional settings accessible via its <strong>⋮ menu</strong>:</p>
   <ul>
-    <li><strong>Default gym</strong> — Pre-set which gym this day is performed at.</li>
-    <li><strong>Notes</strong> — Freeform notes for the day. When you start a workout from this day, the notes appear as a dismissable banner at the top of the training screen (useful for "Focus on pause reps today" or "Deload — 50% intensity" reminders). Dismissing the banner hides it for the current workout only; starting a new workout from the same day shows it again.</li>
+    <li><strong>Default gym</strong> - Pre-set which gym this day is performed at.</li>
+    <li><strong>Notes</strong> - Freeform notes for the day. When you start a workout from this day, the notes appear as a dismissable banner at the top of the training screen (useful for "Focus on pause reps today" or "Deload - 50% intensity" reminders). Dismissing the banner hides it for the current workout only; starting a new workout from the same day shows it again.</li>
   </ul>
 
   <h2 id="predefined-sets">Predefined sets</h2>
   <p>Tap an exercise row within a routine day to open its predefined sets. Each set can have:</p>
   <ul>
-    <li><strong>Weight</strong> — A specific value, or "Copy from previous" to use the weight from your most recent session.</li>
-    <li><strong>Reps</strong> — A specific value, or "Copy from previous".</li>
-    <li><strong>Warmup flag</strong> — Mark the set as a warmup.</li>
+    <li><strong>Weight</strong> - A specific value, or "Copy from previous" to use the weight from your most recent session.</li>
+    <li><strong>Reps</strong> - A specific value, or "Copy from previous".</li>
+    <li><strong>Warmup flag</strong> - Mark the set as a warmup.</li>
   </ul>
   <p>Sets can be reordered by dragging.</p>
 
   <h3>Quick edit</h3>
-  <p>Each routine day card has a <strong>Quick edit</strong> button (next to "Day options") that opens a compact batch editor. Every exercise on the day shows on one screen with inline fields for its first working set — weight and reps, or whichever fields apply to the exercise type (distance, duration, etc.). Change a value and submit to save. Useful after a deload, or when bumping every exercise by a fixed amount. Tap the exercise name to jump to its full predefined-sets editor.</p>
+  <p>Each routine day card has a <strong>Quick edit</strong> button (next to "Day options") that opens a compact batch editor. Every exercise on the day shows on one screen with inline fields for its first working set - weight and reps, or whichever fields apply to the exercise type (distance, duration, etc.). Change a value and submit to save. Useful after a deload, or when bumping every exercise by a fixed amount. Tap the exercise name to jump to its full predefined-sets editor.</p>
 
   <h3>Per-exercise overrides in routines</h3>
   <p>Each routine exercise also has override settings separate from the predefined sets:</p>
@@ -59,7 +59,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Default machine & attachment</li>
     <li>Default grip type (if machine has grip types enabled)</li>
   </ul>
-  <p><strong>Rest time is a property of the exercise, not the routine.</strong> Set a working/warmup rest on the exercise itself (Exercise → settings) and it applies everywhere you train it. A routine exercise still has a "Rest (seconds)" field, but it's only a fallback — it applies when the exercise has no rest configured, and never overrides the exercise's own rest.</p>
+  <p><strong>Rest time is a property of the exercise, not the routine.</strong> Set a working/warmup rest on the exercise itself (Exercise → settings) and it applies everywhere you train it. A routine exercise still has a "Rest (seconds)" field, but it's only a fallback - it applies when the exercise has no rest configured, and never overrides the exercise's own rest.</p>
 
   <h2 id="starting">Starting a routine workout</h2>
   <p>From the <strong>home screen</strong>, tap a day row under your active routine. This opens the <strong>routine log preview</strong>, which shows:</p>
@@ -68,22 +68,22 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>An estimated workout duration</li>
     <li>A <strong>DeloadInfoBar</strong> at the top if a deload week is active (showing the applied reductions)</li>
   </ul>
-  <p>You can check or uncheck exercises to include or exclude them before starting. You can also tap <strong>Swap</strong> on any exercise to replace it with a different one — this changes the preview only, not the routine itself.</p>
+  <p>You can check or uncheck exercises to include or exclude them before starting. You can also tap <strong>Swap</strong> on any exercise to replace it with a different one - this changes the preview only, not the routine itself.</p>
   <p>Tap <strong>Start</strong> to begin the workout.</p>
 
   <h3>Weight source</h3>
   <p>On the routine detail screen, a segmented control sets how Badger determines starting weights:</p>
   <ul>
-    <li><strong>Last performance</strong> (default) — Use the weight from your most recent workout for each exercise, regardless of where the workout came from.</li>
-    <li><strong>Routine defaults</strong> — Use the predefined set weights only. If a set is set to "Copy from previous," it uses the predefined value.</li>
-    <li><strong>Routine defaults then last</strong> — Try predefined weights first; if not set, fall back to last performance.</li>
+    <li><strong>Last performance</strong> (default) - Use the weight from your most recent workout for each exercise, regardless of where the workout came from.</li>
+    <li><strong>Routine defaults</strong> - Use the predefined set weights only. If a set is set to "Copy from previous," it uses the predefined value.</li>
+    <li><strong>Routine defaults then last</strong> - Try predefined weights first; if not set, fall back to last performance.</li>
   </ul>
 
   <h3>History scope</h3>
   <p>Controls which previous workouts are considered when looking up "last performance":</p>
   <ul>
-    <li><strong>Any workout</strong> (default) — Look at all previous workouts.</li>
-    <li><strong>This routine</strong> — Only look at workouts started from this same routine. Useful for running multiple programs simultaneously without them interfering with each other.</li>
+    <li><strong>Any workout</strong> (default) - Look at all previous workouts.</li>
+    <li><strong>This routine</strong> - Only look at workouts started from this same routine. Useful for running multiple programs simultaneously without them interfering with each other.</li>
   </ul>
 
   <h2>Supersets in routines</h2>
@@ -93,7 +93,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Long-press a routine → <strong>Duplicate</strong>. A prompt asks for the copy's name. The duplicate includes all days, exercises, predefined sets, and group assignments.</p>
 
   <h2 id="create-from-history">Creating a routine from workout history</h2>
-  <p>You can turn any set of past workouts into a new multi-day routine in a few taps — exercises, sets, and warmups are all preserved automatically.</p>
+  <p>You can turn any set of past workouts into a new multi-day routine in a few taps - exercises, sets, and warmups are all preserved automatically.</p>
   <ol>
     <li>Go to <strong>History</strong> and switch to <strong>List</strong> view.</li>
     <li>Long-press any workout card to enter selection mode.</li>
@@ -101,10 +101,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>Create Routine</strong> in the top bar.</li>
     <li>Follow the four-step sheet:
       <ol>
-        <li><strong>Name</strong> — type a name for the new routine.</li>
-        <li><strong>Settings</strong> — choose a weight source and history scope (same options as when creating a routine manually).</li>
-        <li><strong>Day names</strong> — each selected workout becomes one day. The default name is the weekday of that workout (e.g. "Monday"). Rename any day here.</li>
-        <li><strong>Confirm</strong> — review the summary and tap <strong>Create Routine</strong>.</li>
+        <li><strong>Name</strong> - type a name for the new routine.</li>
+        <li><strong>Settings</strong> - choose a weight source and history scope (same options as when creating a routine manually).</li>
+        <li><strong>Day names</strong> - each selected workout becomes one day. The default name is the weekday of that workout (e.g. "Monday"). Rename any day here.</li>
+        <li><strong>Confirm</strong> - review the summary and tap <strong>Create Routine</strong>.</li>
       </ol>
     </li>
   </ol>
@@ -118,21 +118,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Beginner</h3>
   <ul>
-    <li><strong>StrongLifts 5×5</strong> — Two alternating full-body days (A and B), 5 sets of 5 reps on the major compound lifts. Add weight every session.</li>
-    <li><strong>Starting Strength</strong> — Similar structure to StrongLifts, with slight exercise differences and 3×5 progression.</li>
+    <li><strong>StrongLifts 5×5</strong> - Two alternating full-body days (A and B), 5 sets of 5 reps on the major compound lifts. Add weight every session.</li>
+    <li><strong>Starting Strength</strong> - Similar structure to StrongLifts, with slight exercise differences and 3×5 progression.</li>
   </ul>
 
   <h3>Intermediate</h3>
   <ul>
-    <li><strong>GZCLP</strong> — Three-tier approach: heavy compound lifts (T1), medium compounds (T2), and accessory work (T3). Progressive rep schemes per tier.</li>
-    <li><strong>5/3/1 BBB</strong> — Wendler's 5/3/1 main sets followed by Boring But Big 5×10 volume work at 50% of training max.</li>
+    <li><strong>GZCLP</strong> - Three-tier approach: heavy compound lifts (T1), medium compounds (T2), and accessory work (T3). Progressive rep schemes per tier.</li>
+    <li><strong>5/3/1 BBB</strong> - Wendler's 5/3/1 main sets followed by Boring But Big 5×10 volume work at 50% of training max.</li>
   </ul>
 
   <h3>Splits</h3>
   <ul>
-    <li><strong>PPL 6-Day</strong> — Push/Pull/Legs twice per week.</li>
-    <li><strong>Upper/Lower 4-Day</strong> — Two upper-body and two lower-body days per week.</li>
-    <li><strong>Full Body 3-Day</strong> — Three full-body sessions per week.</li>
+    <li><strong>PPL 6-Day</strong> - Push/Pull/Legs twice per week.</li>
+    <li><strong>Upper/Lower 4-Day</strong> - Two upper-body and two lower-body days per week.</li>
+    <li><strong>Full Body 3-Day</strong> - Three full-body sessions per week.</li>
   </ul>
 
   <div class="callout">

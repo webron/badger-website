@@ -15,18 +15,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>List view</h3>
   <p>All your workouts in reverse-chronological order, newest first. Each card shows:</p>
   <ul>
-    <li><strong>Date</strong> — day of week and date (today's card says "Today").</li>
-    <li><strong>Exercise count and set count</strong> — e.g. "3 exercises · 12 sets".</li>
-    <li><strong>Exercise pills</strong> — a row of small chips, one per exercise, each with a colored dot matching the exercise's category color. This gives a quick visual read of what muscle groups you trained.</li>
+    <li><strong>Date</strong> - day of week and date (today's card says "Today").</li>
+    <li><strong>Exercise count and set count</strong> - e.g. "3 exercises · 12 sets".</li>
+    <li><strong>Exercise pills</strong> - a row of small chips, one per exercise, each with a colored dot matching the exercise's category color. This gives a quick visual read of what muscle groups you trained.</li>
   </ul>
   <p>Tap a card to expand it. The expanded view shows each exercise with its set count and top weight (e.g. "4 sets · 100 kg × 5"). Exercises in a superset show a colored left border.</p>
   <p>If the workout has a comment (added when you finished), a <strong>notes card</strong> appears below the summary row. The card shows a truncated preview of your comment with a chevron-down icon. Tap it to expand and read the full text.</p>
 
   <p>Three action buttons appear at the bottom of an expanded card:</p>
   <ul>
-    <li><strong>Copy to today</strong> — opens a sheet to copy this workout's exercises to a new workout today. You can deselect exercises you don't want to copy.</li>
-    <li><strong>Full details</strong> — opens the <a href={`/help/logging#summary`}>workout summary screen</a> with every set, weight, rep count, notes, and duration.</li>
-    <li><strong>Save as routine</strong> — saves this workout as a new routine day, pre-filled with all the exercises and their set/rep counts.</li>
+    <li><strong>Copy to today</strong> - opens a sheet to copy this workout's exercises to a new workout today. You can deselect exercises you don't want to copy.</li>
+    <li><strong>Full details</strong> - opens the <a href={`/help/logging#summary`}>workout summary screen</a> with every set, weight, rep count, notes, and duration.</li>
+    <li><strong>Save as routine</strong> - saves this workout as a new routine day, pre-filled with all the exercises and their set/rep counts.</li>
   </ul>
 
   <div class="callout">
@@ -34,7 +34,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </div>
 
   <h3>Calendar view</h3>
-  <p>A month calendar where days with logged workouts show small colored dots — one dot per exercise category trained that day. Tap any day to see a summary of that day's workout below the calendar.</p>
+  <p>A month calendar where days with logged workouts show small colored dots - one dot per exercise category trained that day. Tap any day to see a summary of that day's workout below the calendar.</p>
   <ul>
     <li>Today is outlined with the accent color.</li>
     <li>Use the left and right arrows to move between months.</li>
@@ -58,7 +58,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Tapping <strong>Full details</strong> on any list card (or <strong>View summary</strong> from the calendar day view) opens the workout summary screen. This shows the complete record of the session:</p>
   <ul>
     <li>Workout date, start time, end time, and total duration.</li>
-    <li>Every exercise in order, with each set listed — weight, reps, warmup/working badge, and any RPE or RIR notes.</li>
+    <li>Every exercise in order, with each set listed - weight, reps, warmup/working badge, and any RPE or RIR notes.</li>
     <li>Per-set comments, if you added any during the workout. A comment icon appears next to each set; tap it to expand and read the full comment text.</li>
     <li>Gym and machine recorded for the session, if any.</li>
     <li>Any workout-level comment you added when ending the session.</li>
@@ -66,20 +66,20 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Planned vs. actual (routine workouts only)</h3>
   <p>When a workout was started from a routine day, each logged working set shows the planned weight and reps directly beneath it (e.g. <code>planned: 80 kg × 8</code>). Any set you performed beyond the routine's prescription is marked <strong>extra set</strong> beneath it.</p>
-  <p>If you met or exceeded the plan anywhere in the session, a compact wins card appears above the stats row — for example:</p>
+  <p>If you met or exceeded the plan anywhere in the session, a compact wins card appears above the stats row - for example:</p>
   <ul>
     <li>"3 sets exceeded plan"</li>
     <li>"2 of 5 exercises: all sets met or exceeded plan"</li>
   </ul>
-  <p>The wins card only shows positive outcomes. There is no overall adherence percentage — a bad session shouldn't need a score. Comparison uses an estimated 1RM for weight + reps sets (so more weight, more reps, or both count as a win), and the relevant scalar for reps-only, time-only, and distance exercises. Free workouts (not started from a routine) show the summary unchanged.</p>
+  <p>The wins card only shows positive outcomes. There is no overall adherence percentage - a bad session shouldn't need a score. Comparison uses an estimated 1RM for weight + reps sets (so more weight, more reps, or both count as a win), and the relevant scalar for reps-only, time-only, and distance exercises. Free workouts (not started from a routine) show the summary unchanged.</p>
 
   <h2 id="per-exercise">Per-exercise history</h2>
-  <p>You can also view history for a single exercise. From the <a href={`/help/progress`}>Progress tab</a>, select an exercise and open the <strong>History</strong> tab on its detail screen. This shows every session where that exercise was logged, newest first. The same History tab appears in the <strong>training screen</strong> while you're mid-workout — swipe to the History tab to see past sessions for the exercise you're currently logging.</p>
+  <p>You can also view history for a single exercise. From the <a href={`/help/progress`}>Progress tab</a>, select an exercise and open the <strong>History</strong> tab on its detail screen. This shows every session where that exercise was logged, newest first. The same History tab appears in the <strong>training screen</strong> while you're mid-workout - swipe to the History tab to see past sessions for the exercise you're currently logging.</p>
   <p>Each entry in the per-exercise history shows:</p>
   <ul>
     <li>The workout date and gym/machine used, if any.</li>
     <li>Each set logged for that exercise, with warmup sets and working sets distinguished by badge (W for warmup, numbered for working sets).</li>
-    <li>Weight, reps, duration, or distance — whatever fields apply to the exercise type.</li>
+    <li>Weight, reps, duration, or distance - whatever fields apply to the exercise type.</li>
     <li>RPE and RIR values, if recorded.</li>
   </ul>
   <p>Skipped sets are excluded from the history display.</p>

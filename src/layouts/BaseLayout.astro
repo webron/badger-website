@@ -13,7 +13,7 @@ const {
   canonical,
 } = Astro.props;
 
-const fullTitle = title === 'Badger' ? 'Badger' : `${title} — Badger`;
+const fullTitle = title === 'Badger' ? 'Badger' : `${title} - Badger`;
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
 ---
