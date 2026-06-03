@@ -58,7 +58,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Your workout data is stored locally in a SQLite database. You should back it up regularly.</p>
   <ul>
     <li><strong>Manual backup</strong> - Exports a snapshot of your database as a <code>.workout_backup</code> file and opens the system share sheet so you can save it to Google Drive, your files app, or send it elsewhere.</li>
-    <li><strong>Restore from backup</strong> - Select a <code>.workout_backup</code> file. This replaces your current database with the backup. <strong>All current data will be overwritten</strong> - make sure you back up first if needed.</li>
+    <li><strong>Restore from backup</strong> - Select a <code>.workout_backup</code> file. This replaces your current database with the backup. <strong>All current data will be overwritten</strong> - make sure you back up first if needed. Badger checks the backup is intact before replacing anything, so a corrupted or incomplete file is rejected and your current data is left untouched.</li>
+    <li><strong>Restore previous data</strong> - Just before any restore overwrites your data, Badger automatically saves a one-off snapshot of what was there. If a restore turns out to be a mistake, a <strong>Restore previous data</strong> option appears under Restore so you can roll back to that snapshot. Restart the app afterwards.</li>
   </ul>
 
   <h3 id="export">Exporting data</h3>
@@ -78,5 +79,6 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Import from Hevy</strong> - Select a Hevy CSV export. Warmup sets are imported correctly.</li>
   </ul>
   <p>Imported files are capped at 10&nbsp;MB - comfortably larger than any real export, even for many years of training. If you see a "file is too large" message, the file is almost certainly corrupted; try re-exporting it from the source app.</p>
+  <p><strong>Avoid importing the same file twice.</strong> The preview warns you when some of the import's dates already have workouts - importing again adds those sets a second time (duplicating them on those days) rather than replacing them.</p>
   <p>See <a href={`/help/getting-started#importing`}>Getting started → Importing from another app</a> for the full walkthrough.</p>
 </HelpLayout>

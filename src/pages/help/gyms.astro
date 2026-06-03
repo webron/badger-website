@@ -26,6 +26,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Set the machine's <strong>Resistance type</strong> - <em>Selectorized</em> (a pin-selected weight stack) or <em>Plate-loaded</em>. The plate calculator is hidden during workouts on selectorized machines, since there are no plates to load.</li>
     <li>Optionally set a <strong>Weight increment</strong> - the physical step between settings (for example 5&nbsp;kg between stack positions). The progressive-overload suggestion snaps to this grid, so it only ever suggests a weight the machine can actually produce.</li>
     <li>On the machine's detail screen, use the <strong>Available at</strong> section to link the machine to one or more gyms.</li>
+    <li><strong>Deleting a machine:</strong> if the machine isn't referenced anywhere, deleting it also removes it from every gym and exercise link. If it's used in a logged workout or set as a default in a routine, deletion is blocked so your history and routines stay intact - remove it from those first if you really want it gone.</li>
   </ul>
 
   <h3>Linking machines to exercises</h3>
@@ -37,6 +38,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li>Tap <strong>+</strong> to create an attachment.</li>
     <li>Link attachments to gyms via the <strong>Available at</strong> section on each attachment's detail screen.</li>
+    <li><strong>Deleting an attachment</strong> works like deleting a machine: blocked if it appears in a logged workout or a routine default, otherwise removed from all gyms.</li>
   </ul>
   <p>Attachments are available in the machine picker only when the current machine has <strong>Uses attachments</strong> enabled.</p>
 
