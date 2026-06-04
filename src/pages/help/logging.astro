@@ -123,6 +123,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. Tap × to dismiss the suggestion for this session.</p>
   <p>The suggestion is <strong>machine-scoped</strong>: it looks at history for the same machine you currently have set. Switching machines gives you a fresh suggestion based on that machine's history.</p>
 
+  <h2>Auto-progress routine weights</h2>
+  <p>By default this is off. Turn it on in <strong>Settings → Training → "Auto-progress routine weights"</strong>. When it's on and you finish a workout that you started from a routine, Badger checks whether you lifted heavier than the routine planned. If you did, the <strong>workout summary</strong> shows an "Update [Routine] · [Day]?" section listing each exercise you progressed - for example <em>80 → 82.5 kg</em>.</p>
+  <p>Each progressed exercise has a checkbox (checked by default). Tap <strong>Update routine</strong> and the checked exercises' new weights are written back into the routine's predefined sets, so next time you run the routine it starts pre-filled with the heavier weight instead of suggesting the same bump again. Uncheck anything you don't want to carry over. (If you have "Auto-stop on last set" enabled, the same section also appears on the completion pop-up when you finish your last set.)</p>
+  <p>A few things to know:</p>
+  <ul>
+    <li>It only ever <strong>raises</strong> weights - never lowers them. A lighter or matched session changes nothing.</li>
+    <li>It matches set by set, so pyramid and back-off schemes keep their shape - only the sets you beat go up.</li>
+    <li>Warmups and skipped or incomplete sets are ignored.</li>
+    <li>Nothing is ever changed silently: the setting controls whether the offer appears, and the checkboxes are your confirmation.</li>
+    <li>If you swapped an exercise for an alternative mid-workout, that slot won't auto-progress (it's no longer the same exercise the routine planned).</li>
+  </ul>
+
   <h2>Exercise navigation</h2>
   <p>Tap the <strong>exercise name in the header</strong> to open the exercise list for your current workout. From there you can:</p>
   <ul>
