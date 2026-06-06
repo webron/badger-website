@@ -2,9 +2,32 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+const appJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: 'Badger',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'Android',
+  url: 'https://badger.fit',
+  downloadUrl: 'https://play.google.com/store/apps/details?id=fit.badger.app',
+  description:
+    'Badger is a workout tracker for Android. Log sets, run your programs, and track what your training is actually doing.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+};
 ---
 
-<BaseLayout title="Badger" description="Badger is a workout tracker. Log sets, run your programs, and track what your training is actually doing.">
+<BaseLayout
+  title="Badger"
+  fullTitle="Badger - Workout Tracker for Android"
+  description="Badger is a workout tracker for Android. Log sets, run your programs, and track what your training is actually doing. Built for lifters who pay attention to the details."
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(appJsonLd)} />
+
   <Header currentPath={Astro.url.pathname} />
 
   <!-- Hero -->
@@ -12,7 +35,7 @@ import Footer from '../components/Footer.astro';
     <img src={`/assets/badger_logo_stacked.svg`} alt="Badger" width="120" style="display:block;" />
 
     <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:700;margin:0;line-height:1.15;color:var(--text);">
-      A workout tracker.
+      A workout tracker for lifters who pay attention.
     </h1>
 
     <p style="font-size:1.1rem;color:var(--text-secondary);max-width:520px;margin:0;line-height:1.6;">

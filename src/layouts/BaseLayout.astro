@@ -5,15 +5,17 @@ interface Props {
   title: string;
   description?: string;
   canonical?: string;
+  fullTitle?: string;
 }
 
 const {
   title,
   description = 'Badger is a workout tracker. Log sets, run your programs, and track what your training is actually doing.',
   canonical,
+  fullTitle: fullTitleProp,
 } = Astro.props;
 
-const fullTitle = title === 'Badger' ? 'Badger' : `${title} - Badger`;
+const fullTitle = fullTitleProp ?? (title === 'Badger' ? 'Badger' : `${title} - Badger`);
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
 ---
@@ -45,6 +47,8 @@ const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="/assets/badger_icon_only.svg" />
+
+    <slot name="head" />
   </head>
   <body>
     <slot />
