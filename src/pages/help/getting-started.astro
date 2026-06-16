@@ -13,7 +13,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Download Badger from the Google Play Store. On first launch you'll go through a short setup:</p>
   <ol>
     <li><strong>Weight unit</strong> - Choose kilograms or pounds. This sets the default for all exercises, though individual exercises can override it.</li>
-    <li><strong>Import data</strong> - If you're coming from another app (FitNotes, Strong, or Hevy), you can import your full history here. You can also do this later in Settings.</li>
+    <li><strong>Import data</strong> - If you're coming from another app (FitNotes, Strong, Hevy, or Stronglifts), you can import your full history here. You can also do this later in Settings.</li>
   </ol>
   <p>That's it. You're dropped straight into the home screen.</p>
 
@@ -45,7 +45,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>See <a href={`/help/routines`}>Routines</a> for the full details.</p>
 
   <h2 id="importing">Importing from another app</h2>
-  <p>Badger can import your full workout history from FitNotes, Strong, and Hevy. Go to <strong>Settings → Data</strong> and tap the relevant import row. The flow is the same for all three:</p>
+  <p>Badger can import your full workout history from FitNotes, Strong, Hevy, and Stronglifts. Go to <strong>Settings → Data</strong> and tap the relevant import row. The flow is the same for all of them:</p>
   <ol>
     <li>Tap the import row. The file picker opens automatically.</li>
     <li>Select your exported CSV (or <code>.fitnotes</code> backup for FitNotes).</li>
@@ -62,6 +62,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="importing-hevy">Hevy</h3>
   <p>In Hevy, go to <strong>Profile → Settings → Export Data → Export as CSV</strong>. Badger detects the weight unit (<code>weight_kg</code> vs <code>weight_lbs</code>) and imports warmup sets correctly (Hevy marks them with <code>set_type = warmup</code>).</p>
+
+  <h3 id="importing-stronglifts">Stronglifts</h3>
+  <p>In Stronglifts, go to <strong>Settings → Export workout data</strong> to produce a CSV. Badger reads each set straight from the per-set columns (<code>Set 1 (Reps)</code> / <code>Set 1 (LBS)</code> …) and detects the weight unit (kg or lbs) automatically. The Stronglifts export does not flag warmups, so every logged set is imported as a working set.</p>
 
   <h2>Key concepts</h2>
   <p>A few terms that come up throughout the app:</p>

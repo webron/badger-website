@@ -72,11 +72,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p><strong>Delete all workout history</strong> - Permanently deletes all workouts and sets. A confirmation dialog is required. This does not delete exercises or routines.</p>
 
   <h3 id="importing">Importing workout history</h3>
-  <p>Badger can import your full history from FitNotes, Strong, and Hevy. Each option appears in the same Data section:</p>
+  <p>Badger can import your full history from FitNotes, Strong, Hevy, and Stronglifts. Each option appears in the same Data section:</p>
   <ul>
     <li><strong>Import from FitNotes</strong> - Select a <code>.fitnotes</code> backup file.</li>
     <li><strong>Import from Strong</strong> - Select a Strong CSV export. Weight unit is detected automatically from the column header.</li>
     <li><strong>Import from Hevy</strong> - Select a Hevy CSV export. Warmup sets are imported correctly.</li>
+    <li><strong>Import from Stronglifts</strong> - Select a Stronglifts CSV export. Weight unit (kg or lbs) is detected automatically. Every logged set is imported as a working set, since the Stronglifts export does not distinguish warmups.</li>
   </ul>
   <p>Imported files are capped at 10&nbsp;MB - comfortably larger than any real export, even for many years of training. If you see a "file is too large" message, the file is almost certainly corrupted; try re-exporting it from the source app.</p>
   <p><strong>Avoid importing the same file twice.</strong> The preview warns you when some of the import's dates already have workouts - importing again adds those sets a second time (duplicating them on those days) rather than replacing them.</p>
