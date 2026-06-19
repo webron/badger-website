@@ -15,6 +15,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>+</strong> to create a gym.</li>
     <li>Tap a gym to edit its name or notes, or to set it as the default.</li>
     <li>The <strong>default gym</strong> is automatically used when starting a workout if you have only one gym, or if a default is set among multiple.</li>
+    <li>Each gym has its own <strong>Plate inventory</strong> - open a gym and tap <em>Plate assortment</em> to set which plates (and how many) are available there. Competition gyms often stock both kg and lbs plates, so the set is kept per unit. New gyms start from your global default set, so the plate calculator works out of the box; per-gym editing is optional.</li>
     <li>Gyms can be <strong>archived</strong> (hidden from pickers but preserved for historical data) instead of deleted.</li>
   </ul>
 
@@ -24,7 +25,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>+</strong> to create a machine (e.g. "Cable station", "Leg press", "Smith machine").</li>
     <li>Each machine has two toggles: <strong>Uses attachments</strong> and <strong>Uses grip types</strong>.</li>
     <li>Set the machine's <strong>Resistance type</strong> - <em>Selectorized</em> (a pin-selected weight stack) or <em>Plate-loaded</em>. The plate calculator is hidden during workouts on selectorized machines, since there are no plates to load.</li>
-    <li>Optionally set a <strong>Weight increment</strong> - the physical step between settings (for example 5&nbsp;kg between stack positions). The progressive-overload suggestion snaps to this grid, so it only ever suggests a weight the machine can actually produce.</li>
+    <li>Set a <strong>Logging unit</strong> if this machine should be logged in a specific unit (kg or lbs) regardless of your app setting - useful for a stack that is physically kg but dual-marked with awkward lbs numbers. Leave it on <em>Default</em> to follow the exercise, then the app setting. When you start a set on the machine, the weight field switches to its unit automatically.</li>
+    <li>Optionally set a <strong>Weight increment</strong> - the physical step between settings (for example 5&nbsp;kg between stack positions), entered in the machine's own unit. For stacks that change step size partway up, also fill in <strong>Then step</strong> and <strong>Above</strong> (for example 10&nbsp;kg up to 100, then 20&nbsp;kg). The progressive-overload suggestion snaps to this grid, so it only ever suggests a weight the machine can actually produce.</li>
     <li>On the machine's detail screen, use the <strong>Available at</strong> section to link the machine to one or more gyms.</li>
     <li><strong>Deleting a machine:</strong> if the machine isn't referenced anywhere, deleting it also removes it from every gym and exercise link. If it's used in a logged workout or set as a default in a routine, deletion is blocked so your history and routines stay intact - remove it from those first if you really want it gone.</li>
   </ul>
