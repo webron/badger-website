@@ -19,9 +19,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Plate configuration</h3>
   <p>Tap the settings icon to configure your available plates - weight, color, and quantity limit per plate type. Plates can be enabled or disabled. The calculator uses a greedy algorithm: it always picks the largest available plate that fits, within your quantity limits.</p>
+  <p>Plates are tracked <strong>per gym</strong>: when you open the calculator during a workout it uses the assortment for that workout's gym (and the unit you're logging in). Edit a gym's plates from <strong>You → Gyms → (gym) → Plate assortment</strong>. A gym with no custom plates falls back to your global default set.</p>
 
   <h3>Remaining weight</h3>
   <p>If the target weight can't be matched exactly with your available plates, the calculator shows the remaining weight and the closest achievable load.</p>
+
+  <h3>Use this load</h3>
+  <p>Tap <strong>Use this load</strong> to drop the calculator's achievable total back into the weight field, so you log the real loaded weight rather than your original target.</p>
 
   <h2 id="warmup-calc">Warmup calculator</h2>
   <p>Access via <strong>⋮ → Warmup calculator</strong> in the training screen. This is a reference tool - it shows you what 40%, 60%, and 80% of your current working weight look like as warmup sets (at 8, 5, and 3 reps respectively), rounded to a practical plate increment.</p>
