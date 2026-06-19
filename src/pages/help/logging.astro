@@ -41,10 +41,17 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>You can also let Badger generate warmup sets automatically:</p>
   <ul>
     <li>Tap the <strong>⋮ menu</strong> in the top right → <strong>Add warmup sets</strong>.</li>
-    <li>A sheet shows three suggested warmup sets: 40% × 8, 60% × 5, 80% × 3 of your working weight. Each is pre-checked - uncheck any you don't want.</li>
+    <li>Pick a <strong>style</strong> and the <strong>number of sets</strong>. The sheet recalculates instantly and pre-checks every row - uncheck any you don't want.</li>
     <li>Confirm to insert them at the start of your set list.</li>
   </ul>
-  <p>The "Add warmup sets" option is hidden once warmup sets already exist for that exercise.</p>
+  <p>Two styles are available:</p>
+  <ul>
+    <li><strong>Percent</strong> - a classic ramp as a share of your working weight (3 sets gives the familiar 40% × 8, 60% × 5, 80% × 3).</li>
+    <li><strong>Plates</strong> - evenly spaced jumps from the empty bar up to a tight final warmup, with every weight rounded to something you can actually load.</li>
+  </ul>
+  <p>Either way, every suggested weight is rounded to a load your equipment can reach - the gym's plates for a barbell or plate-loaded machine, or the stack increment for a selectorized machine - and is never rounded above your working weight. Fewer sets means bigger jumps; more sets means a gentler ramp. If two warmups land on the same convenient weight, Badger merges them.</p>
+  <p>Set your usual style and default number of warmup sets in <strong>Settings → Warm-up sets</strong>. You can override both for a specific exercise on its edit screen (handy for lifts like floor work that need fewer, heavier warmups).</p>
+  <p>The "Add warmup sets" option becomes "Replace warmup sets" once warmup sets already exist for that exercise. If a routine already defines warmup sets, those are used as-is - the generator only fills the gap when none are defined.</p>
 
   <h2>Intensity tracking (RPE & RIR)</h2>
   <p>Two optional fields appear below the main inputs:</p>
