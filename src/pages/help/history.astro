@@ -40,7 +40,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Use the left and right arrows to move between months.</li>
     <li>Tap <strong>Today</strong> in the top-right to jump back to the current month and select today.</li>
     <li>Days with scheduled routine days (but no workout yet logged) show a faint dot as a reminder.</li>
-    <li><strong>Long-press a past day</strong> to log a workout for that date. A confirmation dialog appears; tapping confirm creates a workout dated to that day and jumps straight into the exercise picker. Useful if you forgot to log during the session. Future dates are ignored.</li>
+    <li><strong>Logging a past workout.</strong> Tap any past (or today's) day with no workout, then tap <strong>Log a workout</strong> in the summary below the calendar. You get three choices: <strong>From a routine</strong> (pick a routine and day, then confirm the prefilled session), <strong>Manual entry</strong> (start an empty workout and add exercises by hand), or <strong>Copy from another day</strong> (duplicate a previous session's exercises and sets onto this date). Useful if you forgot to log during the session. Future dates can't be logged.</li>
+    <li>Backdated workouts run no timers - the duration is simply left blank rather than recording the time you spent entering it, and no rest-timer countdown fires while you log.</li>
   </ul>
 
   <h2 id="filtering">Filtering workouts</h2>
