@@ -14,6 +14,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Active routine</h3>
   <p>Only one routine can be active at a time. To set one as active, long-press it and tap <strong>Set active</strong>. The active routine's days appear on the home screen as tappable rows.</p>
+  <p>For an <strong>alternating program</strong> (A/B-style, where no day is tied to a fixed weekday), the home screen leads with the next day in the sequence and highlights it. After you finish Workout A, Workout B moves to the top so you always know what's next. You can still tap any day to start it - the order is a suggestion, not a lock. If a routine's days are assigned to specific weekdays instead, the home screen highlights the day matching today's weekday.</p>
 
   <h3>Folders</h3>
   <p>Tap the folder icon in the top bar to create a folder. Long-press a routine to move it into a folder. Routines not in any folder appear under "Other".</p>
@@ -84,6 +85,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Any workout</strong> (default) - Look at all previous workouts.</li>
     <li><strong>This routine</strong> - Only look at workouts started from this same routine. Useful for running multiple programs simultaneously without them interfering with each other.</li>
+  </ul>
+
+  <h3>Rep target</h3>
+  <p>Controls where the prefilled <em>reps</em> come from when you log from this routine. Weight is unaffected - it still follows the weight source above.</p>
+  <ul>
+    <li><strong>Last performance</strong> (default) - Reps copy from your last session. Good for autoregulation, where you adjust reps based on how you feel.</li>
+    <li><strong>Routine plan</strong> - Reps stay pinned to the predefined scheme. Use this for strict programs (StrongLifts 5×5, a fixed 3×4, etc.) where the rep count shouldn't drift from session to session.</li>
   </ul>
 
   <h2>Supersets in routines</h2>
