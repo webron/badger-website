@@ -62,14 +62,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Both are optional and can be used independently. They're hidden when the warmup toggle is active. Logged values appear as small badges on each set row.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
-  <p>The rest timer shows as a compact banner at the bottom of the screen. It counts down to zero, then plays a sound and/or vibration (configurable in Settings).</p>
+  <p>The rest timer shows as a chip near the top of the training screen. While running, the chip counts down to zero, then plays a sound and/or vibration (configurable in Settings). Tap the chip to open the rest timer sheet.</p>
 
   <h3>Timer controls</h3>
+  <p>Tap the rest chip to open the sheet. While the timer is running it shows three buttons:</p>
   <ul>
-    <li><strong>Skip</strong> - Dismiss the timer early.</li>
-    <li><strong>+30s</strong> - Add 30 seconds to the current countdown.</li>
-    <li><strong>Rest chip</strong> - Tap the chip that shows the current duration to set a one-session override. Use the Reset button in that dialog to go back to the default.</li>
+    <li><strong>Stop</strong> - Stop and dismiss the running timer.</li>
+    <li><strong>+30s</strong> - Add 30 seconds to the running countdown.</li>
+    <li><strong>Restart</strong> - Restart the countdown from the selected duration.</li>
   </ul>
+  <p>Pick one of the preset durations or type a custom number of seconds, then tap Start to begin a one-session timer at that length.</p>
 
   <h3>How rest duration is determined</h3>
   <p>Badger uses the following priority order:</p>
