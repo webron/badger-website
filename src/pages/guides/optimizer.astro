@@ -1,0 +1,37 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Show me the data" description="Where Badger keeps your PRs, strength trends, training volume, and plateau detection.">
+  <h1>Show me the data</h1>
+  <p>Badger keeps a lot of analysis under the hood. This guide is a map of where it all lives, so you can find the chart or number you are after without hunting.</p>
+
+  <h2>Your first 5 minutes</h2>
+  <ol>
+    <li>Open the <strong>Progress</strong> tab.</li>
+    <li>The <strong>Overview</strong> view shows your training volume by muscle group with MEV and MRV landmarks, plus a training heatmap of how often you lift.</li>
+    <li>The <strong>Exercises</strong> view lists your movements with their trends.</li>
+    <li>Tap any exercise to open its estimated 1RM graph, its PR list, and its full history.</li>
+  </ol>
+
+  <h2>The things worth turning on</h2>
+  <ul>
+    <li><strong>Plateau detection</strong> (Settings → Training, off by default) flags an exercise that has stopped progressing.</li>
+    <li><strong>Muscle balance warnings</strong> (on by default) point out when a muscle group is getting too little work relative to the rest.</li>
+    <li><strong>Per-category volume targets</strong> on the Overview card let you set your own weekly set goals.</li>
+    <li><strong>Exercise linking</strong> ties variants together so they share PR history (for example a barbell and dumbbell version of the same press).</li>
+  </ul>
+
+  <h2>The 3 things to know</h2>
+  <ul>
+    <li>PRs and graphs can scope to a specific machine, so a number on one machine does not get confused with another.</li>
+    <li>Estimated 1RM uses the Epley formula, calculated from your logged weight and reps.</li>
+    <li>Volume landmarks (MEV and MRV) are research-based zones, not hard rules. Treat them as guidance, not a verdict.</li>
+  </ul>
+
+  <h2>Ignore the rest for now</h2>
+  <p>You do not have to read every chart to benefit. The summary after each workout already surfaces your volume, any PRs you hit, and your total sets, so the most useful numbers find you without a trip to the Progress tab.</p>
+
+  <h2>Related</h2>
+  <p>For the full breakdown of every progress feature, read <a href="/help/progress">the progress help</a>. For plain-English definitions of RPE, RIR, 1RM, and deload, see the <a href="/glossary">glossary</a>.</p>
+</HelpLayout>
