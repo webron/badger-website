@@ -8,6 +8,16 @@ const { currentPath } = Astro.props;
 
 const nav = [
   {
+    label: 'Starting Guides',
+    items: [
+      { href: `/guides`, label: 'Pick your guide' },
+      { href: `/guides/just-lifting`, label: 'Just lifting' },
+      { href: `/guides/program-runner`, label: 'Running a program' },
+      { href: `/guides/optimizer`, label: 'Show me the data' },
+      { href: `/guides/switching`, label: 'Switching apps' },
+    ],
+  },
+  {
     label: 'Getting Started',
     items: [
       { href: `/help/getting-started`, label: 'Quick start' },
