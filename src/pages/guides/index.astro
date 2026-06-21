@@ -1,0 +1,66 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+
+const personas = [
+  {
+    href: '/guides/just-lifting',
+    title: 'I just want to lift',
+    blurb: "You go to the gym and want to write it down. Log a set in under a minute, skip the jargon.",
+  },
+  {
+    href: '/guides/program-runner',
+    title: "I'm running a program",
+    blurb: "You follow a set program. Build it once, have your weights waiting each session, and progress on autopilot.",
+  },
+  {
+    href: '/guides/optimizer',
+    title: 'Show me the data',
+    blurb: "You want the numbers. PRs, strength trends, training volume, and when you have stalled.",
+  },
+  {
+    href: '/guides/switching',
+    title: "I'm switching from another app",
+    blurb: "You have history in FitNotes, Strong, Hevy, or Stronglifts. Bring it over and feel at home fast.",
+  },
+];
+---
+
+<HelpLayout title="Starting guides" description="Pick the guide that matches how you train and get going with Badger in a few minutes.">
+  <h1>Starting guides</h1>
+  <p>Badger does a lot, but you do not need all of it on day one. Pick the description that sounds most like you and we will walk you through the parts that matter for how you train.</p>
+
+  <div class="guide-cards">
+    {personas.map(p => (
+      <a class="guide-card" href={p.href}>
+        <h2>{p.title}</h2>
+        <p>{p.blurb}</p>
+        <span class="guide-card__go">Read this guide &rarr;</span>
+      </a>
+    ))}
+  </div>
+</HelpLayout>
+
+<style>
+  .guide-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .guide-card {
+    display: block;
+    padding: 1.25rem 1.25rem 1rem;
+    border: 1px solid var(--color-border, #2a2a2a);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .guide-card:hover {
+    border-color: var(--color-accent, #2E7E90);
+    transform: translateY(-2px);
+  }
+  .guide-card h2 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+  .guide-card p { margin: 0 0 0.75rem; opacity: 0.85; }
+  .guide-card__go { color: var(--color-accent, #2E7E90); font-weight: 600; }
+</style>
