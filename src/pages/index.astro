@@ -42,16 +42,23 @@ const appJsonLd = {
       Log sets, run your programs, and see what your training is actually doing. Built for lifters who pay attention to the details.
     </p>
 
-    <div id="download" style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-top:0.5rem;">
+    <div id="download" style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;align-items:center;margin-top:0.5rem;">
       <a
         href="https://play.google.com/store/apps/details?id=fit.badger.app"
-        style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--color-accent);color:#fff;font-weight:600;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+        aria-label="Get it on Google Play"
+        style="display:inline-flex;"
       >
-        Get it on Google Play
+        <img src={`/assets/badges/google-play-badge.png`} alt="Get it on Google Play" height="60" style="display:block;height:60px;width:auto;" />
+      </a>
+      <a
+        href="mailto:hello@badger.fit?subject=Notify%20me%20when%20Badger%20comes%20to%20iOS"
+        style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface);border:1px solid var(--border);color:var(--text);font-weight:500;padding:0.75rem 1.25rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+      >
+        iOS coming soon - get notified
       </a>
       <a
         href={`/help/getting-started`}
-        style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface);border:1px solid var(--border);color:var(--text);font-weight:500;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+        style="display:inline-flex;align-items:center;gap:0.5rem;color:var(--text-secondary);font-weight:500;padding:0.75rem 0.75rem;text-decoration:none;font-size:0.95rem;"
       >
         Read the docs →
       </a>
@@ -138,20 +145,21 @@ const appJsonLd = {
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3rem 2rem;">
       <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 0.75rem;color:var(--text);">Ready to start?</h2>
       <p style="color:var(--text-secondary);margin:0 0 1.5rem;max-width:400px;display:inline-block;line-height:1.6;">
-        Badger is free on Google Play, with iOS planned.
+        Badger is free on Google Play, with iOS on the way.
       </p>
-      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;">
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;align-items:center;">
         <a
           href="https://play.google.com/store/apps/details?id=fit.badger.app"
-          style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--color-accent);color:#fff;font-weight:600;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+          aria-label="Get it on Google Play"
+          style="display:inline-flex;"
         >
-          Get it on Google Play
+          <img src={`/assets/badges/google-play-badge.png`} alt="Get it on Google Play" height="60" style="display:block;height:60px;width:auto;" />
         </a>
         <a
-          href={`/help/getting-started`}
-          style="display:inline-flex;align-items:center;gap:0.5rem;background:transparent;border:1px solid var(--border);color:var(--text);font-weight:500;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+          href="mailto:hello@badger.fit?subject=Notify%20me%20when%20Badger%20comes%20to%20iOS"
+          style="display:inline-flex;align-items:center;gap:0.5rem;background:transparent;border:1px solid var(--border);color:var(--text);font-weight:500;padding:0.75rem 1.25rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
         >
-          Getting started guide →
+          iOS coming soon - get notified
         </a>
       </div>
     </div>
