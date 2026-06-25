@@ -35,7 +35,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Deload is an opt-in feature that detects when you may be accumulating too much fatigue and schedules a lighter training week. Go to <strong>Settings → Training → Deload</strong> to configure it.</p>
 
   <h3>Enabling deload</h3>
-  <p>Toggle <strong>Enable deload detection</strong> on. All sub-settings are greyed out until this is enabled.</p>
+  <p>Toggle <strong>Enable deload detection</strong> on. All sub-settings are greyed out until this is enabled. Turning the switch on activates all three detection methods at their defaults, so you can fine-tune or disable any of them below.</p>
 
   <h3>Detection methods</h3>
   <p>Any one of the following can trigger a deload. Each method can be enabled or disabled independently:</p>
@@ -54,10 +54,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Deload schedule</h3>
   <p>When a trigger fires, the next Monday is set as the start of your deload week (if today is Monday, it uses the following Monday). A banner appears on the home screen:</p>
   <ul>
-    <li><strong>Scheduled</strong> (before the week starts) - "Deload week next week."</li>
-    <li><strong>Active</strong> (during the deload week) - "Deload week - weights and sets are reduced this week."</li>
+    <li><strong>Scheduled</strong> (before the week starts) - "Deload week next week." This banner is dismissible.</li>
+    <li><strong>Active</strong> (during the deload week) - shows why the deload was suggested (for example, "It has been several weeks since your last deload") and when the week ends. This banner stays visible all week so the signal isn't lost.</li>
   </ul>
-  <p>Both banners are dismissible.</p>
 
   <h3>Automatic reductions</h3>
   <p>When a deload week is active and you start a routine workout, Badger automatically applies reductions to the predefined sets:</p>
@@ -66,10 +65,25 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Set reduction</strong> - Removes a number of sets per exercise (configurable). Warmup sets are never removed.</li>
     <li><strong>Minimum sets</strong> - A floor below which sets won't be removed.</li>
   </ul>
-  <p>The routine log preview shows a summary of the applied reductions. You can edit any value before tapping Start.</p>
+  <p>The routine log preview shows a summary of the applied reductions. You can edit any value before tapping Start. Reduced weights are rounded to a weight you can actually load in your unit (for example, a clean 230 lb rather than an odd 231.5 lb).</p>
+
+  <h3>Confirming or skipping a deload</h3>
+  <p>The first time you start a workout during a deload week, Badger asks whether you want to go ahead:</p>
+  <ul>
+    <li><strong>Start deload</strong> - log the workout with the reduced weights and sets.</li>
+    <li><strong>Skip, full weights</strong> - use your normal weights for that workout. The deload week continues for your other workouts.</li>
+  </ul>
+  <p>This prompt only appears once per deload week. On any workout that week you can still switch using the <strong>Use full weights</strong> / <strong>Use deload</strong> toggle on the deload bar in the routine log preview.</p>
+
+  <h3>Starting or ending a deload yourself</h3>
+  <p>You don't have to wait for a trigger. In <strong>Settings → Training → Deload</strong>:</p>
+  <ul>
+    <li><strong>Start a deload week</strong> - choose <strong>Start now</strong> (lighter for the rest of this week) or <strong>Next week</strong>.</li>
+    <li><strong>End deload</strong> - ends an active or scheduled deload early and returns to normal weights.</li>
+  </ul>
 
   <div class="callout">
-    <strong>Note:</strong> Deload reductions are applied once per routine log preview. Swapping an exercise after the preview opens doesn't retroactively reduce the replacement.
+    <strong>Note:</strong> Deload reductions are applied once per routine log preview. Swapping an exercise after the preview opens doesn't retroactively reduce the replacement. A deload week's reduced weights don't carry forward - your next normal week starts from your real working weights, not the deloaded ones.
   </div>
 
 </HelpLayout>
