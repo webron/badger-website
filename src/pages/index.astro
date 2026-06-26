@@ -8,11 +8,11 @@ const appJsonLd = {
   '@type': 'MobileApplication',
   name: 'Badger',
   applicationCategory: 'HealthApplication',
-  operatingSystem: 'Android',
+  operatingSystem: 'Android, iOS',
   url: 'https://badger.fit',
   downloadUrl: 'https://play.google.com/store/apps/details?id=fit.badger.app',
   description:
-    'Badger is a workout tracker for Android. Log sets, run your programs, and track what your training is actually doing.',
+    'Badger is a workout and strength tracker for Android and iOS. Log sets, run your programs, and track what your training is actually doing.',
   offers: {
     '@type': 'Offer',
     price: '0',
@@ -23,8 +23,8 @@ const appJsonLd = {
 
 <BaseLayout
   title="Badger"
-  fullTitle="Badger - Workout Tracker for Android"
-  description="Badger is a workout tracker for Android. Log sets, run your programs, and track what your training is actually doing. Built for lifters who pay attention to the details."
+  fullTitle="Badger - Workout & Strength Tracker for Android & iOS"
+  description="Badger is a workout and strength tracker for Android and iOS. Log sets, run your programs, and track what your training is actually doing. Built for lifters who pay attention to the details."
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(appJsonLd)} />
 
@@ -51,14 +51,23 @@ const appJsonLd = {
         <img src={`/assets/badges/google-play-badge.png`} alt="Get it on Google Play" height="60" style="display:block;height:60px;width:auto;" />
       </a>
       <a
-        href="mailto:hello@badger.fit?subject=Notify%20me%20when%20Badger%20comes%20to%20iOS"
-        style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface);border:1px solid var(--border);color:var(--text);font-weight:500;padding:0.75rem 1.25rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+        href="https://testflight.apple.com/join/wqxnbujx"
+        aria-label="Try the iOS beta on TestFlight"
+        style="display:inline-flex;align-items:center;justify-content:center;width:155px;height:60px;text-decoration:none;box-sizing:border-box;"
       >
-        iOS coming soon - get notified
+        <span style="display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;width:135px;height:40px;background:#000;border:1px solid rgba(255,255,255,0.3);border-radius:6px;color:#fff;box-sizing:border-box;">
+          <svg width="17" height="20" viewBox="0 0 384 512" fill="#fff" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+          <span style="display:flex;flex-direction:column;line-height:1.05;text-align:left;">
+            <span style="font-size:0.5rem;letter-spacing:0.3px;opacity:0.85;">TRY THE</span>
+            <span style="font-size:0.9rem;font-weight:600;">iOS beta</span>
+          </span>
+        </span>
       </a>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:0.85rem;">
       <a
         href={`/help/getting-started`}
-        style="display:inline-flex;align-items:center;gap:0.5rem;color:var(--text-secondary);font-weight:500;padding:0.75rem 0.75rem;text-decoration:none;font-size:0.95rem;"
+        style="display:inline-flex;align-items:center;gap:0.5rem;color:var(--text-secondary);font-weight:500;padding:0.5rem 0.75rem;text-decoration:none;font-size:0.95rem;"
       >
         Read the docs →
       </a>
@@ -145,7 +154,7 @@ const appJsonLd = {
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3rem 2rem;">
       <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 0.75rem;color:var(--text);">Ready to start?</h2>
       <p style="color:var(--text-secondary);margin:0 0 1.5rem;max-width:400px;display:inline-block;line-height:1.6;">
-        Badger is free on Google Play, with iOS on the way.
+        Badger is free on Google Play, with an iOS beta now open in TestFlight.
       </p>
       <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;align-items:center;">
         <a
@@ -156,10 +165,17 @@ const appJsonLd = {
           <img src={`/assets/badges/google-play-badge.png`} alt="Get it on Google Play" height="60" style="display:block;height:60px;width:auto;" />
         </a>
         <a
-          href="mailto:hello@badger.fit?subject=Notify%20me%20when%20Badger%20comes%20to%20iOS"
-          style="display:inline-flex;align-items:center;gap:0.5rem;background:transparent;border:1px solid var(--border);color:var(--text);font-weight:500;padding:0.75rem 1.25rem;border-radius:8px;text-decoration:none;font-size:0.95rem;"
+          href="https://testflight.apple.com/join/wqxnbujx"
+          aria-label="Try the iOS beta on TestFlight"
+          style="display:inline-flex;align-items:center;justify-content:center;width:155px;height:60px;text-decoration:none;box-sizing:border-box;"
         >
-          iOS coming soon - get notified
+          <span style="display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;width:135px;height:40px;background:#000;border:1px solid rgba(255,255,255,0.3);border-radius:6px;color:#fff;box-sizing:border-box;">
+            <svg width="17" height="20" viewBox="0 0 384 512" fill="#fff" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+            <span style="display:flex;flex-direction:column;line-height:1.05;text-align:left;">
+              <span style="font-size:0.5rem;letter-spacing:0.3px;opacity:0.85;">TRY THE</span>
+              <span style="font-size:0.9rem;font-weight:600;">iOS beta</span>
+            </span>
+          </span>
         </a>
       </div>
     </div>
