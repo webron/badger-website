@@ -90,13 +90,24 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>If you need to skip a set (injury, time constraint, etc.), long-press it and select <strong>Skip</strong>. Skipped sets are shown with strikethrough text and excluded from all calculations. You can also skip or unskip all sets for an exercise at once via the <strong>⋮ menu</strong>.</p>
 
   <h2 id="supersets">Supersets & exercise groups</h2>
-  <p>Exercises can be grouped into supersets. When exercises are in the same group:</p>
+  <p>A superset is a group of exercises you alternate between. When exercises are in the same superset:</p>
   <ul>
-    <li>A colored bar appears on the left side of each exercise card.</li>
+    <li>They appear together as a named, colored block in exercise lists, and the training screen shows the superset's name under the exercise name.</li>
     <li>After logging a set for one exercise in the group, Badger automatically switches to the next exercise (no rest timer between them).</li>
-    <li>After the last exercise in the group, the rest timer starts and you cycle back to the first exercise.</li>
+    <li>After the last exercise in the round, the rest timer starts and you cycle back to the first exercise that still has work left.</li>
   </ul>
-  <p>Groups are created and managed in the routine detail screen, or via the exercise list ⋮ menu in the training screen.</p>
+  <h3>Creating a superset</h3>
+  <p>During a workout, open the training screen's <strong>⋮ menu</strong> and tap <strong>Superset…</strong>, or open the <strong>All exercises</strong> list and tap <strong>Create superset</strong>. Check two or more exercises and confirm - the whole group is created in one step. Checking an exercise that already belongs to another superset moves it over (the row says so).</p>
+  <h3>Editing a superset</h3>
+  <p>Tap the superset's name - in the app bar during training, or on the block header in any exercise list - to open the superset editor. There you can:</p>
+  <ul>
+    <li><strong>Rename</strong> the superset and pick its <strong>color</strong>.</li>
+    <li><strong>Drag members</strong> to set the order you alternate in.</li>
+    <li><strong>Remove a single exercise</strong> without touching the rest of the group. If only one exercise would remain, the superset is removed automatically.</li>
+    <li><strong>Add more exercises</strong> to the group.</li>
+    <li><strong>Dissolve</strong> the superset entirely (with an Undo toast, and no logged data is affected).</li>
+  </ul>
+  <p>The same flow works in the routine editor, and on past workouts from the workout summary screen - tap the superset header above an exercise card to fix up groupings after the fact.</p>
 
   <h2>Notes card</h2>
   <p>A collapsible card appears above the set input for exercises that have notes or technique instructions. Tap it to navigate to the full exercise notes screen. The card shows:</p>
@@ -145,7 +156,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2>Exercise navigation</h2>
-  <p>Tap the <strong>exercise name in the header</strong> to open the exercise list for your current workout. From there you can:</p>
+  <p>Tap the <strong>All exercises</strong> pill at the bottom of the screen to open the exercise list for your current workout. From there you can:</p>
   <ul>
     <li>Tap any exercise to switch to it.</li>
     <li>Drag to reorder exercises.</li>
