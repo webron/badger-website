@@ -14,9 +14,17 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Exercises sort by recency by default (most recently trained first). Tap the sort icon to switch to alphabetical order.</p>
 
   <h2 id="prs">Personal records</h2>
-  <p>Badger tracks your <strong>estimated 1RM</strong> as the benchmark for PRs. The formula used is the Epley formula:</p>
-  <p><code>Estimated 1RM = weight × (1 + reps / 30)</code></p>
-  <p>When you log a working set that produces a higher estimated 1RM than your previous best, the set is marked as a PR with a trophy badge. A brief notification also appears at the bottom of the training screen.</p>
+  <p>Every exercise type earns personal records, not just weight &times; reps lifts. When you log a working set that beats your previous best, the set is marked with a trophy badge and a brief notification appears at the bottom of the training screen.</p>
+  <p>What counts as a record depends on the exercise type:</p>
+  <ul>
+    <li><strong>Weight + reps</strong> - benchmarked on <strong>estimated 1RM</strong> (Epley formula: <code>weight × (1 + reps / 30)</code>). A heavier weight or more reps at a given weight is a PR.</li>
+    <li><strong>Weight only</strong> - heaviest weight.</li>
+    <li><strong>Reps only</strong> - most reps.</li>
+    <li><strong>Distance</strong> - farthest distance.</li>
+    <li><strong>Time</strong> - by default the <strong>longest</strong> hold (planks, dead hangs, carries). For timed efforts where you want to be quicker, switch it to shortest.</li>
+    <li><strong>Combined types</strong> (e.g. distance + time) track both together - going farther, or covering the same distance faster, each counts.</li>
+  </ul>
+  <p id="record-time"><strong>Which time is the record?</strong> For timed exercises, open the exercise's edit screen and use the <strong>Record time</strong> setting: <em>Longer</em> (a longer time is better, the default for most holds), <em>Shorter</em> (a shorter time is better, for timed runs and for-time efforts), or <em>Default</em> to use the sensible default for that type. Distance + time exercises default to faster-is-better.</p>
   <p>PRs are <strong>machine-scoped</strong>: if you have a machine set on the current exercise, the PR is compared only against other sessions on the same machine. If no machine is set, all history is compared.</p>
   <p>PRs and progress graphs are also <strong>shared across linked exercises</strong>. If you've linked two exercises (see <a href="/help/exercises/#linking">Linked exercises</a>), a new best on either one counts as a PR on both, and the progress graphs combine their history.</p>
 
