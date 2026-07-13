@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Keep this in sync with the in-app changelog
+// (badger-fit: lib/features/about/domain/changelog.dart) and the store
+// release notes. Newest first.
+const releases = [
+  {
+    version: '1.0.12',
+    date: 'July 2026',
+    headline: 'Supersets everywhere, and records for every lift',
+    highlights: [
+      'Redesigned supersets: create a group once, edit it in one place, and set it up the same way in a live workout, a routine, or past history.',
+      'Personal records now work for every exercise type, not just weight × reps - timed holds, distances, reps-only, and more.',
+      'On iPhone, the rest timer now shows on your lock screen and Dynamic Island.',
+      'Workout summaries compare what you planned against what you actually lifted.',
+      'Configurable warm-up set generator with per-exercise overrides.',
+    ],
+  },
+  {
+    version: '1.0.11',
+    date: 'June 2026',
+    highlights: [
+      'Fixed a unit bug where lbs users could see weights in kg.',
+      'Deload weeks no longer carry their reduced weights into the next session.',
+      'Log a past workout from the calendar, with a timer-free backdated flow.',
+    ],
+  },
+  {
+    version: '1.0.10',
+    date: 'May 2026',
+    highlights: [
+      'Editable history: tap any logged set to correct it after the fact.',
+      'Machine-scoped exercise notes and per-machine weight configuration.',
+      'Share gyms, machines, and routines as .badger files.',
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Changelog"
+  description="What's new in Badger - a release-by-release list of features, improvements, and fixes."
+>
+  <Header currentPath={Astro.url.pathname} />
+
+  <section style="max-width:760px;margin:0 auto;padding:4rem 1.5rem 3rem;">
+    <h1 style="font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;margin:0 0 0.75rem;color:var(--text);">
+      What's new
+    </h1>
+    <p style="font-size:1.05rem;color:var(--text-secondary);margin:0 0 3rem;line-height:1.6;">
+      Every release of Badger, newest first. Badger is in active development on
+      Android and in beta on iOS.
+    </p>
+
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      {releases.map((r, i) => (
+        <article style="background:var(--surface);border:1px solid var(--border-subtle);border-radius:12px;padding:1.5rem 1.5rem 1.25rem;">
+          <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+            <h2 style="font-size:1.15rem;font-weight:600;margin:0;color:var(--text);">
+              Version {r.version}
+            </h2>
+            {i === 0 && (
+              <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--color-accent-light);background:var(--color-accent-dim);padding:0.15rem 0.5rem;border-radius:5px;">
+                Latest
+              </span>
+            )}
+            <span style="margin-left:auto;font-size:0.9rem;color:var(--text-muted);">{r.date}</span>
+          </div>
+          {r.headline && (
+            <p style="font-size:1rem;font-weight:600;color:var(--text);margin:0 0 0.75rem;">{r.headline}</p>
+          )}
+          <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:0.55rem;">
+            {r.highlights.map((h) => (
+              <li style="position:relative;padding-left:1.1rem;color:var(--text-secondary);line-height:1.55;">
+                <span style="position:absolute;left:0;top:0.6em;width:5px;height:5px;border-radius:50%;background:var(--color-accent-light);"></span>
+                {h}
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
