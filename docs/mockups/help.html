@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="journal.css">
+<style>
+  .shell { max-width: 1060px; margin: 0 auto; padding: 34px 24px 0; display: flex; gap: 52px; align-items: flex-start; }
+
+  /* sidebar */
+  aside { flex: 0 0 216px; }
+  .search { display: flex; align-items: center; gap: 8px; padding: 7px 2px; border-bottom: 1.5px solid var(--outline);
+    color: var(--tm); font-size: 13px; margin-bottom: 22px; }
+  .sgroup { margin-bottom: 22px; }
+  .sgroup .caps { display: block; font-size: 10px; padding-bottom: 5px; border-bottom: 1px solid var(--hair); color: var(--tm); }
+  .sgroup a { display: block; font-size: 13.5px; color: var(--ts); padding: 6px 0 6px 10px; border-left: 2px solid transparent; }
+  .sgroup a.active { color: var(--acci); font-weight: 600; border-left-color: var(--acc); }
+
+  /* prose */
+  main { flex: 1; min-width: 0; max-width: 640px; padding-bottom: 20px; }
+  main h1 { font-family: 'Literata', Georgia, serif; font-weight: 600; font-size: 30px; margin-bottom: 6px; }
+  main .pagesub { font-size: 14px; color: var(--tm); margin-bottom: 26px; }
+  main h2 { font-family: 'Literata', Georgia, serif; font-weight: 600; font-size: 20px; margin: 38px 0 10px;
+    padding-top: 14px; border-top: 2px solid var(--ink); }
+  main p { font-size: 14.5px; line-height: 1.7; color: var(--ts); margin-bottom: 14px; }
+  main p strong, main li strong { color: var(--tp); font-weight: 600; }
+  main ul { margin: 0 0 14px 20px; color: var(--ts); font-size: 14.5px; line-height: 1.65; }
+  main li { margin-bottom: 5px; }
+  main code { font-family: ui-monospace, monospace; font-size: 0.85em; background: var(--panel);
+    border: 1px solid var(--hair); border-radius: 4px; padding: 1px 5px; color: var(--tp); }
+  .callout { background: var(--surf); border: 1px solid var(--hair); border-left: 3px solid var(--acc);
+    padding: 12px 16px; margin: 20px 0; font-size: 13.5px; color: var(--ts); border-radius: 0 6px 6px 0; }
+  .callout .caps { color: var(--acci); font-size: 10px; display: block; margin-bottom: 3px; }
+</style>
+</head>
+<body class="paper">
+
+<header>
+  <div class="nav">
+    <span class="wordmark"><span class="wm-text">Badger</span><span class="wm-stripe"></span></span>
+    <span class="navlinks">
+      <a class="active" href="#">Help</a>
+      <a href="#">Guides</a>
+      <a href="#">Glossary</a>
+      <a class="btn-accent" href="#">Get the app</a>
+      <span class="theme-dot">◐</span>
+    </span>
+  </div>
+</header>
+<div class="stripe"></div>
+
+<div class="shell">
+  <aside>
+    <div class="search">⌕ &nbsp;Search the docs</div>
+    <div class="sgroup">
+      <span class="caps">Starting guides</span>
+      <a href="#">Pick your guide</a>
+      <a href="#">Just lifting</a>
+      <a href="#">Running a program</a>
+      <a href="#">Everything Badger does</a>
+    </div>
+    <div class="sgroup">
+      <span class="caps">Getting started</span>
+      <a href="#">Quick start</a>
+      <a href="#">Your first workout</a>
+      <a href="#">Importing from another app</a>
+    </div>
+    <div class="sgroup">
+      <span class="caps">Logging workouts</span>
+      <a class="active" href="#">Logging sets</a>
+      <a href="#">Warmup &amp; working sets</a>
+      <a href="#">Rest timer</a>
+      <a href="#">Supersets</a>
+    </div>
+    <div class="sgroup">
+      <span class="caps">Exercises</span>
+      <a href="#">Exercise library</a>
+      <a href="#">Search &amp; filters</a>
+      <a href="#">Creating exercises</a>
+    </div>
+  </aside>
+
+  <main>
+    <h1>Logging workouts</h1>
+    <p class="pagesub">Logging sets, set types, and everything that happens on the training screen.</p>
+
+    <p>The training screen is where you spend most of your time in Badger. Pick an exercise, enter a weight and reps, and tap the check to log the set. The rest timer starts automatically after each working set.</p>
+    <p>Badger prefills each set from your <strong>last performance</strong> of the same exercise, so a typical set is one tap. If you started the workout from a routine, the plan's sets are laid out and waiting.</p>
+
+    <h2>Warmup and working sets</h2>
+    <p>Every set is either a <strong>warmup set</strong> or a <strong>working set</strong>. Warmups carry a <code>W</code> badge, do not count toward PRs or progress graphs, and are excluded from planned-vs-actual comparison.</p>
+    <ul>
+      <li><strong>Add warmup sets</strong> from the exercise menu; Badger generates a ramp from your working weight, snapped to plates you actually have.</li>
+      <li><strong>Skip a set</strong> by long-pressing the check. Skipped sets stay in the plan but do not block finishing.</li>
+    </ul>
+
+    <div class="callout"><span class="caps">Tip</span>Set progress shows as tally marks next to each exercise. A full group of five gets its cross-stroke, just like the notebook you are replacing.</div>
+
+    <h2>RPE, RIR, and set comments</h2>
+    <p>Each set can optionally carry an <strong>RPE</strong> (1 to 10), an <strong>RIR</strong> (0 to 5), and a short comment for form cues or anything worth remembering next time.</p>
+  </main>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <span class="foot-stripe"></span>
+    <div class="foot-links">
+      <a href="#">Home</a><a href="#">Help</a><a href="#">Guides</a><a href="#">Glossary</a><a href="#">Changelog</a><a href="#">The promise</a><a href="#">Privacy</a><a href="#">Terms</a>
+    </div>
+    <span class="foot-copy">© 2026 Badger. All rights reserved.</span>
+  </div>
+</footer>
+
+</body>
+</html>
