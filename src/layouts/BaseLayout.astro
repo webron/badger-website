@@ -43,23 +43,32 @@ const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+    <!-- Fonts are self-hosted and subset (tool/subset-fonts.sh): no font CDN, no
+         external requests. The site must be as private as the app it advertises.
+         Only the two faces used above the fold are preloaded; the Literata italic
+         swaps in later behind a metric-matched fallback. -->
+    <link rel="preload" href="/fonts/exo2-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/literata-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F1EDE3" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1C1A16" />
     <link rel="icon" type="image/svg+xml" href="/assets/badger_icon_only.svg" />
+
+    <script is:inline>
+      // Apply the saved theme before first paint. This has to live in <head> and
+      // run synchronously: from the end of <body> it can repaint over a rendered
+      // frame, which is the flash it is meant to prevent.
+      (function () {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'light' || saved === 'dark') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      })();
+    </script>
 
     <slot name="head" />
   </head>
   <body>
     <slot />
-    <script is:inline>
-      // Apply saved theme before paint to avoid flash
-      (function () {
-        const saved = localStorage.getItem('theme');
-        if (saved) {
-          document.documentElement.setAttribute('data-theme', saved);
-        }
-      })();
-    </script>
   </body>
 </html>
