@@ -55,6 +55,14 @@ Summarize, list departures, flag anything needing Ron.
 
 ## Prompt 3 - M-web-2: help, guides, glossary, changelog, legal restyle
 
+> **Addendum (from the M-web-0 report, 2026-07-16):** add `'Literata'` to the
+> body `font-family` stack immediately after `'Exo 2'` so the 65 "Settings →
+> Training" arrows in help copy render from the self-hosted serif (Exo 2 has no
+> U+2192; Literata does; keep the arrow notation). Optionally strengthen the
+> theme-toggle border token if it reads faint; never claim AA for `--outline`.
+> Prose links stay always-underlined and the slate `--text-muted` is #8F8772
+> (both endorsed in M-web-0; already in global.css - do not revert).
+
 You are building milestone M-web-2 of the Badger website's Field Journal redesign, in /Users/ron/Development/badger-website (Astro, static). M-web-0 and M-web-1 are merged into redesign/journal-site. You restyle the documentation long tail. This is a restyle: zero content moves, zero URL or anchor changes, zero copy edits beyond what the worklist explicitly allows (the in-app Help screen links to these URLs and anchors, so the IA is load-bearing).
 
 Read first: docs/2026-07-16-journal-site-redesign-spec.md (sections 5, 6, 7), docs/2026-07-16-copy-worklist.md (section 3 governs this milestone), docs/mockups/help.html in a browser (paper and slate).

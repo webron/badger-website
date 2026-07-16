@@ -39,6 +39,10 @@
    builders replace the mockup's mark accordingly (keep the type treatment,
    drop the mini stripe underline if it fights the icon; judgment call, goldens
    both ways in the PR description).
+   **RESOLVED in M-web-0 (endorsed by design session 2026-07-16): NO mini
+   stripe under the wordmark.** Goldens (`docs/goldens/`) show it clipping the
+   "g" descender and reading as a hyperlink underline; the header stripe band
+   already carries the motif (one stripe per region). Variant A ships.
 6. **Information architecture does not change.** Help and guides structure is
    load-bearing (the in-app Help screen links to these URLs and anchors). Pages
    may be restyled freely; URLs, anchors, sidebar grouping, and pagefind search
@@ -80,7 +84,7 @@ keep them semantic, not per-theme.
 | `--hair` | `#D9D3C2` | `#33302A` | hairline row rules |
 | `--text` | `#262219` | `#ECE5D4` | primary text |
 | `--text-secondary` | `#5A5344` | `#A89F8A` | body copy |
-| `--text-muted` | `#6E664F` | `#8D8570` | captions, footer (AA-checked) |
+| `--text-muted` | `#6E664F` | `#8F8772` | captions, footer (AA-checked; slate value nudged from the app's #8D8570 in M-web-0: 4.42:1 on `--surface`, 4.5+ after. Site-only for now; app parity flagged separately) |
 | `--text-disabled` | `#B3AB97` | `#565040` | decorative only, never copy |
 | `--accent` | `#2E7E90` | `#2E7E90` | fills: buttons, stripe band, chart lines |
 | `--accent-ink` | `#23677A` | `#4FA3B8` | accent as TEXT or icon (links, active nav) |
@@ -160,8 +164,10 @@ PhoneFrame, Callout); keep one-offs inline.
   `--outline` bottom border). Pagefind behavior unchanged.
 - **Footer:** hairline top rule, centered 34px mini-stripe, muted links
   (add "The promise"), copyright. No boxes.
-- **Buttons:** accent fill / radius 10 / w700 primary; links are `--accent-ink`
-  with underline on hover only.
+- **Buttons:** accent fill / radius 10 / w700 primary; chrome links (nav,
+  footer, sidebar) are `--accent-ink` with underline on hover only. In-text
+  prose links are ALWAYS underlined (M-web-0 endorsed departure: WCAG 1.4.1
+  needs more than color at 3:1 to distinguish links inside body text).
 
 ## 6. Pages
 
@@ -212,10 +218,25 @@ PhoneFrame, Callout); keep one-offs inline.
    header/footer/stripe, theme toggle preserved, shared components, wordmark.
    Every existing page must render acceptably on the new tokens (they inherit),
    but only chrome is restyled here.
+   **DONE 2026-07-16, merged to redesign/journal-site.** Lighthouse mobile
+   96/100/100/100 (home; PNG-bound, closes in M-web-1) and 99/100/100/100
+   (help); CLS 0; axe clean 22 routes x 2 themes x 2 widths. Endorsed
+   departures: slate `--text-muted` #8F8772 (AA on surface), prose links
+   always underlined, wordmark variant A (no mini stripe). Accepted: mobile
+   (<=640px) header hides Help/Guides/Glossary (approved mockup; footer
+   carries the full index) - flag to Ron at sign-off. Known-and-accepted:
+   `--outline` theme-toggle border is decorative (~1.6:1); the glyph carries
+   the affordance.
 2. **M-web-1 - homepage + promise page:** the two marketing surfaces per the
    mockups and copy worklist.
 3. **M-web-2 - long tail:** help/guides/glossary/changelog/legal restyle,
    HelpSidebar index, callouts, prose styles.
+   Addenda from M-web-0 findings: (a) Exo 2 has no U+2192 glyph and help copy
+   uses "Settings → Training" 65 times; fix by adding 'Literata' to the body
+   font-family stack AFTER 'Exo 2' (verified: Literata carries U+2192;
+   self-hosted, deterministic on every OS; keep the arrow notation). (b)
+   Optional polish: theme-toggle border may move to a stronger token if it
+   still reads faint in situ; do not claim AA for `--outline`.
 4. **M-web-3 - screenshot swap + launch pass (GATED on the app redesign
    shipping):** replace placeholder phone frames with real journal-app
    screenshots from the app repo's `demo/marketing` pipeline, refresh
