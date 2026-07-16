@@ -219,6 +219,13 @@ const nav = [
 
   .help-search-wrap {
     margin-bottom: 0.75rem;
+    /* Pagefind ships this div empty and injects the search input at runtime, so
+       without a reservation everything below it drops by the input's height the
+       moment the bundle lands. That shift was always here; it only became
+       measurable once the page started painting before the injection. Reserving
+       the height keeps CLS at 0. The value is the injected input's measured
+       height at --pagefind-ui-scale: 0.8; re-measure if that scale changes. */
+    min-height: 51.19px;
   }
 
   #help-nav-details > summary {

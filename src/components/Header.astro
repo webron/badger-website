@@ -1,48 +1,186 @@
 ---
+import BadgerMark from './BadgerMark.astro';
+import Stripe from './Stripe.astro';
+
 interface Props {
   currentPath?: string;
 }
+
 const { currentPath = '' } = Astro.props;
-const isHelp = currentPath.includes('/help') || currentPath.includes('/glossary');
-const isGlossary = currentPath.endsWith('/glossary');
+const path = currentPath.replace(/\/$/, '') || '/';
+
+const navLinks = [
+  { href: '/help', label: 'Help', match: (p: string) => p === '/help' || p.startsWith('/help/') },
+  { href: '/guides', label: 'Guides', match: (p: string) => p === '/guides' || p.startsWith('/guides/') },
+  { href: '/glossary', label: 'Glossary', match: (p: string) => p === '/glossary' },
+];
 ---
 
-<header style="background:var(--surface);border-bottom:1px solid var(--border);">
-  <nav style="max-width:1100px;margin:0 auto;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
-    <a href={`/`} style="display:flex;align-items:center;text-decoration:none;">
-      <img src={`/assets/badger_logo_final.svg`} alt="Badger" height="32" style="display:block;" />
+<header class="site-header">
+  <nav class="site-nav" aria-label="Main">
+    <a class="wordmark" href="/">
+      <BadgerMark height={26} />
+      <span class="wordmark-text">Badger</span>
     </a>
 
-    <div style="display:flex;align-items:center;gap:1.5rem;">
-      <a href={`/help`} style={`font-size:0.9rem;font-weight:500;color:${isHelp ? 'var(--color-accent)' : 'var(--text-secondary)'};text-decoration:none;`}>
-        Help
-      </a>
-      <a href={`/glossary`} style={`font-size:0.9rem;font-weight:500;color:${isGlossary ? 'var(--color-accent)' : 'var(--text-secondary)'};text-decoration:none;`}>
-        Glossary
-      </a>
-      <a
-        href="#download"
-        style="background:var(--color-accent);color:#fff;font-size:0.875rem;font-weight:600;padding:0.4rem 1rem;border-radius:6px;text-decoration:none;white-space:nowrap;"
-      >
-        Get the app
-      </a>
-      <button
-        id="theme-toggle"
-        aria-label="Toggle theme"
-        style="background:none;border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.5rem;cursor:pointer;color:var(--text-secondary);font-size:0.85rem;line-height:1;"
-      >
-        ◐
+    <div class="nav-right">
+      {
+        navLinks.map(({ href, label, match }) => {
+          const active = match(path);
+          return (
+            <a
+              class:list={['nav-link', { active }]}
+              href={href}
+              aria-current={active ? 'page' : undefined}
+            >
+              {label}
+            </a>
+          );
+        })
+      }
+
+      <a class="btn-accent" href="/#download">Get the app</a>
+
+      <button id="theme-toggle" type="button" aria-label="Toggle light and dark theme">
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"></circle>
+          <path d="M12 3a9 9 0 0 0 0 18Z" fill="currentColor"></path>
+        </svg>
       </button>
     </div>
   </nav>
 </header>
+<Stripe />
 
 <script is:inline>
   const btn = document.getElementById('theme-toggle');
   btn?.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
+    const root = document.documentElement;
+    const current =
+      root.getAttribute('data-theme') ??
+      (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
     const next = current === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', next);
+    root.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
 </script>
+
+<style>
+  /* Ground, not a raised surface. The stripe below supplies the edge, so the
+     header carries no border of its own. */
+  .site-header {
+    background: var(--bg);
+  }
+
+  .site-nav {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+  }
+
+  .wordmark:hover {
+    text-decoration: none;
+  }
+
+  /* Serif is structure: the wordmark is a title, not data. The mockup pairs the
+     type with a mini stripe underline; with the icon restored (Ron's call) that
+     underline would put a second stripe element in the header region, which the
+     motif rule forbids, so the full-width band below is the only stripe here. */
+  .wordmark-text {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    color: var(--text);
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  .nav-link {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-link.active {
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+
+  /* Accent as a fill takes raw petrol; only accent-as-text needs the ink variant. */
+  .btn-accent {
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    padding: 8px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-accent:hover {
+    text-decoration: none;
+    opacity: 0.92;
+  }
+
+  #theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    background: none;
+    border: 1px solid var(--outline);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  #theme-toggle:hover {
+    color: var(--text);
+    border-color: var(--text-muted);
+  }
+
+  /* Under 640px the links do not fit beside the wordmark, button and toggle.
+     The footer carries the full index, and help pages keep their own nav. */
+  @media (max-width: 640px) {
+    .site-nav {
+      padding: 0 20px;
+    }
+
+    .nav-link {
+      display: none;
+    }
+
+    .nav-right {
+      gap: 12px;
+    }
+  }
+</style>
