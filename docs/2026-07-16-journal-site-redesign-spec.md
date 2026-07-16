@@ -240,6 +240,12 @@ Additional coordination notes:
 - Check `git branch` and `git status` before any git operation; parallel build
   sessions share the working trees. If the checkout is on another session's
   branch or dirty, work in a `git worktree` instead of switching branches.
+- Deploy mechanics: GitHub Pages, triggered ONLY by push to `main` (plus a
+  manual workflow_dispatch button in Actions). Never use "Run workflow" on any
+  branch other than `main`: dispatching it on the redesign branch would publish
+  the unfinished site to badger.fit. Local preview instead: `npm run dev` (or
+  `npm run build && npm run preview` for pagefind) in a worktree on
+  `redesign/journal-site`.
 - In-flight help-content branches (`redesign/journal-history-followups`,
   `docs/skip-last-set-auto-advance`, possibly newer) document redesigned app
   behavior and must land in `redesign/journal-site`, not `main`. Before M-web-2
