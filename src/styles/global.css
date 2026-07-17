@@ -291,6 +291,28 @@ a:hover {
   color: var(--text-muted);
 }
 
+/* The primary button. Accent as a FILL, so it takes raw petrol: only accent as
+   text or icon needs the ink variant. Shared by the header CTA and the promise
+   page's closing CTA (M-web-1 promoted it out of Header's scoped styles when it
+   gained a second caller). */
+.btn-accent {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 8px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-accent:hover {
+  text-decoration: none;
+  opacity: 0.92;
+}
+
 /* Strong rule: the top of a ledger section. Not for ordinary dividers. */
 .rule-ink {
   height: 2px;
