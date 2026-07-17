@@ -3,6 +3,7 @@ import HelpLayout from '../layouts/HelpLayout.astro';
 ---
 
 <HelpLayout title="Glossary" description="Plain-English definitions of fitness and app-specific terms used in Badger: RPE, RIR, 1RM, deload, warmup sets, and more.">
+  <div class="glossary">
   <h1>Glossary</h1>
 
   <p>Definitions of fitness terms and app-specific concepts used throughout Badger. If you're new to structured training, start here.</p>
@@ -112,4 +113,28 @@ import HelpLayout from '../layouts/HelpLayout.astro';
 
   <h3>Machine-scoped</h3>
   <p>Progress data or PRs filtered to a specific machine. If you do cable rows on two different machines, Badger can track them independently. Selecting "All" in the machine filter shows combined data.</p>
+  </div>
 </HelpLayout>
+
+<style>
+  /* Terms are ledger entries: the term is data, so it drops the serif and takes
+     Exo 2 w600 over a hairline, with the definition as secondary body underneath.
+     Every term here is already an h3 followed by its definition, so wrapping the
+     page is enough and no per-term markup is needed. */
+  .glossary h3 {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+    padding: 16px 0 4px;
+    border-top: 1px solid var(--hair);
+  }
+
+  /* The first term under a section heading would otherwise stack its hairline
+     directly under that heading's own 2px ink rule. */
+  .glossary h2 + h3 {
+    border-top: none;
+    padding-top: 4px;
+  }
+</style>

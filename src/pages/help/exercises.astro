@@ -62,12 +62,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="types">Exercise types</h2>
   <p>The exercise type determines which fields appear when you're logging a set.</p>
 
-  <table style="width:100%;border-collapse:collapse;font-size:0.875rem;margin:1rem 0;">
+  <!-- Styling comes from .prose table: caps head over a 2px ink rule, hairline
+       rows. The hand-rolled inline version predated it and fought it. -->
+  <table>
     <thead>
-      <tr style="border-bottom:1px solid var(--border);">
-        <th style="text-align:left;padding:0.4rem 0.5rem;color:var(--text);font-weight:600;">Type</th>
-        <th style="text-align:left;padding:0.4rem 0.5rem;color:var(--text);font-weight:600;">Fields logged</th>
-        <th style="text-align:left;padding:0.4rem 0.5rem;color:var(--text);font-weight:600;">Typical use</th>
+      <tr>
+        <th>Type</th>
+        <th>Fields logged</th>
+        <th>Typical use</th>
       </tr>
     </thead>
     <tbody>
@@ -83,10 +85,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
         ['Weight Only', 'Weight', 'Static holds'],
         ['Distance Only', 'Distance', 'Walking, cycling distance'],
       ].map(([type, fields, use]) => (
-        <tr style="border-bottom:1px solid var(--border-subtle);">
-          <td style="padding:0.4rem 0.5rem;color:var(--text);font-weight:500;">{type}</td>
-          <td style="padding:0.4rem 0.5rem;color:var(--text-secondary);">{fields}</td>
-          <td style="padding:0.4rem 0.5rem;color:var(--text-muted);">{use}</td>
+        <tr>
+          <td class="type-name">{type}</td>
+          <td>{fields}</td>
+          <td>{use}</td>
         </tr>
       ))}
     </tbody>
@@ -123,3 +125,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Deleting exercises</h2>
   <p>Open an exercise in the library → tap <strong>Edit</strong> → scroll to the bottom and tap <strong>Delete</strong>. To protect your history, Badger won't delete an exercise that's still in use: if it appears in any logged workouts or routines, you'll see a note telling you how many of each, and the delete is blocked. Remove it from those routines and delete the related workouts first if you really want it gone. An exercise with no history attached deletes immediately after you confirm.</p>
 </HelpLayout>
+
+<style>
+  /* The type name is the row's label, so it carries the ink while the two
+     explanatory columns stay secondary. */
+  .type-name {
+    color: var(--text);
+    font-weight: 500;
+  }
+</style>

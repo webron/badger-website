@@ -3,6 +3,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
 <HelpLayout title="Everything Badger does" description="A full map of Badger's features, one line each, so you can find an option you did not know existed and learn it in one click.">
+  <div class="capability-map">
   <h1>Everything Badger does</h1>
   <p>This is the full map. You will not need most of it to start, and nothing here is required to log a workout. Skim for anything that sounds useful, then follow the link to learn how it works. If you are brand new, the <a href="/guides">starting guides</a> are a gentler place to begin.</p>
 
@@ -101,4 +102,29 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <p>Everything stays on your device. Badger has no account and no required sign-in, and nothing leaves your phone unless you export, share, or turn on cloud backup yourself.</p>
+  </div>
 </HelpLayout>
+
+<style>
+  /* One line per capability is already the content model, so the bullets were
+     doing nothing the rule cannot do better. Flush ruled rows instead: the same
+     ledger the homepage feature list uses. Wrapping the page rather than
+     classing 100+ list items keeps this a restyle. */
+  .capability-map ul {
+    list-style: none;
+    margin: 0 0 14px;
+    padding: 0;
+  }
+
+  .capability-map li {
+    margin: 0;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--hair);
+    line-height: 1.55;
+  }
+
+  /* The capability name stays a normal in-text prose link: accent-ink and
+     underlined. Restyling it to plain ink would read as a tidier row and would
+     also strip the only non-colour cue that it is a link (WCAG 1.4.1), which
+     M-web-0 settled. The rules carry the ledger; the links stay links. */
+</style>

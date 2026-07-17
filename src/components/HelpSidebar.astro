@@ -122,23 +122,22 @@ const nav = [
     </summary>
     <nav id="help-sidebar-nav">
     {nav.map(section => (
-      <div style="margin-bottom:1.5rem;">
-        <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin:0 0 0.5rem;padding-left:0.75rem;">
-          {section.label}
-        </p>
-        <ul style="list-style:none;margin:0;padding:0;">
+      <div class="sgroup">
+        <p class="caps sgroup-label">{section.label}</p>
+        <ul>
           {section.items.map(item => {
-            const itemPath = item.href.split('#')[0];
-            const active = currentPath === itemPath || currentPath === item.href;
+            // Exact match only. Comparing against the href with its hash stripped
+            // marked every anchor item on the current page active at once, so
+            // /help/logging lit up all four of its rows and the keyline ran down
+            // the group as one accent block. Astro sees no fragment server-side,
+            // so this resolves to exactly one row per page: the page's own entry.
+            const active = currentPath === item.href;
             return (
               <li>
                 <a
+                  class:list={['sgroup-link', { active }]}
                   href={item.href}
-                  style={`display:block;padding:0.3rem 0.75rem;font-size:0.875rem;border-radius:5px;text-decoration:none;${
-                    active
-                      ? 'color:var(--color-accent);background:var(--color-accent-dim);font-weight:600;'
-                      : 'color:var(--text-secondary);'
-                  }`}
+                  aria-current={active ? 'page' : undefined}
                 >
                   {item.label}
                 </a>
@@ -153,35 +152,89 @@ const nav = [
 </aside>
 
 <style is:global>
-  /* Pagefind UI theme - mapped to site CSS variables */
+  /* Pagefind UI theme - mapped to the journal tokens. */
   #help-search {
     --pagefind-ui-scale: 0.8;
-    --pagefind-ui-primary: var(--color-accent);
+    --pagefind-ui-primary: var(--accent-ink);
     --pagefind-ui-text: var(--text);
     --pagefind-ui-background: var(--surface);
-    --pagefind-ui-border: var(--border);
-    --pagefind-ui-tag: var(--surface-alt);
+    --pagefind-ui-border: var(--outline);
+    --pagefind-ui-tag: var(--panel);
     --pagefind-ui-border-width: 1px;
     --pagefind-ui-border-radius: 6px;
     --pagefind-ui-font: inherit;
   }
 
-  /* Tighten result list spacing for the narrow sidebar */
+  /* The search field is a ruled line, not a box: pagefind ships a pill input, so
+     the box has to be unset explicitly rather than just re-coloured. It also
+     pins an explicit height off --pagefind-ui-scale, which leaves a lot of dead
+     air around a 13px field; height:auto hands sizing back to the padding.
+     .help-search-wrap reserves the resulting height, so re-measure it if any of
+     these numbers move. */
+  #help-search .pagefind-ui__search-input {
+    height: auto;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--outline);
+    border-radius: 0;
+    padding: 7px 2px 7px 22px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text);
+  }
+
+  /* Pagefind draws the magnifier as an absolutely-positioned pseudo-element
+     inset for its pill. On a ruled line it belongs at the left edge, and the
+     input pads to clear it. */
+  #help-search .pagefind-ui__form::before {
+    left: 1px;
+    top: 50%;
+    width: 13px;
+    height: 13px;
+    transform: translateY(-50%);
+    opacity: 0.8;
+  }
+
+  #help-search .pagefind-ui__search-input::placeholder {
+    color: var(--text-muted);
+    opacity: 1;
+  }
+
+  #help-search .pagefind-ui__search-input:focus {
+    outline: none;
+    border-bottom-color: var(--accent);
+    box-shadow: 0 1px 0 0 var(--accent);
+  }
+
+  /* Pagefind draws its own magnifier as a background image on the form and its
+     clear button as absolutely-positioned text; both are sized off the pill. */
+  #help-search .pagefind-ui__search-clear {
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 12px;
+    padding: 0 2px;
+  }
+
+  #help-search .pagefind-ui__search-clear:hover {
+    color: var(--text);
+  }
+
+  /* Results float over the page, so this one keeps a surface and a border. */
   #help-search .pagefind-ui__results {
     position: absolute;
     z-index: 50;
     width: 220px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--outline);
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 24px rgba(38, 34, 25, 0.28);
     max-height: 60vh;
     overflow-y: auto;
   }
 
   #help-search .pagefind-ui__result {
     padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--hair);
   }
 
   #help-search .pagefind-ui__result:last-child {
@@ -190,17 +243,39 @@ const nav = [
 
   #help-search .pagefind-ui__result-title {
     font-size: 0.8125rem;
+    color: var(--text);
+  }
+
+  #help-search .pagefind-ui__result-link {
+    color: var(--accent-ink);
   }
 
   #help-search .pagefind-ui__result-excerpt {
     font-size: 0.75rem;
+    color: var(--text-secondary);
   }
 
-  /* Replace browser focus ring with accent glow */
-  #help-search .pagefind-ui__search-input:focus {
-    outline: none;
-    border-color: var(--color-accent) !important;
-    box-shadow: 0 0 0 3px var(--color-accent-dim);
+  /* The matched term, marked like a highlighter pass. --accent-wash is tuned to
+     sit *under* content as a tint and measures ~1.15:1 against the results
+     panel, which makes the match all but invisible; a highlight has to actually
+     read as one. Weight carries it as well as colour, so the match is still
+     obvious if the wash is lost (forced colours, printing). */
+  #help-search mark {
+    /* --accent-ink, not raw petrol: petrol is a mid-dark teal, so washing it
+       over the slate panel moves the luminance by almost nothing (measured
+       1.09:1) and the highlight vanishes in dark mode. --accent-ink is the
+       per-theme legible variant, so it darkens on paper and lightens on slate
+       and the swipe reads in both. */
+    background: color-mix(in srgb, var(--accent-ink) 30%, transparent);
+    color: var(--text);
+    font-weight: 600;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  #help-search .pagefind-ui__message {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
   }
 </style>
 
@@ -217,15 +292,63 @@ const nav = [
     top: 1.5rem;
   }
 
+  /* ---- the index ---- */
+
+  .sgroup {
+    margin-bottom: 22px;
+  }
+
+  /* Caps label over a hairline: the group heading of a journal index. */
+  .sgroup-label {
+    display: block;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin: 0 0 2px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .sgroup ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Quiet rows. The keyline slot is reserved on every row, so marking one active
+     moves no text. */
+  .sgroup-link {
+    display: block;
+    padding: 6px 0 6px 10px;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+  }
+
+  .sgroup-link:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .sgroup-link.active {
+    color: var(--accent-ink);
+    font-weight: 600;
+    border-left-color: var(--accent);
+  }
+
   .help-search-wrap {
-    margin-bottom: 0.75rem;
+    margin-bottom: 22px;
     /* Pagefind ships this div empty and injects the search input at runtime, so
        without a reservation everything below it drops by the input's height the
        moment the bundle lands. That shift was always here; it only became
        measurable once the page started painting before the injection. Reserving
-       the height keeps CLS at 0. The value is the injected input's measured
-       height at --pagefind-ui-scale: 0.8; re-measure if that scale changes. */
-    min-height: 51.19px;
+       the height keeps CLS at 0.
+       Re-measured for M-web-2: the field is now a ruled line sized by its own
+       padding (7px + 20.8px line-box + 7px + 1.5px rule = 36.3px) rather than
+       the 51.19px pill pagefind pins off --pagefind-ui-scale. The line-height is
+       a fixed px value, so this holds whether or not the webfont has landed.
+       Re-measure if the field's padding, font-size, or that scale changes. */
+    min-height: 36.3px;
   }
 
   #help-nav-details > summary {
@@ -254,13 +377,15 @@ const nav = [
       margin-bottom: 1.5rem;
     }
 
+    /* A disclosure control, so it keeps an edge: this is the one box in the
+       sidebar and it earns it by being tappable chrome rather than content. */
     .help-nav-toggle {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0.75rem 1rem;
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1px solid var(--outline);
       border-radius: 8px;
       font-size: 0.875rem;
       font-weight: 600;
@@ -277,10 +402,10 @@ const nav = [
 
     #help-sidebar-nav {
       margin-top: 0.5rem;
-      padding: 0.5rem 0;
+      padding: 0.75rem 1rem 0.25rem;
       max-height: 70vh;
       overflow-y: auto;
-      border: 1px solid var(--border);
+      border: 1px solid var(--outline);
       border-radius: 8px;
       background: var(--surface);
     }
