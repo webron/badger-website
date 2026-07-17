@@ -2,185 +2,403 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import StoreBadges from '../components/StoreBadges.astro';
+import PositioningStrip from '../components/PositioningStrip.astro';
+import PhoneFrameBand from '../components/PhoneFrameBand.astro';
+import FeatureRow from '../components/FeatureRow.astro';
+import LedgerRow from '../components/LedgerRow.astro';
+import ArrowGlyph from '../components/ArrowGlyph.astro';
+
+const description =
+  'Badger is a workout and strength tracker for Android and iOS. As capable as the big trackers, as private as a notebook. No account needed, no subscription, works offline.';
 
 const appJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'MobileApplication',
   name: 'Badger',
   applicationCategory: 'HealthApplication',
+  // M-web-3 CHECK: operatingSystem claims iOS, but the iOS build is
+  // TestFlight-only today. Re-check this against the actual store status at
+  // launch and update it together with the CTA's iOS clause below
+  // (spec section 8 milestone M-web-3, copy worklist section 1).
   operatingSystem: 'Android, iOS',
   url: 'https://badger.fit',
   downloadUrl: 'https://play.google.com/store/apps/details?id=fit.badger.app',
-  description:
-    'Badger is a workout and strength tracker for Android and iOS. Log sets, run your programs, and track what your training is actually doing.',
+  description,
   offers: {
     '@type': 'Offer',
     price: '0',
     priceCurrency: 'USD',
   },
 };
+
+const positioning = [
+  { value: 'No account needed', detail: 'no sign-up, no login' },
+  { value: 'No subscription', detail: 'free, no caps' },
+  { value: 'Works offline', detail: 'basement-gym proof' },
+  { value: 'Your data stays yours', detail: 'on your phone, export anytime' },
+];
+
+// Copy: docs/2026-07-16-copy-worklist.md section 1 (feature ledger), verbatim.
+// Grid fills row-first, so this order is left, right, left, right down the page.
+const features = [
+  {
+    glyph: 'barbell',
+    title: 'Logging that keeps up',
+    body: 'Weight, reps, time, distance, whatever the exercise needs. Warmup sets, RPE, RIR, tempo, and per-set notes included.',
+  },
+  {
+    glyph: 'stopwatch',
+    title: 'Rest timer',
+    body: 'Auto-starts after each working set. Per-exercise defaults, live countdown on your lock screen, sound or vibration.',
+  },
+  {
+    glyph: 'program',
+    title: 'Routines and programs',
+    body: 'Build your own or start from 7 built-in programs (StrongLifts, 5/3/1, PPL, and more). Supersets, scheduled days, predefined sets.',
+  },
+  {
+    glyph: 'trend',
+    title: 'Progress you can read',
+    body: 'PR detection for every exercise type, estimated 1RM, 12+ graphs per exercise, activity heatmap, weekly volume by muscle group.',
+  },
+  {
+    glyph: 'gym',
+    title: 'Your gym, modeled',
+    body: 'Track which gym and which machine every set was done on. Machine-scoped PRs, real weight increments, attachments and grips.',
+  },
+  {
+    glyph: 'plate',
+    title: 'Plate calculator',
+    body: 'Barbell, machine, and single-lever modes. Finds the best combination from the plates your gym actually has.',
+  },
+  {
+    glyph: 'compare',
+    title: 'Planned vs. actual',
+    body: 'Finish a routine workout and the summary shows what you hit against what the plan asked for, set by set.',
+  },
+  {
+    glyph: 'import',
+    title: 'Bring your history',
+    body: 'Import from FitNotes, Strong, Hevy, or StrongLifts. Export every set to CSV or back up the full database anytime.',
+  },
+  {
+    glyph: 'wave',
+    title: 'Deload, handled',
+    body: 'Optional deload detection by time, RPE, or stalled lifts. Reduces the load for a week and never lets it drag your next session down.',
+  },
+  {
+    glyph: 'shield',
+    title: 'Backup on your terms',
+    body: 'Automatic backup to a private folder in your own Google Drive, or a plain file you keep wherever you like. Optional, off by default.',
+  },
+] as const;
+
+const shouldDo = [
+  { label: 'Unlimited routines, unlimited history', annotation: 'no free-tier caps' },
+  { label: 'Full-depth set logging', annotation: 'RPE · RIR · tempo · warmups' },
+  { label: 'PRs and graphs for every exercise type', annotation: 'est. 1RM included' },
+  { label: 'Per-gym equipment and machine tracking', annotation: 'machine-scoped PRs' },
+  { label: 'Plate calculator and warmup generator', annotation: 'your plates, your increments' },
+  { label: 'Imports from four other trackers', annotation: 'FitNotes · Strong · Hevy · StrongLifts' },
+];
+
+const shouldnt = [
+  { label: 'No account needed', annotation: 'no sign-up, no login, no email' },
+  { label: 'No subscription', annotation: 'free, nothing paywalled' },
+  { label: 'No ads, no data collection', annotation: "your training is nobody's product" },
+  { label: 'No connection needed', annotation: 'fully offline, syncs with nothing' },
+  { label: 'No lock-in', annotation: 'export everything, anytime' },
+  { label: 'No streak guilt', annotation: 'no XP, no badges, no nagging' },
+];
 ---
 
 <BaseLayout
   title="Badger"
   fullTitle="Badger - Workout & Strength Tracker for Android & iOS"
-  description="Badger is a workout and strength tracker for Android and iOS. Log sets, run your programs, and track what your training is actually doing. Built for lifters who pay attention to the details."
+  description={description}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(appJsonLd)} />
 
   <Header currentPath={Astro.url.pathname} />
 
-  <!-- Hero -->
-  <section style="max-width:1100px;margin:0 auto;padding:5rem 1.5rem 4rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem;">
-    <img src={`/assets/badger_logo_stacked.svg`} alt="Badger" width="120" style="display:block;" />
+  <main>
+    <section class="hero">
+      <span class="kicker">Workout &amp; strength tracker &middot; Android &amp; iOS</span>
 
-    <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:700;margin:0;line-height:1.15;color:var(--text);">
-      A workout tracker for lifters who pay attention.
-    </h1>
+      <!-- The space before the break is collapsed on screen but keeps the two
+           sentences separated in the text content, so the heading does not read
+           as "trackers.As private" to a screen reader or a crawler. -->
+      <h1>As capable as the big trackers. <br />As private as a notebook.</h1>
 
-    <p style="font-size:1.1rem;color:var(--text-secondary);max-width:520px;margin:0;line-height:1.6;">
-      Log sets, run your programs, and see what your training is actually doing. Built for lifters who pay attention to the details.
-    </p>
-
-    <div id="download" style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;align-items:center;margin-top:0.5rem;">
-      <a
-        href="https://play.google.com/store/apps/details?id=fit.badger.app"
-        aria-label="Get it on Google Play"
-        style="display:inline-flex;"
-      >
-        <img src={`/assets/badges/google-play-badge.png`} alt="Get it on Google Play" height="60" style="display:block;height:60px;width:auto;" />
-      </a>
-      <a
-        href="https://testflight.apple.com/join/wqxnbujx"
-        aria-label="Try the iOS beta on TestFlight"
-        style="display:inline-flex;align-items:center;justify-content:center;width:155px;height:60px;text-decoration:none;box-sizing:border-box;"
-      >
-        <span style="display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;width:135px;height:40px;background:#000;border:1px solid rgba(255,255,255,0.3);border-radius:6px;color:#fff;box-sizing:border-box;">
-          <svg width="17" height="20" viewBox="0 0 384 512" fill="#fff" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-          <span style="display:flex;flex-direction:column;line-height:1.05;text-align:left;">
-            <span style="font-size:0.5rem;letter-spacing:0.3px;opacity:0.85;">TRY THE</span>
-            <span style="font-size:0.9rem;font-weight:600;">iOS beta</span>
-          </span>
-        </span>
-      </a>
-    </div>
-    <div style="display:flex;justify-content:center;margin-top:0.85rem;">
-      <a
-        href={`/help/getting-started`}
-        style="display:inline-flex;align-items:center;gap:0.5rem;color:var(--text-secondary);font-weight:500;padding:0.5rem 0.75rem;text-decoration:none;font-size:0.95rem;"
-      >
-        Read the docs →
-      </a>
-    </div>
-  </section>
-
-  <!-- Screenshots -->
-  <section style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;overflow:hidden;">
-    <div style="display:flex;justify-content:center;align-items:flex-end;gap:1.5rem;flex-wrap:nowrap;">
-      {[
-        { src: '/assets/screenshots/badger-1-today.png', alt: 'Today screen showing active workout', scale: '0.88' },
-        { src: '/assets/screenshots/badger-2-training.png', alt: 'Training screen with live set logging', scale: '1' },
-        { src: '/assets/screenshots/badger-6-progress-exercise.png', alt: 'Progress screen with exercise graph and PRs', scale: '0.88' },
-      ].map(s => (
-        <div style={`flex:0 0 auto;width:clamp(160px,22vw,240px);transform:scale(${s.scale});transform-origin:bottom center;`}>
-          <div style="border-radius:36px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.45);border:3px solid rgba(255,255,255,0.08);background:#111;">
-            <img
-              src={s.src}
-              alt={s.alt}
-              width="1080"
-              height="2400"
-              style="display:block;width:100%;height:auto;"
-              loading="lazy"
-              fetchpriority="low"
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;">
-    <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 2.5rem;color:var(--text);text-align:center;">What's in the app</h2>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">
-      {[
-        {
-          title: 'Detailed logging',
-          body: 'Weight, reps, time, distance - whatever the exercise needs. Warmup sets, RPE, RIR, and tempo tracking included.',
-        },
-        {
-          title: 'Rest timer',
-          body: 'Auto-starts after each working set. Per-exercise defaults, per-session overrides, and sound or vibration alerts.',
-        },
-        {
-          title: 'Routines & programs',
-          body: 'Build your own programs or use one of the 7 built-in ones (StrongLifts, 5/3/1, PPL, and more). Supersets, scheduled days, and predefined sets included.',
-        },
-        {
-          title: 'Progress tracking',
-          body: 'Estimated 1RM, PR detection, 12+ graph types per exercise, 26-week activity heatmap, and weekly volume by muscle group.',
-        },
-        {
-          title: 'Gym & equipment',
-          body: 'Track which gym and machine you used for each exercise. Machine-scoped PRs, attachment defaults, and grip type tracking.',
-        },
-        {
-          title: 'Plate calculator',
-          body: 'Barbell, machine, and single-lever modes. Finds the best plate combination from your available plates automatically.',
-        },
-        {
-          title: 'Planned vs. actual',
-          body: 'When you finish a routine workout, the summary shows what you hit against what the routine asked for - set by set, with wins highlighted.',
-        },
-        {
-          title: 'Bring your history',
-          body: 'Import from FitNotes, Strong, or Hevy. Export to CSV or back up the full database anytime.',
-        },
-        {
-          title: 'Deload detection',
-          body: 'Optional automatic deload scheduling. Detects fatigue via time, RPE/RIR, or stalled performance, and reduces weights when you start your next session.',
-        },
-      ].map(f => (
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;">
-          <h3 style="font-size:1rem;font-weight:600;margin:0 0 0.5rem;color:var(--text);">{f.title}</h3>
-          <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;line-height:1.6;">{f.body}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section style="max-width:1100px;margin:0 auto;padding:0 1.5rem 5rem;text-align:center;">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3rem 2rem;">
-      <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 0.75rem;color:var(--text);">Ready to start?</h2>
-      <p style="color:var(--text-secondary);margin:0 0 1.5rem;max-width:400px;display:inline-block;line-height:1.6;">
-        Badger is free on Google Play, with an iOS beta now open in TestFlight.
+      <p class="hero-sub">
+        Badger logs your sets, runs your programs, and tracks your PRs, and it keeps all of it on
+        your phone. No account needed, no subscription, no ads.
       </p>
-      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;align-items:center;">
-        <a
-          href="https://play.google.com/store/apps/details?id=fit.badger.app"
-          aria-label="Get it on Google Play"
-          style="display:inline-flex;"
-        >
-          <img src={`/assets/badges/google-play-badge.png`} alt="Get it on Google Play" height="60" style="display:block;height:60px;width:auto;" />
-        </a>
-        <a
-          href="https://testflight.apple.com/join/wqxnbujx"
-          aria-label="Try the iOS beta on TestFlight"
-          style="display:inline-flex;align-items:center;justify-content:center;width:155px;height:60px;text-decoration:none;box-sizing:border-box;"
-        >
-          <span style="display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;width:135px;height:40px;background:#000;border:1px solid rgba(255,255,255,0.3);border-radius:6px;color:#fff;box-sizing:border-box;">
-            <svg width="17" height="20" viewBox="0 0 384 512" fill="#fff" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-            <span style="display:flex;flex-direction:column;line-height:1.05;text-align:left;">
-              <span style="font-size:0.5rem;letter-spacing:0.3px;opacity:0.85;">TRY THE</span>
-              <span style="font-size:0.9rem;font-weight:600;">iOS beta</span>
-            </span>
-          </span>
-        </a>
+
+      <div class="hero-badges">
+        <StoreBadges id="download" />
       </div>
-    </div>
-  </section>
+
+      <a class="docs-link" href="/help/getting-started">
+        Read the docs <ArrowGlyph />
+      </a>
+
+      <PositioningStrip items={positioning} />
+    </section>
+
+    <PhoneFrameBand />
+
+    <section class="block">
+      <h2 class="caps section-label">What's in the app</h2>
+      <div class="rule-ink section-rule"></div>
+
+      <ul class="features">
+        {features.map((f) => <FeatureRow glyph={f.glyph} title={f.title} body={f.body} />)}
+      </ul>
+    </section>
+
+    <section class="block">
+      <div class="spread">
+        <div class="spread-col">
+          <div class="rule-ink"></div>
+          <h2>Everything a tracker should do</h2>
+          <ul>
+            {shouldDo.map((r) => <LedgerRow label={r.label} annotation={r.annotation} />)}
+          </ul>
+        </div>
+
+        <div class="spread-col">
+          <div class="rule-ink"></div>
+          <h2>Nothing a tracker shouldn't</h2>
+          <ul>
+            {shouldnt.map((r) => <LedgerRow label={r.label} annotation={r.annotation} />)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="promise-teaser">
+      <p class="teaser-line">Your data is yours. That is the whole business model.</p>
+      <a class="teaser-link" href="/promise">
+        Read the Badger promise <ArrowGlyph />
+      </a>
+    </section>
+
+    <section class="cta">
+      <h2>Ready to start?</h2>
+      <p>Badger is free on Google Play, with an iOS beta open in TestFlight.</p>
+      <StoreBadges />
+    </section>
+  </main>
 
   <Footer />
 </BaseLayout>
+
+<style>
+  /* ---- hero ---- */
+
+  .hero {
+    padding: 68px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .hero h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(28px, 4.4vw, 44px);
+    line-height: 1.18;
+    max-width: 30ch;
+    color: var(--text);
+  }
+
+  .hero-sub {
+    margin: 0;
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 58ch;
+  }
+
+  /* A wrapper this page owns, rather than a class handed to StoreBadges: Astro
+     does not extend a parent's style scope onto a child component's root, so a
+     scoped .store-badges rule from here would never match. */
+  .hero-badges {
+    margin-top: 6px;
+  }
+
+  .docs-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .docs-link:hover {
+    color: var(--text);
+    text-decoration: underline;
+  }
+
+  /* ---- sections ---- */
+
+  .block {
+    padding: 60px 24px 0;
+  }
+
+  .section-label {
+    display: block;
+    max-width: 1012px;
+    margin: 0 auto 6px;
+  }
+
+  .section-rule {
+    max-width: 1012px;
+    margin: 0 auto;
+  }
+
+  /* ---- feature ledger ---- */
+
+  .features {
+    max-width: 1012px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 56px;
+  }
+
+  /* ---- capable / shouldn't spread ---- */
+
+  .spread {
+    max-width: 1012px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+  }
+
+  .spread h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--text);
+    padding: 14px 0 10px;
+  }
+
+  .spread ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* ---- promise teaser ---- */
+
+  .promise-teaser {
+    text-align: center;
+    padding: 68px 24px 4px;
+  }
+
+  .teaser-line {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--text);
+  }
+
+  .teaser-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-ink);
+    text-decoration: none;
+  }
+
+  .teaser-link:hover {
+    text-decoration: underline;
+  }
+
+  /* ---- CTA ---- */
+
+  .cta {
+    max-width: 1012px;
+    margin: 64px auto 0;
+    padding: 28px 24px 8px;
+    border-top: 2px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .cta h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--text);
+  }
+
+  .cta p {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--text-secondary);
+    max-width: 46ch;
+  }
+
+  /* The spread's widest pair ("Plate calculator and warmup generator" against
+     "your plates, your increments") needs ~430px to hold one line, so two
+     columns only earn their keep from about 1000px up. Below that they are
+     narrower than the content and the labels shred into three ragged lines,
+     which is what the mockup does at tablet width. One wide column instead:
+     still a ledger, still label-left annotation-right, just readable. */
+  @media (max-width: 1000px) {
+    .spread {
+      grid-template-columns: 1fr;
+      gap: 34px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 44px 20px 32px;
+    }
+
+    .block {
+      padding: 52px 20px 0;
+    }
+
+    .features {
+      grid-template-columns: 1fr;
+      column-gap: 0;
+    }
+
+    .promise-teaser {
+      padding: 56px 20px 4px;
+    }
+
+    .teaser-line {
+      font-size: 20px;
+    }
+
+    .cta {
+      margin-top: 52px;
+      padding: 28px 20px 8px;
+    }
+  }
+</style>

@@ -1,0 +1,51 @@
+---
+import FeatureGlyph from './FeatureGlyph.astro';
+import type { GlyphName } from './feature-glyphs';
+
+/**
+ * One row of the feature ledger: leading line glyph, title, body. Hairline
+ * bottom rule, no box. The glyph is the constant leading mark, same as the
+ * app's exercise ledger rows.
+ */
+interface Props {
+  glyph: GlyphName;
+  title: string;
+  body: string;
+}
+
+const { glyph, title, body } = Astro.props;
+---
+
+<li class="feature-row">
+  <FeatureGlyph name={glyph} />
+  <div>
+    <h3>{title}</h3>
+    <p>{body}</p>
+  </div>
+</li>
+
+<style>
+  .feature-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--hair);
+    /* Accent as an icon takes the ink variant, never raw petrol. */
+    color: var(--accent-ink);
+  }
+
+  .feature-row h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .feature-row p {
+    margin: 2px 0 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+</style>
