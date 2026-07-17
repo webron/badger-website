@@ -54,12 +54,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The "Add warmup sets" option becomes "Replace warmup sets" once warmup sets already exist for that exercise. If a routine already defines warmup sets, those are used as-is - the generator only fills the gap when none are defined.</p>
 
   <h2>Intensity tracking (RPE & RIR)</h2>
-  <p>Two optional fields appear below the main inputs:</p>
+  <p>Two optional fields sit under <strong>Set details</strong>, below the main inputs:</p>
   <ul>
     <li><strong>RPE (Rate of Perceived Exertion)</strong> - How hard did the set feel, on a scale of 1-10. 10 is a true max effort.</li>
     <li><strong>RIR (Reps in Reserve)</strong> - How many more reps could you have done, 0-5. 0 means you hit failure.</li>
   </ul>
   <p>Both are optional and can be used independently. They're hidden when the warmup toggle is active. Logged values appear as small badges on each set row.</p>
+
+  <h2 id="set-details">Collapsing the set details</h2>
+  <p>The <strong>Set details</strong> section holds the controls you reach for less often: the warmup toggle and the RPE/RIR steppers. Tap its header to collapse it, and the set recorder shrinks to just weight, reps and the complete check.</p>
+  <p>It starts expanded, so nothing is hidden until you choose to hide it. Collapse it once and it stays collapsed everywhere, for every exercise, until you open it again. When it's collapsed, the header still spells out anything that's in effect behind it - for example "Warm-up" or "RPE 8" - so a set never saves with something you can't see.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
   <p>The rest timer shows as a chip near the top of the training screen. While running, the chip counts down to zero, then plays a sound and/or vibration (configurable in Settings). Tap the chip to open the rest timer sheet.</p>
