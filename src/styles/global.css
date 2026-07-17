@@ -8,7 +8,10 @@
    ========================================================================= */
 
 @theme {
-  --font-sans: 'Exo 2', 'Exo 2 Fallback', system-ui, sans-serif;
+  /* 'Journal Arrows' sits between Exo 2 and its metric fallback purely to supply
+     U+2192. See the @font-face below for why it is a separate family rather than
+     plain 'Literata' in this stack. */
+  --font-sans: 'Exo 2', 'Journal Arrows', 'Exo 2 Fallback', system-ui, sans-serif;
   --font-serif: 'Literata', 'Literata Fallback', Georgia, serif;
 }
 
@@ -40,6 +43,28 @@
   src: url('/fonts/literata-latin-var-italic.woff2') format('woff2');
   font-weight: 200 900;
   font-style: italic;
+  font-display: swap;
+}
+
+/* Arrows for body copy. Exo 2 carries no U+2192 and the help pages use
+   "Settings -> Training" notation 65 times, so without a fallback that glyph
+   resolves to whatever the device happens to have (a metric-adjusted Arial on
+   macOS, nothing at all somewhere else). Literata does carry it.
+   The reason this is its own family rather than 'Literata' dropped into the
+   sans stack: a plain 'Literata' entry there is eligible for LATIN too, so any
+   moment Exo 2 is unavailable (still loading, fetch failed, blocked) the entire
+   site would render its body copy in the serif. That contradicts the house rule
+   that serif never sets body copy, and it swaps in metrics the 'Exo 2 Fallback'
+   face was tuned to avoid, which puts CLS at risk. Restricting the family by
+   unicode-range makes the intent literal: this face can only ever draw arrows.
+   Same file as the Literata above, so it costs no extra bytes: the URL is
+   already preloaded and the fetch is shared. */
+@font-face {
+  font-family: 'Journal Arrows';
+  src: url('/fonts/literata-latin-var.woff2') format('woff2');
+  unicode-range: U+2190-2193;
+  font-weight: 200 900;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -186,18 +211,10 @@
   --error: #B03A2E;
 }
 
-/* Compatibility aliases for pages not yet restyled (removed in M-web-2 as each
-   page is converted). Accent-as-text maps to --accent-ink so inherited pages
-   keep AA contrast; raw --accent stays reserved for fills. */
-:root {
-  --surface-alt: var(--panel);
-  --border: var(--outline);
-  --border-subtle: var(--hair);
-  --color-border: var(--outline);
-  --color-accent: var(--accent-ink);
-  --color-accent-light: var(--accent-ink);
-  --color-accent-dim: var(--accent-wash);
-}
+/* The M-web-0 compatibility aliases (--border, --color-accent and friends) are
+   gone: M-web-2 converted the last pages that read them, which is exactly when
+   M-web-0 scheduled their removal. Every rule now names a real token, so there
+   is one spelling per colour and no alias can drift from what it aliases. */
 
 /* ---------------------------------------------------------------------------
    Base
@@ -333,29 +350,35 @@ a:hover {
 
 .prose h1 {
   font-family: var(--font-serif);
-  font-size: 1.875rem;
+  font-size: 30px;
   font-weight: 600;
   line-height: 1.2;
-  margin: 0 0 1.5rem;
+  /* The mockup pairs the title with a 14px muted page-subtitle and tightens this
+     to 6px. No real page has a subtitle: they all open straight into body copy,
+     and inventing 17 of them is copy work, not a restyle. So the title keeps the
+     breathing room that a paragraph needs under it. */
+  margin: 0 0 1.25rem;
   color: var(--text);
 }
 
+/* The ledger section top. */
 .prose h2 {
   font-family: var(--font-serif);
-  font-size: 1.375rem;
+  font-size: 20px;
   font-weight: 600;
   line-height: 1.25;
-  margin: 2.5rem 0 1rem;
-  padding-top: 0.875rem;
+  margin: 38px 0 10px;
+  padding-top: 14px;
   border-top: 2px solid var(--ink);
   color: var(--text);
 }
 
 .prose h3 {
   font-family: var(--font-serif);
-  font-size: 1.125rem;
+  font-size: 17px;
   font-weight: 600;
-  margin: 2rem 0 0.75rem;
+  line-height: 1.3;
+  margin: 26px 0 8px;
   color: var(--text);
 }
 
@@ -369,21 +392,39 @@ a:hover {
 }
 
 .prose p {
-  margin: 0 0 1rem;
-  font-size: 0.9375rem;
+  margin: 0 0 14px;
+  font-size: 14.5px;
   line-height: 1.7;
   color: var(--text-secondary);
 }
 
+/* Tailwind's preflight strips list markers globally, so prose lists have been
+   rendering as unlabelled indented paragraphs, which is what a run of "This Week
+   - A compact card..." items reads as. The approved mockup shows ordinary
+   bullets. Put them back for prose only; the ledger lists elsewhere opt out
+   individually and on purpose. */
 .prose ul,
 .prose ol {
-  margin: 0 0 1rem 1.25rem;
-  font-size: 0.9375rem;
+  margin: 0 0 14px 20px;
+  padding: 0;
+  font-size: 14.5px;
   color: var(--text-secondary);
 }
 
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li::marker {
+  color: var(--text-muted);
+}
+
 .prose li {
-  margin-bottom: 0.4rem;
+  margin-bottom: 5px;
   line-height: 1.65;
 }
 
@@ -398,7 +439,7 @@ a:hover {
   background: var(--panel);
   border: 1px solid var(--hair);
   border-radius: 4px;
-  padding: 0.1em 0.35em;
+  padding: 1px 5px;
   color: var(--text);
 }
 
@@ -472,11 +513,23 @@ a:hover {
   border: 1px solid var(--hair);
   border-left: 3px solid var(--accent);
   border-radius: 0 6px 6px 0;
-  padding: 0.75rem 1rem;
-  margin: 1.25rem 0;
-  font-size: 0.875rem;
+  padding: 12px 16px;
+  margin: 20px 0;
+  font-size: 13.5px;
   line-height: 1.65;
   color: var(--text-secondary);
+}
+
+/* Callouts sit inside .prose, whose paragraph rules would otherwise put a
+   trailing 14px gap inside the box. */
+.callout p {
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+}
+
+.callout p + p {
+  margin-top: 0.6rem;
 }
 
 .callout strong {
