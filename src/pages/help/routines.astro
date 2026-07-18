@@ -47,12 +47,25 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Weight</strong> - A specific value, or "Copy from previous" to use the weight from your most recent session.</li>
     <li><strong>Reps</strong> - A specific value, or "Copy from previous".</li>
+    <li><strong>Rep range</strong> - An optional top end, so the target reads "8-10" instead of "8". See below.</li>
     <li><strong>Warmup flag</strong> - Mark the set as a warmup.</li>
   </ul>
   <p>Sets can be reordered by dragging.</p>
 
+  <h3 id="rep-ranges">Rep ranges</h3>
+  <p>A rep target can be a single number or a range. Tap <strong>+ rep range</strong> under a working set and set the top end - the target then reads "8-10" everywhere it appears: in the editor, on the routine log preview, above the set recorder while you train, and on the workout summary.</p>
+  <p>The lower number is the one you have to hit. Anything from 8 to 10 reps on an "8-10" set counts as meeting the plan, and so does anything above 10. Below 8 is under plan, and the summary marks it with a small caret so you can see which sets came up short. It's a note, not a telling-off - nothing turns red.</p>
+  <p>Warmup sets can't have ranges. A warmup is a fixed rung on the way up, not a target to push against.</p>
+  <p>If you have no use for ranges, ignore the affordance and nothing changes. Every existing routine keeps exact targets, and a set with no range behaves exactly as it always has.</p>
+
+  <h3 id="double-progression">Double progression</h3>
+  <p>Ranges are what make double progression work: you add reps until you reach the top of the range, then you add weight and drop back to the bottom.</p>
+  <p>Badger follows that. While you're still working up through the range, the suggestion on the training screen reads <strong>"Work toward 10 reps"</strong> and no weight increase is offered. Once you've hit the top of the range on every working set, across as many sessions as your progression setting requires, it switches back to the usual weight suggestion.</p>
+  <p>Exercises with a plain rep target (no range) are unaffected - they use the same weight suggestion they always did.</p>
+
   <h3>Quick edit</h3>
   <p>Each routine day card has a <strong>Quick edit</strong> button (next to "Day options") that opens a compact batch editor. Every exercise on the day shows on one screen with inline fields for its first working set - weight and reps, or whichever fields apply to the exercise type (distance, duration, etc.). Change a value and submit to save. Useful after a deload, or when bumping every exercise by a fixed amount. Tap the exercise name to jump to its full predefined-sets editor.</p>
+  <p>Quick edit shows a rep range read-only ("target 8-10 reps") - editing the range itself stays in the full editor. If you raise the rep number past the top of the range, the range is dropped and the set goes back to an exact target.</p>
 
   <h3>Per-exercise overrides in routines</h3>
   <p>Each routine exercise also has override settings separate from the predefined sets:</p>

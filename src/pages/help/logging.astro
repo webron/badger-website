@@ -60,10 +60,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>RIR (Reps in Reserve)</strong> - How many more reps could you have done, 0-5. 0 means you hit failure.</li>
   </ul>
   <p>Both are optional and can be used independently. They're hidden when the warmup toggle is active. Logged values appear as small badges on each set row.</p>
+  <p>Next to the steppers there's a <strong>To failure</strong> chip. Tapping it sets RIR to 0 in one tap instead of three, and tapping it again clears it. It's a shortcut for the RIR stepper, nothing more - the two always agree because they write the same value.</p>
+
+  <h2 id="missed-vs-skipped">Coming up short vs skipping a set</h2>
+  <p>These are two different things and Badger treats them differently.</p>
+  <p>If you were aiming for 8 and got 6, <strong>log the 6</strong>. It's a real set: it counts toward your volume, it shows in your history, and it feeds plateau and deload detection. On a routine workout the summary will show it as under plan, which is exactly the information you want later when you're wondering why progress stalled.</p>
+  <p><strong>Skip</strong> is for a set you didn't do at all - you ran out of time, the rack was taken, something hurt. A skipped set is left out of your history and out of the detection features, because nothing happened to measure.</p>
+  <p>The short version: if you lifted, log what you lifted. Only skip what you genuinely didn't do.</p>
+
+  <h2 id="plan-reference">Seeing your target while you log</h2>
+  <p>When a workout was started from a routine day, a line above the set recorder shows what the plan asks for and what you did last time - for example <strong>"Plan 8-10 · Last 8 @ 80 kg"</strong>. It follows along as you work through the sets, so you can always check the number you're typing against both.</p>
+  <p>Workouts that didn't come from a routine have no plan to show, so the line doesn't appear.</p>
 
   <h2 id="set-details">Collapsing the set details</h2>
-  <p>The <strong>Set details</strong> section holds the controls you reach for less often: the warmup toggle and the RPE/RIR steppers. Tap its header to collapse it, and the set recorder shrinks to just weight, reps and the complete check.</p>
-  <p>It starts expanded, so nothing is hidden until you choose to hide it. Collapse it once and it stays collapsed everywhere, for every exercise, until you open it again. When it's collapsed, the header still spells out anything that's in effect behind it - for example "Warm-up" or "RPE 8" - so a set never saves with something you can't see.</p>
+  <p>The <strong>Set details</strong> section holds the controls you reach for less often: the warmup toggle, the RPE/RIR steppers and the To failure chip. Tap its header to collapse it, and the set recorder shrinks to just weight, reps and the complete check.</p>
+  <p>It starts expanded, so nothing is hidden until you choose to hide it. Collapse it once and it stays collapsed everywhere, for every exercise, until you open it again. When it's collapsed, the header still spells out anything that's in effect behind it - for example "Warm-up", "RPE 8" or "To failure" - so a set never saves with something you can't see.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
   <p>The rest timer shows as a chip near the top of the training screen. While running, the chip counts down to zero, then plays a sound and/or vibration (configurable in Settings). Tap the chip to open the rest timer sheet.</p>
