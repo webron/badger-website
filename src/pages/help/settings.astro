@@ -5,65 +5,62 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Settings & Data" description="Settings overview, backup, restore, and data export in Badger.">
   <h1>Settings & Data</h1>
 
-  <p>Go to <strong>You → Settings</strong> to access all preferences. The <strong>You → Data &amp; backup</strong> shortcut opens the same screen and scrolls straight to the Data section.</p>
+  <p>Go to <strong>You → Settings</strong> to access all preferences. The <strong>You → Data &amp; backup</strong> shortcut opens the same screen and scrolls straight to the Your data section.</p>
+
+  <p>Settings is grouped into four sections by what you are trying to do: <a href={`#logging`}>Logging</a>, <a href={`#coaching`}>Coaching</a>, <a href={`#app`}>App</a>, and <a href={`#data`}>Your data</a>.</p>
 
   <hr />
 
-  <h2>General</h2>
+  <h2 id="logging">Logging</h2>
+  <p>Everything about recording a set and the timers that run while you train.</p>
   <ul>
-    <li><strong>Theme</strong> - Light, Dark, or System (follows your device setting).</li>
-    <li><strong>Accent color</strong> - Choose from a preset palette or pick a custom color. The accent applies globally throughout the app.</li>
     <li><strong>Unit system</strong> - Kilograms or pounds. This is the default for all exercises; individual exercises can override it.</li>
-    <li><strong>Calendar week start</strong> - Monday, Sunday, or Saturday.</li>
     <li><strong>Default weight increment</strong> - Used by the progressive overload suggestion and stepper buttons when no per-exercise increment is set.</li>
-    <li><strong>Default history view</strong> - Whether the calendar on the home screen defaults to list or calendar view.</li>
-  </ul>
-
-  <h2>Training</h2>
-  <ul>
     <li><strong>Track personal records</strong> - Toggle PR detection and badges. Disable if you prefer not to see PR notifications.</li>
     <li><strong>Auto-select next set</strong> - When opening an exercise, automatically highlight the next incomplete set.</li>
     <li><strong>Auto-advance to next exercise</strong> - After completing or skipping the last set of an exercise, automatically navigate to the next one.</li>
-    <li><strong>Keep screen on</strong> - Prevents your device from sleeping during a workout.</li>
-    <li><strong>Workout notification</strong> - Android only. Shows the current exercise and your next set target in the notification bar while a workout is running, so you can check it from the lock screen. See <a href={`/help/logging#workout-notification`}>Workout notification</a>.</li>
-    <li><strong>Haptic feedback</strong> - Vibration on interactions and timer events.</li>
-    <li><strong>Muscle balance warnings</strong> - Toggle the muscle balance warning system on or off.</li>
+    <li><strong>Warm-up style</strong> - The default style for the warm-up generator: <strong>Percent</strong> (a ramp as a share of your working weight) or <strong>Plates</strong> (evenly spaced, easy-to-load weights). See <a href={`/help/logging#set-types`}>Warmup sets</a>.</li>
+    <li><strong>Default warm-up sets</strong> - How many warm-up sets to generate (1-6). Fewer sets means bigger jumps to your working weight. Both warm-up settings can be overridden per exercise on the exercise edit screen.</li>
+    <li><strong>Default rest time</strong> - Duration used when no exercise-specific or session override is set (30s-300s).</li>
+    <li><strong>Default warmup rest</strong> - Duration for warmup sets (15s-120s).</li>
+    <li><strong>Rest timer auto-start</strong> - Automatically starts the rest timer when you log a working set.</li>
+    <li><strong>Rest timer sound</strong> - Play a sound when the timer ends. When enabled, choose from several preset sounds (with preview).</li>
+    <li><strong>Rest timer vibration</strong> - Vibrate when the timer ends.</li>
+    <li><strong>Workout timer auto-start</strong> - Automatically starts the elapsed workout timer when you complete your first set.</li>
+    <li><strong>Workout timer auto-stop</strong> - Stops the elapsed timer when you complete the last set of the session.</li>
+  </ul>
+
+  <h2 id="coaching">Coaching</h2>
+  <p>The features that look at your training and suggest something. All of them are optional, and several stay off until you turn them on.</p>
+  <ul>
     <li><strong>Progressive overload trigger</strong> - How many consecutive sessions with all sets complete before a weight increase is suggested (1-10).</li>
+    <li><strong>Auto-progress routine weights</strong> - Offer to write heavier loads you hit back into the routine plan. See <a href={`/help/logging#auto-progress`}>Auto-progress routine weights</a>.</li>
+    <li><strong>Muscle balance warnings</strong> - Toggle the muscle balance warning system on or off. When it's on, a chip row below it lets you mute individual categories you don't want flagged.</li>
     <li><strong>Plateau detection</strong> - Opens the plateau detection screen. See <a href={`/help/progress#plateau-detection`}>Plateau detection</a>.</li>
     <li><strong>Deload</strong> - Opens the deload configuration screen. See <a href={`/help/tools#deload`}>Deload</a>.</li>
+  </ul>
+  <p>Plateau detection and deload show their current state on the right of the row, for example "On - Balanced" or "Off", so you can see how they are set without opening them.</p>
+
+  <h2 id="app">App</h2>
+  <p>How Badger looks, what it notifies you about, and what it does to your phone while you train.</p>
+  <ul>
+    <li><strong>Theme</strong> - Light, Dark, or System (follows your device setting).</li>
+    <li><strong>Accent color</strong> - Choose from a preset palette or pick a custom color. The accent applies globally throughout the app.</li>
+    <li><strong>Calendar week start</strong> - Monday, Sunday, or Saturday.</li>
+    <li><strong>Default history view</strong> - Whether the calendar on the home screen defaults to list or calendar view.</li>
+    <li><strong>Keep screen on</strong> - Prevents your device from sleeping during a workout.</li>
+    <li><strong>Haptic feedback</strong> - Vibration on interactions and timer events.</li>
+    <li><strong>Workout notification</strong> - Android only. Shows the current exercise and your next set target in the notification bar while a workout is running, so you can check it from the lock screen. See <a href={`/help/logging#workout-notification`}>Workout notification</a>.</li>
+    <li><strong>Workout reminders</strong> - Schedule a daily notification to remind you to train. Configure the time, how many minutes before to notify, and which days to send it.</li>
+    <li><strong>End of workout summary</strong> - Choose what the completion sheet shows when you finish a session.</li>
   </ul>
 
   <h2 id="training-notes">Training notes</h2>
   <p>Under <strong>You → Training → Training notes</strong> is a private page for your own context - goals, injuries, training history, and anything else worth remembering. It's one free-text page; your notes save automatically as you type, so there's no save button. The text stays on your device and is never required.</p>
   <p>Training notes are included in your <a href={`#backup`}>settings backup</a>, so they carry across to a new device when you restore. They are <strong>not</strong> shared when you export data or share individual routines. (Program-specific notes belong on the routine itself - see <a href={`/help/routines#routine-notes`}>Routine notes</a>.)</p>
 
-  <h2>Warm-up sets</h2>
-  <ul>
-    <li><strong>Warm-up style</strong> - The default style for the warm-up generator: <strong>Percent</strong> (a ramp as a share of your working weight) or <strong>Plates</strong> (evenly spaced, easy-to-load weights). See <a href={`/help/logging#set-types`}>Warmup sets</a>.</li>
-    <li><strong>Default warm-up sets</strong> - How many warm-up sets to generate (1-6). Fewer sets means bigger jumps to your working weight. Both settings can be overridden per exercise on the exercise edit screen.</li>
-  </ul>
-
-  <h2>Rest timer</h2>
-  <ul>
-    <li><strong>Default rest time</strong> - Duration used when no exercise-specific or session override is set (30s-300s).</li>
-    <li><strong>Default warmup rest</strong> - Duration for warmup sets (15s-120s).</li>
-    <li><strong>Auto-start on set completion</strong> - Automatically starts the rest timer when you log a working set.</li>
-    <li><strong>Sound</strong> - Play a sound when the timer ends. When enabled, choose from several preset sounds (with preview).</li>
-    <li><strong>Vibration</strong> - Vibrate when the timer ends.</li>
-  </ul>
-
-  <h2>Workout timer</h2>
-  <ul>
-    <li><strong>Auto-start on first set</strong> - Automatically starts the elapsed workout timer when you log your first set.</li>
-  </ul>
-
-  <h2>Notifications</h2>
-  <ul>
-    <li><strong>Workout reminders</strong> - Schedule a daily notification to remind you to train. Configure the time, how many minutes before to notify, and which days to send it.</li>
-  </ul>
-
-  <h2 id="data">Data &amp; backup</h2>
-  <p>All the rows below live in the <strong>Data</strong> section of Settings. Tap <strong>You → Data &amp; backup</strong> to jump straight to it.</p>
+  <h2 id="data">Your data</h2>
+  <p>All the rows below live in the <strong>Your data</strong> section at the bottom of Settings. Tap <strong>You → Data &amp; backup</strong> to jump straight to it.</p>
 
   <h3 id="backup">Backup &amp; restore</h3>
   <p>Your workout data is stored locally in a SQLite database. You should back it up regularly.</p>
@@ -73,17 +70,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Restore previous data</strong> - Just before any restore overwrites your data, Badger automatically saves a one-off snapshot of what was there. If a restore turns out to be a mistake, a <strong>Restore previous data</strong> option appears under Restore so you can roll back to that snapshot. Restart the app afterwards.</li>
   </ul>
 
+  <h3 id="cloud-backup">Cloud backup</h3>
+  <p><strong>Cloud backup</strong> opens its own screen where you can turn on automatic backup to your own Google Drive. It is off unless you enable it. See <a href={`/help/phone-migration`}>Moving to a new phone</a> for how it fits into a device switch.</p>
+
   <h3 id="export">Exporting data</h3>
   <p><strong>Export workout data</strong> generates a CSV file with one row per logged set, including date, exercise name, weight, reps, duration, warmup flag, RPE, RIR, and more. The file is shared via the system share sheet.</p>
 
-  <h3>Debug logs</h3>
-  <p><strong>Export debug logs</strong> shares a plain-text file containing the app's recent activity log. The log captures the last ~500 lines written during the current session - useful for diagnosing unexpected behaviour or reporting bugs to support. It does not contain personal health or workout data.</p>
-
-  <h3>Deleting data</h3>
-  <p><strong>Delete all workout history</strong> - Permanently deletes all workouts and sets. A confirmation dialog is required. This does not delete exercises or routines.</p>
-
   <h3 id="importing">Importing workout history</h3>
-  <p>Badger can import your full history from FitNotes, Strong, Hevy, and Stronglifts. Each option appears in the same Data section:</p>
+  <p>Badger can import your full history from FitNotes, Strong, Hevy, and Stronglifts. Each option appears in the same Your data section:</p>
   <ul>
     <li><strong>Import from FitNotes</strong> - Select a <code>.fitnotes</code> backup file.</li>
     <li><strong>Import from Strong</strong> - Select a Strong CSV export. Weight unit is detected automatically from the column header.</li>
@@ -93,4 +87,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Imported files are capped at 10&nbsp;MB - comfortably larger than any real export, even for many years of training. If you see a "file is too large" message, the file is almost certainly corrupted; try re-exporting it from the source app.</p>
   <p><strong>Avoid importing the same file twice.</strong> The preview warns you when some of the import's dates already have workouts - importing again adds those sets a second time (duplicating them on those days) rather than replacing them.</p>
   <p>See <a href={`/help/getting-started#importing`}>Getting started → Importing from another app</a> for the full walkthrough.</p>
+
+  <h3>Debug logs</h3>
+  <p><strong>Export debug logs</strong> shares a plain-text file containing the app's recent activity log. The log captures the last ~500 lines written during the current session - useful for diagnosing unexpected behaviour or reporting bugs to support. It does not contain personal health or workout data.</p>
+
+  <h3>Deleting data</h3>
+  <p><strong>Delete all workout history</strong> sits at the very bottom of Settings. It permanently deletes all workouts and sets, and a confirmation dialog is required. This does not delete exercises or routines.</p>
 </HelpLayout>

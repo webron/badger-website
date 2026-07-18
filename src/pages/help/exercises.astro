@@ -2,22 +2,26 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Exercises" description="How to use the exercise library, search and filter exercises, and create custom exercises in Badger.">
+<HelpLayout title="Exercises" description="How to use the A-Z exercise library, search and filter exercises, and create custom exercises in Badger.">
   <h1>Exercises</h1>
 
-  <p>Badger ships with around 367 exercises across 8 categories. You can use them as-is, customize them, create your own exercises, or add custom categories to organise niche movements.</p>
+  <p>Badger ships with around 365 exercises across 8 categories. You can use them as-is, customize them, create your own exercises, or add custom categories to organise niche movements.</p>
 
   <hr />
 
-  <h2>Exercise library</h2>
-  <p>The <strong>Exercises</strong> tab shows your full exercise library grouped by category. At the top is a <strong>Favorites</strong> row - exercises you've starred for quick access.</p>
-  <p>A <strong>Recently trained</strong> row appears below Favorites, showing up to 8 exercises you've used recently. It's hidden while you're actively searching.</p>
+  <h2 id="library">Exercise library</h2>
+  <p>The <strong>Exercises</strong> tab opens straight onto every exercise you have, in one alphabetical list. There is no category screen to tap through first.</p>
+  <p>Each row shows an equipment glyph on the left, the exercise name, and the category it belongs to on the right. A star on the row means it is a favorite. Tap a row to open the exercise detail screen.</p>
+  <p>Letter headings (A, B, C and so on) divide the list. Down the right edge is a letter strip: tap a letter to jump to it, or drag your thumb along the strip to scrub through the list.</p>
 
   <h2 id="search-filter">Search & filtering</h2>
-  <p>The search bar at the top searches across all exercise names. Typing narrows the list in real time.</p>
+  <p>The search box sits at the top of the library and searches across all exercise names. Typing narrows the list in real time.</p>
+
+  <h3>Filter chips</h3>
+  <p>Under the search box is a row of chips: <strong>All</strong>, <strong>Favorites</strong>, then one chip per category. Tap <strong>Favorites</strong> to see only the exercises you've starred, or a category chip to see only that category. The chips combine with whatever you've typed in the search box.</p>
 
   <h3>Muscle filter</h3>
-  <p>Tap the <strong>muscle icon</strong> to open the muscle filter. You'll see an interactive body diagram at the top with a scrollable list below it.</p>
+  <p>Tap the <strong>muscle icon</strong> in the top bar to open the muscle filter. You'll see an interactive body diagram at the top with a scrollable list below it.</p>
   <ul>
     <li>Tap a region on the body diagram to filter by that muscle group.</li>
     <li>Tap a muscle group header in the list to select the whole group.</li>
@@ -26,13 +30,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h3>Equipment filter</h3>
-  <p>Tap the <strong>equipment icon</strong> to filter by equipment type: barbell, dumbbell, cable, machine, bodyweight, kettlebell, band, or other. An active filter shows as a pill below the search bar.</p>
+  <p>Tap the <strong>equipment icon</strong> in the top bar to filter by equipment type: barbell, dumbbell, cable, machine, bodyweight, kettlebell, band, or other. An active filter shows as a pill below the search bar.</p>
+  <p>Search, the chips, the muscle filter, and the equipment filter all stack. You can type "row", pick the Back chip, and filter to cable, and the list narrows to what matches all three.</p>
 
   <h2 id="categories">Categories</h2>
-  <p>Exercises are grouped into categories. Badger includes 8 built-in categories: Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, and Cardio.</p>
-  <p>You can also create your own. At the bottom of the exercise library's category list, tap <strong>New category</strong> to name it and pick a color. Custom categories work everywhere - the exercise picker, filters, and the weekly volume card on the Today screen. They don't appear in the muscle heatmap since they have no muscle-group mapping, but everything else works normally.</p>
-  <p>To rename or change the color of any category (built-in or custom), tap the <strong>pencil icon</strong> next to it. To delete a category, tap the <strong>trash icon</strong>. A category can only be deleted when it's <strong>empty</strong> - if it still contains exercises, Badger tells you how many and asks you to move or delete them first, so nothing is removed by accident.</p>
-  <p>Drag the handle on a category row to reorder the list.</p>
+  <p>Every exercise belongs to a category. Badger includes 8 built-in categories: Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, and Cardio.</p>
+  <p>You no longer browse the library by category. Categories still do real work behind the scenes: they drive the chip row, the exercise picker filters, and the weekly volume card on the Today screen.</p>
+
+  <h3>Manage categories</h3>
+  <p>Open the <strong>⋮</strong> menu in the exercise library and tap <strong>Manage categories</strong> to create, rename, recolor, reorder, or delete categories.</p>
+  <ul>
+    <li>Tap <strong>New category</strong> to name it and pick a color. Custom categories work everywhere a built-in one does. They don't appear in the muscle heatmap, since they have no muscle-group mapping, but everything else works normally.</li>
+    <li>Tap the <strong>pencil icon</strong> to rename a category or change its color. This works for built-in categories too.</li>
+    <li>Drag the handle on a row to reorder the list.</li>
+    <li>Tap the <strong>trash icon</strong> to delete. A category can only be deleted when it's <strong>empty</strong> - if it still contains exercises, Badger tells you how many and asks you to move or delete them first, so nothing is removed by accident.</li>
+  </ul>
 
   <h2 id="creating">Creating exercises</h2>
   <p>Tap the <strong>+</strong> button in the exercise library or via <strong>Add exercise → Create new</strong> in the workout flow.</p>
@@ -105,8 +117,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Once linked, both exercises show the same progress graphs, PRs, stats, and history. The PR check while logging also considers sets from linked exercises - a new best on one counts as a PR on both.</p>
   <p>To unlink, tap the <strong>×</strong> on a linked-exercise chip. A confirmation dialog appears - after confirming, the two exercises no longer share history. Both remain in the library; linking never merges or deletes either exercise.</p>
 
-  <h2>Favorites</h2>
-  <p>Tap the heart icon on any exercise row to add it to Favorites. Favorites appear at the top of the exercise library for quick access. The same heart icon removes it from Favorites.</p>
+  <h2 id="merged-duplicates">Merged duplicate exercises</h2>
+  <p>The built-in library shipped two movements twice under slightly different names: <em>Lying Leg Curl</em> duplicated <em>Leg Curl (Lying)</em>, and <em>Good Morning (Legs)</em> duplicated <em>Good Morning</em>. Each pair has been merged into a single entry. If you logged sets against either name, that history moved onto the surviving exercise rather than being deleted, so your records and graphs are intact.</p>
+
+  <h2 id="favorites">Favorites</h2>
+  <p>Tap the star on any exercise row to make it a favorite. Starred exercises show the star in the library list, and the <strong>Favorites</strong> chip above the list filters down to just those. Tapping the star again removes it.</p>
 
   <h2>Avoided exercises</h2>
   <p>Open the <strong>⋮</strong> menu on any exercise row and choose <strong>Mark as avoided</strong> to flag an exercise you don't want in your program (injury, personal preference, equipment you don't have). Avoided exercises show a small "Avoided" tag and a dimmed name so they're easy to spot. This is separate from Favorites - it's a "no thanks" signal, not a positive one. Avoided exercises stay fully usable; the flag is a marker, not a block. Choose <strong>Remove from avoided</strong> from the same menu to clear it.</p>

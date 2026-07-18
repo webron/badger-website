@@ -50,7 +50,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Plates</strong> - evenly spaced jumps from the empty bar up to a tight final warmup, with every weight rounded to something you can actually load.</li>
   </ul>
   <p>Either way, every suggested weight is rounded to a load your equipment can reach - the gym's plates for a barbell or plate-loaded machine, or the stack increment for a selectorized machine - and is never rounded above your working weight. Fewer sets means bigger jumps; more sets means a gentler ramp. If two warmups land on the same convenient weight, Badger merges them.</p>
-  <p>Set your usual style and default number of warmup sets in <strong>Settings → Warm-up sets</strong>. You can override both for a specific exercise on its edit screen (handy for lifts like floor work that need fewer, heavier warmups).</p>
+  <p>Set your usual style and default number of warmup sets in <strong>Settings → Logging</strong>. You can override both for a specific exercise on its edit screen (handy for lifts like floor work that need fewer, heavier warmups).</p>
   <p>The "Add warmup sets" option becomes "Replace warmup sets" once warmup sets already exist for that exercise. If a routine already defines warmup sets, those are used as-is - the generator only fills the gap when none are defined.</p>
 
   <h2>Intensity tracking (RPE & RIR)</h2>
@@ -83,7 +83,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>One-session override (set via the rest chip dialog)</li>
     <li>Routine-day inter-exercise rest (when switching between exercises in a superset group)</li>
     <li>Exercise default rest (set in Exercise Settings)</li>
-    <li>Global default (set in Settings → Rest Timer)</li>
+    <li>Global default (set in Settings → Logging)</li>
     <li>Last used duration</li>
     <li>90-second fallback</li>
   </ol>
@@ -94,11 +94,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>While a workout is running, Badger keeps a notification in your notification bar showing the exercise you are on and the target for your next set, for example "85 kg &times; 8". It is there so you can check what is next from the lock screen or an always-on display without unlocking your phone. The elapsed workout time counts up next to it once the workout timer is running, and tapping the notification takes you back to the exercise you were on.</p>
   <p>The notification follows you through the workout: it updates when you switch exercises, when a superset moves you to the next movement, and as you complete sets. If the current exercise has no sets left to do, it reads "No target set".</p>
   <p>While the rest timer counts down, the same notification shows the countdown instead of the target, then goes back to showing the target when rest is over. Badger keeps this to a single notification rather than stacking a separate one for rest.</p>
-  <p>To turn it off, use <strong>Settings &rarr; Training &rarr; Workout notification</strong>. Workouts you log for a past date never get one, since they are not timed. On iPhone the rest timer appears on the lock screen and Dynamic Island instead.</p>
+  <p>To turn it off, use <strong>Settings &rarr; App &rarr; Workout notification</strong>. Workouts you log for a past date never get one, since they are not timed. On iPhone the rest timer appears on the lock screen and Dynamic Island instead.</p>
 
   <h2>Skipping sets</h2>
   <p>If you need to skip a set (injury, time constraint, etc.), long-press it and select <strong>Skip</strong>. Skipped sets are shown with strikethrough text and excluded from all calculations. You can also skip or unskip all sets for an exercise at once via the <strong>⋮ menu</strong>.</p>
-  <p>Skipping the last unresolved working set of an exercise auto-advances to the next exercise that still has work, exactly as completing it would. This respects the <strong>Auto-advance to next exercise</strong> setting (Settings → Training) - turn it off to stay put. Skipping a set that isn't the last one to resolve leaves you where you are.</p>
+  <p>Skipping the last unresolved working set of an exercise auto-advances to the next exercise that still has work, exactly as completing it would. This respects the <strong>Auto-advance to next exercise</strong> setting (Settings → Logging) - turn it off to stay put. Skipping a set that isn't the last one to resolve leaves you where you are.</p>
 
   <h2 id="supersets">Supersets & exercise groups</h2>
   <p>A superset is a group of exercises you alternate between. When exercises are in the same superset:</p>
@@ -150,13 +150,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>When a working set beats your all-time estimated 1RM for that exercise (on the same machine, if one is set), a trophy badge appears on the set row, a SnackBar notification appears at the bottom of the screen, and a haptic pulse fires (if haptics are enabled in Settings).</p>
 
   <h2>Progressive overload suggestions</h2>
-  <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Training, default: 3).</p>
+  <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Coaching, default: 3).</p>
   <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. Tap × to dismiss the suggestion for this session.</p>
   <p>The suggestion is <strong>machine-scoped</strong>: it looks at history for the same machine you currently have set. Switching machines gives you a fresh suggestion based on that machine's history.</p>
 
-  <h2>Auto-progress routine weights</h2>
-  <p>By default this is off. Turn it on in <strong>Settings → Training → "Auto-progress routine weights"</strong>. When it's on and you finish a workout that you started from a routine, Badger checks whether you lifted heavier than the routine planned. If you did, the <strong>workout summary</strong> shows an "Update [Routine] · [Day]?" section listing each exercise you progressed - for example <em>80 → 82.5 kg</em>.</p>
-  <p>Each progressed exercise has a checkbox (checked by default). Tap <strong>Update routine</strong> and the checked exercises' new weights are written back into the routine's predefined sets, so next time you run the routine it starts pre-filled with the heavier weight instead of suggesting the same bump again. Uncheck anything you don't want to carry over. (If you have "Auto-stop on last set" enabled, the same section also appears on the completion pop-up when you finish your last set.)</p>
+  <h2 id="auto-progress">Auto-progress routine weights</h2>
+  <p>By default this is off. Turn it on in <strong>Settings → Coaching → "Auto-progress routine weights"</strong>. When it's on and you finish a workout that you started from a routine, Badger checks whether you lifted heavier than the routine planned. If you did, the <strong>workout summary</strong> shows an "Update [Routine] · [Day]?" section listing each exercise you progressed - for example <em>80 → 82.5 kg</em>.</p>
+  <p>Each progressed exercise has a checkbox (checked by default). Tap <strong>Update routine</strong> and the checked exercises' new weights are written back into the routine's predefined sets, so next time you run the routine it starts pre-filled with the heavier weight instead of suggesting the same bump again. Uncheck anything you don't want to carry over. (If you have "Workout timer auto-stop" enabled, the same section also appears on the completion pop-up when you finish your last set.)</p>
   <p>A few things to know:</p>
   <ul>
     <li>It only ever <strong>raises</strong> weights - never lowers them. A lighter or matched session changes nothing.</li>
