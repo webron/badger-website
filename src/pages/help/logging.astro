@@ -90,6 +90,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Warmup sets use a separate, shorter rest duration - configurable per exercise or globally in Settings.</p>
   <p>The rest timer does <em>not</em> start after the last working set of your last exercise.</p>
 
+  <h3>On your lock screen (iPhone)</h3>
+  <p>On iPhone (iOS 16.2 and later), the rest timer also appears as a Live Activity: a countdown card on the lock screen, and on models with the Dynamic Island, a compact countdown there while you're in another app. Tap it to jump back to your workout. When the timer finishes, the card flips to "Rest done".</p>
+  <p>The first time this happens, iOS asks "Allow Live Activities from Badger?" - that prompt comes from iOS itself, and allowing it is what lets the countdown show outside the app. You can change it later in iOS Settings under Badger.</p>
+  <p>One iOS limitation: if the timer finishes while your phone is locked, the notification plays the standard iOS sound rather than the Badger sound you picked. That's an iOS restriction on custom notification sounds in this situation, not a setting you can change.</p>
+
   <h2>Skipping sets</h2>
   <p>If you need to skip a set (injury, time constraint, etc.), long-press it and select <strong>Skip</strong>. Skipped sets are shown with strikethrough text and excluded from all calculations. You can also skip or unskip all sets for an exercise at once via the <strong>⋮ menu</strong>.</p>
   <p>Skipping the last unresolved working set of an exercise auto-advances to the next exercise that still has work, exactly as completing it would. This respects the <strong>Auto-advance to next exercise</strong> setting (Settings → Training) - turn it off to stay put. Skipping a set that isn't the last one to resolve leaves you where you are.</p>
