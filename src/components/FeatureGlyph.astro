@@ -1,0 +1,148 @@
+---
+/**
+ * Line glyphs for the feature ledger.
+ *
+ * One 24px grid, one 1.6px stroke, round caps and joins, no fills: the same
+ * drawing language as the app's equipment glyphs. Redrawn from the mockup's
+ * starting sketches, squared onto the grid and made symmetrical about x=12
+ * where the subject is symmetrical. Colour comes from the parent (accent-ink),
+ * so these never carry raw petrol as an icon.
+ *
+ * Decorative: the row's title and body carry the meaning.
+ */
+import type { GlyphName } from './feature-glyphs';
+
+interface Props {
+  name: GlyphName;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 20, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['feature-glyph', className]}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    name === 'barbell' && (
+      <Fragment>
+        <path d="M2.5 12h19" />
+        <path d="M5.5 7.5v9" />
+        <path d="M18.5 7.5v9" />
+        <path d="M9 9.5v5" />
+        <path d="M15 9.5v5" />
+      </Fragment>
+    )
+  }
+
+  {
+    name === 'stopwatch' && (
+      <Fragment>
+        <circle cx="12" cy="13.5" r="7.5" />
+        <path d="M12 9.5v4l2.75 1.6" />
+        <path d="M12 6V3.5" />
+        <path d="M9.5 3.5h5" />
+      </Fragment>
+    )
+  }
+
+  {
+    name === 'program' && (
+      <Fragment>
+        <rect x="5" y="3" width="14" height="18" rx="1.5" />
+        <path d="M9 7.5h6" />
+        <path d="M9 11.5h6" />
+        <path d="M9 15.5h4" />
+      </Fragment>
+    )
+  }
+
+  {
+    name === 'trend' && (
+      <Fragment>
+        <path d="M3 19l5.5-6.5 4 3L20.5 7" />
+        <path d="M15.5 7h5v5" />
+      </Fragment>
+    )
+  }
+
+  {
+    name === 'gym' && (
+      <Fragment>
+        <path d="M4 21V8.5L12 3l8 5.5V21" />
+        <path d="M9 21v-6h6v6" />
+        <path d="M4 12.5h16" />
+      </Fragment>
+    )
+  }
+
+  {
+    name === 'plate' && (
+      <Fragment>
+        <circle cx="12" cy="12" r="8.5" />
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 3.5v3.2" />
+        <path d="M12 17.3v3.2" />
+      </Fragment>
+    )
+  }
+
+  {
+    name === 'compare' && (
+      <Fragment>
+        <path d="M3.5 6.5h17" />
+        <path d="M3.5 12h17" />
+        <path d="M3.5 17.5h17" />
+        <path d="M8 4.5v4" />
+        <path d="M15 10v4" />
+        <path d="M11 15.5v4" />
+      </Fragment>
+    )
+  }
+
+  {
+    name === 'import' && (
+      <Fragment>
+        <path d="M12 3.5v11.5" />
+        <path d="M7.5 10.5l4.5 4.5 4.5-4.5" />
+        <path d="M4 20.5h16" />
+      </Fragment>
+    )
+  }
+
+  {
+    name === 'wave' && (
+      <Fragment>
+        <path d="M3 7.5c3 0 3 5 6 5s3-8 6-8 3 6 6 6" />
+        <path d="M3 17.5h18" />
+      </Fragment>
+    )
+  }
+
+  {
+    name === 'shield' && (
+      <Fragment>
+        <path d="M12 3l7.5 4v5c0 4.6-3.1 8.2-7.5 9.2-4.4-1-7.5-4.6-7.5-9.2V7z" />
+      </Fragment>
+    )
+  }
+</svg>
+
+<style>
+  .feature-glyph {
+    flex: 0 0 auto;
+    /* Optically aligns the glyph with the cap height of the title beside it. */
+    margin-top: 2px;
+  }
+</style>

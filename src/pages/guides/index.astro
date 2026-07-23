@@ -29,40 +29,89 @@ const personas = [
   <h1>Starting guides</h1>
   <p>Badger does a lot, but you do not need all of it on day one. Pick the description that sounds most like you and we will walk you through the parts that matter for how you train.</p>
 
-  <div class="guide-cards">
+  <div class="rule-ink guides-rule"></div>
+  <ul class="guide-rows">
     {personas.map(p => (
-      <a class="guide-card" href={p.href}>
-        <h2>{p.title}</h2>
-        <p>{p.blurb}</p>
-        <span class="guide-card__go">Read this guide &rarr;</span>
-      </a>
+      <li>
+        <a class="guide-row" href={p.href}>
+          <span class="guide-row__head">
+            <span class="guide-row__title">{p.title}</span>
+            <span class="guide-row__go">Read this guide &rarr;</span>
+          </span>
+          <span class="guide-row__blurb">{p.blurb}</span>
+        </a>
+      </li>
     ))}
-  </div>
+  </ul>
 
   <p class="guide-overview-link">Curious what else is in there? Browse <a href="/guides/overview">everything Badger does</a>, one line per feature.</p>
 </HelpLayout>
 
 <style>
-  .guide-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
+  /* The picker is a ledger now: a 2px ink top, then one ruled row per guide.
+     "Read this guide" keeps its place as the row's right-aligned annotation
+     rather than being dropped, since a restyle does not get to edit copy. */
+  .guides-rule {
+    margin-top: 22px;
   }
-  .guide-card {
+
+  .guide-rows {
+    list-style: none;
+    margin: 0 0 26px;
+    padding: 0;
+  }
+
+  .guide-row {
     display: block;
-    padding: 1.25rem 1.25rem 1rem;
-    border: 1px solid var(--color-border, #2a2a2a);
-    border-radius: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--hair);
     text-decoration: none;
-    color: inherit;
-    transition: border-color 0.15s ease, transform 0.15s ease;
   }
-  .guide-card:hover {
-    border-color: var(--color-accent, #2E7E90);
-    transform: translateY(-2px);
+
+  .guide-row:hover {
+    text-decoration: none;
   }
-  .guide-card h2 { margin: 0 0 0.4rem; font-size: 1.15rem; }
-  .guide-card p { margin: 0 0 0.75rem; opacity: 0.85; }
-  .guide-card__go { color: var(--color-accent, #2E7E90); font-weight: 600; }
+
+  .guide-row__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .guide-row__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .guide-row:hover .guide-row__title {
+    color: var(--accent-ink);
+  }
+
+  .guide-row__go {
+    flex: 0 0 auto;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent-ink);
+    white-space: nowrap;
+  }
+
+  /* The pair does not fit side by side on a phone; the tail drops under the
+     title rather than shredding it. Same reasoning as the homepage spread. */
+  @media (max-width: 560px) {
+    .guide-row__head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+  }
+
+  .guide-row__blurb {
+    display: block;
+    margin-top: 2px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
 </style>

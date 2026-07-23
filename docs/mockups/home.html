@@ -1,0 +1,284 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="journal.css">
+<style>
+  /* hero */
+  .hero { padding: 68px 24px 40px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
+  .hero h1 {
+    font-family: 'Literata', Georgia, serif; font-weight: 600;
+    font-size: clamp(28px, 4.4vw, 44px); line-height: 1.18; max-width: 30ch; color: var(--tp);
+  }
+  .hero .sub { font-size: 16.5px; color: var(--ts); max-width: 58ch; line-height: 1.65; }
+  .badges { display: flex; gap: 12px; align-items: center; margin-top: 6px; }
+  .badges img { height: 56px; display: block; }
+  .tf-pill { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 14px;
+    background: #000; border: 1px solid rgba(255,255,255,0.28); border-radius: 6px; color: #fff; }
+  .tf-pill .l1 { font-size: 8px; letter-spacing: 0.4px; opacity: 0.85; display: block; text-align: left; }
+  .tf-pill .l2 { font-size: 14px; font-weight: 600; line-height: 1.05; display: block; text-align: left; }
+  .docs-link { font-size: 14px; color: var(--ts); }
+
+  /* positioning strip */
+  .strip { max-width: 940px; margin: 26px auto 0; width: 100%;
+    border-top: 2px solid var(--ink); border-bottom: 1px solid var(--hair);
+    display: flex; }
+  .strip .cell { flex: 1; padding: 15px 10px 13px; text-align: center; }
+  .strip .cell + .cell { border-left: 1px solid var(--hair); }
+  .strip .v { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--tp); }
+  .strip .d { font-size: 12px; color: var(--tm); margin-top: 2px; }
+
+  /* screenshots band */
+  .screens { padding: 44px 24px 8px; display: flex; justify-content: center; align-items: flex-end; gap: 28px; }
+  .phone { width: 218px; border: 1.5px solid var(--ink); border-radius: 26px; overflow: hidden;
+    background: var(--bg); box-shadow: 0 10px 34px rgba(38,34,25,0.14); }
+  .phone.big { width: 244px; }
+  .ph-inner { padding: 14px 14px 18px; }
+  .ph-stripe { height: 5px; margin: 2px 0 12px;
+    background:
+      linear-gradient(var(--ink), var(--ink)) top / 100% 1.5px no-repeat,
+      linear-gradient(var(--acc), var(--acc)) bottom / 100% 1.5px no-repeat,
+      transparent; }
+  .ph-date { font-family: 'Literata', Georgia, serif; font-style: italic; font-weight: 500; font-size: 14.5px; color: var(--tp); }
+  .ph-caps { font-size: 8.5px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--ts); margin-top: 12px; }
+  .ph-rule { height: 1.5px; background: var(--ink); margin: 3px 0 2px; }
+  .ph-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--hair); }
+  .ph-row .nm { font-size: 11px; font-weight: 600; color: var(--tp); display: flex; align-items: center; gap: 6px; }
+  .ph-row .nm svg { stroke: var(--ts); }
+  .ph-hero { font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--tp); margin-top: 12px; }
+  .ph-hero small { font-size: 10px; font-weight: 600; color: var(--tm); letter-spacing: 0.1em; }
+  .ph-graph { margin-top: 8px; }
+  .screens-note { text-align: center; font-size: 12px; color: var(--tm); padding: 14px 24px 0; }
+
+  /* sections */
+  section.block { padding: 60px 24px 0; }
+  .sec-head { max-width: 1012px; margin: 0 auto; }
+  .sec-head .caps { display: block; margin-bottom: 6px; }
+  .sec-rule { height: 2px; background: var(--ink); max-width: 1012px; margin: 0 auto; }
+
+  /* features ledger */
+  .features { max-width: 1012px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; column-gap: 56px; }
+  .feat { display: flex; gap: 14px; padding: 17px 0; border-bottom: 1px solid var(--hair); align-items: flex-start; }
+  .feat svg { flex: 0 0 auto; margin-top: 2px; stroke: var(--acci); }
+  .feat h3 { font-size: 15px; font-weight: 600; color: var(--tp); }
+  .feat p { font-size: 13.5px; color: var(--ts); line-height: 1.55; margin-top: 2px; }
+
+  /* two-column positioning spread */
+  .spread { max-width: 1012px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .spread h3 { font-family: 'Literata', Georgia, serif; font-style: italic; font-weight: 500;
+    font-size: 18px; color: var(--tp); padding: 14px 0 10px; }
+  .led-row { display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
+    padding: 11px 0; border-bottom: 1px solid var(--hair); }
+  .led-row .l { font-size: 14px; font-weight: 500; color: var(--tp); }
+  .led-row .r { font-size: 12.5px; color: var(--tm); white-space: nowrap; }
+
+  /* promise teaser */
+  .promise-teaser { text-align: center; padding: 68px 24px 4px; }
+  .promise-teaser .line { font-family: 'Literata', Georgia, serif; font-style: italic; font-weight: 500;
+    font-size: 22px; color: var(--tp); }
+  .promise-teaser a { display: inline-block; margin-top: 10px; font-size: 14px; font-weight: 600; color: var(--acci); }
+
+  /* CTA */
+  .cta { max-width: 1012px; margin: 64px auto 0; padding: 28px 24px 8px; border-top: 2px solid var(--ink);
+    display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+  .cta h2 { font-family: 'Literata', Georgia, serif; font-weight: 600; font-size: 24px; }
+  .cta p { color: var(--ts); font-size: 14.5px; max-width: 46ch; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 44px 20px 32px; }
+    .strip { flex-wrap: wrap; }
+    .strip .cell { flex: 1 1 42%; border-left: none; }
+    .strip .cell:nth-child(even) { border-left: 1px solid var(--hair); }
+    .strip .cell:nth-child(n+3) { border-top: 1px solid var(--hair); }
+    .screens { gap: 14px; padding: 32px 12px 4px; }
+    .phone { width: 46%; }
+    .phone.big { width: 50%; }
+    .phone:nth-child(3) { display: none; }
+    .features { grid-template-columns: 1fr; column-gap: 0; }
+    .spread { grid-template-columns: 1fr; gap: 34px; }
+  }
+</style>
+</head>
+<body class="paper">
+
+<header>
+  <div class="nav">
+    <span class="wordmark"><span class="wm-text">Badger</span><span class="wm-stripe"></span></span>
+    <span class="navlinks">
+      <a href="#">Help</a>
+      <a href="#">Guides</a>
+      <a href="#">Glossary</a>
+      <a class="btn-accent" href="#">Get the app</a>
+      <span class="theme-dot">◐</span>
+    </span>
+  </div>
+</header>
+<div class="stripe"></div>
+
+<section class="hero">
+  <span class="kicker">Workout &amp; strength tracker · Android &amp; iOS</span>
+  <h1>As capable as the big trackers.<br>As private as a notebook.</h1>
+  <p class="sub">Badger logs your sets, runs your programs, and tracks your PRs, and it keeps all of it on your phone. No account needed, no subscription, no ads.</p>
+  <div class="badges">
+    <img src="google-play-badge.png" alt="Get it on Google Play">
+    <span class="tf-pill"><svg width="15" height="18" viewBox="0 0 384 512" fill="#fff"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span><span class="l1">TRY THE</span><span class="l2">iOS beta</span></span></span>
+  </div>
+  <a class="docs-link" href="#">Read the docs →</a>
+
+  <div class="strip">
+    <div class="cell"><div class="v">No account needed</div><div class="d">no sign-up, no login</div></div>
+    <div class="cell"><div class="v">No subscription</div><div class="d">free, no caps</div></div>
+    <div class="cell"><div class="v">Works offline</div><div class="d">basement-gym proof</div></div>
+    <div class="cell"><div class="v">Your data stays yours</div><div class="d">on your phone, export anytime</div></div>
+  </div>
+</section>
+
+<section class="screens">
+  <div class="phone">
+    <div class="ph-inner">
+      <div class="ph-stripe"></div>
+      <div class="ph-date">Tuesday, July 14</div>
+      <div class="ph-caps">Today</div>
+      <div class="ph-rule"></div>
+      <div class="ph-row"><span class="nm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M3 12h18M6 8v8M18 8v8M9 10v4M15 10v4"/></svg>Squat</span><span class="tally"><i></i><i></i><i></i><i class="todo"></i><i class="todo"></i></span></div>
+      <div class="ph-row"><span class="nm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M3 12h18M6 8v8M18 8v8M9 10v4M15 10v4"/></svg>Bench Press</span><span class="tally"><i class="todo"></i><i class="todo"></i><i class="todo"></i></span></div>
+      <div class="ph-row"><span class="nm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M4 17c3-1 5-4 8-4s5 3 8 4M12 13V7m-3 0h6"/></svg>Barbell Row</span><span class="tally"><i class="todo"></i><i class="todo"></i><i class="todo"></i></span></div>
+      <div class="ph-hero">1:12:40<br><small>THIS WEEK · 3 WORKOUTS</small></div>
+    </div>
+  </div>
+  <div class="phone big">
+    <div class="ph-inner">
+      <div class="ph-stripe"></div>
+      <div class="ph-date">Squat</div>
+      <div class="ph-caps">Working sets</div>
+      <div class="ph-rule"></div>
+      <div class="ph-row"><span class="nm tnum">1 &nbsp; 110 kg × 5</span><span class="tally"><i></i></span></div>
+      <div class="ph-row"><span class="nm tnum">2 &nbsp; 110 kg × 5</span><span class="tally"><i></i></span></div>
+      <div class="ph-row"><span class="nm tnum">3 &nbsp; 112.5 kg × 5</span><span style="font-size:8px;font-weight:800;background:var(--ink);color:var(--bg);padding:1px 5px;border-radius:2px;border-bottom:2px solid var(--acc)">PR</span></div>
+      <div class="ph-row"><span class="nm tnum" style="color:var(--tm)">4 &nbsp; 112.5 kg × 5</span><span class="tally"><i class="todo"></i></span></div>
+      <div class="ph-hero tnum">2:31<br><small>REST · SET 4 OF 4</small></div>
+    </div>
+  </div>
+  <div class="phone">
+    <div class="ph-inner">
+      <div class="ph-stripe"></div>
+      <div class="ph-date">Progress</div>
+      <div class="ph-caps">Est. 1RM · Squat</div>
+      <div class="ph-rule"></div>
+      <div class="ph-hero tnum" style="margin-top:8px">131 kg</div>
+      <svg class="ph-graph" width="100%" height="88" viewBox="0 0 190 88">
+        <line x1="0" y1="22" x2="190" y2="22" stroke="var(--hair)" stroke-width="1"/>
+        <line x1="0" y1="44" x2="190" y2="44" stroke="var(--hair)" stroke-width="1"/>
+        <line x1="0" y1="66" x2="190" y2="66" stroke="var(--hair)" stroke-width="1"/>
+        <path d="M4 74 L34 66 L64 58 L94 46 L124 40 L154 28 L186 18" fill="none" stroke="var(--acc)" stroke-width="2.2"/>
+        <path d="M4 74 L34 66 L64 58 L94 46 L124 40 L154 28 L186 18 L186 88 L4 88 Z" fill="var(--acc)" opacity="0.12"/>
+        <circle cx="154" cy="28" r="4" fill="var(--bg)" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="186" cy="18" r="3.5" fill="var(--acc)"/>
+      </svg>
+      <div class="ph-caps" style="margin-top:8px">Muscles this week</div>
+      <div class="ph-rule"></div>
+      <div class="ph-row"><span class="nm">Legs</span><span class="nm tnum" style="color:var(--tm)">24 sets</span></div>
+      <div class="ph-row"><span class="nm">Back</span><span class="nm tnum" style="color:var(--tm)">18 sets</span></div>
+    </div>
+  </div>
+</section>
+<p class="screens-note">preview frames · swapped for real screenshots when the app redesign ships</p>
+
+<section class="block">
+  <div class="sec-head"><span class="caps">What's in the app</span></div>
+  <div class="sec-rule"></div>
+  <div class="features">
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M2 12h20M5 7v10M19 7v10M8 9v6M16 9v6"/></svg>
+      <div><h3>Logging that keeps up</h3><p>Weight, reps, time, distance, whatever the exercise needs. Warmup sets, RPE, RIR, tempo, and per-set notes included.</p></div>
+    </div>
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>
+      <div><h3>Rest timer</h3><p>Auto-starts after each working set. Per-exercise defaults, live countdown on your lock screen, sound or vibration.</p></div>
+    </div>
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M5 3h14v18H5zM9 7h6M9 11h6M9 15h4"/></svg>
+      <div><h3>Routines and programs</h3><p>Build your own or start from 7 built-in programs (StrongLifts, 5/3/1, PPL, and more). Supersets, scheduled days, predefined sets.</p></div>
+    </div>
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 20L9 13l4 3 8-9M16 7h5v5"/></svg>
+      <div><h3>Progress you can read</h3><p>PR detection for every exercise type, estimated 1RM, 12+ graphs per exercise, activity heatmap, weekly volume by muscle group.</p></div>
+    </div>
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 21V8l8-5 8 5v13M9 21v-6h6v6M4 12h16"/></svg>
+      <div><h3>Your gym, modeled</h3><p>Track which gym and which machine every set was done on. Machine-scoped PRs, real weight increments, attachments and grips.</p></div>
+    </div>
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M12 3v3M12 18v3"/></svg>
+      <div><h3>Plate calculator</h3><p>Barbell, machine, and single-lever modes. Finds the best combination from the plates your gym actually has.</p></div>
+    </div>
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16M8 4v4M14 10v4M11 16v4"/></svg>
+      <div><h3>Planned vs. actual</h3><p>Finish a routine workout and the summary shows what you hit against what the plan asked for, set by set.</p></div>
+    </div>
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+      <div><h3>Bring your history</h3><p>Import from FitNotes, Strong, Hevy, or StrongLifts. Export every set to CSV or back up the full database anytime.</p></div>
+    </div>
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 7c3 0 3 5 6 5s3-8 6-8 3 6 6 6M3 17h18"/></svg>
+      <div><h3>Deload, handled</h3><p>Optional deload detection by time, RPE, or stalled lifts. Reduces the load for a week and never lets it drag your next session down.</p></div>
+    </div>
+    <div class="feat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 3l7 4v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V7z"/></svg>
+      <div><h3>Backup on your terms</h3><p>Automatic backup to a private folder in your own Google Drive, or a plain file you keep wherever you like. Optional, off by default.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="spread">
+    <div>
+      <div class="sec-rule" style="max-width:none"></div>
+      <h3>Everything a tracker should do</h3>
+      <div class="led-row"><span class="l">Unlimited routines, unlimited history</span><span class="r">no free-tier caps</span></div>
+      <div class="led-row"><span class="l">Full-depth set logging</span><span class="r">RPE · RIR · tempo · warmups</span></div>
+      <div class="led-row"><span class="l">PRs and graphs for every exercise type</span><span class="r">est. 1RM included</span></div>
+      <div class="led-row"><span class="l">Per-gym equipment and machine tracking</span><span class="r">machine-scoped PRs</span></div>
+      <div class="led-row"><span class="l">Plate calculator and warmup generator</span><span class="r">your plates, your increments</span></div>
+      <div class="led-row"><span class="l">Imports from four other trackers</span><span class="r">FitNotes · Strong · Hevy · StrongLifts</span></div>
+    </div>
+    <div>
+      <div class="sec-rule" style="max-width:none"></div>
+      <h3>Nothing a tracker shouldn't</h3>
+      <div class="led-row"><span class="l">No account needed</span><span class="r">no sign-up, no login, no email</span></div>
+      <div class="led-row"><span class="l">No subscription</span><span class="r">free, nothing paywalled</span></div>
+      <div class="led-row"><span class="l">No ads, no data collection</span><span class="r">your training is nobody's product</span></div>
+      <div class="led-row"><span class="l">No connection needed</span><span class="r">fully offline, syncs with nothing</span></div>
+      <div class="led-row"><span class="l">No lock-in</span><span class="r">export everything, anytime</span></div>
+      <div class="led-row"><span class="l">No streak guilt</span><span class="r">no XP, no badges, no nagging</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="promise-teaser">
+  <p class="line">Your data is yours. That is the whole business model.</p>
+  <a href="#">Read the Badger promise →</a>
+</section>
+
+<div class="cta">
+  <h2>Ready to start?</h2>
+  <p>Badger is free on Google Play, with an iOS beta open in TestFlight.</p>
+  <div class="badges">
+    <img src="google-play-badge.png" alt="Get it on Google Play">
+    <span class="tf-pill"><svg width="15" height="18" viewBox="0 0 384 512" fill="#fff"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span><span class="l1">TRY THE</span><span class="l2">iOS beta</span></span></span>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <span class="foot-stripe"></span>
+    <div class="foot-links">
+      <a href="#">Home</a><a href="#">Help</a><a href="#">Guides</a><a href="#">Glossary</a><a href="#">Changelog</a><a href="#">The promise</a><a href="#">Privacy</a><a href="#">Terms</a>
+    </div>
+    <span class="foot-copy">© 2026 Badger. All rights reserved.</span>
+  </div>
+</footer>
+
+</body>
+</html>

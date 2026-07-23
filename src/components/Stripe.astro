@@ -1,0 +1,21 @@
+---
+/**
+ * The three-band brand motif: 2px ink, 2px ground, 2px accent.
+ *
+ * This is chrome, not decoration. Use the full-width band directly under the
+ * header, and the mini variant as the footer mark. Never more than one stripe
+ * element per screen region.
+ */
+interface Props {
+  mini?: boolean;
+  class?: string;
+}
+
+const { mini = false, class: className } = Astro.props;
+---
+
+<div
+  class:list={['journal-stripe', { 'journal-stripe--mini': mini }, className]}
+  aria-hidden="true"
+>
+</div>

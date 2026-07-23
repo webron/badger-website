@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+/**
+ * The Badger promise. Copy: docs/2026-07-16-copy-worklist.md section 2, verbatim.
+ *
+ * Entry 4 is APPROVED as worded (Ron, 2026-07-16), including its forward-looking
+ * commitment. Entries 1 and 2 are deliberately phrased as never-required /
+ * opt-in rather than as absolutes, per spec section 1.3: a possible future
+ * optional paid tier must not falsify anything written here. Do not tighten them
+ * back into absolutes.
+ */
+
+const description =
+  'Five commitments about your data and your money: no account needed, no subscription, export anytime, nothing you use moves behind a paywall, and easy to leave.';
+
+const entries = [
+  {
+    title: 'No account needed',
+    body: 'Badger works completely without an account. There is no sign-up gate and no login wall; tracking your training never requires telling us who you are. If Badger ever grows optional cloud features, they will be exactly that: optional.',
+  },
+  {
+    title: 'Your data stays on your phone',
+    body: 'Workouts live in a local database on your device. Badger ships with no analytics and nothing that phones home. Nothing leaves your phone unless you turn it on yourself: today that means the optional backup to a private app folder in <strong>your own</strong> Google Drive, and anything cloud we ever add will be opt-in the same way.',
+  },
+  {
+    title: 'Export anytime',
+    body: 'Every set exports to CSV. The full database backs up to a single file you can keep anywhere. Routines and gym setups share as plain files. There is no export tax and no premium gate in front of your own numbers.',
+  },
+  {
+    title: 'Nothing you use moves behind a paywall',
+    body: 'Everything in Badger today is free, with no caps on routines or history. If paid extras ever exist, they will be new things. A feature you already rely on will not be taken away and sold back to you. Lifters have been burned this way before; not here.',
+  },
+  {
+    title: 'Easy to leave',
+    body: 'Badger imports from FitNotes, Strong, Hevy, and StrongLifts, and it exports everything it holds. If it turns out not to be for you, take your history and go. We think easy to leave is the best reason to stay.',
+  },
+];
+---
+
+<BaseLayout title="The Badger promise" description={description}>
+  <Header currentPath={Astro.url.pathname} />
+
+  <main class="doc">
+    <span class="kicker">The fine print, in large print</span>
+    <h1>The Badger promise</h1>
+    <p class="lede">
+      Five commitments about your data and your money. Most tracker regret comes from one of these
+      five going wrong, so they are written down where you can hold us to them.
+    </p>
+
+    <!-- A real list: the ordinal is the point, so it carries list semantics and
+         the drawn "No" marker stays decorative. -->
+    <ol class="entries">
+      {
+        entries.map(({ title, body }, i) => (
+          <li class="entry">
+            <span class="entry-no" aria-hidden="true">&#8470; {i + 1}</span>
+            <div class="entry-body">
+              <h2>{title}</h2>
+              <p set:html={body} />
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="close-line">
+      <p class="close-copy">
+        A notebook does not spy on you, cap your pages, or charge rent. Neither does Badger.
+      </p>
+      <p class="close-sig">The Badger promise. Hold us to it.</p>
+    </div>
+
+    <div class="cta-min">
+      <a class="btn-accent" href="/#download">Get the app</a>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .doc {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 0;
+  }
+
+  .kicker {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .doc h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 1.15;
+    color: var(--text);
+  }
+
+  .lede {
+    margin: 14px 0 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 56ch;
+  }
+
+  .entries {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Each commitment is its own ledger section, so each takes the 2px ink top. */
+  .entry {
+    display: flex;
+    gap: 26px;
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 2px solid var(--ink);
+  }
+
+  .entry-no {
+    flex: 0 0 56px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--text-muted);
+  }
+
+  .entry h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.25;
+    color: var(--text);
+  }
+
+  .entry p {
+    margin: 8px 0 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 60ch;
+  }
+
+  .entry :global(strong) {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .close-line {
+    margin-top: 44px;
+    padding: 30px 0 0;
+    border-top: 1px solid var(--hair);
+    text-align: center;
+  }
+
+  .close-copy {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .close-sig {
+    margin: 8px 0 0;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .cta-min {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 640px) {
+    .doc {
+      padding: 44px 20px 0;
+    }
+
+    .doc h1 {
+      font-size: 30px;
+    }
+
+    .entry {
+      gap: 14px;
+    }
+
+    .entry-no {
+      flex: 0 0 44px;
+      font-size: 18px;
+    }
+
+    .close-copy {
+      font-size: 18px;
+    }
+  }
+</style>

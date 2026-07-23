@@ -1,0 +1,133 @@
+---
+/**
+ * The homepage phone band, real-capture era (M-web-3).
+ *
+ * Three screens from the shipped Field Journal app: a day's ledger, a live set
+ * log, a progress read. The captures come from the app repo's seeded demo
+ * dataset (badger-fit demo/README.md) and are rebuilt by tool/build-screenshots.mjs;
+ * the raw device captures, not the branded Play composites, because the site
+ * frames them in its own chrome.
+ *
+ * Every screen ships in both app themes. Ron's call, 2026-07-23: the frame shows
+ * the paper theme when the site renders light and the slate theme when it renders
+ * dark, so a phone on the page is never lit differently from the page around it.
+ * The swap is CSS (.paper-only / .slate-only in global.css) rather than a
+ * <picture> media source, because the site's theme toggle is a data-theme
+ * attribute that a media query cannot see.
+ */
+const SHOTS = [
+  {
+    key: 'today',
+    alt: "Badger's Today screen: an in-progress workout with six exercises, top sets, personal-record flags and set tally marks.",
+  },
+  {
+    key: 'training',
+    alt: "Badger's training screen: weight and reps entry for a bench press set, with warm-up and intensity options and the sets already logged below.",
+    big: true,
+  },
+  {
+    key: 'progress',
+    alt: "Badger's progress overview: weekly training volume by muscle group against research landmarks, and a workout frequency chart.",
+  },
+] as const;
+
+const WIDTH = 540;
+const HEIGHT = 1121;
+---
+
+<figure class="frames">
+  <div class="frames-row">
+    {
+      SHOTS.map((shot) => (
+        <div class:list={['phone', { big: shot.big }]}>
+          <img
+            class="shot paper-only"
+            src={`/assets/screenshots/${shot.key}-paper.webp`}
+            alt={shot.alt}
+            width={WIDTH}
+            height={HEIGHT}
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            class="shot slate-only"
+            src={`/assets/screenshots/${shot.key}-slate.webp`}
+            alt={shot.alt}
+            width={WIDTH}
+            height={HEIGHT}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <figcaption>Today, logging a set, and progress. Real screens from the app.</figcaption>
+</figure>
+
+<style>
+  .frames {
+    margin: 0;
+    padding: 44px 24px 0;
+  }
+
+  .frames-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 28px;
+  }
+
+  figcaption {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 14px 0 0;
+  }
+
+  /* The frame: 1.5px ink border, radius 26, no device cosplay. The capture has
+     already had the phone's own status bar and gesture pill cropped off, so what
+     sits inside the border is only ever Badger. */
+  .phone {
+    width: 218px;
+    border: 1.5px solid var(--ink);
+    border-radius: 26px;
+    overflow: hidden;
+    background: var(--bg);
+    box-shadow: 0 10px 34px rgba(38, 34, 25, 0.14);
+  }
+
+  .phone.big {
+    width: 244px;
+  }
+
+  .shot {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 640px) {
+    .frames {
+      padding: 32px 12px 0;
+    }
+
+    .frames-row {
+      gap: 14px;
+    }
+
+    .phone {
+      width: 46%;
+    }
+
+    .phone.big {
+      width: 50%;
+    }
+
+    /* Two frames is the story at phone width; a third would be too small to
+       read. Everything it shows is stated in words by the feature ledger. */
+    .frames-row > :global(*:nth-child(3)) {
+      display: none;
+    }
+  }
+</style>

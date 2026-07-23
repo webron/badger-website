@@ -46,44 +46,142 @@ const releases = [
 >
   <Header currentPath={Astro.url.pathname} />
 
-  <section style="max-width:760px;margin:0 auto;padding:4rem 1.5rem 3rem;">
-    <h1 style="font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;margin:0 0 0.75rem;color:var(--text);">
-      What's new
-    </h1>
-    <p style="font-size:1.05rem;color:var(--text-secondary);margin:0 0 3rem;line-height:1.6;">
-      Every release of Badger, newest first. Badger is in active development on
-      Android and in beta on iOS.
+  <main class="doc">
+    <span class="kicker">Release log</span>
+    <h1>What's new</h1>
+    <p class="lede">
+      Every release of Badger, newest first. Badger is in active development on Android and in beta
+      on iOS.
     </p>
 
-    <div style="display:flex;flex-direction:column;gap:1rem;">
-      {releases.map((r, i) => (
-        <article style="background:var(--surface);border:1px solid var(--border-subtle);border-radius:12px;padding:1.5rem 1.5rem 1.25rem;">
-          <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:0.75rem;">
-            <h2 style="font-size:1.15rem;font-weight:600;margin:0;color:var(--text);">
-              Version {r.version}
-            </h2>
-            {i === 0 && (
-              <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--color-accent-light);background:var(--color-accent-dim);padding:0.15rem 0.5rem;border-radius:5px;">
-                Latest
-              </span>
-            )}
-            <span style="margin-left:auto;font-size:0.9rem;color:var(--text-muted);">{r.date}</span>
+    {
+      releases.map((r, i) => (
+        <article class="release">
+          <div class="release-head">
+            <h2>Version {r.version}</h2>
+            {i === 0 && <span class="release-latest">Latest</span>}
+            <span class="release-date">{r.date}</span>
           </div>
-          {r.headline && (
-            <p style="font-size:1rem;font-weight:600;color:var(--text);margin:0 0 0.75rem;">{r.headline}</p>
-          )}
-          <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:0.55rem;">
+
+          {r.headline && <p class="release-headline">{r.headline}</p>}
+
+          <ul class="release-notes">
             {r.highlights.map((h) => (
-              <li style="position:relative;padding-left:1.1rem;color:var(--text-secondary);line-height:1.55;">
-                <span style="position:absolute;left:0;top:0.6em;width:5px;height:5px;border-radius:50%;background:var(--color-accent-light);"></span>
-                {h}
-              </li>
+              <li>{h}</li>
             ))}
           </ul>
         </article>
-      ))}
-    </div>
-  </section>
+      ))
+    }
+  </main>
 
   <Footer />
 </BaseLayout>
+
+<style>
+  .doc {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 0;
+  }
+
+  .kicker {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .doc h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 1.15;
+    color: var(--text);
+  }
+
+  .lede {
+    margin: 14px 0 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 56ch;
+  }
+
+  /* Each release is a journal entry, the same shape the promise page uses: a 2px
+     ink rule opens it, and the card it used to live in is gone. */
+  .release {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px solid var(--ink);
+  }
+
+  .release-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* The version is the entry's heading, so it takes the serif. The numerals in
+     it are part of a title, not data being compared down a column. */
+  .release-head h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.25;
+    color: var(--text);
+  }
+
+  .release-latest {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+  }
+
+  .release-date {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .release-headline {
+    margin: 8px 0 0;
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .release-notes {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .release-notes li {
+    padding: 9px 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 640px) {
+    .doc {
+      padding: 44px 20px 0;
+    }
+
+    .doc h1 {
+      font-size: 30px;
+    }
+
+    /* The date has no room to sit opposite the version at phone width. */
+    .release-date {
+      margin-left: 0;
+      flex-basis: 100%;
+    }
+  }
+</style>

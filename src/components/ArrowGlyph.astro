@@ -1,0 +1,47 @@
+---
+/**
+ * The link arrow, drawn rather than typed.
+ *
+ * Exo 2 has no U+2192 glyph (verified against the shipped subset), so a literal
+ * arrow in body copy falls through to whatever the device happens to carry:
+ * a metric-adjusted Arial on macOS, Literata on a machine without Arial, tofu
+ * in the worst case. M-web-2 fixes the 65 in-content arrows in the help copy by
+ * extending the body font stack; these two link affordances are one-offs in new
+ * markup, so they take a drawn glyph instead. It renders identically everywhere
+ * and matches the 1.6px line weight of the feature ledger.
+ *
+ * Decorative: the link text carries the meaning.
+ */
+interface Props {
+  size?: number;
+  class?: string;
+}
+
+const { size = 13, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['arrow-glyph', className]}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d="M4 12h15.5" />
+  <path d="M13.5 6l6 6-6 6" />
+</svg>
+
+<style>
+  .arrow-glyph {
+    flex: 0 0 auto;
+    /* Sits on the text baseline rather than the line box, so it reads as part of
+       the sentence instead of floating above it. */
+    vertical-align: -1px;
+  }
+</style>
