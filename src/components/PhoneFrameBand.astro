@@ -1,143 +1,69 @@
 ---
-import PhoneFrame from './PhoneFrame.astro';
-import TallyMarks from './TallyMarks.astro';
-
 /**
- * The homepage phone band, placeholder era.
+ * The homepage phone band, real-capture era (M-web-3).
  *
- * Three schematic illustrations of the journal UI: a day's ledger, a live set
- * log, and a progress read. They are drawings of the design language (stripe,
- * serif date, ledger rows, tally sticks, one hero number, PR flag), not
- * screenshots and not dressed up as screenshots. The caption says so out loud.
+ * Three screens from the shipped Field Journal app: a day's ledger, a live set
+ * log, a progress read. The captures come from the app repo's seeded demo
+ * dataset (badger-fit demo/README.md) and are rebuilt by tool/build-screenshots.mjs;
+ * the raw device captures, not the branded Play composites, because the site
+ * frames them in its own chrome.
  *
- * M-web-3 replaces this whole component with real captures from the app repo's
- * demo/marketing pipeline, which is why the band is one file: the swap is a
- * single import away.
- *
- * The illustrations are presentational to assistive tech (role="img" on the row
- * makes the subtree so). Everything they depict is stated in words by the
- * feature ledger below them.
+ * Every screen ships in both app themes. Ron's call, 2026-07-23: the frame shows
+ * the paper theme when the site renders light and the slate theme when it renders
+ * dark, so a phone on the page is never lit differently from the page around it.
+ * The swap is CSS (.paper-only / .slate-only in global.css) rather than a
+ * <picture> media source, because the site's theme toggle is a data-theme
+ * attribute that a media query cannot see.
  */
-const FRAMES_LABEL =
-  "Schematic illustrations of Badger's journal interface: a day's exercise list with set tally marks, a live set log with a rest timer and a personal-record flag, and an estimated one-rep-max graph with weekly volume by muscle group.";
+const SHOTS = [
+  {
+    key: 'today',
+    alt: "Badger's Today screen: an in-progress workout with six exercises, top sets, personal-record flags and set tally marks.",
+  },
+  {
+    key: 'training',
+    alt: "Badger's training screen: weight and reps entry for a bench press set, with warm-up and intensity options and the sets already logged below.",
+    big: true,
+  },
+  {
+    key: 'progress',
+    alt: "Badger's progress overview: weekly training volume by muscle group against research landmarks, and a workout frequency chart.",
+  },
+] as const;
+
+const WIDTH = 540;
+const HEIGHT = 1121;
 ---
 
 <figure class="frames">
-  <div class="frames-row" role="img" aria-label={FRAMES_LABEL}>
-    <PhoneFrame>
-      <span class="ph-date">Tuesday, July 14</span>
-      <span class="ph-caps">Today</span>
-      <span class="ph-rule"></span>
-
-      <div class="ph-row">
-        <span class="ph-name">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
-            <path d="M3 12h18M6 8v8M18 8v8M9 10v4M15 10v4"></path>
-          </svg>
-          Squat
-        </span>
-        <TallyMarks done={3} todo={2} />
-      </div>
-
-      <div class="ph-row">
-        <span class="ph-name">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
-            <path d="M3 12h18M6 8v8M18 8v8M9 10v4M15 10v4"></path>
-          </svg>
-          Bench Press
-        </span>
-        <TallyMarks todo={3} />
-      </div>
-
-      <div class="ph-row">
-        <span class="ph-name">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
-            <path d="M4 17c3-1 5-4 8-4s5 3 8 4M12 13V7m-3 0h6"></path>
-          </svg>
-          Barbell Row
-        </span>
-        <TallyMarks todo={3} />
-      </div>
-
-      <p class="ph-hero tnum">
-        1:12:40
-        <small>This week &middot; 3 workouts</small>
-      </p>
-    </PhoneFrame>
-
-    <PhoneFrame big>
-      <span class="ph-date">Squat</span>
-      <span class="ph-caps">Working sets</span>
-      <span class="ph-rule"></span>
-
-      <div class="ph-row">
-        <span class="ph-name tnum">1 &nbsp; 110 kg &times; 5</span>
-        <TallyMarks done={1} />
-      </div>
-
-      <div class="ph-row">
-        <span class="ph-name tnum">2 &nbsp; 110 kg &times; 5</span>
-        <TallyMarks done={1} />
-      </div>
-
-      <div class="ph-row">
-        <span class="ph-name tnum">3 &nbsp; 112.5 kg &times; 5</span>
-        <span class="ph-pr">PR</span>
-      </div>
-
-      <div class="ph-row">
-        <span class="ph-name tnum muted">4 &nbsp; 112.5 kg &times; 5</span>
-        <TallyMarks todo={1} />
-      </div>
-
-      <p class="ph-hero tnum">
-        2:31
-        <small>Rest &middot; set 4 of 4</small>
-      </p>
-    </PhoneFrame>
-
-    <PhoneFrame>
-      <span class="ph-date">Progress</span>
-      <span class="ph-caps">Est. 1RM &middot; Squat</span>
-      <span class="ph-rule"></span>
-
-      <p class="ph-hero tnum tight">131 kg</p>
-
-      <svg class="ph-graph" width="100%" height="88" viewBox="0 0 190 88" preserveAspectRatio="none">
-        <line x1="0" y1="22" x2="190" y2="22" stroke="var(--hair)" stroke-width="1"></line>
-        <line x1="0" y1="44" x2="190" y2="44" stroke="var(--hair)" stroke-width="1"></line>
-        <line x1="0" y1="66" x2="190" y2="66" stroke="var(--hair)" stroke-width="1"></line>
-        <path
-          d="M4 74 L34 66 L64 58 L94 46 L124 40 L154 28 L186 18 L186 88 L4 88 Z"
-          fill="var(--accent)"
-          opacity="0.12"></path>
-        <path
-          d="M4 74 L34 66 L64 58 L94 46 L124 40 L154 28 L186 18"
-          fill="none"
-          stroke="var(--accent)"
-          stroke-width="2.2"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-        <circle cx="154" cy="28" r="4" fill="var(--bg)" stroke="var(--ink)" stroke-width="2"></circle>
-        <circle cx="186" cy="18" r="3.5" fill="var(--accent)"></circle>
-      </svg>
-
-      <span class="ph-caps">Muscles this week</span>
-      <span class="ph-rule"></span>
-
-      <div class="ph-row">
-        <span class="ph-name">Legs</span>
-        <span class="ph-name tnum muted">24 sets</span>
-      </div>
-
-      <div class="ph-row">
-        <span class="ph-name">Back</span>
-        <span class="ph-name tnum muted">18 sets</span>
-      </div>
-    </PhoneFrame>
+  <div class="frames-row">
+    {
+      SHOTS.map((shot) => (
+        <div class:list={['phone', { big: shot.big }]}>
+          <img
+            class="shot paper-only"
+            src={`/assets/screenshots/${shot.key}-paper.webp`}
+            alt={shot.alt}
+            width={WIDTH}
+            height={HEIGHT}
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            class="shot slate-only"
+            src={`/assets/screenshots/${shot.key}-slate.webp`}
+            alt={shot.alt}
+            width={WIDTH}
+            height={HEIGHT}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      ))
+    }
   </div>
 
-  <figcaption>preview frames &middot; swapped for real screenshots when the app redesign ships</figcaption>
+  <figcaption>Today, logging a set, and progress. Real screens from the app.</figcaption>
 </figure>
 
 <style>
@@ -160,102 +86,25 @@ const FRAMES_LABEL =
     padding: 14px 0 0;
   }
 
-  /* ---- schematic interior ---- */
-
-  .ph-date {
-    display: block;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 14.5px;
-    color: var(--text);
+  /* The frame: 1.5px ink border, radius 26, no device cosplay. The capture has
+     already had the phone's own status bar and gesture pill cropped off, so what
+     sits inside the border is only ever Badger. */
+  .phone {
+    width: 218px;
+    border: 1.5px solid var(--ink);
+    border-radius: 26px;
+    overflow: hidden;
+    background: var(--bg);
+    box-shadow: 0 10px 34px rgba(38, 34, 25, 0.14);
   }
 
-  .ph-caps {
-    display: block;
-    font-size: 8.5px;
-    font-weight: 700;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    margin-top: 12px;
+  .phone.big {
+    width: 244px;
   }
 
-  /* The ledger section top, at illustration scale. */
-  .ph-rule {
-    display: block;
-    height: 1.5px;
-    background: var(--ink);
-    margin: 3px 0 2px;
-  }
-
-  .ph-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--hair);
-  }
-
-  .ph-name {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text);
-    white-space: nowrap;
-    /* Exercise names and set figures are data: sans, never the serif. */
-  }
-
-  .ph-name svg {
-    color: var(--text-secondary);
-    flex: 0 0 auto;
-  }
-
-  .ph-name.muted {
-    color: var(--text-muted);
-  }
-
-  /* The PR flag: ink block, accent keyline under it. Reads on any accent. */
-  .ph-pr {
-    font-size: 8px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    background: var(--ink);
-    color: var(--bg);
-    padding: 1px 5px;
-    border-radius: 2px;
-    border-bottom: 2px solid var(--accent);
-  }
-
-  /* One hero number per frame. */
-  .ph-hero {
-    margin: 12px 0 0;
-    font-size: 26px;
-    font-weight: 800;
-    line-height: 1.1;
-    color: var(--text);
-  }
-
-  .ph-hero.tight {
-    margin-top: 8px;
-  }
-
-  .ph-hero small {
-    display: block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-
-  .ph-graph {
-    display: block;
-    margin-top: 8px;
+  .shot {
+    width: 100%;
+    height: auto;
   }
 
   @media (max-width: 640px) {
@@ -267,9 +116,16 @@ const FRAMES_LABEL =
       gap: 14px;
     }
 
-    /* Two frames is the story at phone width; the third would be unreadable.
-       Its content is fully covered by the feature ledger, and the row's
-       aria-label describes the band rather than counting frames. */
+    .phone {
+      width: 46%;
+    }
+
+    .phone.big {
+      width: 50%;
+    }
+
+    /* Two frames is the story at phone width; a third would be too small to
+       read. Everything it shows is stated in words by the feature ledger. */
     .frames-row > :global(*:nth-child(3)) {
       display: none;
     }

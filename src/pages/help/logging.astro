@@ -101,6 +101,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Warmup sets use a separate, shorter rest duration - configurable per exercise or globally in Settings.</p>
   <p>The rest timer does <em>not</em> start after the last working set of your last exercise.</p>
 
+  <h3>On your lock screen (iPhone)</h3>
+  <p>On iPhone (iOS 16.2 and later), the rest timer also appears as a Live Activity: a countdown card on the lock screen, and on models with the Dynamic Island, a compact countdown there while you're in another app. Tap it to jump back to your workout. When the timer finishes, the card flips to "Rest done".</p>
+  <p>The first time this happens, iOS asks "Allow Live Activities from Badger?" - that prompt comes from iOS itself, and allowing it is what lets the countdown show outside the app. You can change it later in iOS Settings under Badger.</p>
+  <p>One iOS limitation: if the timer finishes while your phone is locked, the notification plays the standard iOS sound rather than the Badger sound you picked. That's an iOS restriction on custom notification sounds in this situation, not a setting you can change.</p>
+
   <h2 id="workout-notification">Workout notification (Android)</h2>
   <p>While a workout is running, Badger keeps a notification in your notification bar showing the exercise you are on and the target for your next set, for example "85 kg &times; 8". It is there so you can check what is next from the lock screen or an always-on display without unlocking your phone. The elapsed workout time counts up next to it once the workout timer is running, and tapping the notification takes you back to the exercise you were on.</p>
   <p>The notification follows you through the workout: it updates when you switch exercises, when a superset moves you to the next movement, and as you complete sets. If the current exercise has no sets left to do, it reads "No target set".</p>
