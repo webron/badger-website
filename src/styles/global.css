@@ -285,6 +285,49 @@ a:hover {
     transparent;
 }
 
+/* Theme-matched assets. The homepage app captures ship in both of the app's own
+   themes (paper = light, slate = dark) and the page shows whichever matches what
+   it is currently rendering. A <picture> with a prefers-color-scheme source
+   would only track the OS, so the manual toggle would leave a slate phone
+   sitting on a paper page; two elements swapped by CSS follow both.
+   Cascade order matches the token blocks above, for the same reason: the manual
+   overrides come last, or the light media query would beat a manual dark
+   choice. The overrides also out-specify the defaults (0,2,0 against 0,1,0), so
+   this holds even if a bundler reorders the file. */
+.paper-only {
+  display: none;
+}
+
+.slate-only {
+  display: block;
+}
+
+@media (prefers-color-scheme: light) {
+  .paper-only {
+    display: block;
+  }
+
+  .slate-only {
+    display: none;
+  }
+}
+
+[data-theme="dark"] .paper-only {
+  display: none;
+}
+
+[data-theme="dark"] .slate-only {
+  display: block;
+}
+
+[data-theme="light"] .paper-only {
+  display: block;
+}
+
+[data-theme="light"] .slate-only {
+  display: none;
+}
+
 .serif {
   font-family: var(--font-serif);
 }
