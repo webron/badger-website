@@ -109,6 +109,38 @@ Home on desktop: 100 across all four.
    moments apart, so their elapsed timers differ (42:37 vs 52:56). Only one theme
    is ever on screen, so nobody can see both. Not worth a recapture on its own.
 
+## Addendum - favicon refresh (2026-07-23, post-launch)
+
+The site favicon was still the old teal badger mark
+(`/assets/badger_icon_only.svg`, referenced by the icon `<link>`). Refreshed to
+the Direction E journal identity per Ron's ruling: the **ink badger head on a
+paper rounded square**, with the two stripe bands **dropped** (they turn to noise
+at 16-32px; the head alone is the mark).
+
+- **`public/favicon.svg`** - head geometry is pixel-identical to the app icon
+  (`badger-fit assets/app_icon_full.png`): same source paths, same
+  `translate(15.437 6.811) scale(0.07488)` placement. Two intentional departures,
+  both to serve a head-only mark: the head is re-centred (cy 45 -> 54, since the
+  bars no longer hold the lower third) and scaled 1.2x for 16px legibility.
+  Colours unchanged: ink `#262219` head, paper `#F1EDE3` ground and muzzle
+  knockout. Rounded-square corner radius 22/108 (~20%); corners transparent so it
+  reads as a badge on any tab chrome.
+- **`public/favicon.ico`** - 16/32/48px legacy fallback packed from the same SVG.
+- **`tool/build-favicon.py`** - regenerates both from
+  `public/assets/badger_icon_only.svg`, so the favicon is reproducible, not a
+  mystery binary. Verified: re-running it reproduces both files byte-identically.
+- **`<head>`** now points the SVG `<link>` at `/favicon.svg` and adds the `.ico`
+  fallback link; the old teal asset is no longer referenced by the favicon.
+  `BadgerMark.astro` (the inline on-page mark) already used theme tokens, not
+  teal, and is untouched.
+
+**Light/dark verification** (`favicon-light-slate-16-32-48.png` in this folder):
+16/32/48px on light (`#DEE1E6`) and dark (`#202124`) Chrome grounds. 32 and 48
+are crisp and unmistakably the journal badger on both; 16 is blocky but symmetric
+and centred, reading as the two-tone head (the detail floor at 16px - exactly why
+the bands are dropped). Also loaded the built `favicon.svg` in a real browser
+engine to confirm the vector renders (not just a CLI raster).
+
 ## Before you merge
 
 - [ ] Look at the four `band-*.png` crops: real captures in place of the schematics.

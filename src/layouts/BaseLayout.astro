@@ -52,7 +52,11 @@ const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
 
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F1EDE3" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1C1A16" />
-    <link rel="icon" type="image/svg+xml" href="/assets/badger_icon_only.svg" />
+    <!-- Direction E journal favicon: ink badger head on a paper rounded square,
+         stripe bands dropped (they turn to noise at 16-32px). Modern browsers
+         take the SVG; the 16/32/48 .ico is the legacy fallback. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
 
     <script is:inline>
       // Apply the saved theme before first paint. This has to live in <head> and
