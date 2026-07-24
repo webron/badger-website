@@ -40,6 +40,7 @@ const nav = [
     items: [
       { href: `/help/exercises`, label: 'Exercise library' },
       { href: `/help/exercises#search-filter`, label: 'Search & filters' },
+      { href: `/help/exercises#categories`, label: 'Categories' },
       { href: `/help/exercises#creating`, label: 'Creating exercises' },
       { href: `/help/exercises#types`, label: 'Exercise types' },
     ],
@@ -94,7 +95,10 @@ const nav = [
     label: 'Settings & Data',
     items: [
       { href: `/help/settings`, label: 'Settings overview' },
-      { href: `/help/settings#data`, label: 'Data & backup' },
+      { href: `/help/settings#logging`, label: 'Logging settings' },
+      { href: `/help/settings#coaching`, label: 'Coaching settings' },
+      { href: `/help/settings#app`, label: 'App settings' },
+      { href: `/help/settings#data`, label: 'Your data' },
       { href: `/help/settings#export`, label: 'Exporting data' },
       { href: `/help/settings#importing`, label: 'Importing history' },
       { href: `/help/phone-migration`, label: 'Moving to a new phone' },
@@ -166,7 +170,7 @@ const nav = [
   }
 
   /* The search field is a ruled line, not a box: pagefind ships a pill input, so
-     the box has to be unset explicitly rather than just re-coloured. It also
+     the box has to be unset explicitly rather than just re-colored. It also
      pins an explicit height off --pagefind-ui-scale, which leaves a lot of dead
      air around a 13px field; height:auto hands sizing back to the padding.
      .help-search-wrap reserves the resulting height, so re-measure it if any of
@@ -258,8 +262,8 @@ const nav = [
   /* The matched term, marked like a highlighter pass. --accent-wash is tuned to
      sit *under* content as a tint and measures ~1.15:1 against the results
      panel, which makes the match all but invisible; a highlight has to actually
-     read as one. Weight carries it as well as colour, so the match is still
-     obvious if the wash is lost (forced colours, printing). */
+     read as one. Weight carries it as well as color, so the match is still
+     obvious if the wash is lost (forced colors, printing). */
   #help-search mark {
     /* --accent-ink, not raw petrol: petrol is a mid-dark teal, so washing it
        over the slate panel moves the luminance by almost nothing (measured

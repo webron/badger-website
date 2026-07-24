@@ -50,7 +50,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>When two or more categories are selected, a <strong>Match any / Match all</strong> toggle appears. "Match any" shows workouts that include at least one of the selected categories. "Match all" shows only workouts that include all of them.</li>
     <li>Tap <strong>Clear all</strong> to remove all filters at once.</li>
   </ul>
-  <p>An active filter is signalled by a small dot on the filter icon. The list updates in real time as you toggle chips.</p>
+  <p>An active filter is signaled by a small dot on the filter icon. The list updates in real time as you toggle chips.</p>
 
   <p>The filter sheet also has a <strong>Display Options</strong> section with a toggle to show or hide the category dots on the calendar view.</p>
 
@@ -65,13 +65,20 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h3>Planned vs. actual (routine workouts only)</h3>
-  <p>When a workout was started from a routine day, each logged working set shows the planned weight and reps directly beneath it (e.g. <code>planned: 80 kg × 8</code>). Any set you performed beyond the routine's prescription is marked <strong>extra set</strong> beneath it.</p>
-  <p>If you met or exceeded the plan anywhere in the session, a compact wins card appears above the stats row - for example:</p>
+  <p>When a workout was started from a routine day, each logged working set can show two reference lines beneath it. They answer two different questions:</p>
   <ul>
-    <li>"3 sets exceeded plan"</li>
-    <li>"2 of 5 exercises: all sets met or exceeded plan"</li>
+    <li><code>plan: 8-10 reps</code> - what the routine asked for. If you came in under the lower number, a small caret marks it as under plan.</li>
+    <li><code>last session: 80 kg × 8</code> - what you did last time, with a caret showing whether you beat it, matched it, or came in under.</li>
   </ul>
-  <p>The wins card only shows positive outcomes. There is no overall adherence percentage - a bad session shouldn't need a score. Comparison uses an estimated 1RM for weight + reps sets (so more weight, more reps, or both count as a win), and the relevant scalar for reps-only, time-only, and distance exercises. Free workouts (not started from a routine) show the summary unchanged.</p>
+  <p>Any set you performed beyond the routine's prescription is marked <strong>extra set</strong> instead.</p>
+  <p>If you met the plan or beat your last session anywhere in the session, a compact wins card appears above the stats row - for example:</p>
+  <ul>
+    <li>"2 of 5 exercises: every set met the plan"</li>
+    <li>"3 sets exceeded last session"</li>
+    <li>"2 of 5 exercises: all sets met or exceeded last session"</li>
+  </ul>
+  <p>Meeting the plan means hitting the rep target, or anywhere at or above the lower number when the target is a range. A <a href="/help/routines#rep-ranges">rep range</a> only ever widens what counts as met - it never turns a set that used to count into one that doesn't.</p>
+  <p>The wins card only shows positive outcomes. There is no overall adherence percentage - a bad session shouldn't need a score. The last-session comparison uses an estimated 1RM for weight + reps sets (so more weight, more reps, or both count as a win), and the relevant scalar for reps-only, time-only, and distance exercises. Free workouts (not started from a routine) show the summary unchanged.</p>
 
   <h2 id="per-exercise">Per-exercise history</h2>
   <p>You can also view history for a single exercise. From the <a href={`/help/progress`}>Progress tab</a>, select an exercise and open the <strong>History</strong> tab on its detail screen. This shows every session where that exercise was logged, newest first. The same History tab appears in the <strong>training screen</strong> while you're mid-workout - swipe to the History tab to see past sessions for the exercise you're currently logging.</p>

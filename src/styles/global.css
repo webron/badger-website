@@ -214,7 +214,7 @@
 /* The M-web-0 compatibility aliases (--border, --color-accent and friends) are
    gone: M-web-2 converted the last pages that read them, which is exactly when
    M-web-0 scheduled their removal. Every rule now names a real token, so there
-   is one spelling per colour and no alias can drift from what it aliases. */
+   is one spelling per color and no alias can drift from what it aliases. */
 
 /* ---------------------------------------------------------------------------
    Base
@@ -503,9 +503,9 @@ a:hover {
   color: var(--accent-ink);
 }
 
-/* Links sitting inside a block of body text carry an underline, not colour
+/* Links sitting inside a block of body text carry an underline, not color
    alone. Petrol against the body ink does not reach the 3:1 that WCAG 1.4.1
-   requires of a colour-only affordance, so chrome links keep the spec's
+   requires of a color-only affordance, so chrome links keep the spec's
    underline-on-hover treatment and in-text links get a permanent rule. */
 .prose p a,
 .prose li a,
