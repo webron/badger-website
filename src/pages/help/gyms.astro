@@ -22,24 +22,24 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="machines">Machines</h2>
   <p>Go to <strong>You → Machines</strong> to manage machines.</p>
   <ul>
-    <li>Tap <strong>+</strong> to create a machine (e.g. "Cable station", "Leg press", "Smith machine"). Give it a name and pick which gyms it lives at - if you only have one gym, it is linked there automatically and Badger doesn't ask. You land on the new machine's page straight away, so you can set the rest of its details while you're still standing in front of it.</li>
+    <li>Tap <strong>+</strong> to create a machine (e.g. "Cable station", "Leg press", "Smith machine").</li>
     <li>Each machine has two toggles: <strong>Uses attachments</strong> and <strong>Uses grip types</strong>.</li>
     <li>Set the machine's <strong>Resistance type</strong> - <em>Selectorized</em> (a pin-selected weight stack) or <em>Plate-loaded</em>. The plate calculator is hidden during workouts on selectorized machines, since there are no plates to load.</li>
     <li>Set a <strong>Logging unit</strong> if this machine should be logged in a specific unit (kg or lbs) regardless of your app setting - useful for a stack that is physically kg but dual-marked with awkward lbs numbers. Leave it on <em>Default</em> to follow the exercise, then the app setting. When you start a set on the machine, the weight field switches to its unit automatically.</li>
     <li>Optionally set a <strong>Weight increment</strong> - the physical step between settings (for example 5&nbsp;kg between stack positions), entered in the machine's own unit. For stacks that change step size partway up, also fill in <strong>Then step</strong> and <strong>Above</strong> (for example 10&nbsp;kg up to 100, then 20&nbsp;kg). The progressive-overload suggestion snaps to this grid, so it only ever suggests a weight the machine can actually produce.</li>
-    <li>On the machine's detail screen, use the <strong>Available at</strong> section to link the machine to one or more gyms. A machine that is linked to no gym at all can't be offered while you're training, and the section tells you so.</li>
+    <li>On the machine's detail screen, use the <strong>Available at</strong> section to link the machine to one or more gyms.</li>
     <li><strong>Deleting a machine:</strong> if the machine isn't referenced anywhere, deleting it also removes it from every gym and exercise link. If it's used in a logged workout or set as a default in a routine, deletion is blocked so your history and routines stay intact - remove it from those first if you really want it gone.</li>
   </ul>
 
   <h3>Linking machines to exercises</h3>
-  <p>Linking a machine to an exercise marks the two as compatible, which is what puts the machine at the top of the "Set machine" picker while you train.</p>
-  <p>You don't have to set this up in advance. The picker has a second section, <strong>Other machines at this gym</strong>, listing everything else at your current gym. Pick one and Badger links it to the exercise for you, so it's in the top section from then on. Do the linking whenever it suits you: while training, or up front via the exercise library → <strong>Edit</strong> → <strong>Compatible machines</strong>.</p>
+  <p>You can link a machine to an exercise to indicate compatibility. This controls which machines appear in the "Set machine" picker in the training screen.</p>
+  <p>To link: open the exercise in the library → <strong>Edit</strong> → scroll to <strong>Compatible machines</strong> → tap to add or remove machines.</p>
 
   <h2>Attachments</h2>
   <p>Attachments are cable/pulley accessories (e.g. "Straight bar", "Rope", "V-bar", "D-handle"). Go to <strong>You → Attachments</strong> to manage them.</p>
   <ul>
-    <li>Tap <strong>+</strong> to create an attachment. Like machines, you name it and pick its gyms (skipped when you only have one), then land on its page to finish up.</li>
-    <li>Link attachments to gyms via the <strong>Available at</strong> section on each attachment's detail screen. An attachment with no gym isn't offered while training, and the section says so.</li>
+    <li>Tap <strong>+</strong> to create an attachment.</li>
+    <li>Link attachments to gyms via the <strong>Available at</strong> section on each attachment's detail screen.</li>
     <li><strong>Deleting an attachment</strong> works like deleting a machine: blocked if it appears in a logged workout or a routine default, otherwise removed from all gyms.</li>
   </ul>
   <p>Attachments are available in the machine picker only when the current machine has <strong>Uses attachments</strong> enabled.</p>
@@ -81,7 +81,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The current gym name appears in the training screen's header bar. To change it: tap <strong>⋮ → Change gym…</strong> and select a different gym.</p>
 
   <h3>Setting a machine for an exercise</h3>
-  <p>Tap <strong>⋮ → Set machine…</strong> to pick a machine and (if applicable) an attachment. The top of the picker lists machines already marked compatible with this exercise at your current gym. Below that, <strong>Other machines at this gym</strong> lists the rest, so nothing at the gym is out of reach - and picking from it marks that machine compatible for next time.</p>
+  <p>Tap <strong>⋮ → Set machine…</strong> to pick a machine and (if applicable) an attachment. The picker shows machines compatible with the current exercise at the current gym.</p>
   <p>Badger remembers the last attachment used for each exercise + machine combination and pre-selects it next time.</p>
 
   <h2>Progress filtering by machine</h2>
