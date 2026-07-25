@@ -448,7 +448,15 @@ const description =
             lever arm). Older files with the camelCase values still read.
           </td>
         </tr>
-        <tr><td><code>bar_weight_kg</code></td><td>number</td><td>Weight of the bar or empty carriage, in kg.</td></tr>
+        <tr>
+          <td><code>bar_weight_kg</code></td>
+          <td>number</td>
+          <td>
+            Weight of the bar or empty carriage, always in kg in the file - even when the app it
+            came from shows and stores it in pounds. Badger converts at export and back at import,
+            so a 45 lb bar travels as <code>20.41</code> and arrives as 45 lb again.
+          </td>
+        </tr>
         <tr>
           <td><code>weight_unit</code></td>
           <td>string</td>
