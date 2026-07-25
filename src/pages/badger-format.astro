@@ -289,7 +289,7 @@ const description =
       <tbody>
         <tr>
           <td><code>is_warmup</code></td>
-          <td>boolean</td>
+          <td>boolean, defaults to false</td>
           <td>Defaults to <code>false</code>. Warmup sets do not count toward your working volume.</td>
         </tr>
         <tr><td><code>sort_order</code></td><td>integer, set it always</td><td>Order within the exercise. Same rule again: absent reads as 0 and ties land in no guaranteed order.</td></tr>
@@ -394,8 +394,8 @@ const description =
       </thead>
       <tbody>
         <tr><td><code>name</code></td><td>string, required</td><td>Machine name.</td></tr>
-        <tr><td><code>uses_attachments</code></td><td>boolean</td><td>Whether the machine takes attachments (bars, handles, ropes).</td></tr>
-        <tr><td><code>uses_grip_types</code></td><td>boolean</td><td>Whether grip is worth recording on this machine.</td></tr>
+        <tr><td><code>uses_attachments</code></td><td>boolean, defaults to false</td><td>Whether the machine takes attachments (bars, handles, ropes).</td></tr>
+        <tr><td><code>uses_grip_types</code></td><td>boolean, defaults to false</td><td>Whether grip is worth recording on this machine.</td></tr>
         <tr>
           <td><code>machine_type</code></td>
           <td>string</td>
