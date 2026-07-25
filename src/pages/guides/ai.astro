@@ -1,0 +1,337 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+
+/**
+ * BYO-AI guide (M-web-4, spec: badger-fit
+ * docs/superpowers/specs/2026-07-18-m-web-4-orphaned-pages.md section 3;
+ * stance: docs/superpowers/specs/2026-07-18-ai-integration-direction.md rungs
+ * 1-2).
+ *
+ * Binding tone rules from the spec: no accounts, no hosted AI, no partner
+ * links, no model recommendations beyond generic examples. The framing is
+ * "your data, your AI, your key" throughout, and every privacy claim stays
+ * never-required / opt-in phrased.
+ *
+ * The prompt bodies live in the `prompts` array so the copy button copies
+ * exactly the text on the page: one source, no drift between what you read and
+ * what lands on your clipboard.
+ */
+
+const description =
+  'Hand your own training data to whichever AI you already use: prompt templates for the CSV export and for routine .badger files, with nothing sent by Badger.';
+
+const prompts = [
+  {
+    id: 'analyze',
+    title: 'Analyze my training',
+    intro:
+      'For the CSV export, which is every set you have ever logged, one row per set. Paste the prompt, then attach or paste the CSV underneath it.',
+    body: `I train with a workout tracker called Badger. Below (or attached) is a CSV export of every set I have logged, one row per set, with these columns:
+
+date, workout_id, exercise_name, category, set_number, is_warmup, weight, weight_unit, reps, duration_seconds, distance, rpe, rir, comment
+
+How to read it:
+- Weights are stored in the unit named in weight_unit and are never converted, so convert before comparing kg and lbs rows.
+- Rows where is_warmup is true are warmups. Leave them out of working volume.
+- Empty cells mean the exercise does not use that field: a plank has duration_seconds and no reps.
+- rpe is 1-10, rir is reps in reserve. Both are optional and often blank.
+- There is no column for whether a set was actually completed, so a session I started from a routine and abandoned can appear as though I performed it. Flag anything that looks like that rather than averaging it in.
+
+Please:
+1. Summarize how I have actually been training: sessions per week, which lifts I do most, how volume splits across categories, and how consistent I am.
+2. Show the trend on my main lifts: best working set and estimated 1RM over time, and whether each is climbing, flat, or slipping.
+3. Point out imbalances, neglected movement patterns, and anything that looks like a plateau. Say what evidence you used for each.
+4. Tell me what you would change, in priority order, and where you are unsure.
+
+Ask me about my goals, my schedule, and any injuries before assuming them.`,
+  },
+  {
+    id: 'review',
+    title: 'Review my program',
+    intro:
+      'For a routine you exported from Badger, or one from the program gallery. Paste the prompt, then the contents of the .badger file.',
+    body: `Below is a training program as a .badger file: the plain JSON format used by the Badger workout tracker. It is documented at https://badger.fit/badger-format
+
+Read it and tell me:
+1. What this program actually is: how many sessions a week, what it prioritizes, and who it suits.
+2. Where it is thin or unbalanced. Which muscle groups and movement patterns get little or no work?
+3. How hard it is to recover from, and whether the volume is sane for someone training this often.
+4. What you would change for my situation, and why.
+
+My situation: [training age, days a week I can train, goal, equipment, anything I need to work around].
+
+Do not rewrite the file yet. Tell me what you would change first, then I will ask.`,
+  },
+  {
+    id: 'write',
+    title: 'Write me a program as a .badger file',
+    intro:
+      'The round trip: your AI writes a routine, you save it with a .badger extension, tap it, and Badger imports it. Fill in the bracketed parts before sending.',
+    body: `Write me a training program as a .badger file for the Badger workout tracker, so I can import it directly.
+
+The format is documented at https://badger.fit/badger-format and there is a small worked example at https://badger.fit/programs/example-routine.badger
+
+Follow the format exactly:
+- Top level: "badger": "share/v1", "type": "routine", plus app_version, created_at, and payload.
+- payload has routine, days, exercises, and machines (machines can be an empty array).
+- Every exercise a day references must also appear in payload.exercises with the same name and type.
+- Use ordinary exercise names ("Barbell Back Squat", not "BB squat"), so they match exercises I already have instead of creating duplicates.
+- For a rep range, set reps to the bottom of the range and reps_max to the top. For an exact target, use reps alone.
+- Leave weight out. I fill in my own weights.
+- Never put reps_max on a warmup set.
+- Give each day a sort_order, and each exercise and set a sort_order within its parent.
+
+What I want:
+- Days a week: [4]
+- Experience: [about two years of consistent lifting]
+- Goal: [get stronger on the main barbell lifts while keeping some size work]
+- Equipment: [full gym: rack, barbell, dumbbells, cables, common machines]
+- Session length: [about an hour]
+- Avoid: [nothing]
+
+Give me the complete JSON in one code block, then explain the program in a few sentences underneath: what progresses, how, and when I should change something.`,
+  },
+];
+---
+
+<HelpLayout title="Use your own AI" description={description}>
+  <h1>Use your own AI</h1>
+
+  <p>
+    Badger has no AI in it and no opinion about which one you use. What it has is your data in
+    formats you can hand to something else: a CSV of every set you have logged, and routines as plain
+    <code>.badger</code> files. Point whichever assistant you already pay for at those, and you have a
+    coach that knows your training, without Badger running a service, holding a key, or seeing any of
+    it.
+  </p>
+
+  <p>
+    Your data, your AI, your subscription. Nothing on this page asks you to sign in anywhere, and
+    Badger never sends your training to anyone: every step below is you exporting a file and choosing
+    where to put it.
+  </p>
+
+  <h2 id="what-to-hand-it">What you can hand it</h2>
+
+  <ul>
+    <li>
+      <strong>Your training history, as CSV.</strong> Settings, then Your data, then Export. One row
+      per set, every set the app holds, with dates, weights, reps, RPE, RIR, and your notes. It has no
+      column saying whether a set was completed, so the prompt below tells the AI to watch for
+      abandoned sessions rather than average them in. See
+      <a href="/help/settings#export">exporting data</a>.
+    </li>
+    <li>
+      <strong>A routine, as a <code>.badger</code> file.</strong> Open a routine and pick Share
+      routine from its menu. It carries the plan and nothing about your history. The
+      <a href="/programs">program gallery</a> has six ready to read.
+    </li>
+    <li>
+      <strong>The format itself.</strong> <a href="/badger-format">The <code>.badger</code> format</a>
+      is documented in public so an AI can write a file Badger will import.
+    </li>
+  </ul>
+
+  <h2 id="prompts">Prompts worth starting from</h2>
+
+  <p>
+    These are starting points, not incantations. Edit the bracketed parts, cut what does not apply,
+    and argue with the answers.
+  </p>
+
+  {
+    prompts.map((p) => (
+      <section class="prompt-block">
+        <h3 id={p.id}>{p.title}</h3>
+        <p>{p.intro}</p>
+        <div class="prompt" data-prompt>
+          <pre><code>{p.body}</code></pre>
+        </div>
+      </section>
+    ))
+  }
+
+  <h2 id="before-you-import">Before you import what it writes back</h2>
+
+  <p>
+    An AI will hand you confident, well-formatted nonsense if you let it. The import preview is your
+    check, and so are you.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Save it with a <code>.badger</code> extension</strong>, then open the file. Badger shows
+      a preview before anything is written. If tapping it does nothing, open it from your file manager,
+      or from Files on an iPhone, and choose Badger there.
+    </li>
+    <li>
+      <strong>Read the new-exercise count in that preview.</strong> A program of familiar lifts should
+      create few or no new exercises. A long list of new ones means the AI invented names: fix the
+      names in the file, and it will land on the exercises you already have, with the history and PRs
+      attached to them.
+    </li>
+    <li>
+      <strong>If it will not open</strong>, the JSON is malformed, or <code>badger</code> is not
+      <code>share/v1</code>, or <code>type</code> is not <code>routine</code>. Paste the error back
+      and ask for a corrected file.
+    </li>
+    <li>
+      <strong>Nothing is overwritten either way.</strong> An import that turns out to be rubbish is a
+      routine you delete. Your history is not involved.
+    </li>
+    <li>
+      <strong>Judge the program yourself.</strong> Nothing here validates whether the training is any
+      good, and neither does the app.
+    </li>
+  </ul>
+
+  <h2 id="privacy">What this costs you in privacy</h2>
+
+  <p>
+    Worth being plain about, since the rest of Badger works hard to keep your training on your phone.
+    Badger sends nothing: the export lands on your device and stops there. The moment you paste it
+    into a chat, though, it goes to whoever runs that chat, under their terms, and some of them use
+    what you send to train on unless you turn that off. That is a trade you make deliberately, not one
+    the app makes for you.
+  </p>
+
+  <ul>
+    <li>
+      <strong>A routine file is the safe one.</strong> It is a plan: exercise names, sets, reps. No
+      history, no dates, nothing about you.
+    </li>
+    <li>
+      <strong>The CSV is your training history.</strong> Dates, weights, reps, and any per-set notes
+      you wrote. No name, no email, no device identifier, no location, because Badger does not hold
+      any of those. Have a look before you paste it if you write personal things in set comments.
+    </li>
+    <li>
+      <strong>A local model keeps it local</strong>, if the point of all this for you is that it never
+      leaves the house.
+    </li>
+  </ul>
+
+  <p>
+    Everything on this page works with the app exactly as it ships today: export, paste, import. No
+    account, no key stored in Badger, nothing to switch on. See
+    <a href="/promise">the promise</a> for why it is built that way.
+  </p>
+</HelpLayout>
+
+<script is:inline>
+  // Progressive enhancement only. The prompt text is on the page and selectable
+  // without any of this; the button is injected by the script itself, so a
+  // browser without clipboard access never shows a control that would not work.
+  (function () {
+    if (!navigator.clipboard) return;
+    document.querySelectorAll('[data-prompt]').forEach(function (block) {
+      var code = block.querySelector('code');
+      if (!code) return;
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'prompt-copy';
+      btn.textContent = 'Copy prompt';
+      btn.addEventListener('click', function () {
+        navigator.clipboard.writeText(code.textContent).then(
+          function () {
+            btn.textContent = 'Copied';
+            setTimeout(function () {
+              btn.textContent = 'Copy prompt';
+            }, 2000);
+          },
+          function () {
+            // Clipboard access can be refused (permissions policy, a locked-down
+            // browser). Select the prompt instead, so the reader's own copy
+            // shortcut finishes the job rather than being told to press a key
+            // with nothing selected.
+            var range = document.createRange();
+            range.selectNodeContents(code);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            btn.textContent = 'Selected, copy it';
+            setTimeout(function () {
+              btn.textContent = 'Copy prompt';
+            }, 3000);
+          },
+        );
+      });
+
+      block.insertBefore(btn, block.firstChild);
+      block.classList.add('has-copy');
+    });
+  })();
+</script>
+
+<style>
+  .prompt-block {
+    margin-bottom: 8px;
+  }
+
+  /* The prompt is a quoted artifact rather than prose, so it keeps an edge: an
+     accent keyline on the left, the same move the tip callout makes. */
+  .prompt {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+    margin: 0 0 22px;
+  }
+
+  .prompt pre {
+    margin: 0;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .prompt code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-family: ui-monospace, monospace;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Injected, so it only exists where it works. Sits in the corner of the block
+     and takes a full tap target. */
+  .prompt :global(.prompt-copy) {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    min-height: 32px;
+    padding: 5px 10px;
+    background: var(--bg);
+    border: 1px solid var(--outline);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    cursor: pointer;
+  }
+
+  .prompt :global(.prompt-copy:hover) {
+    border-color: var(--accent);
+  }
+
+  /* Room for the button, only once it is actually there. */
+  .prompt.has-copy pre {
+    padding-top: 30px;
+  }
+
+  @media (max-width: 560px) {
+    .prompt.has-copy pre {
+      padding-top: 34px;
+    }
+  }
+</style>
