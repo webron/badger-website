@@ -136,7 +136,8 @@ const description =
     defining what each exercise <em>is</em>, while a day's <code>exercises</code> is an array of
     <a href="#day-exercise"><code>DayExercise</code></a>, saying what that day <em>does</em> and
     referencing the definitions by name. Every name a day uses should have a definition in the top-level list - a slot whose name
-    matches no definition is silently dropped on import, and the day arrives shorter.
+    matches no definition is skipped - the import preview counts these and warns you before
+    anything is written.
   </p>
 
   <h3 id="routine-object">Routine</h3>
@@ -190,10 +191,9 @@ const description =
         <tr><td><code>name</code></td><td>string, required</td><td>Day name, for example "Push" or "Workout A".</td></tr>
         <tr>
           <td><code>sort_order</code></td>
-          <td>integer, set it always</td>
-          <td>Position in the routine. Import orders by this field, not by array order. Technically
-          optional - absent reads as 0 - but items sharing a value land in no guaranteed order, so
-          treat it as required. Every file Badger writes sets it.</td>
+          <td>integer, optional</td>
+          <td>Position in the routine. Import orders by this field, and ties - including everything
+          when it is absent - keep their array order. Every file Badger writes sets it.</td>
         </tr>
         <tr>
           <td><code>scheduled_days</code></td>
@@ -241,11 +241,11 @@ const description =
             The referenced exercise's type, repeated here. Optional, but include it: it is what keeps
             a "Plank" you time apart from a "Plank" someone counts reps on. When present it must
             exactly equal the referenced definition's <code>type</code> - import resolves the slot by
-            the name and type together, and a mismatch means the slot matches nothing and is dropped
-            like an unmatched name.
+            the name and type together, and a mismatch means the slot matches nothing - counted in
+            the import preview's warning and skipped, like an unmatched name.
           </td>
         </tr>
-        <tr><td><code>sort_order</code></td><td>integer, set it always</td><td>Order within the day. Same rule as a <a href="#day"><code>Day</code></a>'s: absent reads as 0 and ties land in no guaranteed order.</td></tr>
+        <tr><td><code>sort_order</code></td><td>integer, optional</td><td>Order within the day. Same rule as a <a href="#day"><code>Day</code></a>'s: ties and absent values keep their array order.</td></tr>
         <tr>
           <td><code>rest_override_seconds</code></td>
           <td>integer</td>
@@ -292,7 +292,7 @@ const description =
           <td>boolean, defaults to false</td>
           <td>Defaults to <code>false</code>. Warmup sets do not count toward your working volume.</td>
         </tr>
-        <tr><td><code>sort_order</code></td><td>integer, set it always</td><td>Order within the exercise. Same rule again: absent reads as 0 and ties land in no guaranteed order.</td></tr>
+        <tr><td><code>sort_order</code></td><td>integer, optional</td><td>Order within the exercise. Same rule again: ties and absent values keep their array order.</td></tr>
         <tr>
           <td><code>weight</code></td>
           <td>number</td>
@@ -502,8 +502,8 @@ const description =
       exactly as it was.
     </li>
     <li>
-      <strong>Order comes from <code>sort_order</code></strong>, not from the order things appear in
-      the arrays.
+      <strong>Order comes from <code>sort_order</code></strong>, with array position breaking ties -
+      so a file that omits the field imports in plain array order.
     </li>
     <li>
       <strong>A warmup never carries a rep range.</strong> If a file puts <code>reps_max</code> on a
