@@ -79,6 +79,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Any workout-level comment you added when ending the session.</li>
   </ul>
 
+  <h3 id="pace">Pace</h3>
+  <p>Below the stats row, a <strong>Pace</strong> section shows how the session was spent: how long each exercise took, your average rest between its sets, and the total for the session. It is worked out from the times your sets were recorded, so nothing extra is asked of you while you train.</p>
+  <ul>
+    <li>A gap longer than ten minutes counts as a <strong>break</strong> rather than rest - a phone call or a wait for a rack does not get averaged into your rest times. Breaks are listed on their own line.</li>
+    <li>An exercise only reports average rest for gaps between its own sets, so a superset shows how long it took without pretending the partner exercise was rest.</li>
+    <li>These are your actual times, not a comparison against the rest timer you configured.</li>
+  </ul>
+  <p>Pace appears once a session has at least four completed sets and a running clock. Backdated logs never show it - there is no real timing to report - and neither do sessions logged before the feature existed.</p>
+
   <h3>Planned vs. actual (routine workouts only)</h3>
   <p>When a workout was started from a routine day, each logged working set can show two reference lines beneath it. They answer two different questions:</p>
   <ul>
