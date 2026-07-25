@@ -255,8 +255,11 @@ const description =
           <td><code>default_machine_name</code></td>
           <td>string</td>
           <td>
-            Machine this slot is pinned to. Must match a machine in the payload's
-            <code>machines</code> list. Import also links that machine to the exercise.
+            Machine this slot is pinned to, by name. Resolved against the reader's own machines and
+            the payload's <code>machines</code> list together, so a machine the recipient already
+            has does not need to travel in the file. Include it in <code>machines</code> when the
+            file should also work for someone who lacks it; the name matching nothing just leaves
+            the slot unpinned. Import links the matched machine to the exercise.
           </td>
         </tr>
         <tr>
