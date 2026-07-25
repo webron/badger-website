@@ -190,8 +190,10 @@ const description =
         <tr><td><code>name</code></td><td>string, required</td><td>Day name, for example "Push" or "Workout A".</td></tr>
         <tr>
           <td><code>sort_order</code></td>
-          <td>integer</td>
-          <td>Position in the routine. Import orders by this field, not by array order.</td>
+          <td>integer, set it always</td>
+          <td>Position in the routine. Import orders by this field, not by array order. Technically
+          optional - absent reads as 0 - but items sharing a value land in no guaranteed order, so
+          treat it as required. Every file Badger writes sets it.</td>
         </tr>
         <tr>
           <td><code>scheduled_days</code></td>
@@ -240,7 +242,7 @@ const description =
             time apart from a "Plank" someone counts reps on.
           </td>
         </tr>
-        <tr><td><code>sort_order</code></td><td>integer</td><td>Order within the day.</td></tr>
+        <tr><td><code>sort_order</code></td><td>integer, set it always</td><td>Order within the day. Same rule as a <a href="#day"><code>Day</code></a>'s: absent reads as 0 and ties land in no guaranteed order.</td></tr>
         <tr>
           <td><code>rest_override_seconds</code></td>
           <td>integer</td>
@@ -284,7 +286,7 @@ const description =
           <td>boolean</td>
           <td>Defaults to <code>false</code>. Warmup sets do not count toward your working volume.</td>
         </tr>
-        <tr><td><code>sort_order</code></td><td>integer</td><td>Order within the exercise.</td></tr>
+        <tr><td><code>sort_order</code></td><td>integer, set it always</td><td>Order within the exercise. Same rule again: absent reads as 0 and ties land in no guaranteed order.</td></tr>
         <tr>
           <td><code>weight</code></td>
           <td>number</td>
