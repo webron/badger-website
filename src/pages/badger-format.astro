@@ -366,8 +366,11 @@ const description =
           <td><code>category_name</code></td>
           <td>string</td>
           <td>
-            Category for an exercise that has to be created, for example "Chest". Created if the name is
-            new. Defaults to "Other".
+            Category for an exercise that has to be created. Any name is valid: an existing category
+            is reused by name, a new name creates one, and absent reads as "Other". A fresh install
+            ships Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, and Cardio - not an enum,
+            since categories can be renamed or deleted, but using these lands new exercises where
+            most libraries already sort them.
           </td>
         </tr>
       </tbody>
