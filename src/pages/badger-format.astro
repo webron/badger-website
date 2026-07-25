@@ -441,6 +441,14 @@ const description =
     which of each belongs to it.
   </p>
 
+  <p>
+    Definitions and membership are separate on purpose, mirroring the app: machines and attachments
+    are global there, and a gym holds links to them, so one machine can belong to several gyms. In a
+    file Badger writes, <code>gym_machines</code> and <code>gym_attachments</code> always name
+    exactly the objects in <code>machines</code> and <code>attachments</code> - the split is
+    structure, not extra information to fill in.
+  </p>
+
   <div class="table-wrap">
   <table>
       <thead>
