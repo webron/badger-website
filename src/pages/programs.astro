@@ -1,0 +1,484 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+/**
+ * The program gallery (M-web-4, spec: badger-fit
+ * docs/superpowers/specs/2026-07-18-m-web-4-orphaned-pages.md section 1).
+ *
+ * Every file in public/programs/ was produced by the app's own routine export
+ * (BadgerExportService) against a freshly seeded database, and each one was
+ * imported back with the real import service and compared field by field.
+ * Generator: badger-fit test/tools/program_gallery_export_test.dart. Regenerate
+ * and re-copy whenever the schema or the seeded templates change.
+ *
+ * The counts and the app version below are read from the files at build time,
+ * so this page cannot drift from what it is handing out.
+ *
+ * The "not yet" section is the point of the page, not an apology: it is how
+ * demand for percentage-based programming gets measured on a site that carries
+ * no analytics of any kind.
+ */
+
+// From the project root: at build time this module lives in dist/, so a
+// module-relative path would resolve to a directory that does not exist.
+const filesDir = join(process.cwd(), 'public/programs');
+
+interface ProgramCopy {
+  slug: string;
+  title: string;
+  level: string;
+  cadence: string;
+  blurb: string;
+}
+
+const programCopy: ProgramCopy[] = [
+  {
+    slug: 'stronglifts-5x5',
+    title: 'StrongLifts 5x5',
+    level: 'Beginner',
+    cadence: '3 days a week',
+    blurb:
+      'Two sessions you alternate, five sets of five on the barbell lifts, and you add weight the moment you finish all your reps. It is the shortest route to a real squat, bench, row, press and deadlift, and it runs out somewhere around your first stubborn plateau.',
+  },
+  {
+    slug: 'starting-strength',
+    title: 'Starting Strength',
+    level: 'Beginner',
+    cadence: '3 days a week',
+    blurb:
+      'The same alternating shape as StrongLifts with three work sets instead of five, so each session is shorter and easier to recover from. It asks more of your technique and of how much you eat than of your schedule.',
+  },
+  {
+    slug: 'full-body-3-day',
+    title: 'Full Body',
+    level: 'Beginner',
+    cadence: '3 days a week',
+    blurb:
+      'One session, run three times a week, covering everything each time. A sensible pick when three days is all you have and you would rather not think about splits.',
+  },
+  {
+    slug: 'gzclp',
+    title: 'GZCLP',
+    level: 'Late beginner',
+    cadence: '4 days a week',
+    blurb:
+      'Three tiers a session: a heavy main lift, a lighter second movement, and accessory volume, rotating across four days. The file gives you the structure; when a lift stalls you move it down a tier yourself, because Badger does not run the tier logic for you.',
+  },
+  {
+    slug: 'upper-lower-4-day',
+    title: 'Upper / Lower',
+    level: 'Intermediate',
+    cadence: '4 days a week',
+    blurb:
+      'Two heavy days and two lighter, higher-rep days across a four-day week. A reasonable next step when full-body sessions start taking an hour and a half.',
+  },
+  {
+    slug: 'ppl-6-day',
+    title: 'Push / Pull / Legs',
+    level: 'Intermediate',
+    cadence: '6 days a week',
+    blurb:
+      'Push, pull and legs, run through twice, with one rest day. It only pays off if six sessions a week is genuinely realistic for you; at four or five, upper/lower does more with your time.',
+  },
+];
+
+interface ProgramFile {
+  sessions: number;
+  exercises: number;
+  sets: number;
+  bytes: number;
+  appVersion: string;
+}
+
+function readProgram(slug: string): ProgramFile {
+  const raw = readFileSync(`${filesDir}/${slug}.badger`, 'utf8');
+  const parsed = JSON.parse(raw);
+  const days = parsed.payload.days as any[];
+  const exercises = days.reduce((n, d) => n + d.exercises.length, 0);
+  const sets = days.reduce(
+    (n, d) => n + d.exercises.reduce((m: number, e: any) => m + e.predefined_sets.length, 0),
+    0,
+  );
+  return {
+    sessions: days.length,
+    exercises,
+    sets,
+    bytes: Buffer.byteLength(raw, 'utf8'),
+    appVersion: parsed.app_version,
+  };
+}
+
+const programs = programCopy.map((p) => ({ ...p, file: readProgram(p.slug) }));
+const appVersion = programs[0].file.appVersion;
+
+const fmtSize = (bytes: number) => `${(bytes / 1024).toFixed(1)} KB`;
+
+// The honest waiting list. Percentage waves need a training max and a cycle
+// Badger cannot compute yet, so these are listed as missing rather than faked.
+const notYet = [
+  {
+    title: '5/3/1 and its variants',
+    body: "Wendler's cycles set every working weight as a percentage of a training max that moves each cycle. Badger can hold the sets and reps, but it will not do the percentage arithmetic for you, so a 5/3/1 file would be a shell you refill by hand every week.",
+    subject: 'Program request: 5/3/1',
+  },
+  {
+    title: 'nSuns and other percentage waves',
+    body: 'Same problem, more of it: nSuns drives a long list of sets from one training max per lift. Until Badger can carry a training max and compute a wave from it, a downloadable file would be a table of numbers that goes stale after your first cycle.',
+    subject: 'Program request: nSuns',
+  },
+];
+
+const description =
+  'Six starter programs as .badger files you can import straight into Badger: StrongLifts 5x5, Starting Strength, full body, GZCLP, upper/lower, and push/pull/legs.';
+---
+
+<BaseLayout title="Program files" description={description}>
+  <Header currentPath={Astro.url.pathname} />
+
+  <main class="doc">
+    <span class="kicker">Programs</span>
+    <h1>Programs you can import</h1>
+    <p class="lede">
+      Each of these is a <code>.badger</code> file: a plain routine you download, open on your phone,
+      and import into Badger in one step. They are exported from the app itself, so nothing here is a
+      description of a program you then have to type in.
+    </p>
+    <p class="sub">
+      The same six also ship inside the app, under Routines. The files are here so you can read one
+      before you commit to it, edit it, hand it to someone else, or give it to an AI as a worked
+      example of the <a href="/badger-format">file format</a>. If that last one is why you are here,
+      <a href="/guides/ai">use your own AI</a> has the prompts.
+    </p>
+
+    <div class="rule-ink section-rule"></div>
+    <p class="caps section-label">Six programs, ready to import</p>
+
+    <ul class="programs">
+      {
+        programs.map((p) => (
+          <li class="program">
+            <div class="program-head">
+              <h2>{p.title}</h2>
+              <span class="program-tag">
+                {p.level} &middot; {p.cadence}
+              </span>
+            </div>
+            <p class="program-meta tnum">
+              {p.file.sessions} {p.file.sessions === 1 ? 'session' : 'sessions'} &middot;{' '}
+              {p.file.exercises} exercises &middot; {p.file.sets} sets &middot;{' '}
+              {fmtSize(p.file.bytes)}
+            </p>
+            <p class="program-blurb">{p.blurb}</p>
+            <p class="program-get">
+              <a class="download" href={`/programs/${p.slug}.badger`} download>
+                Download {p.slug}.badger
+              </a>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="note">
+      Exported from Badger <span class="tnum">{appVersion}</span>, schema{' '}
+      <code>share/v1</code>. Every file was imported back into a clean copy of the app and checked
+      field by field before it was published here.
+    </p>
+
+    <div class="rule-ink section-rule"></div>
+    <p class="caps section-label">How to import one</p>
+    <ol class="steps">
+      <li>Download the file on the phone you train with. It saves like any other download.</li>
+      <li>
+        Open it. Badger shows a preview first: the routine name, how many days it has, and which
+        exercises it will add to your library. If tapping the download does nothing, open it from your
+        file manager, or from Files on an iPhone, and choose Badger there.
+      </li>
+      <li>
+        Import. The routine appears under Routines, ready to start. Nothing you already have is
+        overwritten: exercises you own are reused by name, and if you already have a routine with the
+        same name the new one arrives as "(imported)".
+      </li>
+    </ol>
+    <p class="note">
+      More detail in <a href="/help/routines#creating">routines</a> and{' '}
+      <a href="/help/settings#data">your data</a>. Nothing here needs an account, a login, or a
+      connection beyond the download itself.
+    </p>
+
+    <div class="rule-ink section-rule"></div>
+    <p class="caps section-label">Not yet</p>
+    <p class="notyet-lede">
+      These are the programs people ask for that Badger cannot run honestly today. They are listed
+      here rather than quietly left out, because a file that pretends to run a program it cannot is
+      worse than no file.
+    </p>
+
+    <ul class="programs">
+      {
+        notYet.map((n) => (
+          <li class="program program--pending">
+            <div class="program-head">
+              <h2>{n.title}</h2>
+              <span class="program-tag program-tag--pending">Not yet</span>
+            </div>
+            <p class="program-blurb">{n.body}</p>
+            <p class="program-get">
+              <a
+                class="want"
+                href={`mailto:hello@badger.fit?subject=${encodeURIComponent(n.subject)}`}
+              >
+                Want this? Tell me
+              </a>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="note">
+      That link opens an email to <a href="mailto:hello@badger.fit">hello@badger.fit</a> with the
+      subject filled in. Say nothing else if you like: the count is the signal. This site runs no
+      analytics and sets no cookies, so asking is the only way anyone here knows what you want.
+    </p>
+
+    <div class="close-line">
+      <p class="close-copy">A program is a plan, not a subscription. Take the file.</p>
+    </div>
+
+    <div class="cta-min">
+      <a class="btn-accent" href="/#download">Get the app</a>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .doc {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 0;
+  }
+
+  .kicker {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .doc h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 1.15;
+    color: var(--text);
+  }
+
+  .lede {
+    margin: 14px 0 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 60ch;
+  }
+
+  .sub {
+    margin: 12px 0 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 62ch;
+  }
+
+  .section-rule {
+    margin-top: 42px;
+  }
+
+  .section-label {
+    margin: 12px 0 0;
+  }
+
+  .programs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Ledger rows, not cards: a hairline under each program and nothing boxed. */
+  .program {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .program-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  /* The program name is the entry's title, so it takes the serif. The numbers
+     under it never do. */
+  .program h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.25;
+    color: var(--text);
+  }
+
+  .program-tag {
+    flex: 0 0 auto;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .program-tag--pending {
+    color: var(--warning);
+  }
+
+  .program-meta {
+    margin: 6px 0 0;
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  .program-blurb {
+    margin: 8px 0 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 62ch;
+  }
+
+  .program-get {
+    margin: 10px 0 0;
+  }
+
+  .download,
+  .want {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--accent-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--accent-ink) 45%, transparent);
+  }
+
+  .download:hover,
+  .want:hover {
+    text-decoration-color: var(--accent-ink);
+  }
+
+  .steps {
+    margin: 14px 0 0 20px;
+    padding: 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 62ch;
+  }
+
+  .steps li {
+    margin-bottom: 8px;
+  }
+
+  .steps li::marker {
+    color: var(--text-muted);
+  }
+
+  .note {
+    margin: 16px 0 0;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 62ch;
+  }
+
+  .notyet-lede {
+    margin: 14px 0 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 62ch;
+  }
+
+  /* Every in-text link on the page, not a hand-listed few: color alone does not
+     reach the 3:1 WCAG 1.4.1 wants against the body ink, so prose links carry a
+     permanent underline (the M-web-0 house departure). Missing one is exactly
+     what Lighthouse's link-in-text-block audit catches. */
+  .doc p a,
+  .doc li a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: color-mix(in srgb, var(--accent-ink) 45%, transparent);
+  }
+
+  code {
+    font-family: ui-monospace, monospace;
+    font-size: 0.85em;
+    background: var(--panel);
+    border: 1px solid var(--hair);
+    border-radius: 4px;
+    padding: 1px 5px;
+    color: var(--text);
+  }
+
+  .close-line {
+    margin-top: 44px;
+    padding: 30px 0 0;
+    border-top: 1px solid var(--hair);
+    text-align: center;
+  }
+
+  .close-copy {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .cta-min {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  /* The tag will not sit beside a wrapping title on a phone; it drops above it
+     rather than squeezing the name, same as the guide rows. */
+  @media (max-width: 560px) {
+    .program-head {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      gap: 3px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .doc {
+      padding: 44px 20px 0;
+    }
+
+    .doc h1 {
+      font-size: 30px;
+    }
+
+    .close-copy {
+      font-size: 18px;
+    }
+  }
+</style>
