@@ -57,7 +57,7 @@ Read it and tell me:
 1. What this program actually is: how many sessions a week, what it prioritizes, and who it suits.
 2. Where it is thin or unbalanced. Which muscle groups and movement patterns get little or no work?
 3. How hard it is to recover from, and whether the volume is sane for someone training this often.
-4. What you would change for my situation, and why.
+4. What you would change for my situation, and why. If I paste my gym's .badger file underneath, also say whether the program fits the equipment I actually have.
 
 My situation: [training age, days a week I can train, goal, equipment, anything I need to work around].
 
@@ -67,7 +67,7 @@ Do not rewrite the file yet. Tell me what you would change first, then I will as
     id: 'write',
     title: 'Write me a program as a .badger file',
     intro:
-      'The round trip: your AI writes a routine, you save it with a .badger extension, tap it, and Badger imports it. Fill in the bracketed parts before sending.',
+      'The round trip: your AI writes a routine, you save it with a .badger extension, tap it, and Badger imports it. Fill in the bracketed parts before sending. Optionally paste your gym\'s .badger file underneath, and the program gets planned around the machines you actually have.',
     body: `Write me a training program as a .badger file for the Badger workout tracker, so I can import it directly.
 
 The format is documented at https://badger.fit/badger-format and there is a small worked example at https://badger.fit/programs/example-routine.badger
@@ -81,6 +81,7 @@ Follow the format exactly:
 - Leave weight out. I fill in my own weights.
 - Never put reps_max on a warmup set.
 - Give each day a sort_order, and each exercise and set a sort_order within its parent.
+- If I paste a gym .badger file below, plan around its equipment: only pick machine exercises its machines support (barbell, dumbbell, and bodyweight movements are always available). For an exercise done on one of those machines, set default_machine_name to that machine's name exactly as written in my file, and copy the machine's entry into payload.machines verbatim. Never invent or rename a machine.
 
 What I want:
 - Days a week: [4]
@@ -127,6 +128,12 @@ Give me the complete JSON in one code block, then explain the program in a few s
       <a href="/programs">program gallery</a> has six ready to read.
     </li>
     <li>
+      <strong>Your gym, as a <code>.badger</code> file.</strong> Open a gym and pick Share gym from
+      its menu. It lists the machines you actually have, so a program can be planned around your
+      equipment instead of a generic gym - the write-me-a-program prompt below knows what to do
+      with it.
+    </li>
+    <li>
       <strong>The format itself.</strong> <a href="/badger-format">The <code>.badger</code> format</a>
       is documented in public so an AI can write a file Badger will import.
     </li>
@@ -169,6 +176,11 @@ Give me the complete JSON in one code block, then explain the program in a few s
       create few or no new exercises. A long list of new ones means the AI invented names: fix the
       names in the file, and it will land on the exercises you already have, with the history and PRs
       attached to them.
+    </li>
+    <li>
+      <strong>If you gave it your gym file, the preview should create zero new machines.</strong> A
+      new machine in the preview means the AI misspelled one. Fix the name in the file so the
+      exercise lands on the machine you already track.
     </li>
     <li>
       <strong>If it will not open</strong>, the JSON is malformed, or <code>badger</code> is not
