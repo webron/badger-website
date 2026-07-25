@@ -77,6 +77,14 @@ const programCopy: ProgramCopy[] = [
       'Two heavy days and two lighter, higher-rep days across a four-day week. A reasonable next step when full-body sessions start taking an hour and a half.',
   },
   {
+    slug: 'ppl-ul-5-day',
+    title: 'Push / Pull / Legs + Upper / Lower',
+    level: 'Intermediate',
+    cadence: '5 days a week',
+    blurb:
+      'Push, pull and legs on the first three days, then an upper day and a lower day, with every set written as a rep range you work up through before you add weight. It is the usual answer to five days a week: more volume than upper/lower gives you, without asking for the sixth session that push/pull/legs does.',
+  },
+  {
     slug: 'ppl-6-day',
     title: 'Push / Pull / Legs',
     level: 'Intermediate',
@@ -133,7 +141,7 @@ const notYet = [
 ];
 
 const description =
-  'Six starter programs as .badger files you can import straight into Badger: StrongLifts 5x5, Starting Strength, full body, GZCLP, upper/lower, and push/pull/legs.';
+  'Seven starter programs as .badger files you can import straight into Badger: StrongLifts 5x5, Starting Strength, full body, GZCLP, upper/lower, a five-day push/pull/legs and upper/lower hybrid, and six-day push/pull/legs.';
 ---
 
 <BaseLayout title="Program files" description={description}>
@@ -148,14 +156,16 @@ const description =
       description of a program you then have to type in.
     </p>
     <p class="sub">
-      The same six also ship inside the app, under Routines. The files are here so you can read one
-      before you commit to it, edit it, hand it to someone else, or give it to an AI as a worked
-      example of the <a href="/badger-format">file format</a>. If that last one is why you are here, the
+      All seven also ship inside the app, under Routines, on a new install. Badger does not add
+      routines to a list you have already built, so if you have been using it a while, the file is how
+      you pick one up. The files are here for other reasons too: read one before you commit to it,
+      edit it, hand it to someone else, or give it to an AI as a worked example of the
+      <a href="/badger-format">file format</a>. If that last one is why you are here, the
       <a href="/guides/ai">Use your own AI</a> guide has the prompts.
     </p>
 
     <div class="rule-ink section-rule"></div>
-    <p class="caps section-label">Six programs, ready to import</p>
+    <p class="caps section-label">Seven programs, ready to import</p>
 
     <ul class="programs">
       {
