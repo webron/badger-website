@@ -23,6 +23,24 @@ const personas = [
     blurb: "You have history in FitNotes, Strong, Hevy, or Stronglifts. Bring it over and feel at home fast.",
   },
 ];
+
+// Not personas: these two answer a question someone arrives with rather than
+// describing how they train, so they sit in their own group instead of being
+// mixed into the picker above.
+const more = [
+  {
+    href: '/guides/stronglifts-5x5-tracker',
+    title: 'StrongLifts 5x5 in Badger',
+    blurb:
+      'The built-in 5x5 template, what you still decide yourself, and exactly what the CSV import carries across.',
+  },
+  {
+    href: '/guides/workout-tracker-no-subscription',
+    title: 'A tracker with no subscription',
+    blurb:
+      'What free means here, where Badger falls short, and how the other trackers charge. Competitors included.',
+  },
+];
 ---
 
 <HelpLayout title="Starting guides" description="Pick the guide that matches how you train and get going with Badger in a few minutes.">
@@ -44,6 +62,21 @@ const personas = [
     ))}
   </ul>
 
+  <p class="caps more-label">More guides</p>
+  <ul class="guide-rows">
+    {more.map(g => (
+      <li>
+        <a class="guide-row" href={g.href}>
+          <span class="guide-row__head">
+            <span class="guide-row__title">{g.title}</span>
+            <span class="guide-row__go">Read this guide &rarr;</span>
+          </span>
+          <span class="guide-row__blurb">{g.blurb}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
   <p class="guide-overview-link">Curious what else is in there? Browse <a href="/guides/overview">everything Badger does</a>, one line per feature.</p>
   <p class="guide-overview-link">Already paying for an AI? <a href="/guides/ai">Use your own AI</a> covers handing it your export or a routine file, with prompts to start from.</p>
 </HelpLayout>
@@ -60,6 +93,16 @@ const personas = [
     list-style: none;
     margin: 0 0 26px;
     padding: 0;
+  }
+
+  /* A caps label over a hairline: the same group heading the help sidebar index
+     uses, rather than a second 2px ink rule. The ink rule marks the page's one
+     ledger top; this is a subgroup inside it. */
+  .more-label {
+    margin: 0 0 2px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--hair);
+    color: var(--text-muted);
   }
 
   .guide-row {

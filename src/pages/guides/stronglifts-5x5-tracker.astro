@@ -1,0 +1,264 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+
+/**
+ * SEO / compatibility page (research Part 12 P7, spec section 4 of badger-fit
+ * docs/superpowers/specs/2026-07-18-m-web-4-orphaned-pages.md).
+ *
+ * TRADEMARK HYGIENE, binding: StrongLifts is someone else's mark. Everything on
+ * this page is phrased as compatibility (Badger imports their CSV; Badger ships
+ * a 5x5 template written for Badger), never as affiliation, partnership, or
+ * endorsement. The closing note says so in words. Do not reword the title, the
+ * h1, or the note into anything that reads as "the StrongLifts app for X".
+ *
+ * Every capability claim here was checked against the app source on 2026-07-25,
+ * app version 1.1.1: the seeded template contents (app_database.dart
+ * _seedProgramsV24), the suggestion-only progressive overload
+ * (progressive_overload_provider.dart), the deload behavior (features/deload/),
+ * plateau detection defaults, and the Stronglifts CSV parser's actual column
+ * coverage (stronglifts_parser.dart). The "what Badger does not do" section is
+ * the load-bearing half of the page: it is what makes the rest believable to
+ * someone arriving from an app that did run the program for them.
+ */
+
+const description =
+  'Run a 5x5 in Badger and bring your StrongLifts history with you. What the built-in template does, what you still decide yourself, and exactly what the CSV import carries across.';
+---
+
+<HelpLayout title="StrongLifts 5x5 tracker" description={description}>
+  <h1>StrongLifts 5x5 in Badger</h1>
+
+  <p>
+    Two things usually bring people to this page: they want to keep running 5x5 without paying a
+    subscription for the privilege, and they do not want to abandon the history they already have.
+    Badger does both. It is also a log with tools rather than an app that runs the program for you,
+    and the difference matters enough to put near the top rather than bury.
+  </p>
+
+  <h2 id="whats-in-the-box">What Badger brings to a 5x5</h2>
+
+  <ul>
+    <li>
+      <strong>The template ships with the app.</strong> Under Routines, in the Beginner Programs
+      folder, there is a StrongLifts 5x5 routine with two alternating days. Workout A is squat, bench
+      press, and barbell row, five sets of five each. Workout B is squat and overhead press, five
+      sets of five, plus one set of five deadlifts. Set it active and it is ready.
+    </li>
+    <li>
+      <strong>It alternates for you.</strong> The two days are deliberately not pinned to weekdays,
+      so the Today screen leads with whichever comes next based on what you last did. You never have
+      to remember whether today is an A or a B.
+    </li>
+    <li>
+      <strong>Your weights, not ours.</strong> The template carries the rep scheme and no weights at
+      all. The first session is you entering what you actually lift; after that each session starts
+      prefilled from the last one.
+    </li>
+    <li>
+      <strong>A rest timer that starts itself.</strong> It runs when you complete a working set, two
+      minutes by default, and every exercise can carry its own. Squats and rows want different rests,
+      and 5x5 is mostly an argument about resting long enough.
+    </li>
+    <li>
+      <strong>A plate calculator</strong> that works from the plates your gym actually owns, in
+      barbell, machine, or single-lever modes, and tells you what goes on each side.
+    </li>
+    <li>
+      <strong>A warmup generator</strong> that builds the ramp up to your work weight and rounds every
+      rung down to a load you can really make with your plates.
+    </li>
+    <li>
+      <strong>PRs and graphs on every lift</strong>, with no cap on how many routines you keep or how
+      far back your history goes.
+    </li>
+  </ul>
+
+  <h2 id="what-you-decide">What you still decide yourself</h2>
+
+  <p>
+    If you are coming from an app whose whole job was to run the program, this is the part that
+    decides whether Badger suits you. None of it is a bug or a roadmap item that landed late; it is
+    what the app is.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Badger does not add the weight for you.</strong> There is no setting that puts 2.5 kg on
+      the bar every session. What it does instead: once you have held the same top weight for three
+      sessions with every working set finished, a line appears above the entry row reading
+      <em>Suggested: 82.5 kg</em>. You type it in, or you do not. The trigger count is adjustable in
+      settings.
+    </li>
+    <li>
+      <strong>There is an optional write-back, and it is conservative.</strong> Auto-progress routine
+      weights, off unless you switch it on, offers at the end of a workout to save weights you already
+      lifted above the plan back into the routine. It never invents an increment, and it asks per
+      exercise before it writes anything.
+    </li>
+    <li>
+      <strong>No "fail three times, drop ten percent" rule.</strong> Badger has a deload feature, off
+      by default, and it works on a different idea: it schedules a whole light week starting the
+      following Monday, at half the weight with two fewer working sets, which you confirm or decline
+      when you start that session. It is a program-wide light week, not a per-lift reset triggered by
+      missed reps. Cutting one stalled lift by ten percent is something you do by hand.
+    </li>
+    <li>
+      <strong>Nothing decides you have stalled and moves you on.</strong> Plateau detection is
+      optional and off by default, applies only to weight-and-reps exercises, and needs at least five
+      sessions spanning three weeks of a flat estimated 1RM before it says anything. When it does, it
+      is a banner with three suggestions, not a decision taken for you.
+    </li>
+    <li>
+      <strong>No watch app</strong> on either platform, and no logging from your wrist.
+    </li>
+    <li>
+      <strong>No sync between devices.</strong> Your training lives on the phone you log it on. There
+      is an optional backup to a private folder in your own Google Drive, and a plain database file
+      you can move yourself, but two phones do not stay in step. See
+      <a href="/help/phone-migration">moving to a new phone</a>.
+    </li>
+  </ul>
+
+  <div class="callout">
+    <span class="caps">The short version</span>
+    <p>
+      The honest summary: Badger will hold the program, remember your weights, time your rests, and
+      show you the graph. Deciding when to add weight, when to repeat, and when to back off stays
+      yours. Plenty of people prefer that. If you wanted the app to make those calls, it is better to
+      know now.
+    </p>
+  </div>
+
+  <h2 id="import">Bringing your StrongLifts history over</h2>
+
+  <p>
+    Badger reads the CSV that StrongLifts exports, so the years you already logged come with you and
+    your PRs and graphs start out full rather than empty.
+  </p>
+
+  <ol>
+    <li>In StrongLifts, go to <strong>Settings &rarr; Export workout data</strong> to produce a CSV.</li>
+    <li>
+      Get the file onto the phone you train with, however you normally move a file: email it to
+      yourself, drop it in cloud storage, use a cable.
+    </li>
+    <li>
+      In Badger, go to <strong>Settings &rarr; Your data &rarr; Import from Stronglifts</strong> and
+      pick the file. This is also offered during first-launch onboarding.
+    </li>
+    <li>Check the preview: exercises, workout days, sets, and the detected weight unit.</li>
+    <li>Import.</li>
+  </ol>
+
+  <p><strong>What carries across:</strong></p>
+
+  <ul>
+    <li>Every set, with its date, exercise, weight, and reps, read straight from the per-set columns.</li>
+    <li>
+      Kilograms or pounds, detected from the file's own headers, and stored in the unit you logged
+      them in. Nothing is converted or rounded on the way in.
+    </li>
+    <li>The workout name becomes a note on that session, and a row's note attaches to its first set.</li>
+    <li>
+      PRs are recalculated from the imported history on their own, and new exercises land in an
+      "Imported" category so you can find and re-sort them.
+    </li>
+  </ul>
+
+  <p><strong>What does not, so nothing surprises you later:</strong></p>
+
+  <ul>
+    <li>
+      <strong>Warmups.</strong> The StrongLifts export does not mark them, so every logged set arrives
+      as a working set. There is no way for the importer to guess.
+    </li>
+    <li>
+      <strong>Failed sets, as failures.</strong> A missed set of five comes in as what you actually
+      did. Three reps is three reps; nothing labels it a miss.
+    </li>
+    <li>
+      <strong>Bodyweight, session times, and duration.</strong> Those columns exist in the export and
+      the importer ignores them.
+    </li>
+    <li>
+      <strong>Which program a session belonged to.</strong> The import brings history, not the
+      program. The 5x5 template is a separate thing you set active.
+    </li>
+  </ul>
+
+  <p>
+    The import runs entirely on your phone, straight from the file you picked, and you can run it more
+    than once, so a second or partial export is fine to add later. Nothing already logged is
+    overwritten: sets landing on a date you already have merge into that session. Full detail in
+    <a href="/help/getting-started#importing-stronglifts">importing from Stronglifts</a> and
+    <a href="/guides/switching">switching from another app</a>.
+  </p>
+
+  <h2 id="the-file">The template as a file you can read</h2>
+
+  <p>
+    The same 5x5 routine is also published as a download:
+    <a href="/programs">stronglifts-5x5.badger</a> on the program gallery, exported from the app
+    itself. Open it on your phone and Badger imports it. Open it in a text editor and it is plain
+    JSON, so you can see exactly what you are agreeing to before you import it, or edit it first. The
+    <a href="/badger-format">file format</a> is documented for the same reason.
+  </p>
+
+  <h2 id="after-5x5">When 5x5 runs out</h2>
+
+  <p>
+    Linear progression ends for everybody, usually within months, and that moment is when most people
+    reconsider their whole app. Worth knowing where Badger stands before you get there rather than
+    after.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Stretch it first.</strong> Smaller jumps, a light week, and rests long enough to be
+      boring will all buy time. Badger has the tools for each; none of them is automatic.
+    </li>
+    <li>
+      <strong>GZCLP and Upper/Lower</strong> both ship as templates in the app and download as files
+      from the <a href="/programs">program gallery</a>. Either is a reasonable next step.
+    </li>
+    <li>
+      <strong>5/3/1 and other percentage programs are a real limit.</strong> Badger ships a Boring But
+      Big skeleton, but it will not compute working weights as percentages of a training max, so the
+      arithmetic each cycle is yours. That is written up plainly on the
+      <a href="/programs">program gallery</a>, together with a way to say you want it built, which is
+      the only signal this site collects.
+    </li>
+  </ul>
+
+  <h2 id="cost">What it costs</h2>
+
+  <p>
+    Nothing. No account, no subscription, no ads, no cap on routines or history, and exporting your
+    own numbers is not a paid feature. Badger is free on Google Play, with an iOS beta open in
+    TestFlight. If the reason you are shopping is that a tracker you already paid for changed the
+    deal, read <a href="/promise">the promise</a>, which is the version of that written down where you
+    can hold us to it, and
+    <a href="/guides/workout-tracker-no-subscription">the no-subscription guide</a>, which compares
+    what free actually means across the trackers people usually weigh up.
+  </p>
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    StrongLifts is a trademark of its owner. Badger is not affiliated with, endorsed by, sponsored by,
+    or connected to StrongLifts in any way. This page describes compatibility and nothing else: Badger
+    reads the CSV file that their app exports, and the 5x5 routine that ships inside Badger was
+    written for Badger by us, from the publicly known shape of the program. If you want their app,
+    they are easy to find.
+  </p>
+</HelpLayout>
+
+<style>
+  /* The trademark note is fine print by intent: it is a disclaimer, and it should
+     read as one rather than competing with the guidance above it. Muted is
+     AA-checked against the page ground in both themes, so it stays readable. */
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>

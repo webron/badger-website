@@ -1,0 +1,242 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+
+/**
+ * SEO / positioning page (research Part 12 P7, spec section 4 of badger-fit
+ * docs/superpowers/specs/2026-07-18-m-web-4-orphaned-pages.md). Part 7 found
+ * that the privacy demand people actually type is "no subscription" and "no
+ * account", which is why this page leads with money rather than with privacy.
+ *
+ * HONEST ROUNDUP, binding: the competitor table describes shapes (subscription,
+ * capped free tier) and never prices, because prices go stale and a wrong number
+ * about someone else's product is worse than no number. Each entry says what is
+ * good about the app as well as what it costs. The caveat paragraph and the
+ * checked-on date under the table are not decoration: they are what makes the
+ * table honest six months from now. Re-check the date when you touch a row.
+ *
+ * Source for the competitor rows: badger-fit
+ * docs/competitive_research_2026-07.md Parts 5 and 9 (store listings and public
+ * review corpora, gathered 2026-07-13).
+ *
+ * Badger's own claims were checked against the app source and pubspec on
+ * 2026-07-25: no billing, ads, or analytics dependency exists in the project.
+ * The "catch" section is deliberately as long as the good news.
+ */
+
+const description =
+  'Badger is a workout tracker with no subscription, no account, and no caps on routines or history. What free actually means here, where the app falls short, and how the other trackers charge.';
+
+const others = [
+  {
+    name: 'FitNotes',
+    body: 'Genuinely free, no subscription, no ads, Android only. Development runs at roughly a release a year, so it is a stable simple log rather than a growing app. If you are on Android and it already does what you want, it does what you want.',
+  },
+  {
+    name: 'Hevy',
+    body: 'A well-made app with a generous free tier that is nonetheless capped: a limited number of saved routines, limits on custom exercises, and older measurement history held behind Hevy Pro, which is a subscription. Plenty of people happily pay for it.',
+  },
+  {
+    name: 'Strong',
+    body: 'The long-established one. The free tier is limited to a small number of routine templates, and the rest sits behind Strong Pro. It also requires an account, which together with its watch sync is what a lot of its unhappy reviews are about.',
+  },
+  {
+    name: 'StrongLifts 5x5',
+    body: 'Now subscription-first: its store listing states the app requires a subscription to use. A lot of its recent reviews are from long-time users who bought a one-time or lifetime unlock years ago and found it retired. Those are worth reading whichever app you end up picking.',
+  },
+];
+---
+
+<HelpLayout title="Workout tracker with no subscription" description={description}>
+  <h1>A workout tracker with no subscription</h1>
+
+  <p>
+    "No subscription" turned into something you have to check, because a tracker that was free when
+    you picked it three years ago may not be free now, and the history you put into it may not be
+    yours to read anymore. Fair question to ask up front. This page answers it for Badger, including
+    the parts that are not flattering, and says how the trackers people usually weigh up against it
+    charge.
+  </p>
+
+  <h2 id="what-badger-costs">What Badger costs</h2>
+
+  <p>
+    Nothing. It is free on Google Play, with an iOS beta open in TestFlight. There is no paid tier to
+    graduate to, and free here means all of the following, not just the first one.
+  </p>
+
+  <ul>
+    <li>
+      <strong>No account needed.</strong> No sign-up, no login, no email address. You install it and
+      start logging.
+    </li>
+    <li>
+      <strong>No subscription and no in-app purchase.</strong> There is no Pro version, no trial
+      running down, and nothing in the app that asks you to upgrade.
+    </li>
+    <li>
+      <strong>No ads and no data collection.</strong> The app ships with no analytics and nothing that
+      phones home. This website runs no trackers and sets no cookies either, which is also why it
+      cannot tell how many people read this page.
+    </li>
+    <li>
+      <strong>No caps.</strong> Unlimited routines, unlimited history, unlimited custom exercises.
+      Your tenth routine and your fourth year of training are not a paid feature.
+    </li>
+    <li>
+      <strong>Export is not behind a paywall.</strong> Every set exports to CSV, the whole database
+      backs up to a single file you keep wherever you like, and routines and gym setups share as
+      plain files. Getting your numbers out is not something you pay to unlock.
+    </li>
+  </ul>
+
+  <p>
+    Those five are written up properly, in the form you can hold us to, on
+    <a href="/promise">the Badger promise</a>.
+  </p>
+
+  <h2 id="why">Why there is nothing to charge for</h2>
+
+  <p>
+    Not principle so much as arithmetic. Badger has no servers. No account means no user database, no
+    sync engine, no storage bill, and no monthly cost that has to be recovered from you. Your training
+    sits in a local database on your phone, which is why the app is free and also why it does not sync
+    between your devices. The same decision produces both, and it would be dishonest to sell you the
+    first without mentioning the second.
+  </p>
+
+  <p>
+    Beyond that: Badger is one person's project, with no investors, no growth target, and nothing to
+    pay back. That is a real answer to "what is the catch", and it is also the reason the promise page
+    can commit to not taking a feature away and selling it back to you later.
+  </p>
+
+  <h2 id="the-catch">The catch</h2>
+
+  <p>
+    Everything has one. Here is Badger's, in full, so you can decide against it now rather than after
+    you have imported four years of history.
+  </p>
+
+  <ul>
+    <li>
+      <strong>No sync between devices.</strong> One phone at a time. There is an optional backup to a
+      private folder in your own Google Drive, and a plain database file you can move yourself, but
+      two devices do not stay in step. See <a href="/help/phone-migration">moving to a new phone</a>.
+    </li>
+    <li><strong>No web app and no desktop version.</strong> The phone is the whole product.</li>
+    <li><strong>No Apple Watch or Wear OS app.</strong> You cannot log a set from your wrist.</li>
+    <li>
+      <strong>iOS is a TestFlight beta today</strong>, not an App Store release. Android is the
+      mature, most-tested platform.
+    </li>
+    <li>
+      <strong>No social feed</strong>, no followers, no leaderboards, no streak badges nagging you
+      back in. Some people want those.
+    </li>
+    <li>
+      <strong>No AI coach inside the app.</strong> What Badger does instead is hand you your own data
+      in formats you can give to whichever assistant you already pay for, with prompts to start from:
+      <a href="/guides/ai">use your own AI</a>.
+    </li>
+    <li>
+      <strong>Support is one person and an email address.</strong> Not a team, not a 24-hour SLA.
+    </li>
+  </ul>
+
+  <h2 id="the-others">How the other trackers charge</h2>
+
+  <p>
+    An honest roundup, not a takedown. These are good apps that made different decisions about money,
+    and for a lot of people the right pick is one of them.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tracker</th>
+          <th>What the free version gets you</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          others.map((o) => (
+            <tr>
+              <td>
+                <strong>{o.name}</strong>
+              </td>
+              <td>{o.body}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p class="fineprint">
+    Checked July 2026. Free tiers and prices change often, sometimes sharply, so treat this as a
+    starting point and read the app's own store listing before you decide anything. No prices are
+    quoted here on purpose: a stale number about somebody else's product is worse than none.
+  </p>
+
+  <p>
+    The difference worth understanding is not the monthly figure. It is what happens to your training
+    history the day you stop paying. Where the history lives on a company's servers, that is their
+    decision to make. With Badger there is nothing to decide, because it was never anywhere but your
+    phone, and there is no plan to take something you already use and put a price on it.
+  </p>
+
+  <h2 id="leaving">If you are coming from one of them</h2>
+
+  <p>
+    Bring the history with you. Badger imports from FitNotes, Strong, Hevy, and StrongLifts, straight
+    from the export file each of them produces, and the import runs on your phone without sending
+    anything anywhere. Your PRs and graphs are recalculated from what arrives, so they start out full.
+  </p>
+
+  <ul>
+    <li><a href="/guides/switching">Switching from another app</a> walks through the first five minutes.</li>
+    <li>
+      <a href="/help/getting-started#importing">Importing from another app</a> has the per-app export
+      instructions.
+    </li>
+    <li>
+      <a href="/guides/stronglifts-5x5-tracker">StrongLifts 5x5 in Badger</a> covers that migration in
+      particular, including what the CSV does not carry.
+    </li>
+  </ul>
+
+  <h2 id="suspicious">If free makes you suspicious</h2>
+
+  <p>
+    It should. A free app usually means the product is you, and asking where the money comes from is
+    the right instinct. In this case there is no advertising business, no analytics being collected,
+    no data to sell because none of it is held anywhere to sell, and no venture money waiting for a
+    return. If any of that ever changes, <a href="/promise">the promise</a> is the thing to hold it
+    against. It is written down for exactly that reason.
+  </p>
+</HelpLayout>
+
+<style>
+  /* Same wrapper the format page uses: a two-column table fits a phone, but the
+     wrapper means a long unbreakable string scrolls inside its own box instead of
+     widening the page. Cheap insurance against sideways scroll at 360px. */
+  .table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* The first column is a name, so it never needs to wrap mid-word and looks
+     wrong when it does. The second column takes the rest. */
+  .table-wrap td:first-child {
+    white-space: nowrap;
+    padding-right: 1rem;
+  }
+
+  /* Caveats and date-stamps read as fine print, deliberately quieter than the
+     table they qualify. --text-muted is AA-checked against the ground. */
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>
