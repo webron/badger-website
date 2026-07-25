@@ -190,32 +190,20 @@ const description =
       <tbody>
         <tr><td><code>name</code></td><td>string, required</td><td>Day name, for example "Push" or "Workout A".</td></tr>
         <tr>
-          <td><code>sort_order</code></td>
-          <td>integer, optional</td>
-          <td>Position in the routine. Import orders by this field, and ties - including everything
-          when it is absent - keep their array order. Every file Badger writes sets it.</td>
-        </tr>
-        <tr>
           <td><code>scheduled_days</code></td>
-          <td>string</td>
+          <td>array of integers</td>
           <td>
-            Weekdays this day is scheduled on, comma separated: <code>"1,3,5"</code> means Monday,
-            Wednesday, Friday. The numbering is fixed: 1 is always Monday and 7 is always Sunday,
-            counting from 1 rather than 0, and it does not change with the app's first-day-of-week
-            setting or where in the world the file is opened. Leave it out for a program you rotate
-            through rather than pin to
-            weekdays.
+            Weekdays this day is scheduled on: <code>[1, 3, 5]</code> means Monday, Wednesday,
+            Friday. The numbering is fixed: 1 is always Monday and 7 is always Sunday, counting
+            from 1 rather than 0, and it does not change with the app's first-day-of-week setting
+            or where in the world the file is opened. Values outside 1-7 are dropped on import.
+            Leave the field out for a program you rotate through rather than pin to weekdays.
           </td>
         </tr>
         <tr>
           <td><code>default_gym_name</code></td>
           <td>string</td>
           <td>Gym this day defaults to. The gym is created on import if the name is new.</td>
-        </tr>
-        <tr>
-          <td><code>inter_exercise_rest_seconds</code></td>
-          <td>integer</td>
-          <td>Legacy field, carried for old files. Current versions do not set it.</td>
         </tr>
         <tr><td><code>exercises</code></td><td>array of <a href="#day-exercise"><code>DayExercise</code></a></td><td>The day's exercise slots.</td></tr>
       </tbody>
@@ -248,7 +236,6 @@ const description =
             the import preview's warning and skipped, like an unmatched name.
           </td>
         </tr>
-        <tr><td><code>sort_order</code></td><td>integer, optional</td><td>Order within the day. Same rule as a <a href="#day"><code>Day</code></a>'s: ties and absent values keep their array order.</td></tr>
         <tr>
           <td><code>rest_override_seconds</code></td>
           <td>integer</td>
@@ -263,6 +250,40 @@ const description =
             has does not need to travel in the file. Include it in <code>machines</code> when the
             file should also work for someone who lacks it; the name matching nothing just leaves
             the slot unpinned. Import links the matched machine to the exercise.
+          </td>
+        </tr>
+        <tr>
+          <td><code>superset_key</code></td>
+          <td>string</td>
+          <td>
+            Slots in the same day sharing a key become a superset, in the order they appear. The
+            key itself is opaque - <code>"1"</code>, <code>"a"</code>, anything - it only has to
+            match between the members. A key held by a single slot is ignored.
+          </td>
+        </tr>
+        <tr>
+          <td><code>superset_name</code></td>
+          <td>string</td>
+          <td>
+            Display name for the superset. The first member's value wins; leave it out and the app
+            names the group itself. Group color never travels - the recipient's own palette
+            assigns it.
+          </td>
+        </tr>
+        <tr>
+          <td><code>tempo</code></td>
+          <td>string</td>
+          <td>Tempo prescription for the slot, carried word for word, for example <code>"3-1-2-0"</code>.</td>
+        </tr>
+        <tr>
+          <td><code>alternatives</code></td>
+          <td>array</td>
+          <td>
+            Pre-assigned swap options for this slot, in order: objects of the form
+            <code>&#123; "exercise_name": "...", "exercise_type": "..." &#125;</code>, resolved by
+            the same rules as the slot itself, so each one needs a definition in the payload's
+            <code>exercises</code> list. An unmatched alternative is counted in the import
+            preview's warning and skipped.
           </td>
         </tr>
         <tr>
@@ -295,7 +316,6 @@ const description =
           <td>boolean, defaults to false</td>
           <td>Defaults to <code>false</code>. Warmup sets do not count toward your working volume.</td>
         </tr>
-        <tr><td><code>sort_order</code></td><td>integer, optional</td><td>Order within the exercise. Same rule again: ties and absent values keep their array order.</td></tr>
         <tr>
           <td><code>weight</code></td>
           <td>number</td>
@@ -402,7 +422,8 @@ const description =
         <tr>
           <td><code>machine_type</code></td>
           <td>string</td>
-          <td><code>"selectorized"</code> (a stack with a pin) or <code>"plateLoaded"</code>.</td>
+          <td><code>"selectorized"</code> (a stack with a pin) or <code>"plate_loaded"</code>. Older files
+          with <code>"plateLoaded"</code> still read.</td>
         </tr>
         <tr>
           <td><code>weight_increment</code></td>
@@ -423,8 +444,8 @@ const description =
           <td><code>plate_calculator_mode</code></td>
           <td>string</td>
           <td>
-            <code>"dualLoaded"</code> (plates on both sides) or <code>"singleLoaded"</code> (one lever
-            arm).
+            <code>"dual_loaded"</code> (plates on both sides) or <code>"single_loaded"</code> (one
+            lever arm). Older files with the camelCase values still read.
           </td>
         </tr>
         <tr><td><code>bar_weight_kg</code></td><td>number</td><td>Weight of the bar or empty carriage, in kg.</td></tr>
@@ -513,8 +534,9 @@ const description =
       exactly as it was.
     </li>
     <li>
-      <strong>Order comes from <code>sort_order</code></strong>, with array position breaking ties -
-      so a file that omits the field imports in plain array order.
+      <strong>Order is array order.</strong> Days, slots, and sets import in the order they appear
+      in their arrays - JSON arrays are ordered, and that order is the order. (Older files carrying
+      the retired <code>sort_order</code> field still read; the field is ignored.)
     </li>
     <li>
       <strong>A warmup never carries a rep range.</strong> If a file puts <code>reps_max</code> on a
@@ -535,9 +557,8 @@ const description =
 
   <ul>
     <li><strong>No history.</strong> No workouts, no logged sets, no PRs. Those are yours and they stay on your phone. To move your own history to a new phone, use a backup instead: see <a href="/help/phone-migration">moving to a new phone</a>.</li>
-    <li><strong>No supersets.</strong> Exercise grouping, group names, and tempo are not carried, so a superset arrives as ordinary consecutive exercises.</li>
     <li><strong>No notes below the routine level.</strong> Routine notes travel; per-day and per-exercise notes do not.</li>
-    <li><strong>No alternative exercises</strong>, no default attachment, and no default grip.</li>
+    <li><strong>No default attachment and no default grip</strong> on a slot - those stay personal setup. Superset group <strong>color</strong> also stays behind; the recipient's palette assigns it.</li>
     <li><strong>No per-exercise detail beyond name, type, and category.</strong> An exercise that gets created on import starts blank: no instructions, no muscles, no rest default, no increment. Anything you already had keeps everything it already has.</li>
     <li><strong>No photos</strong> of machines or attachments.</li>
     <li><strong>Nothing about you.</strong> No account, no device identifier, no settings, no training notes.</li>

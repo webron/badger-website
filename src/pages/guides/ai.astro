@@ -80,7 +80,8 @@ Follow the format exactly:
 - For a rep range, set reps to the bottom of the range and reps_max to the top. For an exact target, use reps alone.
 - Leave weight out. I fill in my own weights.
 - Never put reps_max on a warmup set.
-- Give each day a sort_order, and each exercise and set a sort_order within its parent.
+- Order matters: days, exercises, and sets import in the order they appear in their arrays.
+- To pair exercises as a superset, give both slots the same "superset_key". To pre-assign swap options, use "alternatives" with names that also appear in payload.exercises.
 - If I paste a gym .badger file below, plan around its equipment: only pick machine exercises its machines support (barbell, dumbbell, and bodyweight movements are always available). For an exercise done on one of those machines, set default_machine_name to that machine's name exactly as written in my file, and copy the machine's entry into payload.machines verbatim. Never invent or rename a machine.
 
 What I want:
