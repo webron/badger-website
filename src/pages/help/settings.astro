@@ -75,6 +75,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="export">Exporting data</h3>
   <p><strong>Export workout data</strong> generates a CSV file with one row per logged set, including date, exercise name, weight, reps, duration, warmup flag, RPE, RIR, and more. The file is shared via the system share sheet.</p>
+  <p>Every set in the database is exported, including ones you never performed - a workout started from a routine creates all of its sets up front, so a session you began and walked out of still has rows. The <code>is_complete</code> and <code>is_skipped</code> columns are how you tell them apart: filter on <code>is_complete</code> for anything that should count as training. If you are handing the file to an AI, <a href={`/guides/ai`}>Use your own AI</a> has a prompt that already explains this.</p>
 
   <h3 id="importing">Importing workout history</h3>
   <p>Badger can import your full history from FitNotes, Strong, Hevy, and Stronglifts. Each option appears in the same Your data section:</p>
