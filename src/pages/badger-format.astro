@@ -113,8 +113,29 @@ const description =
   <h2 id="routine">A routine payload</h2>
 
   <p>
-    <code>type: "routine"</code>. Four keys: the routine itself, its days, the definitions of every
-    exercise the days reference, and any machines those exercises are pinned to.
+    <code>type: "routine"</code>. The payload has four keys:
+  </p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Key</th><th>Type</th><th>Contents</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>routine</code></td><td>object</td><td>The routine itself: name, notes, and its settings.</td></tr>
+        <tr><td><code>days</code></td><td>array</td><td>The days, in order. Each day carries its own <code>exercises</code> array: that day's slots, in order, with their planned sets.</td></tr>
+        <tr><td><code>exercises</code></td><td>array</td><td>The definition of every exercise any day references: its name, type, and category. Day slots point into this list by <code>exercise_name</code>.</td></tr>
+        <tr><td><code>machines</code></td><td>array</td><td>Machines the day slots pin. Always written; the import preview asks before creating any.</td></tr>
+      </tbody>
+  </table>
+  </div>
+
+  <p>
+    Note that two arrays share the name <code>exercises</code> and they are different things:
+    <code>exercises</code> at the top level defines what each exercise <em>is</em>, and
+    <code>days[].exercises</code> says what a day <em>does</em>, referencing those definitions by
+    name. Every name a day uses should have a definition in the top-level list - a slot whose name
+    matches no definition is silently dropped on import, and the day arrives shorter.
   </p>
 
   <h3>routine</h3>
