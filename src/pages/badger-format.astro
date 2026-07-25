@@ -1,0 +1,547 @@
+---
+import HelpLayout from '../layouts/HelpLayout.astro';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+/**
+ * The `.badger` file format (M-web-4, spec: badger-fit
+ * docs/superpowers/specs/2026-07-18-m-web-4-orphaned-pages.md section 2).
+ *
+ * Source of truth is the app's share_payload.dart (the shape) and
+ * import_service.dart (the rules). Every field table below was derived from
+ * those two files, not from memory. When either changes, update this page and
+ * the "last verified" line at the bottom.
+ *
+ * The worked example is not typed out here: it is read from the real
+ * public/programs/example-routine.badger at build time and pretty-printed, so
+ * the example and the downloadable file can never disagree.
+ */
+
+// Resolved from the project root, not from import.meta.url: at build time this
+// module has been bundled into dist/, so a module-relative path points at a
+// directory that does not exist. A wrong root fails the build loudly, which is
+// the behavior we want for a file the page cannot render without.
+const exampleRaw = readFileSync(
+  join(process.cwd(), 'public/programs/example-routine.badger'),
+  'utf8',
+);
+const example = JSON.parse(exampleRaw);
+const examplePretty = JSON.stringify(example, null, 2);
+const appVersion = example.app_version;
+
+const description =
+  'How a .badger file is put together: the share/v1 envelope, the routine, gym and machine payloads, what import does with each field, and a worked example.';
+---
+
+<HelpLayout title="The .badger file format" description={description}>
+  <h1>The <code>.badger</code> file format</h1>
+
+  <p>
+    A <code>.badger</code> file is how Badger hands a routine, a gym, or a set of machines to
+    somebody else. It is a single UTF-8 JSON file. Nothing is compressed, encoded, or encrypted:
+    open it in any text editor and you can read the whole thing.
+  </p>
+
+  <p>
+    This page documents it properly because three groups of people want it. Curious users, who would
+    rather see what they are importing before they import it. Tool authors, who want to write
+    something that emits a file Badger can read. And AI assistants: point yours at this page, hand it
+    the <a href="#example">example</a>, and ask it to write you a program as a valid
+    <code>.badger</code> file. The <a href="/guides/ai">BYO-AI guide</a> has prompts for exactly that,
+    and <a href="/programs">the program gallery</a> has six real files to read.
+  </p>
+
+  <div class="callout">
+    <span class="caps">Tip</span>
+    <p>
+      A file is just a plan. It carries routines, exercise names, and equipment settings. It never
+      carries your logged workouts, your history, or anything about you.
+    </p>
+  </div>
+
+  <h2 id="envelope">The envelope</h2>
+
+  <p>Every file, whatever it holds, has the same five top-level fields.</p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>badger</code></td>
+          <td>string</td>
+          <td>
+            Schema version. Today it is always <code>share/v1</code>. A build imports the versions it
+            knows; anything else is refused rather than guessed at.
+          </td>
+        </tr>
+        <tr>
+          <td><code>app_version</code></td>
+          <td>string</td>
+          <td>The app version that wrote the file, for example <code>1.1.1</code>. Informational.</td>
+        </tr>
+        <tr>
+          <td><code>created_at</code></td>
+          <td>string</td>
+          <td>UTC timestamp in ISO 8601. Informational.</td>
+        </tr>
+        <tr>
+          <td><code>type</code></td>
+          <td>string</td>
+          <td>
+            One of <code>routine</code>, <code>gym</code>, <code>machines</code>. Any other value and
+            the file is rejected as invalid.
+          </td>
+        </tr>
+        <tr>
+          <td><code>payload</code></td>
+          <td>object</td>
+          <td>The contents. Its shape depends on <code>type</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Optional fields are omitted rather than written as <code>null</code>, and unknown fields are
+    ignored on the way in. Writing a file by hand is therefore forgiving: include what you mean,
+    leave out what you do not.
+  </p>
+
+  <h2 id="routine">A routine payload</h2>
+
+  <p>
+    <code>type: "routine"</code>. Four keys: the routine itself, its days, the definitions of every
+    exercise the days reference, and any machines those exercises are pinned to.
+  </p>
+
+  <h3>routine</h3>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>name</code></td><td>string, required</td><td>The routine name.</td></tr>
+        <tr>
+          <td><code>notes</code></td>
+          <td>string</td>
+          <td>Program-level notes. Carried, because they describe the program.</td>
+        </tr>
+        <tr>
+          <td><code>weight_source</code></td>
+          <td>string</td>
+          <td>
+            Where starting weights come from: <code>last_performance</code> (default),
+            <code>routine_defaults</code>, or <code>routine_defaults_then_last</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>history_scope</code></td>
+          <td>string</td>
+          <td>
+            Which history the weight lookup reads: <code>any_workout</code> (default) or
+            <code>this_routine</code>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>days</h3>
+
+  <p>An array. One entry per session in the program.</p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>name</code></td><td>string, required</td><td>Day name, for example "Push" or "Workout A".</td></tr>
+        <tr>
+          <td><code>sort_order</code></td>
+          <td>integer</td>
+          <td>Position in the routine. Import orders by this field, not by array order.</td>
+        </tr>
+        <tr>
+          <td><code>scheduled_days</code></td>
+          <td>string</td>
+          <td>
+            Weekdays this day is scheduled on, comma separated, 1 = Monday to 7 = Sunday:
+            <code>"1,3,5"</code>. Leave it out for a program you rotate through rather than pin to
+            weekdays.
+          </td>
+        </tr>
+        <tr>
+          <td><code>default_gym_name</code></td>
+          <td>string</td>
+          <td>Gym this day defaults to. The gym is created on import if the name is new.</td>
+        </tr>
+        <tr>
+          <td><code>inter_exercise_rest_seconds</code></td>
+          <td>integer</td>
+          <td>Legacy field, carried for old files. Current versions do not set it.</td>
+        </tr>
+        <tr><td><code>exercises</code></td><td>array</td><td>The day's exercise slots.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>days[].exercises</h3>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>exercise_name</code></td>
+          <td>string, required</td>
+          <td>Must match a <code>name</code> in the payload's <code>exercises</code> list.</td>
+        </tr>
+        <tr>
+          <td><code>exercise_type</code></td>
+          <td>string</td>
+          <td>
+            The referenced exercise's type. Optional, but include it: it is what keeps a "Plank" you
+            time apart from a "Plank" someone counts reps on.
+          </td>
+        </tr>
+        <tr><td><code>sort_order</code></td><td>integer</td><td>Order within the day.</td></tr>
+        <tr>
+          <td><code>rest_override_seconds</code></td>
+          <td>integer</td>
+          <td>Rest for this slot, when it should differ from the exercise's own default.</td>
+        </tr>
+        <tr>
+          <td><code>default_machine_name</code></td>
+          <td>string</td>
+          <td>
+            Machine this slot is pinned to. Must match a machine in the payload's
+            <code>machines</code> list. Import also links that machine to the exercise.
+          </td>
+        </tr>
+        <tr>
+          <td><code>predefined_sets</code></td>
+          <td>array</td>
+          <td>The planned sets. An empty list is valid but pointless.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="sets">predefined_sets</h3>
+
+  <p>
+    A planned set. Fill in the fields the exercise type actually uses: weight and reps for a bench
+    press, <code>duration_seconds</code> for a plank, <code>distance</code> for a row. Fields that do
+    not apply are simply left out.
+  </p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>is_warmup</code></td>
+          <td>boolean</td>
+          <td>Defaults to <code>false</code>. Warmup sets do not count toward your working volume.</td>
+        </tr>
+        <tr><td><code>sort_order</code></td><td>integer</td><td>Order within the exercise.</td></tr>
+        <tr>
+          <td><code>weight</code></td>
+          <td>number</td>
+          <td>
+            A planned weight, in the unit named by <code>weight_unit</code>. Most shared programs leave
+            this out and let each lifter's own weights fill in.
+          </td>
+        </tr>
+        <tr>
+          <td><code>weight_unit</code></td>
+          <td>string</td>
+          <td><code>"kg"</code> or <code>"lbs"</code>. Weights are stored in the unit they were entered in, never converted. Absent means kg.</td>
+        </tr>
+        <tr>
+          <td><code>reps</code></td>
+          <td>integer</td>
+          <td>
+            The rep target. With <code>reps_max</code> present it is the bottom of a range instead.
+          </td>
+        </tr>
+        <tr>
+          <td><code>reps_max</code></td>
+          <td>integer</td>
+          <td>
+            Top of a rep range, so <code>reps: 8, reps_max: 10</code> reads as 8-10. Leave it out for an
+            exact target. Never valid on a warmup: import drops it there.
+          </td>
+        </tr>
+        <tr><td><code>duration_seconds</code></td><td>integer</td><td>Planned time, for timed exercises.</td></tr>
+        <tr><td><code>distance</code></td><td>number</td><td>Planned distance in kilometers.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="exercise-definitions">exercises</h3>
+
+  <p>
+    The definitions the days point at. Keep it to the exercises the routine actually uses; a
+    recipient's existing library is matched first, so most of this list usually resolves to exercises
+    they already have.
+  </p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>name</code></td>
+          <td>string, required</td>
+          <td>
+            Matching is by name, so ordinary names travel best. "Barbell Back Squat" lands on the
+            recipient's existing squat; "BB Squat (heavy day)" creates a new exercise.
+          </td>
+        </tr>
+        <tr>
+          <td><code>type</code></td>
+          <td>string</td>
+          <td>
+            One of <code>weight_reps</code> (the default), <code>reps_only</code>,
+            <code>time_only</code>, <code>distance_only</code>, <code>weight_only</code>,
+            <code>weight_time</code>, <code>weight_distance</code>, <code>reps_time</code>,
+            <code>reps_distance</code>, <code>distance_time</code>. An unrecognized value falls back to
+            <code>weight_reps</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>category_name</code></td>
+          <td>string</td>
+          <td>
+            Category for an exercise that has to be created, for example "Chest". Created if the name is
+            new. Defaults to "Other".
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="machines">machines</h3>
+
+  <p>
+    Equipment settings. In a routine payload this list is reference data: importing the machines is a
+    toggle the recipient controls. In a <code>gym</code> or <code>machines</code> payload the same
+    object is the point of the file, and machines are always created.
+  </p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>name</code></td><td>string, required</td><td>Machine name.</td></tr>
+        <tr><td><code>uses_attachments</code></td><td>boolean</td><td>Whether the machine takes attachments (bars, handles, ropes).</td></tr>
+        <tr><td><code>uses_grip_types</code></td><td>boolean</td><td>Whether grip is worth recording on this machine.</td></tr>
+        <tr>
+          <td><code>machine_type</code></td>
+          <td>string</td>
+          <td><code>"selectorized"</code> (a stack with a pin) or <code>"plateLoaded"</code>.</td>
+        </tr>
+        <tr>
+          <td><code>weight_increment</code></td>
+          <td>number</td>
+          <td>Smallest real step on this machine, in the machine's own unit.</td>
+        </tr>
+        <tr>
+          <td><code>weight_increment2</code></td>
+          <td>number</td>
+          <td>Second step size, for a stack whose plates get heavier further up.</td>
+        </tr>
+        <tr>
+          <td><code>increment_threshold</code></td>
+          <td>number</td>
+          <td>Weight at and above which <code>weight_increment2</code> applies.</td>
+        </tr>
+        <tr>
+          <td><code>plate_calculator_mode</code></td>
+          <td>string</td>
+          <td>
+            <code>"dualLoaded"</code> (plates on both sides) or <code>"singleLoaded"</code> (one lever
+            arm).
+          </td>
+        </tr>
+        <tr><td><code>bar_weight_kg</code></td><td>number</td><td>Weight of the bar or empty carriage, in kg.</td></tr>
+        <tr>
+          <td><code>weight_unit</code></td>
+          <td>string</td>
+          <td><code>"kg"</code> or <code>"lbs"</code>, when this machine is labeled in a different unit from the rest of your logging.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="gym">Gym and machines payloads</h2>
+
+  <p>
+    <code>type: "gym"</code> shares a whole gym: the gym itself, its machines, its attachments, and
+    which of each belongs to it.
+  </p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>gym</code></td><td>object</td><td>Just <code>{'{ "name": "..." }'}</code>.</td></tr>
+        <tr><td><code>machines</code></td><td>array</td><td>Machine objects, as above.</td></tr>
+        <tr><td><code>attachments</code></td><td>array</td><td>Objects of the form <code>{'{ "name": "..." }'}</code>.</td></tr>
+        <tr><td><code>gym_machines</code></td><td>array of strings</td><td>Names of the machines that belong to this gym.</td></tr>
+        <tr><td><code>gym_attachments</code></td><td>array of strings</td><td>Names of the attachments that belong to this gym.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <code>type: "machines"</code> is the smaller version: one key, <code>machines</code>, holding the
+    same machine objects and no gym.
+  </p>
+
+  <h2 id="example">A worked example</h2>
+
+  <p>
+    One routine, one day scheduled Monday and Thursday, two exercises. The bench press has a warmup
+    set and three working sets of 8-10; the plank is timed. This is the real
+    <a href="/programs/example-routine.badger" download>example-routine.badger</a>, printed with
+    indentation added: files the app writes are minified, and whitespace makes no difference either
+    way.
+  </p>
+
+  <pre><code>{examplePretty}</code></pre>
+
+  <h2 id="import-rules">What import does</h2>
+
+  <p>Reading the file is the easy half. These are the rules that decide what it turns into.</p>
+
+  <ul>
+    <li>
+      <strong>Nothing is ever overwritten.</strong> Import only adds. An existing exercise, machine,
+      gym, or routine is never edited by a file you open.
+    </li>
+    <li>
+      <strong>Exercises match on name and type</strong>, ignoring case and surrounding spaces. Same
+      name, different type, means a different exercise, so a routine can never wire itself to the
+      wrong one. No match, and the exercise is created, in the named category, which is itself created
+      if it is new.
+    </li>
+    <li>
+      <strong>Machines, attachments, gyms, and categories match on name alone</strong>, again ignoring
+      case and spaces.
+    </li>
+    <li>
+      <strong>A routine name collision does not merge.</strong> Importing a routine whose name you
+      already use gives you "Name (imported)", then "Name (imported) 2", and so on. You keep both and
+      decide.
+    </li>
+    <li>
+      <strong>It is one transaction.</strong> A file that fails partway through leaves your database
+      exactly as it was.
+    </li>
+    <li>
+      <strong>Order comes from <code>sort_order</code></strong>, not from the order things appear in
+      the arrays.
+    </li>
+    <li>
+      <strong>A warmup never carries a rep range.</strong> If a file puts <code>reps_max</code> on a
+      warmup set, import drops it rather than storing a plan the app cannot show you.
+    </li>
+    <li>
+      <strong>Files over 10 MB are refused</strong> without being read. A real export is a few
+      kilobytes, so this only ever catches something that has gone wrong.
+    </li>
+  </ul>
+
+  <h2 id="not-carried">What a file does not carry</h2>
+
+  <p>
+    Worth knowing before you assume a share is a clone. A routine file is the plan, and only the parts
+    of the plan that travel usefully between two different lifters in two different gyms.
+  </p>
+
+  <ul>
+    <li><strong>No history.</strong> No workouts, no logged sets, no PRs. Those are yours and they stay on your phone. To move your own history to a new phone, use a backup instead: see <a href="/help/phone-migration">moving to a new phone</a>.</li>
+    <li><strong>No supersets.</strong> Exercise grouping, group names, and tempo are not carried, so a superset arrives as ordinary consecutive exercises.</li>
+    <li><strong>No notes below the routine level.</strong> Routine notes travel; per-day and per-exercise notes do not.</li>
+    <li><strong>No alternative exercises</strong>, no default attachment, and no default grip.</li>
+    <li><strong>No per-exercise detail beyond name, type, and category.</strong> An exercise that gets created on import starts blank: no instructions, no muscles, no rest default, no increment. Anything you already had keeps everything it already has.</li>
+    <li><strong>No photos</strong> of machines or attachments.</li>
+    <li><strong>Nothing about you.</strong> No account, no device identifier, no settings, no training notes.</li>
+  </ul>
+
+  <h2 id="versioning">The versioning promise</h2>
+
+  <p>
+    The version string exists so that files stay readable. Two commitments go with it. Unknown fields
+    are ignored, so a file written by a newer Badger still opens in an older one, minus whatever that
+    older version has no concept of. And if the shape ever has to change in a way that breaks,
+    <code>badger</code> gets a new value and <code>share/v1</code> keeps being read: a file you
+    exported today should still import years from now.
+  </p>
+
+  <p>
+    That is the same commitment as the rest of <a href="/promise">the promise</a>. Data you can get
+    out is only worth something if it still opens later.
+  </p>
+
+  <div class="callout">
+    <span class="caps">Verified</span>
+    <p>
+      Last checked against Badger <strong>{appVersion}</strong>, schema <code>share/v1</code>. The
+      example above and the files in the <a href="/programs">program gallery</a> were exported by that
+      build and imported back into it before publishing.
+    </p>
+  </div>
+</HelpLayout>
+
+<style>
+  /* Field tables have three columns of prose and will not fold below about
+     410px of their own accord, so on a phone each one scrolls inside its own
+     box. The page itself never scrolls sideways. */
+  .table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* The example is wide. It scrolls inside its own box rather than pushing the
+     page sideways on a phone. */
+  pre {
+    background: var(--panel);
+    border: 1px solid var(--hair);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin: 0 0 20px;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--text);
+    tab-size: 2;
+  }
+
+  pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre;
+  }
+</style>

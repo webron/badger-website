@@ -54,6 +54,14 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
       padding: 1rem 1rem;
       gap: 0;
       flex-direction: column;
+      /* Stretch, not flex-start: once the column direction flips, align-items
+         governs WIDTH, and flex-start sizes each item to fit-content. That can
+         never go below its content's minimum width, so a single wide child (the
+         JSON example on /badger-format) widened the whole column past the phone
+         and the page scrolled sideways. Stretching pins the column to the
+         viewport, and wide children scroll inside their own boxes as intended.
+         No visual change for pages whose content already fits. */
+      align-items: stretch;
     }
 
     .help-main .prose {
