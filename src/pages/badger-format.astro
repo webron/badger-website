@@ -98,7 +98,7 @@ const description =
         <tr>
           <td><code>payload</code></td>
           <td>object</td>
-          <td>The contents. Its shape depends on <code>type</code>.</td>
+          <td>The contents. Its shape depends on <code>type</code>: a <a href="#routine">routine payload</a> or a <a href="#gym">gym or machines payload</a>.</td>
         </tr>
       </tbody>
     </table>
@@ -122,23 +122,26 @@ const description =
         <tr><th>Key</th><th>Type</th><th>Contents</th></tr>
       </thead>
       <tbody>
-        <tr><td><code>routine</code></td><td>object</td><td>The routine itself: name, notes, and its settings.</td></tr>
-        <tr><td><code>days</code></td><td>array</td><td>The days, in order. Each day carries its own <code>exercises</code> array: that day's slots, in order, with their planned sets.</td></tr>
-        <tr><td><code>exercises</code></td><td>array</td><td>The definition of every exercise any day references: its name, type, and category. Day slots point into this list by <code>exercise_name</code>.</td></tr>
-        <tr><td><code>machines</code></td><td>array</td><td>Machines the day slots pin. Always written; the import preview asks before creating any.</td></tr>
+        <tr><td><code>routine</code></td><td><a href="#routine-object"><code>Routine</code></a></td><td>The routine itself: name, notes, and its settings.</td></tr>
+        <tr><td><code>days</code></td><td>array of <a href="#day"><code>Day</code></a></td><td>The days, in order. Each day carries its own <code>exercises</code> array: that day's slots, in order, with their planned sets.</td></tr>
+        <tr><td><code>exercises</code></td><td>array of <a href="#exercise"><code>Exercise</code></a></td><td>The definition of every exercise any day references: its name, type, and category. Day slots point into this list by <code>exercise_name</code>.</td></tr>
+        <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>Machines the day slots pin. Always written; the import preview asks before creating any.</td></tr>
       </tbody>
   </table>
   </div>
 
   <p>
-    Note that two arrays share the name <code>exercises</code> and they are different things:
-    <code>exercises</code> at the top level defines what each exercise <em>is</em>, and
-    <code>days[].exercises</code> says what a day <em>does</em>, referencing those definitions by
-    name. Every name a day uses should have a definition in the top-level list - a slot whose name
+    Note that two arrays share the name <code>exercises</code> and they hold different types:
+    <code>exercises</code> at the top level is an array of <a href="#exercise"><code>Exercise</code></a>,
+    defining what each exercise <em>is</em>, while a day's <code>exercises</code> is an array of
+    <a href="#day-exercise"><code>DayExercise</code></a>, saying what that day <em>does</em> and
+    referencing the definitions by name. Every name a day uses should have a definition in the top-level list - a slot whose name
     matches no definition is silently dropped on import, and the day arrives shorter.
   </p>
 
-  <h3>routine</h3>
+  <h3 id="routine-object">Routine</h3>
+
+  <p>The object in the payload's <code>routine</code> key.</p>
 
   <div class="table-wrap">
   <table>
@@ -172,7 +175,9 @@ const description =
     </table>
   </div>
 
-  <h3>days</h3>
+  <h3 id="day">Day</h3>
+
+  <p>The objects in <code>days</code>.</p>
 
   <p>An array. One entry per session in the program.</p>
 
@@ -207,12 +212,14 @@ const description =
           <td>integer</td>
           <td>Legacy field, carried for old files. Current versions do not set it.</td>
         </tr>
-        <tr><td><code>exercises</code></td><td>array</td><td>The day's exercise slots.</td></tr>
+        <tr><td><code>exercises</code></td><td>array of <a href="#day-exercise"><code>DayExercise</code></a></td><td>The day's exercise slots.</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3>days[].exercises</h3>
+  <h3 id="day-exercise">DayExercise</h3>
+
+  <p>The objects in a <a href="#day"><code>Day</code></a>'s <code>exercises</code> array: one slot in the plan.</p>
 
   <div class="table-wrap">
   <table>
@@ -249,14 +256,16 @@ const description =
         </tr>
         <tr>
           <td><code>predefined_sets</code></td>
-          <td>array</td>
+          <td>array of <a href="#predefined-set"><code>PredefinedSet</code></a></td>
           <td>The planned sets. An empty list is valid but pointless.</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <h3 id="sets">predefined_sets</h3>
+  <h3 id="predefined-set">PredefinedSet</h3>
+
+  <p>The objects in a <a href="#day-exercise"><code>DayExercise</code></a>'s <code>predefined_sets</code>.</p>
 
   <p>
     A planned set. Fill in the fields the exercise type actually uses: weight and reps for a bench
@@ -310,7 +319,9 @@ const description =
     </table>
   </div>
 
-  <h3 id="exercise-definitions">exercises</h3>
+  <h3 id="exercise">Exercise</h3>
+
+  <p>The objects in the payload's top-level <code>exercises</code>: the definitions the day slots reference.</p>
 
   <p>
     The definitions the days point at. Keep it to the exercises the routine actually uses; a
@@ -355,7 +366,9 @@ const description =
     </table>
   </div>
 
-  <h3 id="machines">machines</h3>
+  <h3 id="machine">Machine</h3>
+
+  <p>The objects in <code>machines</code>, here and in a gym payload alike.</p>
 
   <p>
     Equipment settings. In a routine payload this list is reference data: importing the machines is a
@@ -423,9 +436,9 @@ const description =
         <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
       </thead>
       <tbody>
-        <tr><td><code>gym</code></td><td>object</td><td>Just <code>{'{ "name": "..." }'}</code>.</td></tr>
-        <tr><td><code>machines</code></td><td>array</td><td>Machine objects, as above.</td></tr>
-        <tr><td><code>attachments</code></td><td>array</td><td>Objects of the form <code>{'{ "name": "..." }'}</code>.</td></tr>
+        <tr><td><code>gym</code></td><td><code>Gym</code></td><td>A <code>Gym</code> is just <code>{'{ "name": "..." }'}</code>.</td></tr>
+        <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>The same <code>Machine</code> objects a routine payload carries.</td></tr>
+        <tr><td><code>attachments</code></td><td>array of <code>Attachment</code></td><td>An <code>Attachment</code> is just <code>{'{ "name": "..." }'}</code>.</td></tr>
         <tr><td><code>gym_machines</code></td><td>array of strings</td><td>Names of the machines that belong to this gym.</td></tr>
         <tr><td><code>gym_attachments</code></td><td>array of strings</td><td>Names of the attachments that belong to this gym.</td></tr>
       </tbody>
@@ -433,8 +446,8 @@ const description =
   </div>
 
   <p>
-    <code>type: "machines"</code> is the smaller version: one key, <code>machines</code>, holding the
-    same machine objects and no gym.
+    <code>type: "machines"</code> is the smaller version: one key, <code>machines</code>, an array of
+    <a href="#machine"><code>Machine</code></a> and no gym.
   </p>
 
   <h2 id="example">A worked example</h2>
