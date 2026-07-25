@@ -236,10 +236,13 @@ const description =
         </tr>
         <tr>
           <td><code>exercise_type</code></td>
-          <td>string</td>
+          <td>string, same values as <a href="#exercise"><code>Exercise</code></a>.<code>type</code></td>
           <td>
-            The referenced exercise's type. Optional, but include it: it is what keeps a "Plank" you
-            time apart from a "Plank" someone counts reps on.
+            The referenced exercise's type, repeated here. Optional, but include it: it is what keeps
+            a "Plank" you time apart from a "Plank" someone counts reps on. When present it must
+            exactly equal the referenced definition's <code>type</code> - import resolves the slot by
+            the name and type together, and a mismatch means the slot matches nothing and is dropped
+            like an unmatched name.
           </td>
         </tr>
         <tr><td><code>sort_order</code></td><td>integer, set it always</td><td>Order within the day. Same rule as a <a href="#day"><code>Day</code></a>'s: absent reads as 0 and ties land in no guaranteed order.</td></tr>
