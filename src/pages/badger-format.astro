@@ -449,12 +449,19 @@ const description =
           </td>
         </tr>
         <tr>
-          <td><code>bar_weight_kg</code></td>
+          <td><code>bar_weight</code></td>
           <td>number</td>
           <td>
-            Weight of the bar or empty carriage, always in kg in the file - even when the app it
-            came from shows and stores it in pounds. Badger converts at export and back at import,
-            so a 45 lb bar travels as <code>20.41</code> and arrives as 45 lb again.
+            Weight of the bar or empty carriage, in the unit named beside it - the same
+            value-plus-unit pattern set weights use, so a 45 lb bar travels as <code>45</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>bar_weight_unit</code></td>
+          <td>string</td>
+          <td>
+            <code>"kg"</code> or <code>"lbs"</code>, for <code>bar_weight</code>. Older files carry
+            <code>bar_weight_kg</code> instead, always in kg; it is still read.
           </td>
         </tr>
         <tr>
