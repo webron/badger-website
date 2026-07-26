@@ -8,6 +8,24 @@ import Footer from '../components/Footer.astro';
 // release notes. Newest first.
 const releases = [
   {
+    version: '1.1.2',
+    date: 'July 2026',
+    headline: 'Search your notes, and a Plan B for busy gyms',
+    highlights: [
+      'Search everything you have ever written down. The search icon on History looks across workout notes, set comments, exercise and machine notes, routine notes, and your training notes, and takes you straight to whatever you tap. It searches your writing, not the app\'s, and none of it leaves your device.',
+      'Plan B: when a machine is taken, the training screen\'s menu suggests substitutes on the spot. They share a primary muscle with the lift you are replacing, and machine exercises only show up if that machine is actually at your gym. Works in a free workout too, not just a routine.',
+      'A Pace section on the workout summary shows how long each exercise took and how long you rested between its sets, worked out from your own log. Nothing extra to tap while you train. A gap over ten minutes counts as a break rather than rest, so a phone call does not skew your averages.',
+      'Type a duration as a time. "15:00" is fifteen minutes, and a plain number is still seconds, so nothing you already do changes. Works everywhere Badger asks for a duration.',
+      'The exercise page now leads with your history for that movement. The record key at the top taps straight through to the graph, and muscles worked and your notes sit in sections you can open when you want them.',
+      'The machine picker lists everything else at your gym under the ones already marked compatible. Pick one and Badger links it to the exercise for you, so there is nothing to set up in advance. Creating a machine or attachment now links it to your gyms up front and lands you on its page to finish.',
+      'Trained on this date a year ago? A quiet line at the bottom of Today says so, and opens that session.',
+      'Share files carry more of a routine: supersets, tempo, and exercise alternatives now travel with it. Bar weights go across as the number you typed with its unit, instead of being converted to kg on the way out. Android: tapping a .badger file you downloaded now opens it in Badger.',
+      'A 5-day Push/Pull/Legs and Upper/Lower split joins the built-in programs. New installs get it in the list; if you already have Badger, download it from the program gallery on badger.fit.',
+      'Sets you planned but never performed no longer count as done. Your monthly report, heatmap, and muscle coverage now count only what you actually logged, so if you have abandoned sessions in your history some of those numbers will drop. The smaller number is the true one.',
+      'Fixes: a crash on days holding more than one workout, an exercise name squeezed off the screen by its illustration, an exercise setting that showed "lbs" over a kg number, and a default weight increment that drifted from 2.5 kg to 2.27 every time you saved. Workout CSV exports gain is_complete and is_skipped columns, and importing from Strong, Stronglifts, or Hevy now brings your session start and end times across.',
+    ],
+  },
+  {
     version: '1.1.1',
     date: 'July 2026',
     headline: 'Rep ranges, and a library you can scan',
