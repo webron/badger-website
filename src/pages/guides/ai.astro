@@ -81,7 +81,7 @@ Follow the format exactly:
 - Leave weight out. I fill in my own weights.
 - Never put reps_max on a warmup set.
 - Order matters: days, exercises, and sets import in the order they appear in their arrays.
-- To pair exercises as a superset, give both slots the same "superset_key". To pre-assign swap options, use "alternatives" with names that also appear in payload.exercises.
+- To pair exercises as a superset, give both slots the same "superset_key". To pre-assign swap options, use "alternatives" with names that also appear in payload.exercises. For a tempo prescription, put it in "tempo" on the slot, like "3-1-2-0".
 - If I paste a gym .badger file below, plan around its equipment: only pick machine exercises its machines support (barbell, dumbbell, and bodyweight movements are always available). For an exercise done on one of those machines, set default_machine_name to that machine's name exactly as written in my file, and copy the machine's entry into payload.machines verbatim. Never invent or rename a machine.
 
 What I want:
@@ -177,6 +177,12 @@ Give me the complete JSON in one code block, then explain the program in a few s
       create few or no new exercises. A long list of new ones means the AI invented names: fix the
       names in the file, and it will land on the exercises you already have, with the history and PRs
       attached to them.
+    </li>
+    <li>
+      <strong>If the preview warns that exercises could not be matched</strong>, the AI used a name
+      in a day that has no matching definition in <code>exercises</code> (or gave it the wrong
+      type). Nothing breaks - those slots are skipped - but fix the names in the file and the full
+      program comes in.
     </li>
     <li>
       <strong>If you gave it your gym file, the preview should create zero new machines.</strong> A
