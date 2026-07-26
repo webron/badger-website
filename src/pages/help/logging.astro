@@ -17,6 +17,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Weekly volume chips</strong> - Colored chips showing sets logged per muscle category this week. Colored dots indicate groups that need attention. Tap any chip to open the muscle balance detail sheet.</li>
     <li><strong>Monthly report</strong> - During the first two weeks of a new month, a dismissible card shows last month's highlights: workout count, total volume (with % change vs the month before), and how many exercises you tried for the first time. Tap × to dismiss it.</li>
     <li><strong>Deload banner</strong> and <strong>Plateau card</strong> appear here when those features are active (see <a href={`/help/tools#deload`}>Deload</a> and <a href={`/help/progress#plateau-detection`}>Plateau detection</a>).</li>
+    <li><strong>One year ago</strong> - If you trained on this date a year back, a quiet line at the very bottom of the screen says so: "One year ago &middot; Entry &#8470; 63 &middot; Push Day". Tap it to open that session. It names the day by its routine day, or by the first exercise you logged. When there is nothing a year ago, the line simply is not there.</li>
   </ul>
 
   <hr />
@@ -28,6 +29,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap the <strong>✓ checkmark</strong> to save the set.</li>
   </ol>
   <p>The set appears in the list below. The rest timer starts automatically if you have that setting enabled.</p>
+
+  <h3 id="duration-entry">Typing a duration</h3>
+  <p>Anywhere Badger asks for a duration - the Log tab, a routine's planned sets, quick edit, or editing a set after the fact - you can type it as a time instead of counting seconds:</p>
+  <ul>
+    <li><strong>15:00</strong> - fifteen minutes.</li>
+    <li><strong>900</strong> - a plain number is still seconds, so nothing you already do changes.</li>
+    <li><strong>90:00</strong> - minutes are not capped, so a long ride is fine without doing the hours math.</li>
+    <li><strong>1:30:00</strong> - hours, minutes, seconds.</li>
+  </ul>
+  <p>When you leave the field it tidies itself into the shorter form, so a typed <strong>15</strong> becomes <strong>0:15</strong> - a quick way to see whether Badger read you as seconds or minutes. The +/− steppers still move in seconds.</p>
 
   <h3>Editing and deleting sets</h3>
   <p>Tap a set row to load it into the input fields for editing. Tap the checkmark again to update it. To deselect without saving, tap the same row again.</p>

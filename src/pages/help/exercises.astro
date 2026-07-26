@@ -11,7 +11,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="library">Exercise library</h2>
   <p>The <strong>Exercises</strong> tab opens straight onto every exercise you have, in one alphabetical list. There is no category screen to tap through first.</p>
-  <p>Each row shows an equipment glyph on the left, the exercise name, and the category it belongs to on the right. A star on the row means it is a favorite. Tap a row to open the exercise detail screen.</p>
+  <p>Each row shows an equipment glyph on the left and the exercise name, with its type and category on a second line underneath. A star on the row means it is a favorite. Tap a row to open the exercise detail screen.</p>
   <p>Letter headings (A, B, C and so on) divide the list. Down the right edge is a letter strip: tap a letter to jump to it, or drag your thumb along the strip to scrub through the list.</p>
 
   <h2 id="search-filter">Search & filtering</h2>
@@ -106,6 +106,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     </tbody>
   </table>
 
+  <h2 id="detail">The exercise page</h2>
+  <p>Tapping an exercise opens its own page, which leads with your history for that movement: every session you have logged it, newest first.</p>
+  <ul>
+    <li><strong>The record key</strong> sits at the top, next to the illustration: your best set for this exercise, and the estimated one-rep max it works out to. Tap it to open the full progress screen with the graph and the rest of your records.</li>
+    <li><strong>Muscles worked</strong> is a collapsed section. Tap it to open the anatomy diagram showing the primary and secondary muscles.</li>
+    <li><strong>Notes &amp; instructions</strong> is a second collapsed section, showing your own notes for the exercise along with the built-in technique cues. Tap the opened section to edit your notes. It only appears when there is something to show.</li>
+    <li>The <strong>pencil</strong> in the top bar opens the edit screen.</li>
+  </ul>
+
   <h2 id="linking">Linked exercises</h2>
   <p>If two exercises are really the same movement under different names (e.g. <em>Flat Bench Press</em> and <em>Barbell Bench Press</em>, or a free-weight lift and its machine variant), you can link them so they share progress history and personal records.</p>
   <p>To link exercises:</p>
@@ -115,7 +124,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>Link exercise</strong> and pick the exercise you want to link.</li>
   </ul>
   <p>Once linked, both exercises show the same progress graphs, PRs, stats, and history. The PR check while logging also considers sets from linked exercises - a new best on one counts as a PR on both.</p>
-  <p>To unlink, tap the <strong>×</strong> on a linked-exercise chip. A confirmation dialog appears - after confirming, the two exercises no longer share history. Both remain in the library; linking never merges or deletes either exercise.</p>
+  <p>To unlink, tap the linked-exercise chip (it carries an <strong>×</strong>). A confirmation dialog appears - after confirming, the two exercises no longer share history. Both remain in the library; linking never merges or deletes either exercise.</p>
 
   <h2 id="merged-duplicates">Merged duplicate exercises</h2>
   <p>The built-in library shipped two movements twice under slightly different names: <em>Lying Leg Curl</em> duplicated <em>Leg Curl (Lying)</em>, and <em>Good Morning (Legs)</em> duplicated <em>Good Morning</em>. Each pair has been merged into a single entry. If you logged sets against either name, that history moved onto the surviving exercise rather than being deleted, so your records and graphs are intact.</p>
