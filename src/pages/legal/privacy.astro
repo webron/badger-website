@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Privacy Policy" description="Badger privacy policy - what we store, what leaves your device, and your rights.">
   <h1>Privacy Policy</h1>
 
-  <p><strong>Last updated:</strong> 2026-07-17</p>
+  <p><strong>Last updated:</strong> 2026-07-26</p>
 
   <p>
     Badger is a local-first workout tracker. Your training data lives on your device
@@ -37,6 +37,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Manual backups</strong> - you tap <em>Manual backup</em> in Settings to open the system share sheet and save a <code>.workout_backup</code> file wherever you choose (local storage, your own Drive, email-to-self, etc.).</li>
     <li><strong>CSV exports</strong> - workout history CSV exports open the share sheet.</li>
+    <li><strong>AI context copies</strong> - <em>Copy context for AI</em> assembles a plain-text summary of your training (your training notes, active program, recent sessions, records, gym equipment, and avoided exercises) on your device and shows it to you in full. Tapping Copy places it on your clipboard; tapping Share opens the system share sheet. Badger sends it nowhere - where it goes next is entirely your choice, and if you paste it into an AI service, that service's own privacy policy applies to it from that point. It deliberately excludes body measurements, any health data, and your workout, set, exercise and machine comments.</li>
     <li><strong>Debug log exports</strong> - the last ~500 lines of in-memory logs can be exported as a plain-text file via the share sheet.</li>
     <li><strong>Feedback emails</strong> - the Send feedback screen opens your email client with a pre-filled draft to <code>feedback@badger.fit</code>. You review and send it from your own email app. If a crash occurred since the last launch, a toggle offers to attach the stored crash report; you can also attach diagnostic logs. Nothing is sent automatically - you always hand-off to your mail app and press send.</li>
     <li><strong>Cloud backup (opt-in)</strong> - when you enable <em>Cloud backup</em> in Settings, Badger signs in to your Google account (using Google Sign-In) and uploads backup archives to a hidden <em>app-data</em> folder on your Google Drive. The folder is private to Badger - it is not visible in the Drive UI and cannot be accessed by other apps. Badger requests only the <code>drive.appdata</code> scope (no access to your other Drive files). Backups contain your local SQLite database and a sanitized copy of your app settings (excluding any authentication tokens). Photos you added to machines or attachments are <em>not</em> included, to keep backups small - restoring onto a new device brings back your equipment without its pictures. Up to 5 rolling backups are kept plus event backups before destructive actions. You can disable cloud backup, delete all cloud backups, or revoke Badger's access from your Google account at any time. No data goes anywhere else.</li>
