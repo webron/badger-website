@@ -17,7 +17,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Data stored only on your device</h2>
   <p>The following is stored on your phone and is never sent to us:</p>
   <ul>
-    <li>Workouts, sets, and exercises (including weight, reps, distance, duration, RPE, RIR, notes, comments).</li>
+    <li>Workouts, sets, and exercises (including weight, reps, distance, duration, RPE, RIR, notes, comments, and - if you switch it on - the end-of-set heart rate read from Apple Health or Health Connect).</li>
     <li>Routines, routine days, and predefined sets.</li>
     <li>Body measurements and body-weight history, including any weigh-ins imported from Apple Health or Health Connect. Imported readings are saved in Badger's local database exactly like ones you type in, so they behave the same way everywhere else in the app - including in backups (see below).</li>
     <li>Gyms, machines, attachments, and their links to exercises.</li>
@@ -44,10 +44,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Apple Health and Health Connect (opt-in)</h2>
   <p>
-    Badger can exchange two specific things with your phone's health store - Apple Health
-    on iOS, Health Connect on Android. Both directions are <strong>off by default</strong>,
+    Badger can exchange three specific things with your phone's health store - Apple Health
+    on iOS, Health Connect on Android. All of them are <strong>off by default</strong>,
     each is a separate switch in Settings, and each also has to be granted in the health
-    app's own permission screen. Neither switch alone moves any data.
+    app's own permission screen - for that one thing only, so allowing heart rate does not
+    give Badger your weight history. No switch alone moves any data.
   </p>
   <ul>
     <li><strong>Writing workouts</strong> - when you turn this on, each finished workout is
@@ -62,6 +63,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
       Because these readings are saved locally like any other entry, they are included in
       your backups - the manual backup file and, if you have enabled it, the cloud backup
       to your own Google Drive.</li>
+    <li><strong>Reading heart rate</strong> - when you turn this on, Badger reads heart-rate
+      samples from your health store for the period a workout was running, and keeps
+      <em>a single value per set</em>: your heart rate at the end of that set, in beats per
+      minute. It is stored with the set in Badger's local database, so it is included in
+      your backups in the same way as your weights and reps. The samples Badger reads are
+      used to work out that one number and are then discarded - Badger does not keep a copy
+      of your heart-rate history, and does not store any other health measurement. Reading
+      happens only when a workout finishes and when you open its summary shortly afterwards;
+      there is no background monitoring, and Badger never writes heart rate back to your
+      health store.</li>
   </ul>
   <p>
     Nothing read from your health store is sent to us or to anyone else. You can turn either
