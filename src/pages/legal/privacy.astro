@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Privacy Policy" description="Badger privacy policy - what we store, what leaves your device, and your rights.">
   <h1>Privacy Policy</h1>
 
-  <p><strong>Last updated:</strong> 2026-07-17</p>
+  <p><strong>Last updated:</strong> 2026-07-26</p>
 
   <p>
     Badger is a local-first workout tracker. Your training data lives on your device
@@ -21,7 +21,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Routines, routine days, and predefined sets.</li>
     <li>Body measurements and body-weight history.</li>
     <li>Gyms, machines, attachments, and their links to exercises.</li>
-    <li>Photos you add to a machine or attachment. They are saved as ordinary image files in Badger's own storage on your device and are never uploaded. Deleting the machine or attachment, or removing the photo, deletes the file.</li>
+    <li>Photos you add to a machine or attachment. They are saved as ordinary image files in Badger's own storage on your device. They leave the device only if you turn on cloud backup <em>and</em> its separate <strong>Back up equipment photos</strong> setting, which is off by default (see below); they are never sent to us either way. Deleting the machine or attachment, or removing the photo, deletes the file.</li>
     <li>All app settings, preferences, and the debug log ring buffer.</li>
     <li>The most recent crash report, if Badger terminated unexpectedly. Saved as a plain-text file (<code>crash_report.txt</code>) containing the exception, stack trace, and the last ~500 lines of the in-memory log buffer. Only the latest crash is kept - a new crash overwrites the previous file, and sending it via feedback (see below) deletes it.</li>
   </ul>
@@ -39,7 +39,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>CSV exports</strong> - workout history CSV exports open the share sheet.</li>
     <li><strong>Debug log exports</strong> - the last ~500 lines of in-memory logs can be exported as a plain-text file via the share sheet.</li>
     <li><strong>Feedback emails</strong> - the Send feedback screen opens your email client with a pre-filled draft to <code>feedback@badger.fit</code>. You review and send it from your own email app. If a crash occurred since the last launch, a toggle offers to attach the stored crash report; you can also attach diagnostic logs. Nothing is sent automatically - you always hand-off to your mail app and press send.</li>
-    <li><strong>Cloud backup (opt-in)</strong> - when you enable <em>Cloud backup</em> in Settings, Badger signs in to your Google account (using Google Sign-In) and uploads backup archives to a hidden <em>app-data</em> folder on your Google Drive. The folder is private to Badger - it is not visible in the Drive UI and cannot be accessed by other apps. Badger requests only the <code>drive.appdata</code> scope (no access to your other Drive files). Backups contain your local SQLite database and a sanitized copy of your app settings (excluding any authentication tokens). Photos you added to machines or attachments are <em>not</em> included, to keep backups small - restoring onto a new device brings back your equipment without its pictures. Up to 5 rolling backups are kept plus event backups before destructive actions. You can disable cloud backup, delete all cloud backups, or revoke Badger's access from your Google account at any time. No data goes anywhere else.</li>
+    <li><strong>Cloud backup (opt-in)</strong> - when you enable <em>Cloud backup</em> in Settings, Badger signs in to your Google account (using Google Sign-In) and uploads backup archives to a hidden <em>app-data</em> folder on your Google Drive. The folder is private to Badger - it is not visible in the Drive UI and cannot be accessed by other apps. Badger requests only the <code>drive.appdata</code> scope (no access to your other Drive files). Backups contain your local SQLite database and a sanitized copy of your app settings (excluding any authentication tokens). Photos you added to machines or attachments are <em>not</em> included by default, to keep backups small - restoring onto a new device brings back your equipment without its pictures. A separate setting on the cloud backup screen, <strong>Back up equipment photos</strong>, includes them; it is off unless you turn it on. With it on, the photos travel inside the same backup archives in the same private app-data folder - no extra files, no other destination - and a restore puts them back on the new device. Up to 5 rolling backups are kept plus event backups before destructive actions. You can disable cloud backup, delete all cloud backups, or revoke Badger's access from your Google account at any time. No data goes anywhere else.</li>
   </ul>
 
   <h2>Device permissions</h2>
