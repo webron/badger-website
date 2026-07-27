@@ -21,7 +21,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Routines, routine days, and predefined sets.</li>
     <li>Body measurements and body-weight history.</li>
     <li>Gyms, machines, attachments, and their links to exercises.</li>
-    <li>Photos you add to a machine or attachment. They are saved as ordinary image files in Badger's own storage on your device. They leave the device only if you turn on cloud backup <em>and</em> its separate <strong>Back up equipment photos</strong> setting, which is off by default (see below); they are never sent to us either way. Deleting the machine or attachment, or removing the photo, deletes the file.</li>
+    <li>Photos you add to a machine or attachment. They are saved as ordinary image files in Badger's own storage on your device. They are included in backup files only when the <strong>Back up equipment photos</strong> setting is on - off by default (see below). That covers both the backups Badger uploads to your own Drive and any backup file you export and share yourself; they are never sent to us either way. Deleting the machine or attachment, or removing the photo, deletes the file.</li>
     <li>All app settings, preferences, and the debug log ring buffer.</li>
     <li>The most recent crash report, if Badger terminated unexpectedly. Saved as a plain-text file (<code>crash_report.txt</code>) containing the exception, stack trace, and the last ~500 lines of the in-memory log buffer. Only the latest crash is kept - a new crash overwrites the previous file, and sending it via feedback (see below) deletes it.</li>
   </ul>

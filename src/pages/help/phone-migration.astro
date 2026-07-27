@@ -22,8 +22,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>
     App settings (accent color, weight unit, theme, notification preferences)
-    are not yet included in backups - you'll re-enter those once on the new
-    phone.
+    ride along in the backup too. Photos you added to machines or attachments
+    are included only when <strong>Back up equipment photos</strong> is turned
+    on - see <a href={`/help/settings#cloud-backup`}>Cloud backup</a>.
   </p>
 
   <h2>Step 1 - Back up on the old phone</h2>
@@ -61,17 +62,20 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>A note on cloud backup</h2>
   <p>
-    Badger will add opt-in auto-backup to Google Drive in a future update.
-    Until then, taking a manual backup after each workout (or at least weekly)
-    is the safest way to protect against losing data if a phone is lost,
-    stolen, or damaged. Manual backups go to the destination you pick - Badger
-    itself never sends the file anywhere automatically.
+    Badger can also back itself up automatically to your own Google Drive -
+    opt-in, off by default, under <strong>Settings → Cloud backup</strong>.
+    With it on, a recent backup is usually already waiting if a phone is lost,
+    stolen, or damaged, and you can restore straight from the cloud backup
+    screen on the new phone. The manual route above still works and is the most
+    direct way to move between phones on your own terms; manual backups go to
+    the destination you pick - Badger itself never sends the file anywhere
+    automatically.
   </p>
 
   <h2>Troubleshooting</h2>
   <ul>
     <li><strong>The picker doesn't see my file.</strong> Move the backup into your phone's main <em>Downloads</em> or <em>Documents</em> folder, or open it directly from your cloud app's share sheet ("Open with Badger").</li>
     <li><strong>Restore fails with a format error.</strong> The file may have been truncated during transfer - re-export on the old phone and move it again via a different channel.</li>
-    <li><strong>Old phone is dead, no backup.</strong> Unfortunately there's no way to recover the data in v1. Cloud auto-backup is the planned fix.</li>
+    <li><strong>Old phone is dead, no backup.</strong> If cloud backup was on, sign in with the same Google account on the new phone under <strong>Settings → Cloud backup</strong> and restore from there. If it was off and no manual backup file exists, the data cannot be recovered.</li>
   </ul>
 </HelpLayout>
