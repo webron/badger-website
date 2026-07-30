@@ -34,7 +34,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <hr />
 
   <h2 id="health">Apple Health and Health Connect</h2>
-  <p>Badger can exchange two specific things with your phone's health store - <strong>Apple Health</strong> on iPhone, <strong>Health Connect</strong> on Android. Both are off until you turn them on, and each one asks the health app for permission separately. Find them in <strong>Settings &rarr; Your data</strong>, or from the Body screen's <span aria-hidden="true">&#8942;</span> menu.</p>
+  <p>Badger can exchange three specific things with your phone's health store - <strong>Apple Health</strong> on iPhone, <strong>Health Connect</strong> on Android. All of them are off until you turn them on, and each one asks the health app for permission separately, for itself only - switching on heart rate does not give Badger your weight history. Find them in <strong>Settings &rarr; Your data</strong>, or from the Body screen's <span aria-hidden="true">&#8942;</span> menu.</p>
 
   <h3 id="write-workouts">Writing workouts</h3>
   <p>With this on, every finished workout is saved to your health store as a strength training session, so your rings, your daily summary, and any other app you have connected know you trained.</p>
@@ -47,6 +47,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Imported readings are checked when you open the Body screen, and you can pull them in on demand with <strong>Bring in weigh-ins now</strong>. There is no background syncing. The same reading is never imported twice, and a genuine second weigh-in on the same morning is kept.</p>
   <p>Opening the Body screen only looks for readings since the last check, which is quick. <strong>Bring in weigh-ins now</strong> goes back over the whole year instead, so if something stopped syncing to your health store for a while and later filled the missing days back in, that button is the one that finds them.</p>
   <p>Imported weigh-ins are <strong>saved in Badger</strong> like ones you typed, which means they are part of your backups - both the manual backup file and, if you use it, the cloud backup to your own Google Drive. See the <a href="/legal/privacy">Privacy Policy</a> for the full picture.</p>
+
+  <h3 id="heart-rate">Heart rate on your sets</h3>
+  <p>With this on, Badger saves <strong>one heart rate per set</strong> - what your heart was doing at the end of it - by reading the samples your watch has already written to your health store. You do not have to start anything or press anything; if you wore a watch while you trained, the numbers turn up on their own.</p>
+  <p>It is there for the <strong>trend</strong>, not the number. Two places show it:</p>
+  <ul>
+    <li>The <strong>Exertion</strong> chart on a workout summary, under Pace. It plots your heart rate set by set across that session, so you can see it drifting up as you tire.</li>
+    <li>An <strong>Exertion</strong> chart on an exercise's progress page: your average for that exercise, session by session. If the same weight for the same reps is costing you less than it did a month ago, that is the chart that shows it.</li>
+  </ul>
+  <p>Individual sets carry their reading quietly in the set list too, in the same small text as the rest of the set's details.</p>
+  <p><strong>Missing numbers are normal.</strong> Watches hand their samples to the phone in batches, sometimes minutes later, so Badger checks once when you finish and once more when you open the workout summary. After that a set keeps whatever it has. If nothing lined up, that set simply has no heart rate - Badger will not guess one, and there is no badge, banner, or nag about it anywhere.</p>
+  <p>You need enough data for a chart to be worth drawing, so the session chart appears once four sets have a reading, and the per-exercise chart once three sessions do. Below that they are not there at all.</p>
+  <p>Badger reads heart rate; it never writes it. There is <strong>no live heart rate while you train</strong>, and no recovery score, strain number, or readiness rating - those need more than a phone can honestly measure, and a made-up number is worse than none.</p>
+  <p>Readings are saved in Badger with the set, which means they are part of your backups, exactly like your weights and reps. They go nowhere else.</p>
 
   <h3 id="health-availability">If the switches are not there</h3>
   <p>On Android below version 14, Health Connect is a separate app from the Play Store. Until it is installed there is nothing for Badger to connect to, and the screen says so rather than offering a connection that cannot work.</p>
