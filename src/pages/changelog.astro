@@ -8,6 +8,20 @@ import Footer from '../components/Footer.astro';
 // release notes. Newest first.
 const releases = [
   {
+    version: '1.1.3',
+    date: 'July 2026',
+    headline: 'Body tracking is back, and Badger can talk to Health',
+    highlights: [
+      'Body tracking is back, under You → Body. Start with your weight, then add whatever you actually measure from a list of fifteen: waist, arms, thighs, body fat, and the rest. Each one gets its own history and graph, in the unit you already use. Nothing you have not turned on shows up.',
+      'Badger can share with Apple Health and Health Connect now, if you ask it to. Three switches under Settings → Your data, all off by default, and each asks the platform for a permission of its own: write each finished workout as a strength training session, bring your weigh-ins in so you never type them twice, and save heart rate. Badger still has no server. These switches are the only way anything leaves the app, and it goes to your phone\'s own health store, nowhere else.',
+      'Heart rate per set. With the switch on, Badger keeps the heart rate you finished each set on, straight from your watch, and draws it on the workout summary and on each exercise. It reads the samples, keeps one number per set, and throws the rest away.',
+      'See where a lift stands. Turn on strength standards under Settings → Coaching and your estimated 1RM graph draws quiet lines for untrained through elite, scaled to your bodyweight, on the big barbell lifts. Each exercise has its own Standards chip under the graph. Reference lines in a training log, not a grade.',
+      'Copy context for AI, under Settings → Your data, gathers your program, recent sessions, records, equipment and your own training notes into plain text you can paste into any AI. You read the whole thing before it goes anywhere, and Badger sends nothing itself: no key, no account, no network call.',
+      'Cloud backup can carry your equipment photos now. It is off by default, since photos are the bulky part of an archive; the switch sits under Cloud backup, below the main one.',
+      'Fixes: a red error box where the Today timer chip belongs during a live workout, and the To failure chip cut off the edge of the set details row.',
+    ],
+  },
+  {
     version: '1.1.2',
     date: 'July 2026',
     headline: 'Search your notes, and a Plan B for busy gyms',
