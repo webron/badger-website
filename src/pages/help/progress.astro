@@ -63,6 +63,25 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Machine filter</h3>
   <p>If you've used the exercise on multiple machines, a row of filter chips appears above the chart. Filter by a specific machine or select <strong>All</strong> for combined data. The most recently used machine is selected by default.</p>
 
+  <h2 id="strength-standards">Strength standards</h2>
+  <p>Badger can draw reference lines on the estimated 1RM graph showing where a lift sits for your bodyweight: untrained, novice, intermediate, advanced, elite. They are marks in the margin, not a score. Nothing pops up when you cross one; the line is simply behind your data from then on.</p>
+  <p>Standards are available for five barbell lifts - <strong>bench press, squat, deadlift, overhead press and barbell row</strong> - and only for exercises whose name matches one of them. A dumbbell or machine version of the same movement is deliberately left out, because barbell standards would misdescribe it.</p>
+
+  <h3>Turning them on</h3>
+  <ul>
+    <li>Open a covered lift's progress screen and tap the <strong>Standards</strong> chip below the graph. The chip only appears on those lifts, and only on the estimated 1RM graph.</li>
+    <li>The first time, Badger asks two things: your <strong>sex</strong>, and your <strong>current body weight</strong> if you have never logged one.</li>
+    <li>It is per exercise. Turn the lines on for the lifts you are chasing a number on and leave them off elsewhere.</li>
+  </ul>
+
+  <h3>The two questions, and why</h3>
+  <p>Strength standards differ by sex, so Badger needs one answer to read the right table. That single question is the only thing the app ever asks about you - there is no age, no name, no profile - and like everything else it stays on your phone. You can change it or withdraw it any time in <strong>Settings &rarr; Coaching &rarr; Strength standards</strong>. If you choose <strong>Prefer not to say</strong>, the standards stay off: without an answer there is no honest table to read, and Badger will not guess one.</p>
+  <p>Body weight comes from your <a href="/help/body/">body tracker</a>, since the levels are multiples of it. If you have never logged a weigh-in, the setup asks for one and saves it as an ordinary body tracker entry - there is no separate copy of your weight anywhere. Log new weigh-ins as usual and the lines follow along.</p>
+
+  <h3>Reading the lines</h3>
+  <p>Only the levels near your data are drawn, so the chart stays readable: the next level up appears once you are within reach of it, and levels far above or below are left off. Your all-time best keeps its own darker line. The records list below the graph gains one quiet line showing your current level and your best estimated 1RM as a multiple of bodyweight, for example <em>Intermediate &middot; est 1RM 1.4x BW</em>.</p>
+  <p>Two honest caveats. The table is Badger's own, put together by reading across several public strength references and rounding to defensible numbers - treat the lines as a rough map, not a verdict. And the levels are flat multiples of bodyweight, where real standards drift somewhat with how heavy and how old you are.</p>
+
   <h2 id="plateau-detection">Plateau detection</h2>
   <p>When plateau detection is enabled, Badger monitors your estimated 1RM trend and surfaces a banner on the exercise progress screen when progress has stalled.</p>
   <p>A plateau is flagged when <strong>both</strong> conditions are met:</p>
