@@ -59,6 +59,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="training-notes">Training notes</h2>
   <p>Under <strong>You → Training → Training notes</strong> is a private page for your own context - goals, injuries, training history, and anything else worth remembering. It's one free-text page; your notes save automatically as you type, so there's no save button. The text stays on your device and is never required.</p>
   <p>Training notes are included in your <a href={`#backup`}>settings backup</a>, so they carry across to a new device when you restore. They are <strong>not</strong> shared when you export data or share individual routines. (Program-specific notes belong on the routine itself - see <a href={`/help/routines#routine-notes`}>Routine notes</a>.)</p>
+  <p>At the bottom of the page is <strong>Copy for AI</strong>, which bundles these notes together with your program, recent training, records and equipment into one block of text you can paste into any AI - see <a href={`#ai-context`}>Copying your context for an AI</a>.</p>
 
   <h2 id="data">Your data</h2>
   <p>All the rows below live in the <strong>Your data</strong> section at the bottom of Settings. Tap <strong>You → Data &amp; backup</strong> to jump straight to it.</p>
@@ -78,6 +79,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="export">Exporting data</h3>
   <p><strong>Export workout data</strong> generates a CSV file with one row per logged set, including date, exercise name, weight, reps, duration, warmup flag, RPE, RIR, and more. The file is shared via the system share sheet.</p>
   <p>Every set in the database is exported, including ones you never performed - a workout started from a routine creates all of its sets up front, so a session you began and walked out of still has rows. The <code>is_complete</code> and <code>is_skipped</code> columns are how you tell them apart: filter on <code>is_complete</code> for anything that should count as training. If you are handing the file to an AI, <a href={`/guides/ai`}>Use your own AI</a> has a prompt that already explains this.</p>
+
+  <h3 id="ai-context">Copying your context for an AI</h3>
+  <p><strong>Copy context for AI</strong> assembles a short briefing on what you are training and hands it to you as plain text. It gathers your <a href={`#training-notes`}>training notes</a>, your active program with its current targets, your last ten sessions, your records, the equipment at your resolved gym, and anything you have marked as avoided, then closes with instructions telling the AI how to read it - including how to write a routine back as a <a href={`/badger-format`}><code>.badger</code> file</a>.</p>
+  <p>Badger shows you the whole thing before anything leaves. Read it, then tap <strong>Copy</strong> to put it on your clipboard or <strong>Share</strong> to send it through the system share sheet. <strong>Badger transmits nothing.</strong> The text is assembled on your device, there is no account and no server involved, and where it goes next is entirely your choice.</p>
+  <p>It is trimmed to fit a chat window, so if you train a lot it will shorten itself: older sessions go first, then equipment, then records, and so on. Your own notes are the last thing it will touch, and your constraints and the closing instructions are never dropped. Sections you have nothing in are left out rather than shown empty, so a new install produces a short honest briefing rather than a page of blanks.</p>
+  <p>Your <strong>body measurements and any health data are deliberately not included</strong>, and nothing from your workout comments, per-set comments or exercise notes travels either. The same action is available at the bottom of your Training notes page. See <a href={`/guides/ai`}>Use your own AI</a> for what to do with it.</p>
 
   <h3 id="importing">Importing workout history</h3>
   <p>Badger can import your full history from FitNotes, Strong, Hevy, and Stronglifts. Each option appears in the same Your data section:</p>
