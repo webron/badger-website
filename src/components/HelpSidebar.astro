@@ -171,6 +171,40 @@ const nav = [
   </details>
 </aside>
 
+<script is:inline>
+  // Name the Pagefind search field.
+  //
+  // Pagefind builds its own form and input at runtime. It labels the FORM well
+  // (role="search" + aria-label from its search_label translation) but ships the
+  // input itself with only placeholder="Search" and title="Search". A
+  // placeholder is not a label - it vanishes the moment anyone types - and title
+  // is the accessibility tree's last-resort fallback, so the field reads as an
+  // unlabeled text box to anyone auditing it and to some screen-reader setups.
+  //
+  // The attribute cannot be set in markup: the element does not exist until
+  // Pagefind mounts. So watch for it, name it once, and stop watching. Naming
+  // the input rather than re-labeling the form keeps Pagefind's own landmark
+  // label intact.
+  (function () {
+    var wrap = document.querySelector('.help-search-wrap');
+    if (!wrap) return;
+
+    function nameField() {
+      var input = wrap.querySelector('.pagefind-ui__search-input');
+      if (!input) return false;
+      input.setAttribute('aria-label', 'Search Badger help');
+      return true;
+    }
+
+    if (nameField()) return;
+
+    var observer = new MutationObserver(function () {
+      if (nameField()) observer.disconnect();
+    });
+    observer.observe(wrap, { childList: true, subtree: true });
+  })();
+</script>
+
 <style is:global>
   /* Pagefind UI theme - mapped to the journal tokens. */
   #help-search {

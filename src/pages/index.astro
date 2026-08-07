@@ -9,30 +9,59 @@ import FeatureRow from '../components/FeatureRow.astro';
 import LedgerRow from '../components/LedgerRow.astro';
 import ArrowGlyph from '../components/ArrowGlyph.astro';
 
+// Kept at or under 165 characters: Google truncates the displayed snippet at
+// roughly that width, and this string is the snippet, the og:description and
+// the schema description all at once. Measure before editing.
 const description =
-  'Badger is a workout and strength tracker for Android and iOS. As capable as the big trackers, as private as a notebook. No account needed, no subscription, works offline.';
+  'Badger is a workout and strength tracker for Android and iOS. As capable as the big trackers, as private as a notebook. No account, no subscription, works offline.';
 
-const appJsonLd = {
+const ORG_ID = 'https://badger.fit/#organization';
+
+// One @graph rather than two <script> blocks, so the app node can point at the
+// organization node by @id instead of restating it.
+//
+// Every claim here has to be true of the shipped product. sameAs carries the
+// Google Play listing only: it is the one public profile page that is actually
+// ours. Badger has no social accounts, and inventing them would be the exact
+// kind of unverifiable markup that gets structured data ignored. The TestFlight
+// invite is deliberately not listed either - it is a join link, not a profile.
+const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'MobileApplication',
-  name: 'Badger',
-  applicationCategory: 'HealthApplication',
-  // Re-checked 2026-07-23 (M-web-3): the iOS build is still TestFlight-only,
-  // the App Store submission has not gone in. iOS stays listed because this
-  // field states which operating systems the app runs on, not where it can be
-  // bought, and the iOS build is real and installable; downloadUrl and the CTA
-  // below both say Play and TestFlight in plain words, so nothing here promises
-  // an App Store listing. Revisit at App Store launch together with that CTA
-  // clause (copy worklist section 1).
-  operatingSystem: 'Android, iOS',
-  url: 'https://badger.fit',
-  downloadUrl: 'https://play.google.com/store/apps/details?id=fit.badger.app',
-  description,
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': ORG_ID,
+      name: 'Badger',
+      url: 'https://badger.fit',
+      logo: 'https://badger.fit/assets/badger_logo_stacked.svg',
+      sameAs: ['https://play.google.com/store/apps/details?id=fit.badger.app'],
+    },
+    {
+      // MobileApplication is a subtype of SoftwareApplication and is the more
+      // accurate of the two: Badger ships as a phone app and nothing else.
+      '@type': 'MobileApplication',
+      name: 'Badger',
+      applicationCategory: 'HealthApplication',
+      // Re-checked 2026-07-23 (M-web-3): the iOS build is still TestFlight-only,
+      // the App Store submission has not gone in. iOS stays listed because this
+      // field states which operating systems the app runs on, not where it can be
+      // bought, and the iOS build is real and installable; downloadUrl and the CTA
+      // below both say Play and TestFlight in plain words, so nothing here promises
+      // an App Store listing. Revisit at App Store launch together with that CTA
+      // clause (copy worklist section 1).
+      operatingSystem: 'Android, iOS',
+      url: 'https://badger.fit',
+      downloadUrl: 'https://play.google.com/store/apps/details?id=fit.badger.app',
+      description,
+      publisher: { '@id': ORG_ID },
+      // Genuinely free: no paid tier, no in-app purchase, nothing paywalled.
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    },
+  ],
 };
 
 const positioning = [
@@ -44,6 +73,11 @@ const positioning = [
 
 // Copy: docs/2026-07-16-copy-worklist.md section 1 (feature ledger), verbatim.
 // Grid fills row-first, so this order is left, right, left, right down the page.
+//
+// Four rows carry an inline link to the page that documents that exact feature.
+// The wording is untouched - the anchors wrap phrases that were already there,
+// so this is still the worklist copy word for word. Bodies are rendered as HTML
+// by FeatureRow; keep them free of bare & < > if you edit them.
 const features = [
   {
     glyph: 'barbell',
@@ -58,17 +92,17 @@ const features = [
   {
     glyph: 'program',
     title: 'Routines and programs',
-    body: 'Build your own or start from 7 built-in programs (StrongLifts, 5/3/1, PPL, and more). Supersets, scheduled days, predefined sets.',
+    body: 'Build your own or start from <a href="/programs">7 built-in programs</a> (StrongLifts, 5/3/1, PPL, and more). Supersets, scheduled days, predefined sets.',
   },
   {
     glyph: 'trend',
     title: 'Progress you can read',
-    body: 'PR detection for every exercise type, estimated 1RM, 11 graphs per exercise, activity heatmap, weekly volume by muscle group.',
+    body: '<a href="/help/progress">PR detection for every exercise type</a>, estimated 1RM, 11 graphs per exercise, activity heatmap, weekly volume by muscle group.',
   },
   {
     glyph: 'gym',
     title: 'Your gym, modeled',
-    body: 'Track which gym and which machine every set was done on. Machine-scoped PRs, real weight increments, attachments and grips.',
+    body: '<a href="/help/gyms">Track which gym and which machine every set was done on</a>. Machine-scoped PRs, real weight increments, attachments and grips.',
   },
   {
     glyph: 'plate',
@@ -83,7 +117,7 @@ const features = [
   {
     glyph: 'import',
     title: 'Bring your history',
-    body: 'Import from FitNotes, Strong, Hevy, or StrongLifts. Export every set to CSV or back up the full database anytime.',
+    body: '<a href="/guides/switching">Import from FitNotes, Strong, Hevy, or StrongLifts</a>. Export every set to CSV or back up the full database anytime.',
   },
   {
     glyph: 'wave',
@@ -121,7 +155,7 @@ const shouldnt = [
   fullTitle="Badger - Workout & Strength Tracker for Android & iOS"
   description={description}
 >
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(appJsonLd)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(structuredData)} />
 
   <Header currentPath={Astro.url.pathname} />
 
