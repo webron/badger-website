@@ -10,6 +10,11 @@ import type { GlyphName } from './feature-glyphs';
 interface Props {
   glyph: GlyphName;
   title: string;
+  /**
+   * Rendered as HTML so a body can carry an inline link to the page that
+   * documents the feature. Author-supplied copy only, never user input, so
+   * there is nothing here to escape against - but keep bare & < > out of it.
+   */
   body: string;
 }
 
@@ -20,7 +25,7 @@ const { glyph, title, body } = Astro.props;
   <FeatureGlyph name={glyph} />
   <div>
     <h3>{title}</h3>
-    <p>{body}</p>
+    <p set:html={body} />
   </div>
 </li>
 
@@ -47,5 +52,22 @@ const { glyph, title, body } = Astro.props;
     font-size: 13.5px;
     line-height: 1.55;
     color: var(--text-secondary);
+  }
+
+  /* Same treatment as .prose p a in global.css, for the same reason: petrol
+     against body ink does not clear the 3:1 WCAG 1.4.1 asks of a color-only
+     affordance, so a link inside a paragraph carries a permanent rule rather
+     than color alone. :global because the anchor arrives through set:html and
+     so never gets this component's scoping attribute. */
+  .feature-row p :global(a) {
+    color: var(--accent-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: color-mix(in srgb, var(--accent-ink) 45%, transparent);
+  }
+
+  .feature-row p :global(a:hover) {
+    text-decoration-color: var(--accent-ink);
   }
 </style>
