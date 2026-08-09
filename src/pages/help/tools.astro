@@ -2,7 +2,7 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Tools & Calculators" description="Plate calculator, warmup calculator, and deload settings in Badger.">
+<HelpLayout title="Tools & Calculators" description="Plate calculator, warm-up calculator, and deload settings in Badger.">
   <h1>Tools & Calculators</h1>
 
   <hr />
@@ -24,12 +24,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Remaining weight</h3>
   <p>If the target weight can't be matched exactly with your available plates, the calculator shows the remaining weight and the closest achievable load.</p>
 
+  <h3 id="plate-calc-gate">When the calculator isn't offered</h3>
+  <p>Badger hides the plate calculator when there are no plates to work out: on a <strong>selectorized</strong> machine, on a machine whose <strong>Plate calculator</strong> setting is <em>None</em>, and on any exercise whose type has no weight field (a plank, a set of pull-ups). <em>None</em> is offered on machines whose resistance type is unspecified; a selectorized machine has no plate section at all, and a plate-loaded one always has plate math. See <a href="/help/gyms#machines">Gyms &amp; Equipment</a> for the machine settings.</p>
+
   <h3>Use this load</h3>
   <p>Tap <strong>Use this load</strong> to drop the calculator's achievable total back into the weight field, so you log the real loaded weight rather than your original target.</p>
 
-  <h2 id="warmup-calc">Warmup calculator</h2>
-  <p>Access via <strong>⋮ → Warmup calculator</strong> in the training screen. This is a reference tool - it shows you what 40%, 60%, and 80% of your current working weight look like as warmup sets (at 8, 5, and 3 reps respectively), rounded to a practical plate increment.</p>
-  <p>To actually insert these as sets, use <strong>⋮ → Add warmup sets</strong> instead.</p>
+  <h2 id="warmup-calc">Warm-up calculator</h2>
+  <p>Tap the <strong>Warm-up calc</strong> chip beside the warm-up toggle in the training screen. It builds a warm-up ramp from your working weight and inserts the sets you keep - there is no separate view-only version.</p>
+  <p>Pick <strong>Percent</strong> or <strong>Plates</strong>, set how many warm-up sets you want, and uncheck any rung you don't want. At three sets on Percent it gives you the classic 40% × 8, 60% × 5, 80% × 3. Every rung is rounded to a load your equipment can actually reach - the gym's plates for a barbell or plate-loaded machine, the stack increment for a selectorized one - and never above your working weight. If warm-up sets already exist, the button reads <strong>Replace warmup sets</strong>.</p>
 
   <h2 id="deload">Deload</h2>
   <p>Deload is an opt-in feature that detects when you may be accumulating too much fatigue and schedules a lighter training week. Go to <strong>Settings → Coaching → Deload</strong> to configure it.</p>

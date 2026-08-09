@@ -51,7 +51,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The <strong>warmup chip</strong> above the input fields toggles whether the current set is a warmup. Warmup sets are displayed with a "W" badge instead of a set number, and are excluded from volume calculations, PR checks, and progress graphs.</p>
   <p>You can also let Badger generate warmup sets automatically:</p>
   <ul>
-    <li>Tap the <strong>⋮ menu</strong> in the top right → <strong>Add warmup sets</strong>.</li>
+    <li>Tap the <strong>Warm-up calc</strong> chip beside the warmup toggle.</li>
     <li>Pick a <strong>style</strong> and the <strong>number of sets</strong>. The sheet recalculates instantly and pre-checks every row - uncheck any you don't want.</li>
     <li>Confirm to insert them at the start of your set list.</li>
   </ul>
@@ -62,7 +62,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>Either way, every suggested weight is rounded to a load your equipment can reach - the gym's plates for a barbell or plate-loaded machine, or the stack increment for a selectorized machine - and is never rounded above your working weight. Fewer sets means bigger jumps; more sets means a gentler ramp. If two warmups land on the same convenient weight, Badger merges them.</p>
   <p>Set your usual style and default number of warmup sets in <strong>Settings → Logging</strong>. You can override both for a specific exercise on its edit screen (handy for lifts like floor work that need fewer, heavier warmups).</p>
-  <p>The "Add warmup sets" option becomes "Replace warmup sets" once warmup sets already exist for that exercise. If a routine already defines warmup sets, those are used as-is - the generator only fills the gap when none are defined.</p>
+  <p>The confirm button reads "Replace warmup sets" once warmup sets already exist for that exercise. If a routine already defines warmup sets, those are used as-is - the generator only fills the gap when none are defined.</p>
 
   <h2 id="rpe-rir">RPE and RIR</h2>
   <p>Two optional fields sit under <strong>Set details</strong>, below the main inputs. Both describe how hard a set was. They are the only numbers in Badger you supply rather than measure, and you can ignore them entirely - nothing else in the app stops working if you leave them blank.</p>
@@ -192,7 +192,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Machine-scoped notes</h3>
   <p>When a machine is set, your personal notes become machine-specific. This means you can save different setup cues for the same exercise on different machines - for example, different seat-height reminders for two leg-press machines at the same gym.</p>
-  <p>The Exercise Settings screen title changes to <strong>"Notes · MachineName"</strong> when machine-scoped, making it clear which machine the notes apply to. Machine notes are shown in the notes card in the training screen alongside global instructions; global exercise notes are shown separately when both exist. Non-notes settings (increment, rest, instructions, muscle assignments) always apply globally to the exercise regardless of machine.</p>
+  <p>The Exercise Settings screen title changes to <strong>"Notes · MachineName"</strong> when machine-scoped, making it clear which machine the notes apply to. Machine notes are shown in the notes card in the training screen alongside global instructions; global exercise notes are shown separately when both exist. The current attachment's notes appear in the same card, so a cue like "use the thick end" written on a rope reaches you at the cable station. Non-notes settings (increment, rest, instructions, muscle assignments) always apply globally to the exercise regardless of machine.</p>
 
   <h2>Per-set comments</h2>
   <p>Each set row has a comment icon on the right. Tap it to add or edit a comment for that set.</p>
@@ -212,7 +212,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Progressive overload suggestions</h2>
   <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Coaching, default: 3).</p>
-  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. Tap × to dismiss the suggestion for this session.</p>
+  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. The <strong>+</strong> and <strong>−</strong> buttons beside the weight field use the same grid, so a stack that steps by 10 moves by 10. Tap × to dismiss the suggestion for this session.</p>
   <p>The suggestion is <strong>machine-scoped</strong>: it looks at history for the same machine you currently have set. Switching machines gives you a fresh suggestion based on that machine's history.</p>
 
   <h2 id="auto-progress">Auto-progress routine weights</h2>
@@ -239,9 +239,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The top-right menu offers additional actions for the current exercise:</p>
   <ul>
     <li><strong>Replace exercise</strong> - Swap the current exercise for a different one. Existing sets remain attached.</li>
-    <li><strong>Plate calculator</strong> - Opens the plate calculator pre-filled with your current weight.</li>
-    <li><strong>Warmup calculator</strong> - Reference tool showing 40/60/80% warmup weights.</li>
-    <li><strong>Add warmup sets</strong> - Insert suggested warmup sets.</li>
+    <li><strong>Plate calculator</strong> - Opens the plate calculator pre-filled with your current weight. Shown only when plate math applies - see <a href="/help/tools">Tools</a>.</li>
     <li><strong>Exercise settings</strong> - Open the exercise notes screen to adjust defaults, notes, and muscle assignments.</li>
     <li><strong>Change gym</strong> - Switch which gym is associated with this workout.</li>
     <li><strong>Set machine</strong> - Assign a machine and attachment to the current exercise. At the bottom of the machine picker, tap <strong>New machine…</strong> to create one inline without navigating away. Similarly, at the bottom of the attachment picker, tap <strong>New attachment…</strong> to add a new attachment on the spot.</li>
