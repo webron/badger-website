@@ -64,14 +64,48 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Set your usual style and default number of warmup sets in <strong>Settings → Logging</strong>. You can override both for a specific exercise on its edit screen (handy for lifts like floor work that need fewer, heavier warmups).</p>
   <p>The "Add warmup sets" option becomes "Replace warmup sets" once warmup sets already exist for that exercise. If a routine already defines warmup sets, those are used as-is - the generator only fills the gap when none are defined.</p>
 
-  <h2>Intensity tracking (RPE & RIR)</h2>
-  <p>Two optional fields sit under <strong>Set details</strong>, below the main inputs:</p>
+  <h2 id="rpe-rir">RPE and RIR</h2>
+  <p>Two optional fields sit under <strong>Set details</strong>, below the main inputs. Both describe how hard a set was. They are the only numbers in Badger you supply rather than measure, and you can ignore them entirely - nothing else in the app stops working if you leave them blank.</p>
+  <p>Tap either label in the app to get a short version of this page without leaving the screen.</p>
+
+  <h3>Why track intensity at all</h3>
+  <p>Weight and reps say what you lifted. They don't say what it cost you. Two sets of 8 at 80 kg can be a comfortable working set one week and a grind the next, and only one of those is a sign to back off. Recording the effort gives you the second half of that picture, which is what makes a stalled lift readable later: same numbers, rising effort is a different story from same numbers, same effort.</p>
+  <p>It also feeds Badger's <a href={`/help/tools#deload`}>deload detection</a> if you have the RPE/RIR trigger switched on.</p>
+
+  <h3>RPE: how hard it felt</h3>
+  <p>A 10-point scale. In practice the useful range is 6 to 10.</p>
   <ul>
-    <li><strong>RPE (Rate of Perceived Exertion)</strong> - How hard did the set feel, on a scale of 1-10. 10 is a true max effort.</li>
-    <li><strong>RIR (Reps in Reserve)</strong> - How many more reps could you have done, 0-5. 0 means you hit failure.</li>
+    <li><strong>10</strong> - Max effort. No more reps were possible.</li>
+    <li><strong>9</strong> - Could have done 1 more rep.</li>
+    <li><strong>8</strong> - Could have done 2 more reps.</li>
+    <li><strong>7</strong> - Could have done 3 more. Bar speed still crisp.</li>
+    <li><strong>6 and below</strong> - Warm-up territory.</li>
   </ul>
-  <p>Both are optional and can be used independently. They're hidden when the warmup toggle is active. Logged values appear as small badges on each set row.</p>
-  <p>Next to the steppers there's a <strong>To failure</strong> chip. Tapping it sets RIR to 0 in one tap instead of three, and tapping it again clears it. It's a shortcut for the RIR stepper, nothing more - the two always agree because they write the same value.</p>
+  <p>It is subjective on purpose. There is no way to be wrong about your own set, and your honest read of it is the data. Most people find their scale drifts for the first month or two and then settles.</p>
+
+  <h3>RIR: how many were left</h3>
+  <p>How many more reps you could have done before hitting failure.</p>
+  <ul>
+    <li><strong>0</strong> - Nothing left. That was failure.</li>
+    <li><strong>1</strong> - One rep left in the tank.</li>
+    <li><strong>2</strong> - Two left. A common target for working sets.</li>
+    <li><strong>3+</strong> - Comfortable, well short of failure.</li>
+  </ul>
+
+  <h3>They are the same thing from opposite ends</h3>
+  <p>RPE counts up toward failure and RIR counts down to it, so the two line up: RPE 8 and RIR 2 describe the same set, as do RPE 9 and RIR 1, and RPE 10 and RIR 0.</p>
+  <p>You do not need both. Pick the one you find easier to answer and use it consistently, because a habit you keep is worth more than the more precise field you skip.</p>
+
+  <h3>Which one to start with</h3>
+  <p>If you are newer to this, use <strong>RIR</strong>. "How many more could I have done?" is a question about reps, which you have just been counting, and you can usually answer it in the second after you rack the bar. "How hard was that out of 10?" asks you to place a set against a maximum effort you may never have taken, which is a harder call to make honestly early on.</p>
+  <p>RPE tends to become more useful once you have a feel for your own ceiling, and it has more room at the top: it can tell a hard set apart from an absolutely everything set, where RIR bottoms out at 0 for both.</p>
+
+  <h3>The zero-thought option</h3>
+  <p>Next to the steppers there's a <strong>To failure</strong> chip. If the only thing you want to record is that a set went all the way, tap it and move on - it writes RIR 0 in one tap instead of three, and tapping it again clears it. It is a shortcut for the RIR stepper, nothing more, so the two always agree.</p>
+  <p>Marking a set to failure is about effort, not about coming up short. If you were aiming for 8 and got 6, log the 6 - see <a href={`/help/logging#missed-vs-skipped`}>coming up short vs skipping</a>.</p>
+
+  <h3>Where the fields show up</h3>
+  <p>Both are hidden while the warmup toggle is active, since a warmup has no effort worth grading. Logged values appear as small badges on each set row, and you can add or change them after the fact by tapping any past set in your history.</p>
 
   <h2 id="missed-vs-skipped">Coming up short vs skipping a set</h2>
   <p>These are two different things and Badger treats them differently.</p>
