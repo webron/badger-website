@@ -30,6 +30,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ol>
   <p>The set appears in the list below. The rest timer starts automatically if you have that setting enabled.</p>
 
+  <h3 id="per-side">Weight per side</h3>
+  <p>Some machines are loaded one side at a time, and plenty of people write down what is on one side rather than the total. Badger can record which one you mean.</p>
+  <p>When an exercise or its machine is set to per side, the weight field's label says so - <strong>WEIGHT (LBS / SIDE)</strong> - and every set you log carries that answer with it. In your history, on the workout summary, and in the exercise's own log, those sets read <strong>90 lbs &times; 8 /side</strong>. Sets logged as a total read the way they always have.</p>
+  <p>Two things it deliberately does <em>not</em> do. Nothing is doubled or converted: your totals, volume, estimated 1RM and personal records all use exactly the number you wrote, so switching the setting never rewrites your history. And sets you logged before Badger started asking are left alone rather than guessed at - they simply carry no mark.</p>
+  <p>Where to set it: on a plate-loaded machine under <a href={`/help/gyms#machines`}>How weight is logged</a> (it applies wherever that machine is used), or on the exercise itself under <strong>Weight is logged as</strong> for when you log it with no machine at all. The machine wins when both have an answer. Dumbbells and kettlebells are never asked: those are per hand by definition.</p>
+  <p>Your planned routines say the same thing: a slot's weight column reads <strong>WEIGHT (LBS / SIDE &middot; CYBEX LEG PRESS)</strong>, naming the machine the answer came from, so you plan in the same terms you lift in.</p>
+
   <h3 id="duration-entry">Typing a duration</h3>
   <p>Anywhere Badger asks for a duration - the Log tab, a routine's planned sets, quick edit, or editing a set after the fact - you can type it as a time instead of counting seconds:</p>
   <ul>
@@ -212,7 +219,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Progressive overload suggestions</h2>
   <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Coaching, default: 3).</p>
-  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. The <strong>+</strong> and <strong>−</strong> buttons beside the weight field use the same grid, so a stack that steps by 10 moves by 10. Tap × to dismiss the suggestion for this session.</p>
+  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. The <strong>+</strong> and <strong>−</strong> buttons beside the weight field use the same grid, so a stack that steps by 10 moves by 10 - and a quiet line under the field says where that step came from: <em>Step: 25 lbs &middot; from Cybex Leg Press</em>. Tap × to dismiss the suggestion for this session.</p>
   <p>The suggestion is <strong>machine-scoped</strong>: it looks at history for the same machine you currently have set. Switching machines gives you a fresh suggestion based on that machine's history.</p>
 
   <h2 id="auto-progress">Auto-progress routine weights</h2>
