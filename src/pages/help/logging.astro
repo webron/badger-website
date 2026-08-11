@@ -124,9 +124,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>When a workout was started from a routine day, a line above the set recorder shows what the plan asks for and what you did last time - for example <strong>"Plan 8-10 · Last 8 @ 80 kg"</strong>. It follows along as you work through the sets, so you can always check the number you're typing against both.</p>
   <p>Workouts that didn't come from a routine have no plan to show, so the line doesn't appear.</p>
 
-  <h2 id="set-details">Collapsing the set details</h2>
-  <p>The <strong>Set details</strong> section holds the controls you reach for less often: the warmup toggle, the RPE/RIR steppers and the To failure chip. Tap its header to collapse it, and the set recorder shrinks to just weight, reps and the complete check.</p>
-  <p>It starts expanded, so nothing is hidden until you choose to hide it. Collapse it once and it stays collapsed everywhere, for every exercise, until you open it again. When it's collapsed, the header still spells out anything that's in effect behind it - for example "Warm-up", "RPE 8" or "To failure" - so a set never saves with something you can't see.</p>
+  <h2 id="set-details">The set details section</h2>
+  <p>The <strong>Set details</strong> section holds the controls you reach for less often: the warmup toggle, the RPE/RIR steppers and the To failure chip. It starts <strong>collapsed</strong>, so the recorder opens as weight, reps and the complete check and nothing else. Tap its header to open it.</p>
+  <p>Nothing is hidden silently. When the section is collapsed, its header spells out anything that's in effect behind it - for example "Warm-up", "RPE 8" or "To failure" - so a set never saves with something you can't see. Open it or close it once and it stays that way everywhere, for every exercise, until you change it again. If you had already chosen one or the other in an earlier version, your choice is kept.</p>
+
+  <h3 id="context-chips">The context row</h3>
+  <p>Under the input fields, one wrapping row carries the context for the set you're about to log: the <strong>machine</strong>, its <strong>attachment</strong>, the <strong>grip</strong> when the machine uses grips, and the <strong>rest</strong> that will start when you finish. Tap any of them to change it, or long-press the machine chip to open that machine's own screen. They used to sit on three separate lines; sharing one row keeps the whole recorder on screen without scrolling.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
   <p>The rest timer shows as a chip near the top of the training screen. While running, the chip counts down to zero, then plays a sound and/or vibration (configurable in Settings). Tap the chip to open the rest timer sheet.</p>
@@ -212,7 +215,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2>Grip type</h2>
-  <p>When a machine has grip types enabled (configured in the machine settings), a chip row appears below the set list so you can record which grip you used. The selected grip is also shown as a reminder in the notes card. Configure available grip types in <strong>You → Equipment → Machines</strong>.</p>
+  <p>When a machine has grip types enabled (configured in the machine settings), grip chips join the <a href="#context-chips">context row</a> under the input fields so you can record which grip you used. The selected grip is also shown as a reminder in the notes card. Configure available grip types in <strong>You → Equipment → Machines</strong>.</p>
 
   <h2>Personal records</h2>
   <p>When a working set beats your all-time estimated 1RM for that exercise (on the same machine, if one is set), a trophy badge appears on the set row, a SnackBar notification appears at the bottom of the screen, and a haptic pulse fires (if haptics are enabled in Settings).</p>
