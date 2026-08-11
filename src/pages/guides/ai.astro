@@ -28,7 +28,7 @@ const prompts = [
       'For the CSV export, which is every set you have ever logged, one row per set. Paste the prompt, then attach or paste the CSV underneath it.',
     body: `I train with a workout tracker called Badger. Below (or attached) is a CSV export of every set I have logged, one row per set, with these columns:
 
-date, workout_id, exercise_name, category, set_number, is_warmup, weight, weight_unit, reps, duration_seconds, distance, rpe, rir, comment, is_complete, is_skipped, heart_rate
+date, workout_id, exercise_name, category, set_number, is_warmup, weight, weight_unit, reps, duration_seconds, distance, rpe, rir, comment, is_complete, is_skipped, heart_rate, weight_per_side
 
 How to read it:
 - Only rows where is_complete is true were actually performed. A workout started from a routine creates all of its sets up front, so a session I began and abandoned still has rows here, filled in with what I planned to lift. Count only completed sets as training.
@@ -38,6 +38,7 @@ How to read it:
 - Empty cells mean the exercise does not use that field: a plank has duration_seconds and no reps.
 - rpe is 1-10, rir is reps in reserve. Both are optional and often blank.
 - heart_rate is my heart rate at the end of that set, in beats per minute, read from Apple Health or Health Connect. It is optional and usually blank: it only exists for sets logged while I was wearing a watch, with that feature switched on. Never treat a blank as zero.
+- weight_per_side says what the weight column MEANS for that row: true means the number is what was loaded on one side (iso-lateral machines), false means it is the total, and blank means the row predates the setting and is unknown. The number itself is never doubled or converted, so treat a true row as roughly half the total load when you compare it with a total row, and say so when you do.
 
 Please:
 1. Summarize how I have actually been training: sessions per week, which lifts I do most, how volume splits across categories, and how consistent I am.

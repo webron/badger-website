@@ -469,6 +469,17 @@ const description =
           <td>string</td>
           <td><code>"kg"</code> or <code>"lbs"</code>, when this machine is labeled in a different unit from the rest of your logging.</td>
         </tr>
+        <tr>
+          <td><code>logs_weight_per_side</code></td>
+          <td>boolean</td>
+          <td>
+            What a weight logged on this machine means: <code>true</code> for one side (iso-lateral
+            machines), <code>false</code> for the total. Leave the key out entirely if the machine
+            has no opinion - the reader then falls back to the exercise's own setting, which is not
+            the same as writing <code>false</code>. Only meaningful on a plate-loaded machine; a
+            value on any other kind is ignored. Older readers ignore the key and lose nothing else.
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

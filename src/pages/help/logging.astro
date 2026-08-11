@@ -30,6 +30,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ol>
   <p>The set appears in the list below. The rest timer starts automatically if you have that setting enabled.</p>
 
+  <h3 id="per-side">Weight per side</h3>
+  <p>Some machines are loaded one side at a time, and plenty of people write down what is on one side rather than the total. Badger can record which one you mean.</p>
+  <p>When an exercise or its machine is set to per side, the weight field's label says so - <strong>WEIGHT (LBS / SIDE)</strong> - and every set you log carries that answer with it. In your history, on the workout summary, and in the exercise's own log, those sets read <strong>90 lbs &times; 8 /side</strong>. Sets logged as a total read the way they always have.</p>
+  <p>Two things it deliberately does <em>not</em> do. Nothing is doubled or converted: your totals, volume, estimated 1RM and personal records all use exactly the number you wrote, so switching the setting never rewrites your history. And sets you logged before Badger started asking are left alone rather than guessed at - they simply carry no mark.</p>
+  <p>Where to set it: on a plate-loaded machine under <a href={`/help/gyms#machines`}>How weight is logged</a> (it applies wherever that machine is used), or on the exercise itself under <strong>Weight is logged as</strong> for when you log it with no machine at all. The machine wins when both have an answer. Dumbbells and kettlebells are never asked: those are per hand by definition.</p>
+  <p>Your planned routines say the same thing: a slot's weight column reads <strong>WEIGHT (LBS / SIDE &middot; CYBEX LEG PRESS)</strong>, naming the machine the answer came from, so you plan in the same terms you lift in.</p>
+
   <h3 id="duration-entry">Typing a duration</h3>
   <p>Anywhere Badger asks for a duration - the Log tab, a routine's planned sets, quick edit, or editing a set after the fact - you can type it as a time instead of counting seconds:</p>
   <ul>
@@ -117,9 +124,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>When a workout was started from a routine day, a line above the set recorder shows what the plan asks for and what you did last time - for example <strong>"Plan 8-10 · Last 8 @ 80 kg"</strong>. It follows along as you work through the sets, so you can always check the number you're typing against both.</p>
   <p>Workouts that didn't come from a routine have no plan to show, so the line doesn't appear.</p>
 
-  <h2 id="set-details">Collapsing the set details</h2>
-  <p>The <strong>Set details</strong> section holds the controls you reach for less often: the warmup toggle, the RPE/RIR steppers and the To failure chip. Tap its header to collapse it, and the set recorder shrinks to just weight, reps and the complete check.</p>
-  <p>It starts expanded, so nothing is hidden until you choose to hide it. Collapse it once and it stays collapsed everywhere, for every exercise, until you open it again. When it's collapsed, the header still spells out anything that's in effect behind it - for example "Warm-up", "RPE 8" or "To failure" - so a set never saves with something you can't see.</p>
+  <h2 id="set-details">The set details section</h2>
+  <p>The <strong>Set details</strong> section holds the controls you reach for less often: the warmup toggle, the RPE/RIR steppers and the To failure chip. It starts <strong>collapsed</strong>, so the recorder opens as weight, reps and the complete check and nothing else. Tap its header to open it.</p>
+  <p>Nothing is hidden silently. When the section is collapsed, its header spells out anything that's in effect behind it - for example "Warm-up", "RPE 8" or "To failure" - so a set never saves with something you can't see. Open it or close it once and it stays that way everywhere, for every exercise, until you change it again. If you had already chosen one or the other in an earlier version, your choice is kept.</p>
+
+  <h3 id="context-chips">The context row</h3>
+  <p>Under the input fields, one wrapping row carries the context for the set you're about to log: the <strong>machine</strong>, its <strong>attachment</strong>, the <strong>grip</strong> when the machine uses grips, and the <strong>rest</strong> that will start when you finish. Tap any of them to change it, or long-press the machine chip to open that machine's own screen. They used to sit on three separate lines; sharing one row keeps the whole recorder on screen without scrolling.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
   <p>The rest timer shows as a chip near the top of the training screen. While running, the chip counts down to zero, then plays a sound and/or vibration (configurable in Settings). Tap the chip to open the rest timer sheet.</p>
@@ -205,14 +215,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2>Grip type</h2>
-  <p>When a machine has grip types enabled (configured in the machine settings), a chip row appears below the set list so you can record which grip you used. The selected grip is also shown as a reminder in the notes card. Configure available grip types in <strong>You → Equipment → Machines</strong>.</p>
+  <p>When a machine has grip types enabled (configured in the machine settings), grip chips join the <a href="#context-chips">context row</a> under the input fields so you can record which grip you used. The selected grip is also shown as a reminder in the notes card. Configure available grip types in <strong>You → Equipment → Machines</strong>.</p>
 
   <h2>Personal records</h2>
   <p>When a working set beats your all-time estimated 1RM for that exercise (on the same machine, if one is set), a trophy badge appears on the set row, a SnackBar notification appears at the bottom of the screen, and a haptic pulse fires (if haptics are enabled in Settings).</p>
 
   <h2>Progressive overload suggestions</h2>
   <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Coaching, default: 3).</p>
-  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. The <strong>+</strong> and <strong>−</strong> buttons beside the weight field use the same grid, so a stack that steps by 10 moves by 10. Tap × to dismiss the suggestion for this session.</p>
+  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. The <strong>+</strong> and <strong>−</strong> buttons beside the weight field use the same grid, so a stack that steps by 10 moves by 10 - and a quiet line under the field says where that step came from: <em>Step: 25 lbs &middot; from Cybex Leg Press</em>. Tap × to dismiss the suggestion for this session.</p>
   <p>The suggestion is <strong>machine-scoped</strong>: it looks at history for the same machine you currently have set. Switching machines gives you a fresh suggestion based on that machine's history.</p>
 
   <h2 id="auto-progress">Auto-progress routine weights</h2>
