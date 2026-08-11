@@ -8,6 +8,20 @@ import Footer from '../components/Footer.astro';
 // release notes. Newest first.
 const releases = [
   {
+    version: '1.1.6',
+    date: 'August 2026',
+    headline: 'Badger knows whether a weight means one side or the total',
+    highlights: [
+      'Machines you load one side at a time can say so. Set "How weight is logged" on a plate-loaded machine, or "Weight is logged as" on the exercise itself when you train without one, and the weight field says "/ side" while you log. Every set records the answer with it, so your history reads 90 lbs x 8 /side instead of leaving you to remember which it was.',
+      'Nothing is doubled or converted. Your totals, volume, estimated 1RM and records all use exactly the number you wrote, so switching the setting never rewrites your history, and sets you logged before Badger asked are left alone rather than guessed at.',
+      'The exercise edit screen only asks what applies. A barbell exercise is not offered machine settings, dumbbells are never asked about sides, and where a setting comes from a machine Badger names the machine, with the no-machine fallback still editable underneath.',
+      '"Bar weight" is now "Starting weight", which is what it always was: the weight of the empty bar, sled or machine arms. Tap the (i) beside it for the explanation, and leave it blank if your machine is not labeled, which most are not.',
+      'The training screen opens quieter. Set details starts collapsed, so the recorder is weight, reps and the checkmark, and the header still spells out anything in effect behind it like "Warm-up" or "RPE 8". Machine, attachment, grip and rest now share one wrapping row instead of three stacked ones.',
+      'Filter chips and filter pills finally look like different things, because they are: a chip you pick is drawn as a line, a filter you can dismiss is drawn as a wash, both at one height, both readable by a screen reader.',
+      'Fixes: the library\'s active filter no longer floats centered above the chip row, a long routine name stops getting clipped in its header, the records card and the heaviest-set figure carry the /side mark too, and tapping a rounded control no longer flashes a square halo around it.',
+    ],
+  },
+  {
     version: '1.1.5',
     date: 'August 2026',
     highlights: [
