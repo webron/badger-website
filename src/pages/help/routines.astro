@@ -48,6 +48,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Weight</strong> - A specific value, or "Copy from previous" to use the weight from your most recent session.</li>
     <li><strong>Reps</strong> - A specific value, or "Copy from previous".</li>
     <li><strong>Rep range</strong> - An optional top end, so the target reads "8-10" instead of "8". See below.</li>
+    <li><strong>Open target (AMRAP)</strong> - No top end at all, so the target reads "8+". See below.</li>
     <li><strong>Warmup flag</strong> - Mark the set as a warmup.</li>
   </ul>
   <p>Sets can be reordered by dragging.</p>
@@ -58,6 +59,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The lower number is the one you have to hit. Anything from 8 to 10 reps on an "8-10" set counts as meeting the plan, and so does anything above 10. Below 8 is under plan, and the summary marks it with a small caret so you can see which sets came up short. Nothing turns red.</p>
   <p>Warmup sets can't have ranges. A warmup is a fixed rung on the way up, not a target to push against.</p>
   <p>If you have no use for ranges, ignore the affordance and nothing changes. Every existing routine keeps exact targets, and a set with no range behaves exactly as it always has.</p>
+
+  <h3 id="amrap-targets">Open-topped targets (AMRAP)</h3>
+  <p>The other kind of target has a floor and no ceiling. Tap <strong>+ AMRAP</strong> under a working set and the target reads <strong>8+</strong>: at least 8 reps, then as many as you can that day. <strong>AMRAP</strong> is the usual name for it - <em>as many reps as possible</em> - and a set written <strong>1+</strong> is how you program a set taken to failure.</p>
+  <p>A set is either ranged or open, never both: setting one replaces the other. Warmups can't be open, for the same reason they can't have a range.</p>
+  <p>Meeting the plan means clearing the floor, so an 8+ set is met at 8 and everything past that is the point of the set rather than a further bar. Because there's no top to reach, an open set never produces the "work toward N reps" prompt below - it isn't blocking a weight increase, it just isn't part of that mechanism. If you raise the rep number on an open set, it stays open: an 8+ becomes a 12+.</p>
+  <p>See <a href="/help/logging#amrap">AMRAP and to failure</a> for how an open target and the To failure chip fit together while you're logging.</p>
 
   <h3 id="double-progression">Double progression</h3>
   <p>Ranges are what make double progression work: you add reps until you reach the top of the range, then you add weight and drop back to the bottom.</p>
