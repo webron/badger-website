@@ -55,7 +55,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Notes you write on an attachment show up in the training screen's notes card whenever that attachment is selected, next to the machine's own setup notes.</p>
 
   <h2 id="bars">Bars</h2>
-  <p>A bar is a thing you own, not a number on a settings screen. The Olympic bar, the women's bar, the trap bar, the EZ curl, and the worn 45 in the corner that actually weighs 44 are all different bars, so Badger lets you name them and pick one per exercise. Go to <strong>You → Bars</strong> to manage them.</p>
+  <p>A bar is a thing you own, not a number on a settings screen. The Olympic bar, the trap bar, the EZ curl, and the worn 45 in the corner that actually weighs 44 are all different bars, so Badger lets you name them and pick one per exercise. Go to <strong>You → Bars</strong> to manage them.</p>
   <ul>
     <li>Tap <strong>+</strong> to create a bar. Like machines and attachments, you name it and pick its gyms, then land on its page to finish up.</li>
     <li>Give it a <strong>weight</strong> in kg or lbs. It is stored exactly as you type it, never converted, so a 45 lb bar stays 45. Leave it blank if you don't know - a bar with no weight is still perfectly useful for the rest of what bars do.</li>
@@ -178,4 +178,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Routine exercise → Default grip type</strong> - Pre-sets the grip for that exercise.</li>
   </ul>
   <p>Accessories are picked per session rather than planned, so there is no routine default for them.</p>
+
+  <h2 id="sharing">Sharing a gym</h2>
+  <p>Gym detail → <strong>⋮ → Share gym</strong> writes a <code>.badger</code> file you can send to anyone. It is meant for the friend who just joined your gym: it hands over the place as it stands, so they are not spending their first week telling their phone what is on the wall.</p>
+  <p>That means everything about the equipment - the machines with their resistance types, increments and units, the attachments, the bars with their weights, the bands and chains with their colors, and the notes on any of them. It also carries the two things that are lists rather than objects: the <a href="#racks">dumbbell and kettlebell racks</a>, and the plate inventory.</p>
+  <p>The line it draws is simple: <strong>what describes the gym travels, what describes you does not</strong>. Your photos stay on your phone. So do the personal setup cues you save against one exercise on one machine, which are about how you lift rather than about the machine.</p>
+  <p>Nothing is overwritten on the way in. If they already have that gym with their own rack set up, theirs is left exactly as it was and only the gaps are filled. The full field-by-field breakdown lives on the <a href="/badger-format">file format page</a>.</p>
 </HelpLayout>

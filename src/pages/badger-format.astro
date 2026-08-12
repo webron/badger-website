@@ -430,6 +430,7 @@ const description =
       </thead>
       <tbody>
         <tr><td><code>name</code></td><td>string, required</td><td>Machine name.</td></tr>
+        <tr><td><code>notes</code></td><td>string</td><td>Free text about the machine - "third from the left, seat pin sticks". Notes about the machine itself travel; the private setup cues you attach to one exercise on it do not.</td></tr>
         <tr><td><code>uses_attachments</code></td><td>boolean, defaults to false</td><td>Whether the machine takes attachments (bars, handles, ropes).</td></tr>
         <tr><td><code>uses_grip_types</code></td><td>boolean, defaults to false</td><td>Whether grip is worth recording on this machine.</td></tr>
         <tr>
@@ -509,8 +510,16 @@ const description =
   <h2 id="gym">Gym and machines payloads</h2>
 
   <p>
-    <code>type: "gym"</code> shares a whole gym: the gym itself, its machines, its attachments, and
-    which of each belongs to it.
+    <code>type: "gym"</code> shares a whole gym: the gym itself, its machines, its attachments, its
+    bars and accessories, which of each belongs to it, and the equipment that is a list rather than
+    an object - the dumbbell and kettlebell racks, and the plates.
+  </p>
+
+  <p>
+    The line it draws is worth stating plainly, because it decides every field below.
+    <strong>What describes the gym travels; what describes you does not.</strong> Notes about a
+    machine describe the machine, so they go. Your photo of it, and the setup cues you saved against
+    one exercise on it, describe you, so they stay.
   </p>
 
   <p>
@@ -528,13 +537,15 @@ const description =
       <tbody>
         <tr><td><code>gym</code></td><td><code>Gym</code></td><td>A <code>Gym</code> is just <code>&#123; "name": "..." &#125;</code>.</td></tr>
         <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>The same <code>Machine</code> objects a routine payload carries.</td></tr>
-        <tr><td><code>attachments</code></td><td>array of <code>Attachment</code></td><td>An <code>Attachment</code> is just <code>&#123; "name": "..." &#125;</code>.</td></tr>
+        <tr><td><code>attachments</code></td><td>array of <code>Attachment</code></td><td>An <code>Attachment</code> is a <code>name</code> and optional <code>notes</code>.</td></tr>
         <tr><td><code>bars</code></td><td>array of <a href="#bar"><code>Bar</code></a></td><td>Named bars. Omitted entirely when the gym has none, so a bar-free file looks exactly like one written before bars existed.</td></tr>
         <tr><td><code>accessories</code></td><td>array of <a href="#accessory"><code>Accessory</code></a></td><td>Bands, chains, and straps. Omitted entirely when the gym has none.</td></tr>
         <tr><td><code>gym_machines</code></td><td>array of strings</td><td>Names of the machines that belong to this gym.</td></tr>
         <tr><td><code>gym_attachments</code></td><td>array of strings</td><td>Names of the attachments that belong to this gym.</td></tr>
         <tr><td><code>gym_bars</code></td><td>array of strings</td><td>Names of the bars that belong to this gym.</td></tr>
         <tr><td><code>gym_accessories</code></td><td>array of strings</td><td>Names of the accessories that belong to this gym.</td></tr>
+        <tr><td><code>racks</code></td><td>array of <a href="#rack"><code>Rack</code></a></td><td>The gym's dumbbell and kettlebell racks. Omitted entirely when the gym has none set up.</td></tr>
+        <tr><td><code>plate_inventory</code></td><td>array of <a href="#plate-inventory"><code>PlateInventory</code></a></td><td>The plates the gym actually has. Omitted entirely when nobody has said.</td></tr>
       </tbody>
     </table>
   </div>
@@ -629,9 +640,78 @@ const description =
     </table>
   </div>
 
+  <h3 id="rack">Rack</h3>
+
+  <p>
+    The objects in <code>racks</code>: the dumbbells or kettlebells a gym physically owns. Badger
+    keeps these as a list rather than a step size because a real rack is not a grid - it runs
+    5-10-15 up to 50 and then jumps, and a kettlebell ladder is not a multiple of anything useful.
+    The list is what the plus and minus buttons walk when you are logging.
+  </p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>equipment</code></td><td>string, required</td><td><code>"dumbbell"</code> or <code>"kettlebell"</code>. A value the reader does not know is skipped rather than guessed at.</td></tr>
+        <tr><td><code>unit</code></td><td>string, required</td><td><code>"kg"</code> or <code>"lbs"</code>, for every weight in this rack.</td></tr>
+        <tr>
+          <td><code>weights</code></td>
+          <td>array of objects, required</td>
+          <td>
+            Each one is a <code>weight</code> (number, required) and an optional <code>color</code>
+            (packed ARGB integer). The color is there for competition kettlebells, which are
+            identified by it - the same reasoning as an <a href="#accessory">accessory's</a>. Leave
+            it out for an unpainted weight; nothing invents one.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    One entry per equipment-and-unit pair, so a gym with kilogram kettlebells and pound dumbbells
+    carries two. <strong>They are separate lists and nothing is converted between them</strong>: 45
+    in a pound rack is a 45 lb dumbbell, not a 99 lb one.
+  </p>
+
+  <h3 id="plate-inventory">PlateInventory</h3>
+
+  <p>The objects in <code>plate_inventory</code>: what the plate calculator has to work with.</p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>unit</code></td><td>string, required</td><td><code>"kg"</code> or <code>"lbs"</code>, for every number in this entry.</td></tr>
+        <tr><td><code>bar_weight</code></td><td>number</td><td>The bar the calculator starts from, in the unit above - so <code>45</code> in a pound entry is a 45 lb bar. Absent falls back to the ordinary bar for that unit.</td></tr>
+        <tr>
+          <td><code>plates</code></td>
+          <td>array of objects, required</td>
+          <td>
+            Each one is a <code>weight</code> (number, required), a <code>color</code> (packed ARGB
+            integer), a <code>quantity</code> (how many are available <em>per side</em>, defaults to
+            2) and <code>enabled</code> (defaults to true). A plate that exists but is switched off
+            is a real state, so both flags are written out.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    One entry per unit, and again nothing converts. A file only carries a plate list somebody
+    actually set up - a gym running on Badger's built-in defaults writes no <code>plate_inventory</code>
+    at all, because those defaults are already in the app opening the file.
+  </p>
+
   <p>
     <code>type: "machines"</code> is the smaller version: one key, <code>machines</code>, an array of
-    <a href="#machine"><code>Machine</code></a> and no gym, bars, or accessories.
+    <a href="#machine"><code>Machine</code></a> and no gym, bars, accessories, or inventory.
   </p>
 
   <h2 id="example">A worked example</h2>
@@ -700,10 +780,10 @@ const description =
 
   <ul>
     <li><strong>No history.</strong> No workouts, no logged sets, no PRs. Those are yours and they stay on your phone. To move your own history to a new phone, use a backup instead: see <a href="/help/phone-migration">moving to a new phone</a>.</li>
-    <li><strong>No notes below the routine level.</strong> Routine notes travel; per-day and per-exercise notes do not.</li>
+    <li><strong>No notes below the routine level.</strong> Routine notes travel; per-day and per-exercise notes do not. A gym file is the exception that proves the rule: notes on a machine, attachment, bar or accessory travel, because they describe the equipment. The setup cues you save against one exercise on one machine never do - those describe you.</li>
     <li><strong>No default attachment, default bar, or default grip</strong> on a slot - those stay personal setup. Superset group <strong>color</strong> also stays behind; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel, because that one is the thing's name rather than decoration.)</li>
     <li><strong>No per-exercise detail beyond name, type, and category.</strong> An exercise that gets created on import starts blank: no instructions, no muscles, no rest default, no increment. Anything you already had keeps everything it already has.</li>
-    <li><strong>No photos</strong> of machines, attachments, or bars.</li>
+    <li><strong>No photos</strong> of machines, attachments, or bars. A <code>.badger</code> file is a small text document, and your photo of a leg press is yours.</li>
     <li><strong>Nothing about you.</strong> No account, no device identifier, no settings, no training notes.</li>
   </ul>
 
