@@ -111,7 +111,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>The first time you open a rack it fills in a sensible starting list and saves it, so tapping the link once already leaves you with a working rack.</li>
     <li>Add weights one at a time, or use <strong>Add range</strong> for a run of them - from, to, and a step. An adjustable dumbbell is just a range.</li>
     <li>The list is the whole story: nothing distinguishes a weight the preset filled in from one you typed, so edit and delete freely.</li>
-    <li>kg and lbs racks are kept separately and never converted between each other. A rack is a physical fact about a gym, and 20 kg bells are not 45 lb bells.</li>
+    <li>kg and lbs racks are kept separately and never converted between each other. A rack is a physical fact about a gym, and 20 kg bells are not 45 lb bells. A <strong>kg / lbs switch</strong> at the top of the editor flips between the two lists, so you can set both up from the same place.</li>
     <li>A rack with fewer than two weights isn't a rack, so the stepper falls back to your ordinary increment until there are at least two.</li>
   </ul>
 
@@ -123,7 +123,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="rack-stepper">What the stepper does with it</h3>
   <p>Press <strong>+</strong> or <strong>−</strong> and the weight moves to the next entry on the rack in that direction. A weight that isn't on the rack moves to its nearest neighbor on that side. Above the top of the rack, or below the bottom, the stepper goes back to using your ordinary increment rather than trapping you inside the list.</p>
   <p>A small line under the field says where the step is coming from: <strong>"Step: rack · My Gym"</strong>. It names the rack rather than a number, because walking a rack has no single step size - the next tap would contradict it.</p>
-  <p><strong>Kettlebells in kg at a gym that works in pounds?</strong> Set that exercise's weight unit to kg (exercise library → Edit → Weight unit) and the gym's kg rack is the one that applies. Racks follow the unit the exercise is logged in, not your app-wide setting.</p>
+  <p><strong>Kettlebells in kg at a gym that works in pounds?</strong> Switch the rack editor to kg and set that rack up, then set the exercise's weight unit to kg (exercise library → Edit → Weight unit). Racks follow the unit the exercise is logged in, not your app-wide setting, so both halves matter: the kg rack has to exist, and the exercise has to log in kg for the stepper to walk it. The editor says the same thing right where you'd hit this.</p>
 
   <h2 id="photos">Photos</h2>
   <p>A machine, attachment, or bar can carry a photo, so you can recognize the right piece of kit when you're standing in front of the rack. Open it and tap the photo panel at the top to <strong>take a photo</strong> or <strong>choose one from your gallery</strong>. Tap it again to replace or remove it. (<a href="#accessories">Accessories</a> don't have one - their color does that job.)</p>
