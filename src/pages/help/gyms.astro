@@ -15,7 +15,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>+</strong> to create a gym.</li>
     <li>Tap a gym to edit its name or notes, or to set it as the default.</li>
     <li>The <strong>default gym</strong> is automatically used when starting a workout if you have only one gym, or if a default is set among multiple.</li>
-    <li>Each gym has its own <strong>Plate inventory</strong> - open a gym and tap <em>Plate assortment</em> to set which plates (and how many) are available there. Competition gyms often stock both kg and lbs plates, so the set is kept per unit. New gyms start from your global default set, so the plate calculator works out of the box; per-gym editing is optional.</li>
+    <li>Each gym has its own <strong>Plate inventory</strong> - open a gym and tap <em>Plate assortment</em> to set which plates (and how many) are available there. Competition gyms often stock both kg and lbs plates, so the set is kept per unit. A gym with no set of its own falls back to your global one, so the plate calculator works out of the box; per-gym editing is optional.</li>
+    <li>Each gym also has its own <a href="#racks"><strong>Racks</strong></a> - open a gym and use the <em>Racks</em> section to say which dumbbells and kettlebells it stocks, so the weight stepper walks the real rack while you train.</li>
     <li>Gyms can be <strong>archived</strong> (hidden from pickers but preserved for historical data) instead of deleted.</li>
   </ul>
 
@@ -80,7 +81,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="accessories">Accessories: bands, chains, and straps</h2>
   <p>Accessories are the things you add to a lift that aren't the load itself: resistance bands, chains, suspension straps. Go to <strong>You → Accessories</strong> to manage them. Each one has:</p>
   <ul>
-    <li>A <strong>name</strong> and a <strong>kind</strong> - Band, Chain, Suspension (TRX), or Other.</li>
+    <li>A <strong>name</strong> and a <strong>kind</strong> - Band, Chain, Suspension, or Other. (Suspension shows as "Suspension (TRX)" in lists and picker headings, where there is room for the qualifier.)</li>
     <li>A <strong>color</strong>. This is the point of the whole screen: people say "the green band", not "the 1.9 cm band". Pick from the preset swatches or set your own. An accessory with no color gets a hollow ring rather than a made-up one.</li>
     <li>An optional <strong>label</strong>, free text, shown beside the name - "rated 25 lbs", "doubled", whatever helps. Badger never reads a number out of it. See below.</li>
     <li><strong>Notes</strong>, and the usual <strong>Available at</strong> gym links.</li>
@@ -135,7 +136,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2 id="grip-types">Grip types</h2>
-  <p>When a machine has <strong>Uses grip types</strong> enabled, a row of grip chips appears in the training screen for that exercise. Select your grip before or after logging sets:</p>
+  <p>When a machine has <strong>Uses grip types</strong> enabled, a <strong>grip chip</strong> appears in the training screen's context row for that exercise. Tap it to open the picker and choose your grip, before or after logging sets:</p>
   <ul>
     <li>Overhand</li>
     <li>Underhand</li>
@@ -144,7 +145,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Close</li>
     <li>Hammer</li>
   </ul>
-  <p>Tap the active chip again to clear the selection. The grip is stored on the workout exercise record and shown in the history tab.</p>
+  <p>To clear it, open the picker again and tap <strong>No grip</strong>. The grip is stored on the workout exercise record and shown in the history tab.</p>
   <p>You can also set a <strong>default grip type</strong> per routine exercise in the predefined sets screen - this gets pre-filled when starting a routine workout.</p>
 
   <h2 id="workout-context">Gym context during workouts</h2>
@@ -181,7 +182,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="sharing">Sharing a gym</h2>
   <p>Gym detail → <strong>⋮ → Share gym</strong> writes a <code>.badger</code> file you can send to anyone. It is meant for the friend who just joined your gym: it hands over the place as it stands, so they are not spending their first week telling their phone what is on the wall.</p>
-  <p>That means everything about the equipment - the machines with their resistance types, increments and units, the attachments, the bars with their weights, the bands and chains with their colors, and the notes on any of them. It also carries the two things that are lists rather than objects: the <a href="#racks">dumbbell and kettlebell racks</a>, and the plate inventory.</p>
+  <p>That means everything about the equipment - the machines with their resistance types, increments and units, the attachments, the bars with their weights, the bands and chains with their colors, and the notes on any of them. It also carries the two things that are lists rather than objects: the <a href="#racks">dumbbell and kettlebell racks</a>, and the plate inventory - whichever of them you have actually set up. A gym still running on Badger's built-in plate defaults carries no plate list, because the app opening the file already ships those.</p>
   <p>The line it draws is simple: <strong>what describes the gym travels, what describes you does not</strong>. Your photos stay on your phone. So do the personal setup cues you save against one exercise on one machine, which are about how you lift rather than about the machine.</p>
-  <p>Nothing is overwritten on the way in. If they already have that gym with their own rack set up, theirs is left exactly as it was and only the gaps are filled. The full field-by-field breakdown lives on the <a href="/badger-format">file format page</a>.</p>
+  <p>Nothing is overwritten on the way in. If they already have that gym with their own rack set up, theirs is left exactly as it was and only the gaps are filled. The import preview says so before anything is written: the racks and the plate inventory each get a line of their own, marked <em>yours are kept</em> when that gym already has one, and the attachments, bars and accessories are counted alongside the machines. The full field-by-field breakdown lives on the <a href="/badger-format">file format page</a>.</p>
 </HelpLayout>
