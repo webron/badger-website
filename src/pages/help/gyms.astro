@@ -2,7 +2,7 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Gyms & Equipment" description="How to manage gyms, machines, attachments, and grip types in Badger.">
+<HelpLayout title="Gyms & Equipment" description="How to manage gyms, machines, attachments, bars, accessories, dumbbell racks, and grip types in Badger.">
   <h1>Gyms & Equipment</h1>
 
   <p>Badger lets you track which gym, machine, and attachment you used for each exercise. This unlocks machine-scoped progress tracking - your cable row on the low pulley and your cable row on the high cable are treated as separate performance histories.</p>
@@ -15,7 +15,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>+</strong> to create a gym.</li>
     <li>Tap a gym to edit its name or notes, or to set it as the default.</li>
     <li>The <strong>default gym</strong> is automatically used when starting a workout if you have only one gym, or if a default is set among multiple.</li>
-    <li>Each gym has its own <strong>Plate inventory</strong> - open a gym and tap <em>Plate assortment</em> to set which plates (and how many) are available there. Competition gyms often stock both kg and lbs plates, so the set is kept per unit. New gyms start from your global default set, so the plate calculator works out of the box; per-gym editing is optional.</li>
+    <li>Each gym has its own <strong>Plate inventory</strong> - open a gym and tap <em>Plate assortment</em> to set which plates (and how many) are available there. Competition gyms often stock both kg and lbs plates, so the set is kept per unit. A gym with no set of its own falls back to your global one, so the plate calculator works out of the box; per-gym editing is optional.</li>
+    <li>Each gym also has its own <a href="#racks"><strong>Racks</strong></a> - open a gym and use the <em>Racks</em> section to say which dumbbells and kettlebells it stocks, so the weight stepper walks the real rack while you train.</li>
     <li>Gyms can be <strong>archived</strong> (hidden from pickers but preserved for historical data) instead of deleted.</li>
   </ul>
 
@@ -54,17 +55,88 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Attachments are available in the machine picker only when the current machine has <strong>Uses attachments</strong> enabled.</p>
   <p>Notes you write on an attachment show up in the training screen's notes card whenever that attachment is selected, next to the machine's own setup notes.</p>
 
+  <h2 id="bars">Bars</h2>
+  <p>A bar is a thing you own, not a number on a settings screen. The Olympic bar, the trap bar, the EZ curl, and the worn 45 in the corner that actually weighs 44 are all different bars, so Badger lets you name them and pick one per exercise. Go to <strong>You → Bars</strong> to manage them.</p>
+  <ul>
+    <li>Tap <strong>+</strong> to create a bar. Like machines and attachments, you name it and pick its gyms, then land on its page to finish up.</li>
+    <li>Give it a <strong>weight</strong> in kg or lbs. It is stored exactly as you type it, never converted, so a 45 lb bar stays 45. Leave it blank if you don't know - a bar with no weight is still perfectly useful for the rest of what bars do.</li>
+    <li>A bar can carry <strong>notes</strong> and a <a href="#photos">photo</a>, same as a machine.</li>
+    <li>Link bars to gyms from the bar's <strong>Available at</strong> section, or from <strong>Bars at this gym</strong> on the gym's own page.</li>
+    <li><strong>Deleting a bar</strong> works like deleting a machine: blocked if it appears in a logged workout or as a routine default, otherwise removed from every gym.</li>
+  </ul>
+
+  <h3 id="picking-a-bar">Picking a bar while you train</h3>
+  <p>On a barbell exercise, at a gym that has bars, a <strong>bar chip</strong> joins the context row under the input fields. Tap it, or use <strong>⋮ → Set bar…</strong>, and pick from the bars at your gym. The picker shows each bar's weight in the unit you're logging in, and has a <strong>New bar…</strong> row at the bottom if you're standing in front of one you never added - it only asks for a name, and you can weigh it later on its own page.</p>
+  <p>If the exercise isn't a barbell movement, or you have no gym set, or your gym has no bars linked, nothing bar-related appears. Nobody gets asked which bar they used on a leg press.</p>
+
+  <h3 id="bar-weight">What the bar's weight is used for</h3>
+  <p>The bar you pick is the first place Badger looks for a starting weight, ahead of the machine's and then the exercise's own. That one answer feeds both the <a href="/help/tools">plate calculator</a> and the <a href="/help/logging#set-types">warm-up calculator</a>, so they can't disagree with each other.</p>
+  <p>A bar with no weight entered doesn't blank anything out - it just falls through, and whatever the machine or exercise already said still applies. Adding "Trap bar" purely so your records stay separate never costs you a bar weight you'd already set up.</p>
+
+  <h3 id="bar-prs">Records are kept per bar</h3>
+  <p>A different bar is a different lift, so personal records are tracked per machine <em>and</em> per bar. A deadlift off the trap bar doesn't compete with your straight-bar deadlift, and neither one hides the other.</p>
+  <p>Sets logged with no bar recorded - which is every set you logged before bars existed - still see your whole history, exactly as before. Nothing you already logged changed when this arrived.</p>
+  <p>A routine slot can carry a <strong>Default bar</strong>, so the right bar is already picked when you start the session. The bar you used shows in your history and on the workout summary, and you can change it after the fact by tapping the equipment line there.</p>
+
+  <h2 id="accessories">Accessories: bands, chains, and straps</h2>
+  <p>Accessories are the things you add to a lift that aren't the load itself: resistance bands, chains, suspension straps. Go to <strong>You → Accessories</strong> to manage them. Each one has:</p>
+  <ul>
+    <li>A <strong>name</strong> and a <strong>kind</strong> - Band, Chain, Suspension, or Other. (Suspension shows as "Suspension (TRX)" in lists and picker headings, where there is room for the qualifier.)</li>
+    <li>A <strong>color</strong>. This is the point of the whole screen: people say "the green band", not "the 1.9 cm band". Pick from the preset swatches or set your own. An accessory with no color gets a hollow ring rather than a made-up one.</li>
+    <li>An optional <strong>label</strong>, free text, shown beside the name - "rated 25 lbs", "doubled", whatever helps. Badger never reads a number out of it. See below.</li>
+    <li><strong>Notes</strong>, and the usual <strong>Available at</strong> gym links.</li>
+  </ul>
+  <p>There is no photo field, on purpose. A photo of a band tells you nothing the color doesn't.</p>
+
+  <h3 id="picking-accessories">Picking accessories while you train</h3>
+  <p>An <strong>accessories chip</strong> joins the context row on a barbell or bodyweight exercise, at a gym that has accessories linked. On a machine it appears only when that machine has <strong>Supports bands</strong> switched on, and only bands are offered there.</p>
+  <p>Unlike the machine and bar pickers, this one takes several at once and stays open until you tap Done - two bands stack to a resistance neither one gives you alone, and chains often ride on a bar that's already banded. Unchecking everything and confirming clears the lot; backing out changes nothing.</p>
+  <p>The chip then reads back as a count with the colors beside it - <strong>"2 bands"</strong>, <strong>"1 chain"</strong>, or <strong>"3 accessories"</strong> when you've mixed kinds - and the same count and dots show in your history and on the workout summary. Three band names don't fit on a chip; the dots are what tell them apart.</p>
+
+  <h3 id="accessories-and-records">Accessories never touch the math</h3>
+  <p>Badger records what you attached and nothing more. No weight is adjusted, no plate math changes, the <strong>+/−</strong> stepper is unaffected, and the label is never parsed. A band's rated tension is not what it contributes at the top of a rep, and Badger would rather tell you nothing than tell you a number it can't stand behind.</p>
+  <p>That is also why <strong>sets logged with an accessory attached stay out of your personal records entirely</strong>, in both directions. A banded set never earns a PR badge, and it never blocks one either: a banded 100 kg bench can't stop a bare 95 kg bench from being a record. Clear the accessories off an exercise and its sets go back into the running, so fixing a mistake is just fixing it.</p>
+  <p>Two ways to handle a session that's part banded and part bare:</p>
+  <ul>
+    <li><strong>Bands for some sets, then bare for the rest</strong> - add the exercise twice, once with the accessory and once without. The bare rows keep their records.</li>
+    <li><strong>Alternating within a session</strong> - do the same thing and put the two in a <a href="/help/logging#supersets">superset</a>, which is how you alternate between anything else.</li>
+  </ul>
+
+  <h2 id="racks">Dumbbell and kettlebell racks</h2>
+  <p>A weight increment describes a regular ladder. A real rack doesn't run like one: it goes 5, 10, 15 up to 50, then skips to 60 and 70, and stops. So instead of a step size, Badger lets you list what's actually on the rack, and the <strong>+/−</strong> buttons beside the weight field walk that list.</p>
+  <p><strong>The rack never restricts anything.</strong> You can still type any weight you like, nothing snaps on save, and no set is ever checked against it. It decides one thing only: which number the stepper lands on next.</p>
+
+  <h3 id="setting-up-a-rack">Setting one up</h3>
+  <p>Open a gym and use the <strong>Racks</strong> section - one row for dumbbells, one for kettlebells. Or wait until it's in your way: on a dumbbell or kettlebell exercise at a gym with no rack set up, a quiet <strong>"Set up My Gym's dumbbell rack"</strong> link sits under the weight field. It goes away by itself once a rack exists.</p>
+  <ul>
+    <li>The first time you open a rack it fills in a sensible starting list and saves it, so tapping the link once already leaves you with a working rack.</li>
+    <li>Add weights one at a time, or use <strong>Add range</strong> for a run of them - from, to, and a step. An adjustable dumbbell is just a range.</li>
+    <li>The list is the whole story: nothing distinguishes a weight the preset filled in from one you typed, so edit and delete freely.</li>
+    <li>kg and lbs racks are kept separately and never converted between each other. A rack is a physical fact about a gym, and 20 kg bells are not 45 lb bells. A <strong>kg / lbs switch</strong> at the top of the editor flips between the two lists, so you can set both up from the same place.</li>
+    <li>A rack with fewer than two weights isn't a rack, so the stepper falls back to your ordinary increment until there are at least two.</li>
+  </ul>
+
+  <h3 id="rack-colors">Kettlebell colors</h3>
+  <p>Competition kettlebells are color-coded by weight, and the kg preset comes with that code already set: 8 pink, 12 blue, 16 yellow, 20 purple, 24 green, 28 orange, 32 red. (4 kg has no standard color, so it starts blank.) Tap the dot beside any weight to change it, or to give one to a dumbbell entry - the color is available on both, it's just far more useful on bells.</p>
+  <p>The lbs kettlebell preset is a plain uncolored ladder. The color code marks kilogram bells, and inventing a pound version of it would be making something up.</p>
+  <p>While you're logging, a matching dot appears next to the weight whenever it lands exactly on a colored rack weight - a glance-check that you picked up the bell you meant to.</p>
+
+  <h3 id="rack-stepper">What the stepper does with it</h3>
+  <p>Press <strong>+</strong> or <strong>−</strong> and the weight moves to the next entry on the rack in that direction. A weight that isn't on the rack moves to its nearest neighbor on that side. Above the top of the rack, or below the bottom, the stepper goes back to using your ordinary increment rather than trapping you inside the list.</p>
+  <p>A small line under the field says where the step is coming from: <strong>"Step: rack · My Gym"</strong>. It names the rack rather than a number, because walking a rack has no single step size - the next tap would contradict it.</p>
+  <p><strong>Kettlebells in kg at a gym that works in pounds?</strong> Switch the rack editor to kg and set that rack up, then set the exercise's weight unit to kg (exercise library → Edit → Weight unit). Racks follow the unit the exercise is logged in, not your app-wide setting, so both halves matter: the kg rack has to exist, and the exercise has to log in kg for the stepper to walk it. The editor says the same thing right where you'd hit this.</p>
+
   <h2 id="photos">Photos</h2>
-  <p>A machine or attachment can carry a photo, so you can recognize the right piece of kit when you're standing in front of the rack. Open the machine or attachment and tap the photo panel at the top to <strong>take a photo</strong> or <strong>choose one from your gallery</strong>. Tap it again to replace or remove it.</p>
+  <p>A machine, attachment, or bar can carry a photo, so you can recognize the right piece of kit when you're standing in front of the rack. Open it and tap the photo panel at the top to <strong>take a photo</strong> or <strong>choose one from your gallery</strong>. Tap it again to replace or remove it. (<a href="#accessories">Accessories</a> don't have one - their color does that job.)</p>
   <p>Attachment photos also show as a small thumbnail in the attachment picker during a workout, which is the point: "the rope or the short V-bar?" is easier to answer from a picture than a name.</p>
   <ul>
     <li><strong>Photos stay on your device unless you ask otherwise.</strong> Nothing is uploaded on its own, and Badger only asks for camera or photo access at the moment you first use it.</li>
     <li><strong>Cloud backup leaves photos out unless you turn them on.</strong> Backups stay small and quick by default, so photos are not included and a restore onto a new phone brings your machines and attachments back without their pictures. To carry them across, turn on <strong>Back up equipment photos</strong> on the <a href={`/help/settings#cloud-backup`}>Cloud backup</a> screen. It is off by default, because photos make backups considerably larger and they use your own Drive storage.</li>
-    <li>Deleting a machine or attachment deletes its photo too.</li>
+    <li>Deleting a machine, attachment, or bar deletes its photo too.</li>
   </ul>
 
   <h2 id="grip-types">Grip types</h2>
-  <p>When a machine has <strong>Uses grip types</strong> enabled, a row of grip chips appears in the training screen for that exercise. Select your grip before or after logging sets:</p>
+  <p>When a machine has <strong>Uses grip types</strong> enabled, a <strong>grip chip</strong> appears in the training screen's context row for that exercise. Tap it to open the picker and choose your grip, before or after logging sets:</p>
   <ul>
     <li>Overhand</li>
     <li>Underhand</li>
@@ -73,7 +145,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Close</li>
     <li>Hammer</li>
   </ul>
-  <p>Tap the active chip again to clear the selection. The grip is stored on the workout exercise record and shown in the history tab.</p>
+  <p>To clear it, open the picker again and tap <strong>No grip</strong>. The grip is stored on the workout exercise record and shown in the history tab.</p>
   <p>You can also set a <strong>default grip type</strong> per routine exercise in the predefined sets screen - this gets pre-filled when starting a routine workout.</p>
 
   <h2 id="workout-context">Gym context during workouts</h2>
@@ -96,13 +168,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Progress filtering by machine</h2>
   <p>On the Progress screen, if you've used the same exercise on multiple machines, a row of filter chips appears. Select a specific machine to see only that machine's history, or select <strong>All</strong> to see combined data.</p>
-  <p>The most recently used machine is selected by default. The same filter applies to PRs - they're scoped per machine when a machine is set.</p>
+  <p>The most recently used machine is selected by default. The same filter applies to PRs - they're scoped per machine when a machine is set, and per <a href="#bars">bar</a> when a bar is. The filter chips themselves are machine-only for now: the bar you used is named on every row, but you can't yet narrow the list to it.</p>
 
   <h2>Routine defaults</h2>
   <p>You can set default equipment at the routine level to avoid re-selecting it each session:</p>
   <ul>
     <li><strong>Routine day → Default gym</strong> - Pre-sets the workout gym when starting from this day.</li>
     <li><strong>Routine exercise → Default machine & attachment</strong> - Pre-sets the machine for that exercise when starting from a routine.</li>
+    <li><strong>Routine exercise → Default bar</strong> - Pre-sets the <a href="#bars">bar</a> on a barbell exercise.</li>
     <li><strong>Routine exercise → Default grip type</strong> - Pre-sets the grip for that exercise.</li>
   </ul>
+  <p>Accessories are picked per session rather than planned, so there is no routine default for them.</p>
+
+  <h2 id="sharing">Sharing a gym</h2>
+  <p>Gym detail → <strong>⋮ → Share gym</strong> writes a <code>.badger</code> file you can send to anyone. It is meant for the friend who just joined your gym: it hands over the place as it stands, so they are not spending their first week telling their phone what is on the wall.</p>
+  <p>That means everything about the equipment - the machines with their resistance types, increments and units, the attachments, the bars with their weights, the bands and chains with their colors, and the notes on any of them. It also carries the two things that are lists rather than objects: the <a href="#racks">dumbbell and kettlebell racks</a>, and the plate inventory - whichever of them you have actually set up. A gym still running on Badger's built-in plate defaults carries no plate list, because the app opening the file already ships those.</p>
+  <p>The line it draws is simple: <strong>what describes the gym travels, what describes you does not</strong>. Your photos stay on your phone. So do the personal setup cues you save against one exercise on one machine, which are about how you lift rather than about the machine.</p>
+  <p>Nothing is overwritten on the way in. If they already have that gym with their own rack set up, theirs is left exactly as it was and only the gaps are filled. The import preview says so before anything is written: the racks and the plate inventory each get a line of their own, marked <em>yours are kept</em> when that gym already has one, and the attachments, bars and accessories are counted alongside the machines. The full field-by-field breakdown lives on the <a href="/badger-format">file format page</a>.</p>
 </HelpLayout>

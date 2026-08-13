@@ -80,11 +80,13 @@ Follow the format exactly:
 - Every exercise a day references must also appear in payload.exercises with the same name and type.
 - Use ordinary exercise names ("Barbell Back Squat", not "BB squat"), so they match exercises I already have instead of creating duplicates.
 - For a rep range, set reps to the bottom of the range and reps_max to the top. For an exact target, use reps alone.
+- For an open-topped ("AMRAP") set, set reps to the minimum and "is_amrap": true, and leave reps_max out. That reads as "8+": at least 8 reps, then as many as possible. A set to failure is reps 1 with is_amrap true. Never set both is_amrap and reps_max on the same set.
 - Leave weight out. I fill in my own weights.
-- Never put reps_max on a warmup set.
+- Never put reps_max or is_amrap on a warmup set.
 - Order matters: days, exercises, and sets import in the order they appear in their arrays.
 - To pair exercises as a superset, give both slots the same "superset_key". To pre-assign swap options, use "alternatives" with names that also appear in payload.exercises. For a tempo prescription, put it in "tempo" on the slot, like "3-1-2-0".
 - If I paste a gym .badger file below, plan around its equipment: only pick machine exercises its machines support (barbell, dumbbell, and bodyweight movements are always available). For an exercise done on one of those machines, set default_machine_name to that machine's name exactly as written in my file, and copy the machine's entry into payload.machines verbatim. Never invent or rename a machine.
+- A gym file may also list "bars" and "accessories". Read them for what the gym has, but do not put them in the routine: a routine slot carries no default bar and no accessories, so mention band or chain work in your explanation underneath instead of trying to encode it.
 
 What I want:
 - Days a week: [4]
@@ -143,9 +145,9 @@ Give me the complete JSON in one code block, then explain the program in a few s
     </li>
     <li>
       <strong>Your gym, as a <code>.badger</code> file.</strong> Open a gym and pick Share gym from
-      its menu. It lists the machines you actually have, so a program can be planned around your
-      equipment instead of a generic gym - the write-me-a-program prompt below knows what to do
-      with it.
+      its menu. It lists the machines, bars, and accessories you actually have, so a program can be
+      planned around your equipment instead of a generic gym - the write-me-a-program prompt below
+      knows what to do with it.
     </li>
     <li>
       <strong>The format itself.</strong> <a href="/badger-format">The <code>.badger</code> format</a>
