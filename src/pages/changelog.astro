@@ -8,6 +8,20 @@ import Footer from '../components/Footer.astro';
 // release notes. Newest first.
 const releases = [
   {
+    version: '1.1.7',
+    date: 'August 2026',
+    headline: 'Badger knows what your gym actually holds',
+    highlights: [
+      'Tell Badger which dumbbells and kettlebells your gym has, and the plus and minus buttons walk that rack instead of ticking an increment. A real rack runs 5, 10, 15 and then jumps, which no step size can describe. Kettlebells carry the competition colors, kg and lbs are separate lists because a 16 kg bell is not a 35 lb one, and typing any weight you like still works: the rack moves the buttons, it never restricts what you log.',
+      'Bars are things you name now. Add your Olympic bar, the women\'s bar, the trap bar, or the specific worn 45 that really weighs 44, give each its own weight, and pick one while you train. The plate calculator and the warm-up generator use the bar you picked, and records are kept per bar, because a trap bar deadlift is not a straight bar deadlift.',
+      'Bands, chains and suspension straps can be recorded too, several at once, since two bands stack and chains ride on a bar that may also carry a band. Each one is named by its color, the way you already say it out loud. A set logged with anything attached is left out of personal records entirely, in both directions, so a banded press neither claims a record nor blocks a bare one.',
+      'A rep target can be open-topped. Write 8+ and the plan means at least eight, as many as you can, and 1+ is how you program a set to failure. It reads as 8+ everywhere a target is shown, and Badger stops suggesting more weight for a slot whose top you can never reach.',
+      'The plan is now on the set rows themselves. A set you have not done yet shows what the routine asked for rather than last week\'s numbers, and the reps field carries a quiet + or a range beside it, which disappears the moment you type your own number over it.',
+      'Sharing a gym hands over the whole gym. A .badger file now carries the racks, the plate inventory, the bars and the accessories along with the machines, so a friend who imports your gym gets the place as it stands. What describes the gym travels; what describes you, your photos and your own setup notes, stays on your phone.',
+      'Fixes: editing a past workout\'s equipment no longer wipes the attachment and grip you had stored, deleting a workout updates the calendar right away, assisted and counterweight lifts now show their best set the right way round in History, the grip is one picker instead of a row of six chips, and the equipment label wraps instead of cutting a name in half.',
+    ],
+  },
+  {
     version: '1.1.6',
     date: 'August 2026',
     headline: 'Badger knows whether a weight means one side or the total',
