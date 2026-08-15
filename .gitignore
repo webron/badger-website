@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Gemini CLI local state (settings, session checkpoints, shell history)
+.gemini/
