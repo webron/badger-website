@@ -186,7 +186,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Warmup sets use a separate, shorter rest duration - configurable per exercise or globally in Settings.</p>
 
   <h2 id="set-timer">Set timer (timed exercises)</h2>
-  <p>A timed exercise (a plank, a carry, anything measured in seconds) gets a countdown for the set itself, started from the training screen. It keeps honest wall-clock time: locking your phone or switching apps does not pause it, and when you come back it shows exactly where a stopwatch would be. If it runs out while your phone is locked, the set is marked done with its planned duration filled in, and a notification ("Set complete") fires at the moment it actually ended, so you are not left holding a plank for a timer that quietly stopped.</p>
+  <p>A timed exercise (a plank, a carry, anything measured in seconds) gets a countdown for the set itself, started from the training screen. It keeps honest wall-clock time: locking your phone or switching apps does not pause it, and when you come back it shows exactly where a stopwatch would be. If it runs out while your phone is locked, the set is marked done with its planned duration filled in, so you are not left holding a plank for a timer that quietly stopped.</p>
+  <p>On iPhone the spoken countdown carries on through a locked screen, so you hear the 30-second and 10-second warnings and "Time" at the end without touching the phone. A "Set complete" notification is the fallback, and it fires at the moment the set actually ended whenever Badger could not speak for itself: on Android, on an iPhone with the voice set to Off, and on an iPhone where a call or another app took the audio mid-set.</p>
   <p>If you would rather that notification arrived quietly, turn off <strong>Settings &rarr; Logging &rarr; Set timer sound</strong>. The notification still appears, it just makes no sound. The spoken countdown cues are separate and keep working either way, and the rest timer keeps its own sound setting.</p>
 
   <h3>What Badger says while the set runs</h3>
@@ -195,9 +196,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The rest timer does <em>not</em> start after the last working set of your last exercise.</p>
 
   <h3>On your lock screen (iPhone)</h3>
-  <p>On iPhone (iOS 16.2 and later), the rest timer also appears as a Live Activity: a countdown card on the lock screen, and on models with the Dynamic Island, a compact countdown there while you're in another app. Tap it to jump back to your workout. When the timer finishes, the card flips to "Rest done".</p>
+  <p>On iPhone (iOS 16.2 and later), both timers appear as a Live Activity: a countdown card on the lock screen, and on models with the Dynamic Island, a compact countdown there while you're in another app. Tap it to jump back to your workout. The rest timer's card flips to "Rest done" when it finishes; a timed set shows "SET" while it runs and "SET DONE" when it ends, with the exercise name on the card.</p>
   <p>The first time this happens, iOS asks "Allow Live Activities from Badger?" - that prompt comes from iOS itself, and allowing it is what lets the countdown show outside the app. You can change it later in iOS Settings under Badger.</p>
-  <p>One iOS limitation: if the timer finishes while your phone is locked, the notification plays the standard iOS sound rather than the Badger sound you picked. That's an iOS restriction on custom notification sounds in this situation, not a setting you can change.</p>
+  <p>On iOS 26.6 and later, a rest timer that finishes while your phone is locked plays the Badger sound you picked. Below that, iOS substitutes its own standard sound in this one situation. That's an iOS restriction on custom notification sounds, not a setting you can change.</p>
 
   <h2 id="workout-notification">Workout notification (Android)</h2>
   <p>While a workout is running, Badger keeps a notification in your notification bar showing the exercise you are on and the target for your next set, for example "85 kg &times; 8". It is there so you can check what is next from the lock screen or an always-on display without unlocking your phone. The elapsed workout time counts up next to it once the workout timer is running, and tapping the notification takes you back to the exercise you were on.</p>
