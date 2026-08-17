@@ -75,14 +75,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Each routine day card has a <strong>Quick edit</strong> button (next to "Day options") that opens a compact batch editor. Every exercise on the day shows on one screen with inline fields for its first working set - weight and reps, or whichever fields apply to the exercise type (distance, duration, etc.). Change a value and submit to save. Useful after a deload, or when bumping every exercise by a fixed amount. Tap the exercise name to jump to its full predefined-sets editor.</p>
   <p>Quick edit shows a rep range read-only ("target 8-10 reps") - editing the range itself stays in the full editor. If you raise the rep number past the top of the range, the range is dropped and the set goes back to an exact target.</p>
 
-  <h3>Per-exercise overrides in routines</h3>
+  <h3 id="per-exercise-overrides">Per-exercise overrides in routines</h3>
   <p>Each routine exercise also has override settings separate from the predefined sets:</p>
   <ul>
     <li>Weight increment override</li>
     <li>Notes override</li>
     <li>Tempo</li>
     <li>Default machine & attachment</li>
+    <li>Default bar</li>
     <li>Default grip type (if machine has grip types enabled)</li>
+    <li id="default-accessories">Default accessories - program the band, chain or straps you always use on that slot, and they come with the exercise when you log the day instead of being re-picked every week. Sets logged with an accessory attached stay out of personal records, so a slot programmed this way is outside record-keeping by design.</li>
   </ul>
   <p><strong>Rest time is a property of the exercise, not the routine.</strong> Set a working/warmup rest on the exercise itself (Exercise → settings) and it applies everywhere you train it. A routine exercise still has a "Rest (seconds)" field, but it's only a fallback - it applies when the exercise has no rest configured, and never overrides the exercise's own rest.</p>
 

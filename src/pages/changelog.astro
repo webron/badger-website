@@ -8,6 +8,20 @@ import Footer from '../components/Footer.astro';
 // release notes. Newest first.
 const releases = [
   {
+    version: '1.1.8',
+    date: 'August 2026',
+    headline: 'Your set timer talks you through the set',
+    highlights: [
+      'A timed set now counts you in and talks you down. You get "3, 2, 1, Go" going in, a warning at 30 seconds and again at 10, a spoken mark as the minutes tick past, and "Time" at the end. The marks are graduated rather than on a fixed interval: every minute under ten, every five minutes up to thirty, every ten minutes above that, so a long hold stops being chatty instead of reciting itself at you for an hour.',
+      'The voice is a real recorded one, bundled with the app rather than read out by your phone, so it sounds the same on every handset and works with no signal at all. Pick Female, Male or Off under Settings, Logging, and tapping an option plays it so you can hear the difference before you commit. It ducks your music for the length of each cue and lets it come straight back, rather than pausing it for the whole set.',
+      'On an iPhone, a running set now appears on the lock screen and in the Dynamic Island the way rest already did, and the cues keep being spoken with the screen off. Putting the phone down mid-plank used to mean the countdown simply stopped talking, because iOS suspends an app the moment you lock it. Badger now holds itself up for the length of the set and hands that back the instant the set is over.',
+      'If the set runs out while you are in another app, Badger tells you, at the moment it actually ended rather than whenever you next look. On Android those alerts also fire on time now instead of drifting late, which is what the system does to an app that has not asked for precise timing.',
+      'Progress charts gained a bar filter beside the machine one, and a control for what to do with sets you logged with a band or a chain: show everything, hide them, or look only at them. A set with something attached draws as a hollow ring on the chart, so you can see it is there without it being counted as a record.',
+      'A routine slot can carry its accessories. If you always do the last set of face pulls with the green band, program it into the routine and it comes with the exercise instead of being something you re-pick every week.',
+      'Fixes: auto-progress now writes each weight into its own planned set rather than shifting them when you skip one, the calendar day panel keeps up with the day you are looking at, the workout clock passes an hour without rolling over, your very first workout seals as Entry № 1 instead of Entry № 0, and the built-in exercise instructions lost some stray dashes.',
+    ],
+  },
+  {
     version: '1.1.7',
     date: 'August 2026',
     headline: 'Badger knows what your gym actually holds',

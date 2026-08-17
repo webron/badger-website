@@ -62,8 +62,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>Tap a data point to see its exact values below the chart. Use the left/right arrows to step through individual points. Tap the detail area to open the full workout summary for that session.</p>
 
-  <h3>Machine filter</h3>
-  <p>If you've used the exercise on multiple machines, a row of filter chips appears above the chart. Filter by a specific machine or select <strong>All</strong> for combined data. The most recently used machine is selected by default.</p>
+  <h3 id="chart-filters">Chart filters</h3>
+  <p>Rows of filter chips appear above the chart, each earned by your history rather than always present:</p>
+  <ul>
+    <li><strong>Machine</strong> - if you've used the exercise on multiple machines, filter by a specific one or select <strong>All</strong> for combined data. The most recently used machine is selected by default.</li>
+    <li><strong>Bar</strong> - if the exercise has history on two or more named bars, a bar row appears the same way. It never narrows the chart on its own; <strong>All bars</strong> is always the default.</li>
+    <li><strong>Accessories</strong> - if the history mixes bare work and sets logged with accessories (bands, chains, straps), a three-way view appears: <strong>All work</strong>, <strong>No accessories</strong>, <strong>Accessories only</strong>. In the mixed view, a point from an accessorized session is drawn as a hollow ring: on the chart as history, but never a record - which is why the BEST line (and any strength-standard floors) can sit below a ringed peak. In the Accessories-only view there are no record marks at all, because <a href="/help/gyms#accessories-and-records">nothing done with an accessory claims a record</a>.</li>
+  </ul>
 
   <h2 id="strength-standards">Strength standards</h2>
   <p>Badger can draw reference lines on the estimated 1RM graph showing where a lift sits for your bodyweight: untrained, novice, intermediate, advanced, elite. They are marks in the margin, not a score. Nothing pops up when you cross one; the line is simply behind your data from then on.</p>
@@ -144,7 +149,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Exercise progress History tab</h2>
   <p>On the Exercise Progress screen, a <strong>History tab</strong> sits alongside the graph view. It shows every session where that exercise was logged, newest first, with the same set-level detail as the History tab in the training screen.</p>
   <p><strong>Tap any set row</strong> in the history list to open an edit sheet. You can correct weight, reps, RPE, RIR, the warmup flag, and more. Changes persist immediately and update the graphs.</p>
-  <p>If you've used the exercise on multiple machines, a machine filter chip row appears at the top of the history list - select a specific machine to scope the display.</p>
+  <p>The same filter chip rows as the chart appear at the top of the history list when your history earns them - machine, bar, and the accessories view - and scope the sessions shown the same way.</p>
 
   <h2>History in the training screen</h2>
   <p>The <strong>History tab</strong> in the training screen (swipe right from the Log tab) shows all previous sessions for the current exercise, newest first. Skipped sets are excluded from the display. From there you can:</p>
