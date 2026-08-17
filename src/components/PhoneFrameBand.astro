@@ -176,6 +176,7 @@ const HEIGHT = 1121;
     overflow: hidden;
     background: var(--bg);
     box-shadow: 0 10px 34px rgba(38, 34, 25, 0.14);
+    aspect-ratio: 540 / 1121;
   }
 
   .phone.big {
@@ -185,6 +186,13 @@ const HEIGHT = 1121;
   .shot {
     width: 100%;
     height: auto;
+  }
+
+  /* An image without a src attribute (inactive variant or no-JS fallback)
+     must occupy no space so no-JS visitors do not get an empty gap above
+     the <noscript> fallback. */
+  img.shot:not([src]) {
+    display: none;
   }
 
   @media (max-width: 640px) {
