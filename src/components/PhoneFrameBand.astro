@@ -8,12 +8,10 @@
  * the raw device captures, not the branded Play composites, because the site
  * frames them in its own chrome.
  *
- * Every screen ships in both app themes. Ron's call, 2026-07-23: the frame shows
- * the paper theme when the site renders light and the slate theme when it renders
- * dark, so a phone on the page is never lit differently from the page around it.
- * The swap is CSS (.paper-only / .slate-only in global.css) rather than a
- * <picture> media source, because the site's theme toggle is a data-theme
- * attribute that a media query cannot see.
+ * Every screen ships in both app themes: paper theme for light mode and slate theme
+ * for dark mode. To avoid downloading hidden screenshots on initial paint, the active
+ * theme variant is populated on load, and the alternate variant is loaded only when
+ * the user toggles the theme.
  */
 const SHOTS = [
   {
@@ -41,23 +39,34 @@ const HEIGHT = 1121;
       SHOTS.map((shot) => (
         <div class:list={['phone', { big: shot.big }]}>
           <img
-            class="shot paper-only"
-            src={`/assets/screenshots/${shot.key}-paper.webp`}
+            class="shot"
+            data-shot={shot.key}
             alt={shot.alt}
             width={WIDTH}
             height={HEIGHT}
             loading="lazy"
             decoding="async"
           />
-          <img
-            class="shot slate-only"
-            src={`/assets/screenshots/${shot.key}-slate.webp`}
-            alt={shot.alt}
-            width={WIDTH}
-            height={HEIGHT}
-            loading="lazy"
-            decoding="async"
-          />
+          <noscript>
+            <img
+              class="shot paper-only"
+              src={`/assets/screenshots/${shot.key}-paper.webp`}
+              alt={shot.alt}
+              width={WIDTH}
+              height={HEIGHT}
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              class="shot slate-only"
+              src={`/assets/screenshots/${shot.key}-slate.webp`}
+              alt={shot.alt}
+              width={WIDTH}
+              height={HEIGHT}
+              loading="lazy"
+              decoding="async"
+            />
+          </noscript>
         </div>
       ))
     }
@@ -65,6 +74,52 @@ const HEIGHT = 1121;
 
   <figcaption>Today, logging a set, and progress. Real screens from the app.</figcaption>
 </figure>
+
+<script is:inline>
+  (function () {
+    function getActiveTheme() {
+      const explicit = document.documentElement.getAttribute('data-theme');
+      if (explicit === 'dark' || explicit === 'light') {
+        return explicit === 'dark' ? 'slate' : 'paper';
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'slate' : 'paper';
+    }
+
+    function syncScreenshots() {
+      const theme = getActiveTheme();
+      const shots = document.querySelectorAll('.frames .shot[data-shot]');
+      shots.forEach((img) => {
+        const key = img.getAttribute('data-shot');
+        if (key) {
+          const targetSrc = `/assets/screenshots/${key}-${theme}.webp`;
+          if (img.getAttribute('src') !== targetSrc) {
+            img.src = targetSrc;
+          }
+        }
+      });
+    }
+
+    syncScreenshots();
+
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.attributeName === 'data-theme') {
+          syncScreenshots();
+        }
+      }
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (!document.documentElement.getAttribute('data-theme')) {
+        syncScreenshots();
+      }
+    });
+  })();
+</script>
 
 <style>
   .frames {
@@ -105,6 +160,7 @@ const HEIGHT = 1121;
   .shot {
     width: 100%;
     height: auto;
+    display: block;
   }
 
   @media (max-width: 640px) {
