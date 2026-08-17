@@ -8,10 +8,17 @@
  * the raw device captures, not the branded Play composites, because the site
  * frames them in its own chrome.
  *
- * Every screen ships in both app themes: paper theme for light mode and slate theme
- * for dark mode. To avoid downloading hidden screenshots on initial paint, the active
- * theme variant is populated on load, and the alternate variant is loaded only when
- * the user toggles the theme.
+ * Every screen ships in both app themes. Ron's call, 2026-07-23: the frame shows
+ * the paper theme when the site renders light and the slate theme when it renders
+ * dark, so a phone on the page is never lit differently from the page around it.
+ * The swap is CSS (.paper-only / .slate-only in global.css) rather than a
+ * <picture> media source, because the site's theme toggle is a data-theme
+ * attribute that a media query cannot see.
+ *
+ * To avoid downloading hidden screenshots on initial paint, only the active
+ * theme variant is given a src on load. The alternate variant is populated on
+ * the first theme toggle, after which both variants remain in the DOM for instant
+ * CSS-driven toggling.
  */
 const SHOTS = [
   {
@@ -39,8 +46,17 @@ const HEIGHT = 1121;
       SHOTS.map((shot) => (
         <div class:list={['phone', { big: shot.big }]}>
           <img
-            class="shot"
-            data-shot={shot.key}
+            class="shot paper-only"
+            data-src={`/assets/screenshots/${shot.key}-paper.webp`}
+            alt={shot.alt}
+            width={WIDTH}
+            height={HEIGHT}
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            class="shot slate-only"
+            data-src={`/assets/screenshots/${shot.key}-slate.webp`}
             alt={shot.alt}
             width={WIDTH}
             height={HEIGHT}
@@ -85,26 +101,35 @@ const HEIGHT = 1121;
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'slate' : 'paper';
     }
 
-    function syncScreenshots() {
-      const theme = getActiveTheme();
-      const shots = document.querySelectorAll('.frames .shot[data-shot]');
+    function loadVariant(theme) {
+      const selector = theme === 'slate' ? '.frames .slate-only' : '.frames .paper-only';
+      const shots = document.querySelectorAll(selector);
       shots.forEach((img) => {
-        const key = img.getAttribute('data-shot');
-        if (key) {
-          const targetSrc = `/assets/screenshots/${key}-${theme}.webp`;
-          if (img.getAttribute('src') !== targetSrc) {
-            img.src = targetSrc;
-          }
+        const dataSrc = img.getAttribute('data-src');
+        if (dataSrc && !img.getAttribute('src')) {
+          img.src = dataSrc;
         }
       });
     }
 
-    syncScreenshots();
+    // Populate active theme variant on initial paint (3 images downloaded)
+    const initialTheme = getActiveTheme();
+    loadVariant(initialTheme);
+
+    // On first toggle or OS change, populate the alternate variant so both are in the DOM
+    let alternateLoaded = false;
+    function loadAlternateIfNeeded() {
+      if (!alternateLoaded) {
+        alternateLoaded = true;
+        loadVariant('paper');
+        loadVariant('slate');
+      }
+    }
 
     const observer = new MutationObserver((mutations) => {
       for (const m of mutations) {
         if (m.attributeName === 'data-theme') {
-          syncScreenshots();
+          loadAlternateIfNeeded();
         }
       }
     });
@@ -115,7 +140,7 @@ const HEIGHT = 1121;
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
       if (!document.documentElement.getAttribute('data-theme')) {
-        syncScreenshots();
+        loadAlternateIfNeeded();
       }
     });
   })();
@@ -160,7 +185,6 @@ const HEIGHT = 1121;
   .shot {
     width: 100%;
     height: auto;
-    display: block;
   }
 
   @media (max-width: 640px) {
