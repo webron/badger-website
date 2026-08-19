@@ -179,7 +179,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>One-session override (set via the rest chip dialog)</li>
     <li>Routine-day inter-exercise rest (when switching between exercises in a superset group)</li>
     <li>Exercise default rest (set in Exercise Settings)</li>
-    <li>Global default (set in Settings → Logging)</li>
+    <li>Global default (set in Settings → Rest timer)</li>
     <li>Last used duration</li>
     <li>90-second fallback</li>
   </ol>
@@ -188,11 +188,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="set-timer">Set timer (timed exercises)</h2>
   <p>A timed exercise (a plank, a carry, anything measured in seconds) gets a countdown for the set itself, started from the training screen. It keeps honest wall-clock time: locking your phone or switching apps does not pause it, and when you come back it shows exactly where a stopwatch would be. If it runs out while your phone is locked, the set is marked done with its planned duration filled in, so you are not left holding a plank for a timer that quietly stopped.</p>
   <p>On iPhone the spoken countdown carries on through a locked screen, so you hear the 30-second and 10-second warnings and "Time" at the end without touching the phone. A "Set complete" notification is the fallback, and it fires at the moment the set actually ended whenever Badger could not speak for itself: on Android, and on an iPhone where a call or another app took the audio mid-set.</p>
-  <p>If you would rather that notification arrived quietly, turn off <strong>Settings &rarr; Logging &rarr; Set timer sound</strong>. The notification still appears, it just makes no sound. The spoken countdown cues are separate and keep working either way, and the rest timer keeps its own sound setting.</p>
+  <p>If you would rather that notification arrived quietly, turn off <strong>Settings &rarr; Set timer &rarr; Set timer sound</strong>. The notification still appears, it just makes no sound. The spoken countdown cues are separate and keep working either way, and the rest timer keeps its own sound setting.</p>
 
   <h3>What Badger says while the set runs</h3>
   <p>With the app in front, a timed set is spoken rather than watched: a "3, 2, 1, Go" count into the start, a warning at 30 seconds and again at 10 seconds left, and "Time" at the end. On a long set you also get the minutes remaining - every minute under ten, every five minutes up to thirty, every ten minutes above that - so a 40-minute carry gets a handful of markers instead of a running commentary.</p>
-  <p>Pick the voice in <strong>Settings &rarr; Logging &rarr; Set timer voice</strong>: <strong>Female</strong>, <strong>Male</strong>, or <strong>Off</strong> if you would rather train in silence. Tap a choice in the picker to hear it. The voices are recorded and bundled into the app, so they work with no signal, in airplane mode, and with no delay before the first word. If music is playing, Badger ducks it for the moment it speaks rather than stopping it.</p>
+  <p>Pick the voice in <strong>Settings &rarr; Set timer &rarr; Set timer voice</strong>: <strong>Female</strong>, <strong>Male</strong>, or <strong>Off</strong> if you would rather train in silence. Tap a choice in the picker to hear it. The voices are recorded and bundled into the app, so they work with no signal, in airplane mode, and with no delay before the first word. If music is playing, Badger ducks it for the moment it speaks rather than stopping it.</p>
   <p>The rest timer does <em>not</em> start after the last working set of your last exercise.</p>
 
   <h3>On your lock screen (iPhone)</h3>
