@@ -7,12 +7,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <p>Go to <strong>You → Settings</strong> to access all preferences. The <strong>You → Data &amp; backup</strong> shortcut opens the same screen and scrolls straight to the Your data section.</p>
 
-  <p>Settings is grouped into four sections by what you are trying to do: <a href={`#logging`}>Logging</a>, <a href={`#coaching`}>Coaching</a>, <a href={`#app`}>App</a>, and <a href={`#data`}>Your data</a>.</p>
+  <p>Settings is grouped by what you are trying to do: <a href={`#logging`}>Logging</a>, the three timer families (<a href={`#rest-timer`}>Rest timer</a>, <a href={`#set-timer`}>Set timer</a>, and <a href={`#workout-timer`}>Workout timer</a>), <a href={`#coaching`}>Coaching</a>, <a href={`#app`}>App</a>, and <a href={`#data`}>Your data</a>.</p>
 
   <hr />
 
   <h2 id="logging">Logging</h2>
-  <p>Everything about recording a set and the timers that run while you train.</p>
+  <p>General preferences for recording sets.</p>
   <ul>
     <li><strong>Unit system</strong> - Kilograms or pounds. This is the default for all exercises; individual exercises can override it.</li>
     <li><strong>Default weight increment</strong> - Used by the progressive overload suggestion and stepper buttons when no per-exercise increment is set.</li>
@@ -21,13 +21,28 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Auto-advance to next exercise</strong> - After completing or skipping the last set of an exercise, automatically navigate to the next one.</li>
     <li><strong>Warm-up style</strong> - The default style for the warm-up generator: <strong>Percent</strong> (a ramp as a share of your working weight) or <strong>Plates</strong> (evenly spaced, easy-to-load weights). See <a href={`/help/logging#set-types`}>Warmup sets</a>.</li>
     <li><strong>Default warm-up sets</strong> - How many warm-up sets to generate (1-6). Fewer sets means bigger jumps to your working weight. Both warm-up settings can be overridden per exercise on the exercise edit screen.</li>
+  </ul>
+
+  <h2 id="rest-timer">Rest timer</h2>
+  <p>Preferences for the rest countdown between sets.</p>
+  <ul>
     <li><strong>Default rest time</strong> - Duration used when no exercise-specific or session override is set (30s-300s).</li>
     <li><strong>Default warmup rest</strong> - Duration for warmup sets (15s-120s).</li>
     <li><strong>Rest timer auto-start</strong> - Automatically starts the rest timer when you log a working set.</li>
     <li><strong>Rest timer sound</strong> - Play a sound when the timer ends. When enabled, choose from several preset sounds (with preview).</li>
     <li><strong>Rest timer vibration</strong> - Vibrate when the timer ends.</li>
+  </ul>
+
+  <h2 id="set-timer">Set timer</h2>
+  <p>Preferences for the timed set countdown.</p>
+  <ul>
     <li><strong>Set timer sound</strong> - Play a sound with the notification that fires when a timed set's <a href={`/help/logging#set-timer`}>countdown</a> ends and Badger could not announce it aloud. A countdown that ends with the app in front is spoken, and on iPhone so is one that ends with the screen locked, so this toggle governs the notification only and the spoken cues are not affected by turning it off.</li>
     <li><strong>Set timer voice</strong> - The voice that speaks during a timed set: <strong>Female</strong>, <strong>Male</strong>, or <strong>Off</strong> for silence. Tap a choice to hear it before you commit. This is the switch for everything spoken during the countdown, and it is separate from the notification sound above.</li>
+  </ul>
+
+  <h2 id="workout-timer">Workout timer</h2>
+  <p>Preferences for the overall workout clock.</p>
+  <ul>
     <li><strong>Workout timer auto-start</strong> - Automatically starts the elapsed workout timer when you complete your first set.</li>
     <li><strong>Workout timer auto-stop</strong> - Stops the elapsed timer when you complete the last set of the session.</li>
   </ul>
