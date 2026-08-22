@@ -27,6 +27,18 @@ const year = new Date().getUTCFullYear();
     </nav>
 
     <p class="footer-copy">&copy; {year} Badger. All rights reserved.</p>
+
+    <!-- Apple's App Store Marketing Guidelines require a trademark credit line
+         wherever the App Store badge is used, crediting both Apple and the Apple
+         logo, and require it exactly once per website. This is that once. Google
+         asks the same of the Play badge, so both lines sit here together, beside
+         the Privacy and Terms links, which is where legal notices belong. Do not
+         add a second copy on another page. -->
+    <p class="footer-trademarks">
+      Apple, the Apple logo and iPhone are trademarks of Apple Inc., registered in the U.S. and
+      other countries and regions. App Store is a service mark of Apple Inc. Google Play and the
+      Google Play logo are trademarks of Google LLC.
+    </p>
   </div>
 </footer>
 
@@ -67,6 +79,15 @@ const year = new Date().getUTCFullYear();
   .footer-copy {
     margin: 0;
     font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .footer-trademarks {
+    margin: 0;
+    max-width: 64ch;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.6;
     color: var(--text-muted);
   }
 

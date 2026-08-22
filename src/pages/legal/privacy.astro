@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Privacy Policy" description="Badger privacy policy - what we store, what leaves your device, and your rights.">
   <h1>Privacy Policy</h1>
 
-  <p><strong>Last updated:</strong> 2026-07-26</p>
+  <p><strong>Last updated:</strong> 2026-08-21</p>
 
   <p>
     Badger is a local-first workout tracker. Your training data lives on your device
@@ -91,14 +91,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Third parties present in the app</h2>
   <ul>
-    <li><strong>Google Fonts</strong> (Inter) - fetched at runtime when the app first renders text. Google may log the request as part of its standard font serving.</li>
+    <li><strong>Your phone's store rating sheet</strong> - after a session that sets an all-time personal record, Badger may ask your phone to show its standard "rate this app" sheet. The sheet belongs to Apple or Google, not to Badger, and your phone decides whether to show it and how often. Badger sends nothing with the request and is told nothing back: not whether the sheet appeared, not what you rated it, not whether you wrote anything. Any review you do leave is between you and the store.</li>
     <li><strong>Apple Health / Health Connect</strong> - only used when you opt in (see above). These are your phone's own health stores; data exchanged with them stays on your device and is governed by Apple's or Google's handling of that store, not by us.</li>
     <li><strong>Google Drive</strong> - only used when you opt in to cloud backup (see above). Data is stored in Badger's private app-data folder on <em>your</em> Drive; it is not shared with us or with any other party.</li>
   </ul>
   <p>
-    No analytics SDKs, no advertising SDKs, no crash-reporting SDKs. Firebase integration
-    is scaffolded in the codebase for possible future features but is not initialized or
-    used in this version.
+    No analytics SDKs, no advertising SDKs, no crash-reporting SDKs. Fonts are bundled inside
+    the app rather than fetched from a font service, so displaying text makes no network
+    request. Firebase integration is scaffolded in the codebase for possible future features
+    but is not initialized or used in this version.
   </p>
 
   <h2>What we explicitly do not do</h2>
@@ -108,7 +109,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>No user profiling or behavioral tracking.</li>
     <li>No account required to use Badger. Google Sign-In is only used if you opt in to cloud backup, and only to upload/download your own backup files to your own Drive.</li>
     <li>No cloud sync of live workout data - only opt-in backup archives.</li>
-    <li>No third-party SDKs beyond Google Fonts (see above).</li>
+    <li>No third-party SDKs that send us anything. The three above are your phone's own services, used only when you opt in or when your phone chooses to show its rating sheet.</li>
   </ul>
 
   <h2>Your rights</h2>

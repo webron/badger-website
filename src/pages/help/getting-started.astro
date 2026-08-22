@@ -1,5 +1,6 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
+import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
 ---
 
 <HelpLayout title="Getting Started" description="How to install Badger, configure your preferences, and log your first workout.">
@@ -10,12 +11,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <hr />
 
   <h2>Installation</h2>
-  <p>Download Badger from the Google Play Store. On first launch you'll go through a short setup:</p>
+  <p>Download Badger from the <a href={APP_STORE_URL}>App Store</a> on iPhone, or from <a href={PLAY_URL}>Google Play</a> on Android. On iOS it is an iPhone app only - there is no iPad build. On first launch you'll go through a short setup:</p>
   <ol>
     <li><strong>Weight unit</strong> - Choose kilograms or pounds. This sets the default for all exercises, though individual exercises can override it.</li>
     <li><strong>Import data</strong> - If you're coming from another app (FitNotes, Strong, Hevy, or Stronglifts), you can import your full history here. You can also do this later in Settings.</li>
   </ol>
   <p>That's it. You're dropped straight into the home screen.</p>
+
+  <div class="callout">
+    <strong>iOS beta builds.</strong> Badger's iPhone releases are tested in <a href={TESTFLIGHT_URL}>TestFlight</a> before they reach the App Store. You do not need it - the App Store version is the same app, a little later - but if you would rather see changes early and send feedback on them, that is where to get them. Everyone else should use the App Store.
+  </div>
 
   <h2 id="first-workout">Your first workout</h2>
   <p>Badger organizes training around <strong>workouts</strong> (a day's session) and <strong>exercises</strong> (movements within that session). Here's the basic flow:</p>

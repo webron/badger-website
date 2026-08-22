@@ -8,6 +8,7 @@ import PhoneFrameBand from '../components/PhoneFrameBand.astro';
 import FeatureRow from '../components/FeatureRow.astro';
 import LedgerRow from '../components/LedgerRow.astro';
 import ArrowGlyph from '../components/ArrowGlyph.astro';
+import { APP_STORE_URL, PLAY_URL } from '../store-links';
 
 // Kept at or under 165 characters: Google truncates the displayed snippet at
 // roughly that width, and this string is the snippet, the og:description and
@@ -20,11 +21,12 @@ const ORG_ID = 'https://badger.fit/#organization';
 // One @graph rather than two <script> blocks, so the app node can point at the
 // organization node by @id instead of restating it.
 //
-// Every claim here has to be true of the shipped product. sameAs carries the
-// Google Play listing only: it is the one public profile page that is actually
-// ours. Badger has no social accounts, and inventing them would be the exact
-// kind of unverifiable markup that gets structured data ignored. The TestFlight
-// invite is deliberately not listed either - it is a join link, not a profile.
+// Every claim here has to be true of the shipped product. sameAs carries the two
+// store listings and nothing else: they are the public profile pages that are
+// actually ours. Badger has no social accounts, and inventing them would be the
+// exact kind of unverifiable markup that gets structured data ignored. The
+// TestFlight invite is deliberately not listed - it is a join link, not a
+// profile, and it is no longer how anyone gets the app.
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -34,7 +36,7 @@ const structuredData = {
       name: 'Badger',
       url: 'https://badger.fit',
       logo: 'https://badger.fit/assets/badger_logo_stacked.svg',
-      sameAs: ['https://play.google.com/store/apps/details?id=fit.badger.app'],
+      sameAs: [APP_STORE_URL, PLAY_URL],
     },
     {
       // MobileApplication is a subtype of SoftwareApplication and is the more
@@ -42,16 +44,13 @@ const structuredData = {
       '@type': 'MobileApplication',
       name: 'Badger',
       applicationCategory: 'HealthApplication',
-      // Re-checked 2026-07-23 (M-web-3): the iOS build is still TestFlight-only,
-      // the App Store submission has not gone in. iOS stays listed because this
-      // field states which operating systems the app runs on, not where it can be
-      // bought, and the iOS build is real and installable; downloadUrl and the CTA
-      // below both say Play and TestFlight in plain words, so nothing here promises
-      // an App Store listing. Revisit at App Store launch together with that CTA
-      // clause (copy worklist section 1).
+      // Both platforms are public store releases as of 1.1.10, so this field and
+      // downloadUrl finally say the same thing. iOS is iPhone only: the iPad build
+      // was dropped rather than shipped on a screen size Badger has never been
+      // tested on.
       operatingSystem: 'Android, iOS',
       url: 'https://badger.fit',
-      downloadUrl: 'https://play.google.com/store/apps/details?id=fit.badger.app',
+      downloadUrl: [APP_STORE_URL, PLAY_URL],
       description,
       publisher: { '@id': ORG_ID },
       // Genuinely free: no paid tier, no in-app purchase, nothing paywalled.
@@ -224,7 +223,7 @@ const shouldnt = [
 
     <section class="cta">
       <h2>Ready to start?</h2>
-      <p>Badger is free on Google Play, with an iOS beta open in TestFlight.</p>
+      <p>Badger is free on the App Store and Google Play.</p>
       <StoreBadges />
     </section>
   </main>

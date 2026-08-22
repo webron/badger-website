@@ -6,7 +6,25 @@ import Footer from '../components/Footer.astro';
 // Keep this in sync with the in-app changelog
 // (badger-fit: lib/features/about/domain/changelog.dart) and the store
 // release notes. Newest first.
+//
+// 1.1.10 is the exception, and deliberately so. It has no kChangelog entry,
+// because the in-app changelog is for users and nothing about using the app
+// changed in it. That makes this page the only written account of the release,
+// so the entry below explains the milestone rather than listing features, and
+// is longer than the store notes rather than a copy of them.
 const releases = [
+  {
+    version: '1.1.10',
+    date: 'August 2026',
+    headline: 'Badger is out of testing, on both stores',
+    highlights: [
+      'Badger is on the App Store, and on Google Play it has moved from open testing to a normal public release. Until now the Android app was something you had to opt into a test track to get, and the iPhone app was a TestFlight beta with an invite link. Both of those are over. Anyone can search for Badger on either store and install it, and the app has stopped describing itself as a beta anywhere in its own screens.',
+      'Nothing changed in how you log a workout. If you have been testing Badger, this release moves no buttons and renames no settings, and your history, routines and gyms are exactly where you left them. There is no migration to do and nothing to re-import. Testers on either platform can carry on with the copy they already have, or switch to the store version whenever it suits.',
+      'On iPhone, Badger is an iPhone app only. There was a version that would install on an iPad, but it had never been designed or tested for that screen, so it is gone rather than shipped as something it is not. If iPad support arrives later it will be because the layouts were built for it, not because the build allowed it.',
+      'After a session that sets an all-time personal record, Badger may ask once whether you would like to rate it. This is the standard rating sheet your phone provides, so it appears inside the app, takes a tap to dismiss, and your phone limits how often any app is allowed to ask. Badger will not ask again on the same version, and will not ask at all until you have logged at least five workouts. There is no version of it that sends unhappy people somewhere else, which some apps do and both stores forbid.',
+      'The "Enjoying the beta?" card on the home screen is now "How\'s Badger working out?" and does the same job it always did, which is to give you somewhere to say something is wrong other than a one-star review. It still goes to a person, and it is still the fastest way to get a bug looked at.',
+    ],
+  },
   {
     version: '1.1.9',
     date: 'August 2026',
@@ -183,8 +201,8 @@ const releases = [
     <span class="kicker">Release log</span>
     <h1>What's new</h1>
     <p class="lede">
-      Every release of Badger, newest first. Badger is in active development on Android and in beta
-      on iOS.
+      Every release of Badger, newest first. Badger is in active development on Android and iOS,
+      and both are public store releases.
     </p>
 
     {

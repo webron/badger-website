@@ -2,24 +2,58 @@
 /**
  * The two store affordances, used in the hero and again in the closing CTA.
  *
- * The Play badge is Google's supplied artwork and has to ship as the PNG it is;
- * the TestFlight pill is drawn locally so it stays on Apple's black-chrome
- * convention without pulling a second image over the wire. Both keep their own
- * fixed colors: they are third-party marks, not journal chrome, and they do not
- * follow the theme tokens.
+ * Both marks are the store owner's own supplied artwork and ship as the files
+ * they are: Google's PNG, and Apple's black "Download on the App Store" SVG
+ * pulled from Apple's marketing toolbox. Neither follows the site theme tokens.
+ * They are third-party trademarks, not journal chrome, so they keep their own
+ * fixed colors in light and dark alike.
+ *
+ * Apple's App Store Marketing Guidelines drive four things here, and none of
+ * them are cosmetic preferences to tune later:
+ *
+ *  - The App Store badge comes FIRST when badges for other platforms are in the
+ *    same layout. That is why Apple is the first child and Google the second.
+ *  - The preferred black badge is the one to use whenever another platform's
+ *    badge is present. The gray hairline around it is part of the artwork.
+ *  - Minimum clear space is one quarter of the badge height, which is the 10px
+ *    padding below (40 / 4). Nothing may sit inside it.
+ *  - Minimum height onscreen is 40px. The artwork is authored at exactly 40, so
+ *    it renders at its native size and is never recolored, angled or animated.
+ *
+ * Using the badge also obliges an Apple trademark credit line, which lives once
+ * in the site footer next to the other legal notices.
+ *
+ * Both hrefs come from src/store-links.ts. The App Store one is still a
+ * placeholder there and has to be filled in before any of this is deployed.
+ *
+ * The Play badge sits in a 56px box whose PNG carries about 16% built-in
+ * padding, so its visible button is roughly 37.6px tall. Apple's 40px lands
+ * within a couple of pixels of that, which is why the pair reads as balanced
+ * despite the different box heights.
  */
+import { APP_STORE_URL, PLAY_URL } from '../store-links';
+
 interface Props {
   /** Only the hero instance takes the #download target the header links to. */
   id?: string;
 }
 
 const { id } = Astro.props;
-
-const PLAY_URL = 'https://play.google.com/store/apps/details?id=fit.badger.app';
-const TESTFLIGHT_URL = 'https://testflight.apple.com/join/wqxnbujx';
 ---
 
 <div class="store-badges" id={id}>
+  <a class="badge-apple" href={APP_STORE_URL}>
+    <!-- Apple's artwork, unmodified. Intrinsic 119.66407x40; the width and
+         height attributes let the browser reserve the box before the SVG
+         arrives, which is what keeps CLS at 0. -->
+    <img
+      src="/assets/badges/app-store-badge.svg"
+      alt="Download on the App Store"
+      width="120"
+      height="40"
+    />
+  </a>
+
   <a class="badge-play" href={PLAY_URL}>
     <!-- Intrinsic 646x250. The attributes are what let the browser reserve the
          box before the PNG arrives, which is what keeps CLS at 0. -->
@@ -30,76 +64,46 @@ const TESTFLIGHT_URL = 'https://testflight.apple.com/join/wqxnbujx';
       height="250"
     />
   </a>
-
-  <a class="badge-testflight" href={TESTFLIGHT_URL} aria-label="Try the iOS beta on TestFlight">
-    <svg width="15" height="18" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true" focusable="false">
-      <path
-        d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"
-      ></path>
-    </svg>
-    <span class="tf-lines" aria-hidden="true">
-      <span class="tf-kicker">Try the</span>
-      <span class="tf-name">iOS beta</span>
-    </span>
-  </a>
 </div>
 
 <style>
   .store-badges {
     display: flex;
-    gap: 12px;
+    /* Column gap is small because both marks carry padding of their own: Apple's
+       required clear space below, and the padding baked into Google's PNG. */
+    column-gap: 6px;
+    row-gap: 10px;
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  .badge-play,
-  .badge-testflight {
+  .badge-apple,
+  .badge-play {
     display: inline-flex;
     text-decoration: none;
   }
 
-  .badge-play:hover,
-  .badge-testflight:hover {
+  .badge-apple:hover,
+  .badge-play:hover {
     text-decoration: none;
+  }
+
+  /* 10px is Apple's minimum clear space: one quarter of the 40px badge height.
+     Don't reduce it, and don't let anything be placed inside it. */
+  .badge-apple {
+    padding: 10px;
+  }
+
+  .badge-apple img {
+    display: block;
+    height: 40px;
+    width: auto;
   }
 
   .badge-play img {
     display: block;
     height: 56px;
     width: auto;
-  }
-
-  /* Apple's mark keeps Apple's chrome: black ground, hairline edge, white type,
-     in both site themes. */
-  .badge-testflight {
-    align-items: center;
-    gap: 7px;
-    height: 38px;
-    padding: 0 14px;
-    background: #000;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    border-radius: 6px;
-    color: #fff;
-  }
-
-  .tf-lines {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-  }
-
-  .tf-kicker {
-    font-size: 8px;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    opacity: 0.85;
-    line-height: 1.2;
-  }
-
-  .tf-name {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.05;
   }
 </style>
