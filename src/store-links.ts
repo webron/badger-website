@@ -7,19 +7,14 @@
 /**
  * The App Store listing.
  *
- * TODO(Ron): replace APP_STORE_ID_PLACEHOLDER with the numeric App Store app id
- * once the app is approved. App Store Connect shows it as "Apple ID" on the
- * app's App Information page; the public URL is
- * https://apps.apple.com/app/id1234567890.
+ * The numeric id was read from the App Store Connect API on 2026-08-22. It is
+ * assigned when the app RECORD is created, not when a version is approved, so
+ * it has existed since the first TestFlight build and does not change.
  *
- * This is the ONLY line that has to change, and it is deliberately left as a
- * URL that cannot resolve rather than a plausible-looking guess or a search
- * page. A broken link is caught the first time anyone clicks it; a link that
- * quietly goes somewhere wrong is not. Nothing here may be deployed until it
- * is filled in, because the App Store badge and the structured data on the home
- * page both read from this constant.
+ * The link resolves only once a version is actually released, so this branch
+ * still must not be deployed before the App Store listing is live.
  */
-export const APP_STORE_URL = 'https://apps.apple.com/app/idAPP_STORE_ID_PLACEHOLDER';
+export const APP_STORE_URL = 'https://apps.apple.com/app/id6782743069';
 
 /** The Google Play listing. */
 export const PLAY_URL = 'https://play.google.com/store/apps/details?id=fit.badger.app';
