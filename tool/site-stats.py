@@ -23,7 +23,7 @@ import os
 import sys
 import urllib.error
 import urllib.request
-from datetime import date, timedelta
+from datetime import datetime, timedelta, timezone
 
 SITE = "https://badgerfit.goatcounter.com"
 TOKEN_PATH = os.path.expanduser("~/.config/goatcounter/token")
@@ -85,9 +85,13 @@ def main() -> None:
     days = int(args[0]) if args else 7
 
     token = read_token()
-    end = date.today()
-    start = end - timedelta(days=days - 1)
-    window = {"start": start.isoformat(), "end": end.isoformat()}
+    # GoatCounter's day boundaries are not the local machine's. Anchor the window
+    # to UTC and ask for one extra day at the end, or a hit recorded after local
+    # midnight-in-UTC-terms falls outside the range and the summary reports a
+    # confident zero that is really just the wrong question.
+    today = datetime.now(timezone.utc).date()
+    start = today - timedelta(days=days - 1)
+    window = {"start": start.isoformat(), "end": (today + timedelta(days=1)).isoformat()}
 
     total = get("stats/total", token, **window)
     hits = get("stats/hits", token, limit=100, **window)
@@ -109,7 +113,7 @@ def main() -> None:
             indent=2))
         return
 
-    print(f"badger.fit  {start.isoformat()} to {end.isoformat()}  ({days} days)")
+    print(f"badger.fit  {start.isoformat()} to {today.isoformat()} UTC  ({days} days)")
     print(f"\n  {total.get('total', 0)} page views")
 
     table("Pages",
