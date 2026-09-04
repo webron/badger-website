@@ -42,7 +42,7 @@ const { id } = Astro.props;
 ---
 
 <div class="store-badges" id={id}>
-  <a class="badge-apple" href={APP_STORE_URL}>
+  <a class="badge-apple" href={APP_STORE_URL} data-store-event="store-appstore">
     <!-- Apple's artwork, unmodified. Intrinsic 119.66407x40; the width and
          height attributes let the browser reserve the box before the SVG
          arrives, which is what keeps CLS at 0. -->
@@ -54,7 +54,7 @@ const { id } = Astro.props;
     />
   </a>
 
-  <a class="badge-play" href={PLAY_URL}>
+  <a class="badge-play" href={PLAY_URL} data-store-event="store-play">
     <!-- Intrinsic 646x250. The attributes are what let the browser reserve the
          box before the PNG arrives, which is what keeps CLS at 0. -->
     <img
@@ -64,7 +64,33 @@ const { id } = Astro.props;
       height="250"
     />
   </a>
+
 </div>
+
+<script>
+  // Count taps on the two store affordances as GoatCounter events. This is the
+  // one number the page view count cannot give us: whether the site actually
+  // sends anyone to a store. It records that a click happened, nothing about who
+  // clicked. The component renders twice per page, so this delegates from the
+  // document rather than binding per badge, and Astro hoists it once either way.
+  //
+  // Everything is guarded: if count.js is blocked or still loading, the click
+  // proceeds untracked. Navigation is never delayed or blocked on the beacon.
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    const link = target?.closest?.('[data-store-event]');
+    if (!link) return;
+
+    const gc = (window as any).goatcounter;
+    if (!gc?.count) return;
+
+    gc.count({
+      path: link.getAttribute('data-store-event'),
+      title: 'Store link click',
+      event: true,
+    });
+  });
+</script>
 
 <style>
   .store-badges {

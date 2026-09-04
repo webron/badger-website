@@ -19,8 +19,9 @@ import { join } from 'node:path';
  * so this page cannot drift from what it is handing out.
  *
  * The "not yet" section is the point of the page, not an apology: it is how
- * demand for percentage-based programming gets measured on a site that carries
- * no analytics of any kind.
+ * demand for percentage-based programming gets measured on a site whose
+ * analytics count page views and nothing else. A view is not a want, so the
+ * email stays the only real signal here.
  */
 
 // From the project root: at build time this module lives in dist/, so a
@@ -252,8 +253,9 @@ const description =
 
     <p class="note">
       That link opens an email to <a href="mailto:hello@badger.fit">hello@badger.fit</a> with the
-      subject filled in. Say nothing else if you like: the count is the signal. This site runs no
-      analytics and sets no cookies, so asking is the only way anyone here knows what you want.
+      subject filled in. Say nothing else if you like: the count is the signal. This site counts
+      page views and sets no cookies, which tells us a page was read but nothing about what any
+      one person wants, so asking is the only way anyone here knows.
     </p>
 
     <div class="close-line">
