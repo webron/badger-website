@@ -5,13 +5,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Privacy Policy" description="Badger privacy policy - what we store, what leaves your device, and your rights.">
   <h1>Privacy Policy</h1>
 
-  <p><strong>Last updated:</strong> 2026-07-26</p>
+  <p><strong>Last updated:</strong> 2026-09-03</p>
 
   <p>
     Badger is a local-first workout tracker. Your training data lives on your device
     in a local SQLite database. Nothing is sent to a server automatically. This policy
     explains what is stored, what can leave the device (only when you initiate it),
-    and your rights.
+    and your rights. Everything below describes the app unless it says otherwise;
+    the <a href="#website">About this website</a> section covers badger.fit itself,
+    which is a separate thing with separate answers.
   </p>
 
   <h2>Data stored only on your device</h2>
@@ -101,15 +103,57 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     used in this version.
   </p>
 
-  <h2>What we explicitly do not do</h2>
+  <h2>What the app explicitly does not do</h2>
   <ul>
-    <li>No analytics, metrics, or telemetry.</li>
+    <li>No analytics, metrics, or telemetry. (The website counts page views; see <a href="#website">About this website</a>. The app does not, and never talks to the website.)</li>
     <li>No advertising or ad-tracking SDKs.</li>
     <li>No user profiling or behavioral tracking.</li>
     <li>No account required to use Badger. Google Sign-In is only used if you opt in to cloud backup, and only to upload/download your own backup files to your own Drive.</li>
     <li>No cloud sync of live workout data - only opt-in backup archives.</li>
     <li>No third-party SDKs beyond Google Fonts (see above).</li>
   </ul>
+
+  <h2 id="website">About this website</h2>
+  <p>
+    Everything above is about the Badger app. This section is about badger.fit, the site
+    you are reading now. They are separate: the app sends nothing anywhere, and the site
+    counts visits.
+  </p>
+  <p>
+    We use <a href="https://www.goatcounter.com/" rel="noopener">GoatCounter</a>, an
+    open-source, privacy-focused analytics tool, to see which pages people read and where
+    they arrive from. It is how we know whether a help page is worth keeping and whether
+    anyone found the site at all.
+  </p>
+  <p><strong>It sets no cookies</strong> and stores nothing in your browser: no cookies, no
+  localStorage, no cache entries, nothing that survives your visit. There is no consent
+  banner because there is nothing to consent to storing.</p>
+  <p>Per page you view, it records:</p>
+  <ul>
+    <li>The page path and the time.</li>
+    <li>The referrer, meaning the site or link that sent you here.</li>
+    <li>Your browser, operating system, and screen width.</li>
+    <li>Your country, worked out from your IP address at the moment of the request.</li>
+    <li>Whether you tapped one of the store links, recorded as a plain counter with nothing attached to it.</li>
+  </ul>
+  <p>
+    <strong>Your IP address is not stored.</strong> It is combined with your browser's user
+    agent to produce a random session identifier held in memory for up to eight hours, so
+    that reading four pages counts as one visit rather than four. That identifier is not
+    tied to you, expires on its own, and cannot be turned back into an IP address. The full
+    user agent is not stored either.
+  </p>
+  <p>
+    There is no profile, no cross-site tracking, no advertising, and no data sold or shared.
+    Nothing here identifies you, and none of it is connected to anything in the app: the app
+    never contacts this site, so your training data and your reading of this page have no way
+    of meeting. Any content blocker or tracker-blocking browser stops the script, and the
+    site works exactly the same without it.
+  </p>
+  <p>
+    The site is hosted on GitHub Pages, which, like any web host, processes the requests
+    needed to serve you the page.
+  </p>
 
   <h2>Your rights</h2>
   <p>
