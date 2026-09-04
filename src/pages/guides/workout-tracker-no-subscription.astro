@@ -20,6 +20,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
  *
  * Badger's own claims were checked against the app source and pubspec on
  * 2026-07-25: no billing, ads, or analytics dependency exists in the project.
+ * 2026-09-03: still true of the app. The website itself now runs cookieless
+ * page-view analytics (GoatCounter); the claim here is scoped to the app and
+ * the site's own counting is stated plainly rather than omitted.
  * The "catch" section is deliberately as long as the good news.
  */
 
@@ -75,8 +78,9 @@ const others = [
     </li>
     <li>
       <strong>No ads and no data collection.</strong> The app ships with no analytics and sends nothing
-      off your phone. This website runs no trackers and sets no cookies either, which is also why it
-      cannot tell how many people read this page.
+      off your phone. This website counts page views with a cookieless analytics tool that stores
+      nothing in your browser and never sees your training data; the
+      <a href="/legal/privacy#website">privacy policy</a> spells out exactly what it records.
     </li>
     <li>
       <strong>No caps.</strong> Unlimited routines, unlimited history, unlimited custom exercises.
@@ -210,9 +214,9 @@ const others = [
 
   <p>
     It should. A free app usually means the product is you, and asking where the money comes from is
-    the right instinct. In this case there is no advertising business, no analytics being collected,
-    no data to sell because none of it is held anywhere to sell, and no venture money waiting for a
-    return. If any of that ever changes, <a href="/promise">the promise</a> is the thing to hold it
+    the right instinct. In this case there is no advertising business, nothing collected about your
+    training, no data to sell because none of it is held anywhere to sell, and no venture money
+    waiting for a return. If any of that ever changes, <a href="/promise">the promise</a> is the thing to hold it
     against. It is written down for exactly that reason.
   </p>
 </HelpLayout>

@@ -20,7 +20,7 @@ const TESTFLIGHT_URL = 'https://testflight.apple.com/join/wqxnbujx';
 ---
 
 <div class="store-badges" id={id}>
-  <a class="badge-play" href={PLAY_URL}>
+  <a class="badge-play" href={PLAY_URL} data-store-event="store-play">
     <!-- Intrinsic 646x250. The attributes are what let the browser reserve the
          box before the PNG arrives, which is what keeps CLS at 0. -->
     <img
@@ -31,7 +31,12 @@ const TESTFLIGHT_URL = 'https://testflight.apple.com/join/wqxnbujx';
     />
   </a>
 
-  <a class="badge-testflight" href={TESTFLIGHT_URL} aria-label="Try the iOS beta on TestFlight">
+  <a
+    class="badge-testflight"
+    href={TESTFLIGHT_URL}
+    data-store-event="store-testflight"
+    aria-label="Try the iOS beta on TestFlight"
+  >
     <svg width="15" height="18" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true" focusable="false">
       <path
         d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"
@@ -43,6 +48,31 @@ const TESTFLIGHT_URL = 'https://testflight.apple.com/join/wqxnbujx';
     </span>
   </a>
 </div>
+
+<script>
+  // Count taps on the two store affordances as GoatCounter events. This is the
+  // one number the page view count cannot give us: whether the site actually
+  // sends anyone to a store. It records that a click happened, nothing about who
+  // clicked. The component renders twice per page, so this delegates from the
+  // document rather than binding per badge, and Astro hoists it once either way.
+  //
+  // Everything is guarded: if count.js is blocked or still loading, the click
+  // proceeds untracked. Navigation is never delayed or blocked on the beacon.
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    const link = target?.closest?.('[data-store-event]');
+    if (!link) return;
+
+    const gc = (window as any).goatcounter;
+    if (!gc?.count) return;
+
+    gc.count({
+      path: link.getAttribute('data-store-event'),
+      title: 'Store link click',
+      event: true,
+    });
+  });
+</script>
 
 <style>
   .store-badges {

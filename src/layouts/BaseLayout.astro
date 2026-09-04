@@ -70,6 +70,24 @@ const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
       })();
     </script>
 
+    <!-- GoatCounter: the site's only external request, and the only one the
+         fonts note above does not already rule out. Cookieless and storage-free:
+         it sends one hit per pageview (path, referrer, and a country resolved
+         from the IP server-side, which is then discarded), keeps no identifier,
+         and builds no cross-visit profile. Disclosed in /legal/privacy under
+         "About this website". Skipped in dev builds; count.js additionally
+         ignores localhost and private ranges on its own. -->
+    {
+      import.meta.env.PROD && (
+        <script
+          is:inline
+          data-goatcounter="https://badgerfit.goatcounter.com/count"
+          async
+          src="//gc.zgo.at/count.js"
+        />
+      )
+    }
+
     <slot name="head" />
   </head>
   <body>
