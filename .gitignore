@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # Gemini CLI local state (settings, session checkpoints, shell history)
 .gemini/
+
+# Python bytecode from the stats tools
+__pycache__/
