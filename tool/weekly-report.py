@@ -25,7 +25,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from _stats_sources import STORE_EVENTS, goatcounter, search_console  # noqa: E402
+from _stats_sources import (  # noqa: E402
+    STORE_EVENTS, goatcounter, play, play_quality, search_console,
+)
 
 DEFAULT_OUT = Path.home() / "Development/badger-artifacts/site-stats/weekly.html"
 WEEKS = 5  # this week plus the four it is measured against
@@ -64,6 +66,29 @@ def sparkline(buckets: list[tuple[str, int]]) -> str:
     return f'<div class="spark">{"".join(bars)}</div>'
 
 
+def trend(buckets: list[tuple[str, int]], fallback: int) -> tuple[int, str]:
+    """This week's figure and one sentence putting it against the weeks before.
+
+    Both panels need this and they must phrase it identically, or the reader has
+    to work out whether two differently-worded comparisons mean the same thing.
+    """
+    this_week = buckets[-1][1] if buckets else fallback
+    prior = [c for _, c in buckets[:-1]]
+    if not prior:
+        return this_week, "No earlier weeks to compare against yet."
+
+    average = round(sum(prior) / len(prior))
+    if average == 0:
+        return this_week, "Nothing in the weeks before this one."
+
+    change = (this_week - average) / average
+    if this_week == average:
+        return this_week, f"The same as the previous {len(prior)}-week average."
+    direction = "above" if change > 0 else "below"
+    return this_week, (f"{abs(change):.0%} {direction} the previous "
+                       f"{len(prior)}-week average of {average}.")
+
+
 def rows_table(headers: list[str], rows: list[list[str]], empty: str) -> str:
     if not rows:
         return f'<p class="empty">{esc(empty)}</p>'
@@ -89,18 +114,7 @@ def build_goatcounter(days: int) -> str:
         return error_panel("Website", gc["error"])
 
     buckets = weekly_buckets(gc["daily"])
-    this_week = buckets[-1][1] if buckets else gc["views"]
-    prior = [c for _, c in buckets[:-1]]
-    average = round(sum(prior) / len(prior)) if prior else None
-
-    if average is None:
-        context = "No earlier weeks to compare against yet."
-    elif average == 0:
-        context = "Nothing in the weeks before this one."
-    else:
-        change = (this_week - average) / average
-        direction = "above" if change >= 0 else "below"
-        context = f"{abs(change):.0%} {direction} the previous {len(prior)}-week average of {average}."
+    this_week, context = trend(buckets, gc["views"])
 
     parts = [
         f'<p class="figure">{this_week}<span> page views this week</span></p>',
@@ -165,6 +179,49 @@ def build_search_console(days: int) -> str:
     return panel("Google search", f"{sc['start']} to {sc['end']}", "".join(parts))
 
 
+def build_play(days: int) -> str:
+    p = play(days)
+    if "error" in p:
+        return error_panel("Play Store", p["error"])
+
+    buckets = weekly_buckets(p["daily"])
+    this_week, context = trend(buckets, p["installs"])
+
+    parts = [
+        f'<p class="figure">{this_week}<span> installs this week</span></p>',
+        f'<p class="sub">{esc(context)} {p["active"]} devices have Badger installed right now, '
+        f'and {p["uninstalls"]} uninstalled over the window.</p>',
+        sparkline(buckets),
+    ]
+
+    parts.append("<h3>Where store visits came from</h3>")
+    parts.append(rows_table(
+        ["Acquisitions", "Traffic source"],
+        [[str(c), esc(name)] for name, c in p["sources"]],
+        "No store acquisitions recorded in this window."))
+
+    q = play_quality()
+    parts.append("<h3>Quality</h3>")
+    if "error" in q:
+        parts.append(f'<p class="error">{esc(q["error"])}</p>')
+    elif "empty" in q:
+        parts.append(f'<p class="empty">{esc(q["empty"])}</p>')
+    else:
+        parts.append(rows_table(
+            ["Rate", "Metric"],
+            [[f"{v:.2%}", esc(k)] for k, v in q.items()],
+            "Nothing reported."))
+
+    note = ""
+    if p["missing"]:
+        # Play publishes a month's file once it has something to put in it, so a
+        # gap early in the month is normal. Say so rather than showing a dip.
+        note = (" Play has not published " + ", ".join(p["missing"])
+                + " yet, so the newest days may be missing.")
+
+    return panel("Play Store", f"{p['start']} to {p['end']}.{note}", "".join(parts))
+
+
 CSS = """
 :root{color-scheme:light dark;--bg:#F1EDE3;--card:#FBF8F1;--ink:#211E19;--muted:#6B655A;
 --rule:#DCD5C6;--accent:#2E7E90;--bad:#9C3B2E}
@@ -216,9 +273,7 @@ def main() -> None:
     body = "".join([
         build_goatcounter(days),
         build_search_console(days),
-        panel("Play Console", "",
-              '<p class="empty">Not wired up yet. Play\'s numbers come from a '
-              'different API than the one that publishes releases.</p>'),
+        build_play(days),
         panel("App Store", "",
               '<p class="empty">Waiting on the iOS release.</p>'),
     ])
