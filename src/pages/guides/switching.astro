@@ -5,17 +5,14 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
 const description =
   'Import your history from FitNotes, Strong, Hevy, or Stronglifts, then pick the guide that fits how you train.';
 
-// One entry per app someone arrives from. Only FitNotes has a page of its own
-// so far, because only FitNotes has enough that is specific to it to fill one
-// (its backup is a database, not a CSV, so far more survives the move).
+// One entry per app someone arrives from. FitNotes, Strong and Hevy each have
+// a page, because each import genuinely differs: a FitNotes backup is a
+// database and carries the library, Strong's CSV carries RPE and per-set notes,
+// Hevy's marks set type so warmups survive.
 //
-// StrongLifts points at the 5x5 program page on purpose. That page already
-// carries the import walkthrough, and a second page of ours aimed at the same
-// query would split the two rather than adding anything.
-//
-// Strong and Hevy point at the help anchors. When there is something worth
-// saying that is specific to one of them, it gets a sibling of fitnotes.astro
-// and this entry changes to point at it.
+// StrongLifts is last and points at the 5x5 program page on purpose. That page
+// already carries the import walkthrough, and a second page of ours aimed at
+// the same query would split it rather than adding anything.
 const fromApps = [
   {
     app: 'FitNotes',
@@ -24,21 +21,21 @@ const fromApps = [
     full: true,
   },
   {
-    app: 'StrongLifts',
-    href: '/guides/stronglifts-5x5-tracker#import',
-    note: 'Covered on the 5x5 page, together with the template that ships in the app.',
-    full: false,
-  },
-  {
     app: 'Strong',
-    href: '/help/getting-started#importing-strong',
-    note: 'A CSV export. Badger reads the unit from the header and handles the European semicolon variant.',
-    full: false,
+    href: '/guides/strong-alternative',
+    note: 'A CSV, and a fuller one than most: your RPE and your per-set notes come with it.',
+    full: true,
   },
   {
     app: 'Hevy',
-    href: '/help/getting-started#importing-hevy',
-    note: 'A CSV export, and the one that marks its warmup sets, so they arrive as warmups.',
+    href: '/guides/hevy-alternative',
+    note: 'The richest CSV of the four. It marks set type, so your warmups arrive as warmups.',
+    full: true,
+  },
+  {
+    app: 'StrongLifts',
+    href: '/guides/stronglifts-5x5-tracker#import',
+    note: 'Covered on the 5x5 page, together with the template that ships in the app.',
     full: false,
   },
 ];

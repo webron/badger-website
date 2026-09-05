@@ -1,0 +1,191 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * Sibling of fitnotes-alternative.astro and strong-alternative.astro. Read the
+ * FitNotes header first; the trademark and source-checking rules are identical,
+ * and the no-claims-about-their-pricing rule from the Strong page applies here
+ * too.
+ *
+ * Import claims checked against hevy_parser.dart and hevy_importer.dart on
+ * 2026-09-05:
+ *   - weight unit from the weight_kg / weight_lbs header, distance from
+ *     distance_km / distance_miles (hevy_parser.dart:104-111)
+ *   - carried: title, exercise_title, reps, duration_seconds, exercise_notes,
+ *     set_index, rpe (importer :253), and set_type, which is why warmups
+ *     survive as warmups (:197, importer :252)
+ *   - real session start/end from start_time / end_time (:90-92)
+ *   - superset_id IS parsed (:198) but the importer does NOT rebuild supersets
+ *     from it. Do not claim supersets come across. If that changes, this
+ *     comment and the page both need updating.
+ */
+
+const description =
+  'Move to Badger from Hevy and keep the detail. The CSV is the richest of the lot: warmups arrive as warmups, RPE comes with them, and your log stops needing an account.';
+---
+
+<HelpLayout title="Moving from Hevy" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="Moving to Badger from Hevy"
+    description={description}
+    dateModified="2026-09-05"
+    about={['Hevy', 'Workout tracking']}
+  />
+
+  <p class="crumb"><a href="/guides/switching">Switching to Badger</a></p>
+
+  <h1>Moving to Badger from Hevy</h1>
+
+  <p>
+    People usually arrive here wanting the same log without the account behind it, or without paying
+    for the parts they use. Hevy is a well-made app and this is not an argument that it is not. It is
+    an answer to a narrower question: does your history come with you, and what changes if it does?
+  </p>
+
+  <h2 id="import">What the CSV carries across</h2>
+
+  <p>
+    Hevy's export is the most detailed of the CSVs Badger reads, so more survives the move here than
+    from anywhere else except a FitNotes backup. It is read on your phone, with nothing uploaded.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Warmups stay warmups.</strong> Hevy is the one app in this list whose export marks set
+      type, so your ramp-up sets arrive flagged instead of being flattened into working sets and
+      quietly polluting your PRs and volume numbers.
+    </li>
+    <li>
+      <strong>Every set</strong>, with its date, exercise, weight, reps, distance, and time.
+    </li>
+    <li>
+      <strong>Your RPE</strong>, carried onto the set rather than dropped.
+    </li>
+    <li>
+      <strong>Your exercise notes</strong>, kept with the exercise they belong to, and the workout's
+      title as a note on that session.
+    </li>
+    <li>
+      <strong>Real session times.</strong> Hevy exports a start and an end for each workout, so
+      imported sessions show when they ran and for how long.
+    </li>
+    <li>
+      <strong>Kilograms or pounds, miles or kilometers</strong>, all read from the file's own column
+      names rather than guessed, and stored in the unit you logged in.
+    </li>
+    <li>
+      <strong>PRs, recalculated</strong> from the imported history, so your records and graphs start
+      out full.
+    </li>
+  </ul>
+
+  <p><strong>What does not, so nothing surprises you later:</strong></p>
+
+  <ul>
+    <li>
+      <strong>Supersets, as supersets.</strong> The export marks which sets were grouped and Badger
+      reads that column, but it does not rebuild the grouping on import yet. The sets all arrive; the
+      pairing does not.
+    </li>
+    <li>
+      <strong>Your routines.</strong> The export is history, not programs. Badger ships seven
+      templates and you can build your own, but the routines are set up again.
+    </li>
+    <li>
+      <strong>Your folders and categories.</strong> A CSV carries none, so new exercises land in an
+      "Imported" category to re-sort. Anything already in your Badger library is matched by name
+      rather than duplicated.
+    </li>
+  </ul>
+
+  <h2 id="how">Doing it</h2>
+
+  <ol>
+    <li>In Hevy, go to <strong>Profile &rarr; Settings &rarr; Export Data &rarr; Export as CSV</strong>.</li>
+    <li>
+      Get the file onto the phone you train with, however you normally move a file: email it to
+      yourself, drop it in cloud storage, use a cable.
+    </li>
+    <li>In Badger, go to <strong>Settings &rarr; Your data &rarr; Import from Hevy</strong> and pick the file.</li>
+    <li>Check the preview: exercises, workout days, sets, and the detected weight unit.</li>
+    <li>Import.</li>
+  </ol>
+
+  <p>
+    It runs more than once safely. Sets landing on a date you already have merge into that session,
+    and nothing already logged is overwritten. Full detail in
+    <a href="/help/getting-started#importing-hevy">importing from Hevy</a>.
+  </p>
+
+  <h2 id="what-you-get">What you get, and what you give up</h2>
+
+  <p><strong>What you get:</strong></p>
+
+  <ul>
+    <li>
+      <strong>No account.</strong> Your log lives on your phone, so there is nothing to sign into and
+      nothing to be locked out of. <a href="/promise">The promise</a> is that written down where you
+      can hold us to it.
+    </li>
+    <li>
+      <strong>Nothing behind a paywall.</strong> No cap on routines, on history, or on graphs, and
+      exporting your own numbers is not a paid feature.
+      <a href="/guides/workout-tracker-no-subscription">The no-subscription guide</a> compares what
+      free actually means across the trackers people weigh up.
+    </li>
+    <li>
+      <strong>Gym and machine tracking</strong>, with PRs scoped to the machine you used.
+      <a href="/help/gyms">How it works</a>.
+    </li>
+    <li>
+      <strong>Deeper per-exercise analysis</strong>: estimated 1RM, eleven graphs per exercise, muscle
+      balance and plateau detection. <a href="/help/progress">What it tracks</a>.
+    </li>
+  </ul>
+
+  <p><strong>What you give up:</strong></p>
+
+  <ul>
+    <li>
+      <strong>The social side.</strong> No feed, no followers, no shared workouts. For a lot of Hevy
+      users that is the point of the app, and if it is the thing keeping you consistent then Badger
+      is the wrong move. Worth being honest about rather than burying.
+    </li>
+    <li>
+      <strong>Cloud sync between devices.</strong> Local-first by design. Moving to a new phone is a
+      backup file you carry across, which is <a href="/help/phone-migration">a documented path</a>,
+      not a background service.
+    </li>
+  </ul>
+
+  <h2 id="getting-out">Getting back out again</h2>
+
+  <p>
+    Badger exports every set to CSV and backs the whole database up to a
+    <a href="/badger-format">documented file format</a> that is ordinary readable text. Neither needs
+    an account and neither is a paid feature, so leaving is as easy as arriving.
+  </p>
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    Hevy is a trademark of its owner, and Badger is not affiliated with, endorsed by, sponsored by, or
+    connected to it in any way. This page describes compatibility and nothing else: Badger reads the
+    CSV file that their app exports.
+  </p>
+</HelpLayout>
+
+<style>
+  .crumb {
+    margin: 0 0 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>

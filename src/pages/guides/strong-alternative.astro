@@ -1,0 +1,200 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * Sibling of fitnotes-alternative.astro. Read that file's header first; the
+ * trademark rules and the source-checking rule are identical.
+ *
+ * NO CLAIMS ABOUT THEIR PRICING OR THEIR FEATURE SET. Competitor pricing moves,
+ * and a page that is wrong about it is worse than a page that never mentioned
+ * it. Everything comparative here is a statement about what BADGER does not
+ * charge for, which we can keep true.
+ *
+ * Import claims checked against strong_parser.dart and strong_importer.dart on
+ * 2026-09-05:
+ *   - delimiter sniffed from the header line, ';' or ',', for the European
+ *     exports (strong_parser.dart:61)
+ *   - weight unit read from the 'Weight (kg)' / 'Weight (lbs)' header, not
+ *     guessed (:91)
+ *   - carried: Set Order, Reps, Distance, Seconds, Notes (per set), Workout
+ *     Notes, Workout Name, RPE (:96-107, importer :242-243)
+ *   - session start/end resolved from Strong's full datetime Date column via
+ *     resolveSessionTimes (:134)
+ *   - NOT carried: warmups. Strong's export does not mark them, and nothing in
+ *     the parser infers them from Set Order. Do not add a warmup claim here.
+ */
+
+const description =
+  'Move to Badger from Strong without losing your log. What the CSV export carries across, including your RPE and per-set notes, and what none of it costs.';
+---
+
+<HelpLayout title="Moving from Strong" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="Moving to Badger from Strong"
+    description={description}
+    dateModified="2026-09-05"
+    about={['Strong', 'Workout tracking']}
+  />
+
+  <p class="crumb"><a href="/guides/switching">Switching to Badger</a></p>
+
+  <h1>Moving to Badger from Strong</h1>
+
+  <p>
+    Strong is a good app, and if it suits you there is no reason to move. People usually land here
+    for one of two reasons: they would rather not rent their own training log, or they want it to
+    live on the phone rather than in an account. This page covers what survives the move and what you
+    trade.
+  </p>
+
+  <h2 id="import">What the CSV carries across</h2>
+
+  <p>
+    Strong exports a CSV. Badger reads it on your phone, with nothing uploaded, and it takes more of
+    it than most importers bother with.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Every set</strong>, with its date, exercise, weight, reps, distance, and time.
+    </li>
+    <li>
+      <strong>Your RPE.</strong> If you logged effort, it comes across on the set rather than being
+      dropped, so a decade of "how hard was that" is still there.
+    </li>
+    <li>
+      <strong>Per-set notes, kept on their set.</strong> The note you left on one heavy triple stays
+      attached to that triple. Workout notes and the workout's name become notes on the session.
+    </li>
+    <li>
+      <strong>Real session times.</strong> Strong's date column is a full timestamp, so imported
+      workouts show when they started and how long they ran instead of showing nothing.
+    </li>
+    <li>
+      <strong>Kilograms or pounds</strong>, read from the file's own header rather than guessed, and
+      stored in the unit you logged in. Nothing is converted or rounded on the way in.
+    </li>
+    <li>
+      <strong>The European export.</strong> Strong writes a semicolon-separated file in some locales.
+      Badger sniffs the delimiter from the header line, so that file works without you doing
+      anything to it.
+    </li>
+    <li>
+      <strong>PRs, recalculated</strong> from the imported history, so your records and graphs start
+      out full.
+    </li>
+  </ul>
+
+  <p><strong>What does not, so nothing surprises you later:</strong></p>
+
+  <ul>
+    <li>
+      <strong>Warmups, as warmups.</strong> The Strong export does not mark them, so every logged set
+      arrives as a working set. Nothing can tell retroactively which ones were ramp-up.
+    </li>
+    <li>
+      <strong>Your routines.</strong> The export is history, not programs. Badger ships seven program
+      templates and you can build your own, but the routines themselves are set up again.
+    </li>
+    <li>
+      <strong>Your exercise categories.</strong> A CSV carries none, so new exercises land in an
+      "Imported" category for you to re-sort. Anything already in your Badger library is matched by
+      name rather than duplicated.
+    </li>
+  </ul>
+
+  <h2 id="how">Doing it</h2>
+
+  <ol>
+    <li>In Strong, go to <strong>Profile &rarr; Settings &rarr; Export Data</strong> to produce a <code>strong.csv</code>.</li>
+    <li>
+      Get the file onto the phone you train with, however you normally move a file: email it to
+      yourself, drop it in cloud storage, use a cable.
+    </li>
+    <li>In Badger, go to <strong>Settings &rarr; Your data &rarr; Import from Strong</strong> and pick the file.</li>
+    <li>Check the preview: exercises, workout days, sets, and the detected weight unit.</li>
+    <li>Import.</li>
+  </ol>
+
+  <p>
+    It runs more than once safely. Sets landing on a date you already have merge into that session,
+    and nothing already logged is overwritten. Full detail in
+    <a href="/help/getting-started#importing-strong">importing from Strong</a>.
+  </p>
+
+  <h2 id="what-you-get">What you get, and what you give up</h2>
+
+  <p>
+    Worth being straight about both, because the honest version is more useful than a feature list.
+  </p>
+
+  <p><strong>What you get:</strong></p>
+
+  <ul>
+    <li>
+      <strong>No account and no sync.</strong> Your log is on your phone. Nothing to sign into,
+      nothing to be locked out of, no server that can change the deal later.
+      <a href="/promise">The promise</a> is that written down.
+    </li>
+    <li>
+      <strong>Nothing behind a paywall.</strong> No cap on routines, on history, or on graphs, and
+      exporting your own numbers is not a paid feature.
+      <a href="/guides/workout-tracker-no-subscription">The no-subscription guide</a> goes through
+      what free actually means across the trackers people weigh up.
+    </li>
+    <li>
+      <strong>Gym and machine tracking</strong>, with PRs scoped to the machine, because the leg
+      press at one gym is not the leg press at another. <a href="/help/gyms">How it works</a>.
+    </li>
+    <li>
+      <strong>A plate calculator and warmup generator</strong> that work from the plates your gym
+      actually owns, and <a href="/help/progress">graphs</a> with estimated 1RM, muscle balance and
+      plateau detection.
+    </li>
+  </ul>
+
+  <p><strong>What you give up:</strong></p>
+
+  <ul>
+    <li>
+      <strong>Cloud sync between devices.</strong> Badger is local-first by design. Moving to a new
+      phone is a backup file you carry over, which is
+      <a href="/help/phone-migration">a documented path</a>, not a background service.
+    </li>
+    <li>
+      <strong>A social feed.</strong> There is nobody to follow and nothing to post. If that was part
+      of what kept you training, it is a real loss and worth weighing.
+    </li>
+  </ul>
+
+  <h2 id="getting-out">Getting back out again</h2>
+
+  <p>
+    The reason to trust an import is knowing you can leave. Badger exports every set to CSV and backs
+    the whole database up to a <a href="/badger-format">documented file format</a> that is ordinary
+    readable text. Neither needs an account, and neither is a paid feature.
+  </p>
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    Strong is a trademark of its owner, and Badger is not affiliated with, endorsed by, sponsored by,
+    or connected to it in any way. This page describes compatibility and nothing else: Badger reads
+    the CSV file that their app exports.
+  </p>
+</HelpLayout>
+
+<style>
+  .crumb {
+    margin: 0 0 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>

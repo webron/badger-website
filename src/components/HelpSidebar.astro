@@ -21,16 +21,17 @@ const nav = [
     ],
   },
   // The hub first, then one entry per app someone arrives from, in the order
-  // the hub itself lists them. Only FitNotes has a page so far; the other three
-  // point where their answer actually is until they earn one.
+  // the hub itself lists them: the three with pages of their own, then
+  // StrongLifts, whose import section lives on its 5x5 program page rather than
+  // on a page of its own (see the hub for why).
   {
     label: 'Switching to Badger',
     items: [
       { href: `/guides/switching`, label: 'How importing works' },
       { href: `/guides/fitnotes-alternative`, label: 'From FitNotes' },
+      { href: `/guides/strong-alternative`, label: 'From Strong' },
+      { href: `/guides/hevy-alternative`, label: 'From Hevy' },
       { href: `/guides/stronglifts-5x5-tracker#import`, label: 'From StrongLifts' },
-      { href: `/help/getting-started#importing-strong`, label: 'From Strong' },
-      { href: `/help/getting-started#importing-hevy`, label: 'From Hevy' },
     ],
   },
   // Pages that answer a question someone arrives with rather than describing
