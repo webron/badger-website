@@ -30,15 +30,23 @@ interface Props {
   dateModified: string;
   /** Plain subject names, e.g. ['StrongLifts 5x5']. Optional. */
   about?: string[];
+  /**
+   * Ancestor pages, nearest-last and EXCLUDING this page, e.g.
+   * [{ name: 'Guides', url: '/guides' }]. When given, a BreadcrumbList is
+   * emitted beside the Article and this page is appended as the final crumb.
+   * Only pass it when the page really has a parent a reader can visit; a
+   * fabricated trail is the kind of markup that gets a site's structured data
+   * discounted wholesale.
+   */
+  breadcrumb?: { name: string; url: string }[];
 }
 
-const { headline, description, dateModified, about } = Astro.props;
+const { headline, description, dateModified, about, breadcrumb } = Astro.props;
 
 const ORG_ID = 'https://badger.fit/#organization';
 const url = new URL(Astro.url.pathname, Astro.site).toString();
 
-const schema = {
-  '@context': 'https://schema.org',
+const article = {
   '@type': 'Article',
   headline,
   description,
@@ -55,6 +63,29 @@ const schema = {
     ? { about: about.map((name) => ({ '@type': 'Thing', name })) }
     : {}),
 };
+
+const crumbs =
+  breadcrumb && breadcrumb.length
+    ? [...breadcrumb, { name: headline, url: Astro.url.pathname }]
+    : null;
+
+const schema = crumbs
+  ? {
+      '@context': 'https://schema.org',
+      '@graph': [
+        article,
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: crumbs.map((c, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: c.name,
+            item: new URL(c.url, Astro.site).toString(),
+          })),
+        },
+      ],
+    }
+  : { '@context': 'https://schema.org', ...article };
 ---
 
 <script type="application/ld+json" set:html={JSON.stringify(schema)} />
