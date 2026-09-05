@@ -1,8 +1,20 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+const description =
+  'Import your history from FitNotes, Strong, Hevy, or Stronglifts, then pick the guide that fits how you train.';
 ---
 
-<HelpLayout title="Switching from another app" description="Import your history from FitNotes, Strong, Hevy, or Stronglifts, then pick the guide that fits how you train.">
+<HelpLayout title="Switching from another workout tracker" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="Switching to Badger from another workout tracker"
+    description={description}
+    dateModified="2026-09-05"
+    about={['FitNotes', 'Strong', 'Hevy', 'StrongLifts']}
+  />
+
   <h1>Switching to Badger</h1>
   <p>Coming from another tracker? Bring your history over first so your PRs and graphs start out full, then settle into how you like to train.</p>
 

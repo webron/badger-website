@@ -1,0 +1,215 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * SEO / compatibility page, same shape and same rules as
+ * stronglifts-5x5-tracker.astro. Read that file's header before editing this
+ * one; the reasoning is identical.
+ *
+ * TRADEMARK HYGIENE, binding: FitNotes is someone else's app. Everything here
+ * is phrased as compatibility (Badger reads the backup file their app writes),
+ * never as affiliation or endorsement, and never as a criticism of their app.
+ * FitNotes users like FitNotes. A page that opens by running it down loses the
+ * reader in one sentence, and would deserve to.
+ *
+ * Claims about what the import carries were checked against the app source on
+ * 2026-09-05, against lib/features/import/domain/fitnotes_parser.dart and
+ * fitnotes_importer.dart:
+ *   - categories: recreated by name WITH their FitNotes color, reused when a
+ *     category of that name already exists (_doImport step 1)
+ *   - exercises: matched by name, then by the reviewed mapping plan, else
+ *     created in their original category with the FitNotes exercise type
+ *     mapped across (step 2)
+ *   - sets: reps, weight, distance, time, comment; both the modern
+ *     `workout_entry` schema and the pre-2018 `training_log` one, where the
+ *     kg-canonical column is turned back into the unit it was typed in
+ *   - body weight: appended to the Body Weight measurement type
+ *   - custom measurements: their own types, carrying the unit string
+ * There is deliberately no warmup claim: FitNotes does not mark warmups, so
+ * the importer has nothing to read and every set arrives as a working set.
+ */
+
+const description =
+  'Move to Badger from FitNotes without losing anything. Your .fitnotes backup brings the whole library across: categories, exercises, every set, body weight, and your custom measurements.';
+
+const modified = '2026-09-05';
+---
+
+<HelpLayout title="FitNotes alternative" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="Moving to Badger from FitNotes"
+    description={description}
+    dateModified={modified}
+    about={['FitNotes', 'Workout tracking']}
+  />
+
+  <h1>Moving to Badger from FitNotes</h1>
+
+  <p>
+    FitNotes people are usually not shopping because they hate FitNotes. They liked that it was fast,
+    free, offline, and did not want anything from them. That is the same list Badger was built
+    against, so the question worth answering here is a narrow one: does your history come with you,
+    and what do you get that you did not have?
+  </p>
+
+  <h2 id="import">What the backup file carries across</h2>
+
+  <p>
+    FitNotes backs up to a <code>.fitnotes</code> file, which is a real database rather than a
+    flattened CSV. That is lucky for you, because it means far more than your sets survives the move.
+    Badger reads the file directly, on your phone, with nothing uploaded anywhere.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Your categories, with their colors.</strong> The groups you sorted your exercises into
+      come over as Badger categories, keeping the color you gave each one. A category you already
+      have is reused rather than duplicated.
+    </li>
+    <li>
+      <strong>Your exercise library, in those categories.</strong> Not dumped in an "Imported"
+      bucket. Each exercise lands where you had it, and its FitNotes type (weight and reps, cardio,
+      and so on) is carried across so the logging screen shows the right fields.
+    </li>
+    <li>
+      <strong>Every set</strong>, with its date, weight, reps, distance, time, and any comment you
+      left on it.
+    </li>
+    <li>
+      <strong>Old backups too.</strong> FitNotes changed its database layout around 2018. Badger
+      reads both, and on the older one it turns the stored kilograms back into the unit you actually
+      typed, so a pounds log stays a pounds log rather than arriving as 102.06.
+    </li>
+    <li>
+      <strong>Your body weight history</strong>, appended to Badger's own body weight track.
+    </li>
+    <li>
+      <strong>Your custom measurements</strong>, each becoming its own measurement type and keeping
+      its unit. Waist, arms, whatever you were tracking.
+    </li>
+    <li>
+      <strong>PRs, recalculated.</strong> Not read from the file, worked out again from the history
+      once it lands, so your records and graphs start out full.
+    </li>
+  </ul>
+
+  <p><strong>What does not come across, so nothing surprises you later:</strong></p>
+
+  <ul>
+    <li>
+      <strong>Warmups, as warmups.</strong> FitNotes does not mark them, so there is nothing for the
+      importer to read. Every logged set arrives as a working set. You can flag them afterwards, but
+      nothing can guess retroactively.
+    </li>
+    <li>
+      <strong>Routines.</strong> The import brings history and your exercise library. Programs are a
+      separate thing you set up in Badger, and there are templates to start from.
+    </li>
+    <li>
+      <strong>Anything else in the file.</strong> The importer reads the tables listed above and
+      leaves the rest alone rather than guessing at it.
+    </li>
+  </ul>
+
+  <h2 id="how">Doing it</h2>
+
+  <ol>
+    <li>In FitNotes, go to <strong>Settings &rarr; Backup</strong> to write a <code>.fitnotes</code> file.</li>
+    <li>
+      Get the file onto the phone you train with, however you normally move a file: email it to
+      yourself, drop it in cloud storage, use a cable.
+    </li>
+    <li>
+      In Badger, go to <strong>Settings &rarr; Your data &rarr; Import from FitNotes</strong> and pick
+      the file. It is also offered during first-launch onboarding.
+    </li>
+    <li>Check the preview: exercises, workout days, sets, and the detected weight unit.</li>
+    <li>Import.</li>
+  </ol>
+
+  <p>
+    It runs more than once safely. Sets landing on a date you already have merge into that session,
+    and nothing already logged is overwritten, so adding a newer backup later is fine. Full detail in
+    <a href="/help/getting-started#importing-fitnotes">importing from FitNotes</a> and
+    <a href="/guides/switching">switching from another app</a>.
+  </p>
+
+  <h2 id="whats-different">What you get that you did not have</h2>
+
+  <p>
+    Worth being concrete, because "it has more features" is not a reason to move a decade of
+    training log.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Routines that pre-fill.</strong> Build your program once and each session arrives with
+      your exercises and last weights already in place.
+      <a href="/programs">Seven programs ship built in</a>, including StrongLifts 5x5, GZCLP and PPL.
+    </li>
+    <li>
+      <strong>Gym and machine tracking.</strong> Record which gym and which machine a set was done
+      on, and get PRs scoped to that machine, because the leg press at one gym is not the leg press
+      at another. <a href="/help/gyms">How that works</a>.
+    </li>
+    <li>
+      <strong>A plate calculator and a warmup generator</strong> that both work from the plates your
+      gym actually owns, and round to loads you can really make.
+    </li>
+    <li>
+      <strong>A rest timer that starts itself</strong> when you complete a set, per exercise.
+    </li>
+    <li>
+      <strong>Graphs worth opening.</strong> Estimated 1RM, eleven graphs per exercise, an activity
+      heatmap, weekly volume by muscle group, and plateau detection.
+      <a href="/help/progress">What it tracks</a>.
+    </li>
+    <li>
+      <strong>It runs on iPhone.</strong> Badger is on Google Play, with an iOS beta open in
+      TestFlight, so a phone switch does not mean an app switch.
+    </li>
+  </ul>
+
+  <p>
+    And the part that is the same on purpose: no account, no sign-in, no sync you did not ask for.
+    Your log lives on your phone. <a href="/promise">The promise</a> is that written down where you
+    can hold us to it.
+  </p>
+
+  <h2 id="getting-out">Getting back out again</h2>
+
+  <p>
+    The reason to trust an import is knowing you can leave. Badger exports every set to CSV, and
+    backs the whole database up to a <a href="/badger-format">documented file format</a> that is
+    ordinary readable text. Neither is a paid feature, and neither needs an account. If Badger turns
+    out not to suit you, you leave with your numbers.
+  </p>
+
+  <h2 id="cost">What it costs</h2>
+
+  <p>
+    Nothing. No account, no subscription, no ads, no cap on routines or on how far back your history
+    goes. <a href="/guides/workout-tracker-no-subscription">The no-subscription guide</a> compares
+    what free actually means across the trackers people usually weigh up, Badger included.
+  </p>
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    FitNotes is the work of its own developer, and Badger is not affiliated with, endorsed by,
+    sponsored by, or connected to it in any way. This page describes compatibility and nothing else:
+    Badger reads the backup file that their app writes. FitNotes is a good app and this is not an
+    argument that it is not one.
+  </p>
+</HelpLayout>
+
+<style>
+  /* Matches the StrongLifts page: a disclaimer should read as one rather than
+     competing with the guidance above it. Muted is AA-checked in both themes. */
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>

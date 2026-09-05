@@ -1,5 +1,6 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
 /**
  * SEO / positioning page (research Part 12 P7, spec section 4 of badger-fit
@@ -50,6 +51,14 @@ const others = [
 ---
 
 <HelpLayout title="Workout tracker with no subscription" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="A workout tracker with no subscription"
+    description={description}
+    dateModified="2026-09-05"
+    about={['Workout tracking', 'Free software']}
+  />
+
   <h1>A workout tracker with no subscription</h1>
 
   <p>
