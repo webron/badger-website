@@ -364,16 +364,39 @@ const nav = [
 </style>
 
 <style>
-  /* Desktop: a plain sticky column. We do NOT cap the height with an internal
-     scroll, because that scroll relied on a flex chain running through the
-     <details> element, which does not establish a reliable flex height context,
-     so the nav would spill past the footer. With no cap, the sidebar's full
-     height stays in the flex flow and the footer always lands below it. */
+  /* Desktop: a sticky column that scrolls independently of the page.
+     
+     The uncapped version was broken and the breakage grew with the index. A
+     sticky element TALLER than the viewport pins its top at the offset and then
+     stays there, so everything past one screenful sat below the fold with no
+     way to reach it: measured 2987px of sidebar in an 800px viewport, which put
+     the last two thirds of the index permanently out of reach on a laptop.
+
+     An earlier attempt at a cap ran the height through a flex chain including
+     the <details> element, which does not establish a reliable flex height
+     context, and the nav spilled past the footer. This caps the STICKY BOX
+     itself instead. A sticky element sizes normally, so no flex chain is
+     involved and the footer is unaffected: the aside's height in the page flow
+     is the capped one.
+
+     The cap pairs with top: 1.5rem, leaving the same gap at the bottom. The
+     search field scrolls with the index rather than staying pinned, which is
+     the deliberate trade for not reintroducing the flex chain: the field is at
+     the top of the box and is on screen whenever the sidebar is at rest. */
   #help-sidebar {
     width: 220px;
     flex-shrink: 0;
     position: sticky;
     top: 1.5rem;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+    /* Room for the scrollbar so it never sits over a label, and a stable gutter
+       so the index does not shift sideways when the bar appears. */
+    padding-right: 6px;
+    scrollbar-gutter: stable;
+    /* Bottoming out the index should not then start scrolling the article
+       underneath it. */
+    overscroll-behavior: contain;
   }
 
   /* ---- the index ---- */
@@ -458,6 +481,12 @@ const nav = [
       width: 100%;
       position: static;
       max-height: none;
+      /* The desktop rules above make the aside its own scroll container. On
+         mobile it is a plain block above the article and must not be one, or
+         the whole index gets a second scrollbar inside the page. */
+      overflow-y: visible;
+      padding-right: 0;
+      overscroll-behavior: auto;
       margin-bottom: 1.5rem;
     }
 
@@ -504,17 +533,90 @@ const nav = [
       details.removeAttribute('open');
     }
 
-    // Preserve nav scroll position across clicks.
-    const KEY = 'help-sidebar-scroll';
     const nav = document.getElementById('help-sidebar-nav');
-    if (!nav) return;
+    const aside = document.getElementById('help-sidebar');
+    if (!nav || !aside) return;
+
+    // WHICH element actually scrolls depends on the breakpoint, and getting it
+    // wrong is silent: writing scrollTop on a box with no overflow does
+    // nothing and throws nothing. Desktop caps the sticky ASIDE; mobile caps
+    // the NAV inside the disclosure. The media query matches the CSS.
+    function scroller() {
+      return window.matchMedia('(min-width: 769px)').matches ? aside : nav;
+    }
+
+    // Keep the index where the reader left it when they click through to
+    // another page, so the list does not jump under them.
+    const KEY = 'help-sidebar-scroll';
+
+    // Bring the current page's entry into view when it is not already there.
+    // Without this, landing deep in the index (a search result, a shared link,
+    // anything under Settings) shows the top of a list 2987px long and no hint
+    // of where you are.
+    //
+    // Runs AFTER the saved position is restored and does nothing when the entry
+    // is already visible, so the two do not fight: a click within one region
+    // keeps the list still, a jump across the index corrects it.
+    function revealActive() {
+      const box = scroller();
+      const active = box.querySelector('.sgroup-link.active');
+      if (!active) return;
+
+      const boxRect = box.getBoundingClientRect();
+      const aRect = active.getBoundingClientRect();
+      if (aRect.top >= boxRect.top && aRect.bottom <= boxRect.bottom) return;
+
+      // Prefer showing the whole group, so the entry arrives with its heading
+      // and its siblings rather than stranded against the top edge.
+      const group = active.closest('.sgroup') || active;
+      const gRect = group.getBoundingClientRect();
+      let target = box.scrollTop + (gRect.top - boxRect.top) - 12;
+
+      // A group taller than the box would leave the entry itself below the
+      // fold, which is the one thing this must not do. Center the entry then.
+      if (aRect.bottom - gRect.top > boxRect.height - 12) {
+        target =
+          box.scrollTop +
+          (aRect.top - boxRect.top) -
+          (boxRect.height - aRect.height) / 2;
+      }
+
+      // Out-of-range values are clamped by the browser, so no min/max needed.
+      box.scrollTop = target;
+    }
 
     const saved = sessionStorage.getItem(KEY);
-    if (saved) nav.scrollTop = parseInt(saved, 10);
+    if (saved) scroller().scrollTop = parseInt(saved, 10);
+    revealActive();
+
+    // The bundled faces load after first layout and change row heights, which
+    // moves the entry we just revealed. Correct once more when they land, but
+    // not if the reader has already taken over: a list that jumps under a
+    // moving finger is worse than one that is slightly off.
+    let userScrolled = false;
+    scroller().addEventListener(
+      'wheel',
+      function () {
+        userScrolled = true;
+      },
+      { passive: true, once: true }
+    );
+    scroller().addEventListener(
+      'touchstart',
+      function () {
+        userScrolled = true;
+      },
+      { passive: true, once: true }
+    );
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        if (!userScrolled) revealActive();
+      });
+    }
 
     nav.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', function () {
-        sessionStorage.setItem(KEY, nav.scrollTop);
+        sessionStorage.setItem(KEY, scroller().scrollTop);
       });
     });
   })();
