@@ -100,16 +100,30 @@ def goatcounter(days: int) -> dict:
         return {"error": f"GoatCounter unreachable: {exc.reason}"}
 
     all_hits = hits.get("hits", [])
+    # GoatCounter counts events in `total` alongside real page views, so a store
+    # badge tap inflates the pageview figure. `total_events` is the authoritative
+    # event count; the per-day split has to be subtracted row by row, because the
+    # daily series carries the same mixture.
+    event_hits = [h for h in all_hits if h.get("event")]
+    events_by_day: dict[str, int] = {}
+    for hit in event_hits:
+        for day in hit.get("stats", []):
+            events_by_day[day["day"]] = events_by_day.get(day["day"], 0) + day.get("daily", 0)
+
     return {
         "start": start.isoformat(),
         "end": today.isoformat(),
-        "views": total.get("total", 0),
-        "daily": [(s["day"], s["daily"]) for s in total.get("stats", [])],
+        "views": max(total.get("total", 0) - total.get("total_events", 0), 0),
+        "events_total": total.get("total_events", 0),
+        "daily": [
+            (s["day"], max(s["daily"] - events_by_day.get(s["day"], 0), 0))
+            for s in total.get("stats", [])
+        ],
         "pages": sorted(
             ((h.get("path", "?"), h.get("count", 0)) for h in all_hits if not h.get("event")),
             key=lambda r: -r[1],
         ),
-        "events": {h.get("path"): h.get("count", 0) for h in all_hits if h.get("event")},
+        "events": {h.get("path"): h.get("count", 0) for h in event_hits},
         "referrers": _named(refs.get("stats", [])),
         "countries": _named(locations.get("stats", [])),
     }
