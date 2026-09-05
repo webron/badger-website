@@ -15,6 +15,33 @@ import ArrowGlyph from '../components/ArrowGlyph.astro';
 const description =
   'Badger is a workout and strength tracker for Android and iOS. As capable as the big trackers, as private as a notebook. No account, no subscription, works offline.';
 
+// The switching band. These pages answer a question someone arrives with, and
+// they were previously reachable only from /guides, two clicks in. A crawler
+// reads internal links as a statement of what matters on a site, and so does a
+// person who landed here from a search for their old app's name.
+const switchingGuides = [
+  {
+    href: '/guides/fitnotes-alternative',
+    app: 'FitNotes',
+    blurb: 'Your .fitnotes backup brings the whole library, not just the sets.',
+  },
+  {
+    href: '/guides/stronglifts-5x5-tracker',
+    app: 'StrongLifts',
+    blurb: 'The 5x5 template that ships in the app, and what the CSV carries.',
+  },
+  {
+    href: '/guides/strong-alternative',
+    app: 'Strong',
+    blurb: 'A CSV, and a fuller one than most: your RPE and per-set notes come too.',
+  },
+  {
+    href: '/guides/hevy-alternative',
+    app: 'Hevy',
+    blurb: 'The richest export of the four. Your warmups arrive as warmups.',
+  },
+];
+
 const ORG_ID = 'https://badger.fit/#organization';
 
 // One @graph rather than two <script> blocks, so the app node can point at the
@@ -32,6 +59,12 @@ const structuredData = {
       '@type': 'Organization',
       '@id': ORG_ID,
       name: 'Badger',
+      // "Badger" alone is an animal, a US state mascot and a meter company, and
+      // the site currently ranks around #32 for its own name. alternateName is
+      // the field schema.org provides for exactly this: it states the name
+      // people actually mean without turning every page title into keyword
+      // stuffing. It does not fix ranking on its own; authority does that.
+      alternateName: 'Badger workout tracker',
       url: 'https://badger.fit',
       logo: 'https://badger.fit/assets/badger_logo_stacked.svg',
       sameAs: ['https://play.google.com/store/apps/details?id=fit.badger.app'],
@@ -213,6 +246,22 @@ const shouldnt = [
           </ul>
         </div>
       </div>
+    </section>
+
+    <section class="block switching">
+      <h2 class="caps section-label">Coming from another app</h2>
+      <div class="rule-ink section-rule"></div>
+
+      <ul class="switch-rows">
+        {switchingGuides.map((g) => (
+          <li>
+            <a class="switch-row" href={g.href}>
+              <span class="switch-row__app">{g.app}</span>
+              <span class="switch-row__blurb">{g.blurb}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
 
     <section class="promise-teaser">
@@ -436,6 +485,58 @@ const shouldnt = [
     .cta {
       margin-top: 52px;
       padding: 28px 20px 8px;
+    }
+  }
+
+  /* ---- switching band ---- */
+
+  .switch-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .switch-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--hair);
+    text-decoration: none;
+  }
+
+  .switch-row:hover {
+    text-decoration: none;
+  }
+
+  .switch-row__app {
+    flex: 0 0 auto;
+    min-width: 130px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .switch-row:hover .switch-row__app {
+    color: var(--accent-ink);
+  }
+
+  .switch-row__blurb {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  /* Same reasoning as the guide picker: the pair does not fit side by side on a
+     phone, so the blurb drops under the app name rather than being shredded. */
+  @media (max-width: 560px) {
+    .switch-row {
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .switch-row__app {
+      min-width: 0;
     }
   }
 </style>

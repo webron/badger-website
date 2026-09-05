@@ -1,5 +1,6 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
 /**
  * SEO / compatibility page (research Part 12 P7, spec section 4 of badger-fit
@@ -26,6 +27,14 @@ const description =
 ---
 
 <HelpLayout title="StrongLifts 5x5 tracker" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="StrongLifts 5x5 in Badger"
+    description={description}
+    dateModified="2026-09-05"
+    about={['StrongLifts 5x5', '5x5 strength training']}
+  />
+
   <h1>StrongLifts 5x5 in Badger</h1>
 
   <p>

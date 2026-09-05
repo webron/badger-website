@@ -1,5 +1,6 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
 /**
  * SEO / positioning page (research Part 12 P7, spec section 4 of badger-fit
@@ -50,6 +51,14 @@ const others = [
 ---
 
 <HelpLayout title="Workout tracker with no subscription" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="A workout tracker with no subscription"
+    description={description}
+    dateModified="2026-09-05"
+    about={['Workout tracking', 'Free software']}
+  />
+
   <h1>A workout tracker with no subscription</h1>
 
   <p>
@@ -203,6 +212,12 @@ const others = [
     <li>
       <a href="/help/getting-started#importing">Importing from another app</a> has the per-app export
       instructions.
+    </li>
+    <li>
+      There is a page per app, each covering what its own export does and does not carry:
+      <a href="/guides/fitnotes-alternative">from FitNotes</a>,
+      <a href="/guides/strong-alternative">from Strong</a>, and
+      <a href="/guides/hevy-alternative">from Hevy</a>.
     </li>
     <li>
       <a href="/guides/stronglifts-5x5-tracker">StrongLifts 5x5 in Badger</a> covers that migration in

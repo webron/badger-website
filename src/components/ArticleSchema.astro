@@ -1,0 +1,91 @@
+---
+/**
+ * JSON-LD for a guide page: an Article node tied to the site's Organization.
+ *
+ * Why this exists: BaseLayout gives every page a title, description, canonical
+ * and OG card, but nothing that says what KIND of page it is. Only the homepage
+ * carried structured data (Organization + MobileApplication). A crawler reading
+ * /guides/stronglifts-5x5-tracker had to infer from prose that the page is an
+ * article about a named subject. This states it.
+ *
+ * Same discipline as the homepage graph: every field has to be true, and the
+ * publisher points at the homepage's Organization node by @id rather than
+ * restating it, so there is exactly one definition of who publishes this site.
+ *
+ * `about` is optional and takes plain names (a program, an app you can import
+ * from). It is the field that tells a crawler the page is ABOUT StrongLifts
+ * without claiming any relationship to it, which is the line the guide copy
+ * itself is careful to hold.
+ *
+ * Usage, and the `slot` matters: <ArticleSchema slot="head" ... />. Astro
+ * resolves a named slot from the component instance in the page, not from an
+ * element deep inside the component, so putting slot="head" on the <script>
+ * below would leave the markup in the body.
+ */
+
+interface Props {
+  headline: string;
+  description: string;
+  /** ISO date this page's content was last meaningfully revised. */
+  dateModified: string;
+  /** Plain subject names, e.g. ['StrongLifts 5x5']. Optional. */
+  about?: string[];
+  /**
+   * Ancestor pages, nearest-last and EXCLUDING this page, e.g.
+   * [{ name: 'Guides', url: '/guides' }]. When given, a BreadcrumbList is
+   * emitted beside the Article and this page is appended as the final crumb.
+   * Only pass it when the page really has a parent a reader can visit; a
+   * fabricated trail is the kind of markup that gets a site's structured data
+   * discounted wholesale.
+   */
+  breadcrumb?: { name: string; url: string }[];
+}
+
+const { headline, description, dateModified, about, breadcrumb } = Astro.props;
+
+const ORG_ID = 'https://badger.fit/#organization';
+const url = new URL(Astro.url.pathname, Astro.site).toString();
+
+const article = {
+  '@type': 'Article',
+  headline,
+  description,
+  url,
+  mainEntityOfPage: url,
+  dateModified,
+  inLanguage: 'en',
+  // No author node: these pages are written by the project, not by a named
+  // person, and inventing a byline is the kind of unverifiable markup that
+  // gets structured data discounted.
+  publisher: { '@id': ORG_ID },
+  isPartOf: { '@type': 'WebSite', name: 'Badger', url: 'https://badger.fit' },
+  ...(about && about.length
+    ? { about: about.map((name) => ({ '@type': 'Thing', name })) }
+    : {}),
+};
+
+const crumbs =
+  breadcrumb && breadcrumb.length
+    ? [...breadcrumb, { name: headline, url: Astro.url.pathname }]
+    : null;
+
+const schema = crumbs
+  ? {
+      '@context': 'https://schema.org',
+      '@graph': [
+        article,
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: crumbs.map((c, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: c.name,
+            item: new URL(c.url, Astro.site).toString(),
+          })),
+        },
+      ],
+    }
+  : { '@context': 'https://schema.org', ...article };
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
