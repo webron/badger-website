@@ -7,6 +7,10 @@ interface Props {
 const { currentPath } = Astro.props;
 
 const nav = [
+  // 'Starting Guides' had grown into a bin of ten items holding three unrelated
+  // things: the four persona guides, the migration pages, and a run of
+  // standalone topic pages. Split into the three groups it already was, so the
+  // group label tells you what the items under it have in common.
   {
     label: 'Starting Guides',
     items: [
@@ -14,11 +18,30 @@ const nav = [
       { href: `/guides/just-lifting`, label: 'Just lifting' },
       { href: `/guides/program-runner`, label: 'Running a program' },
       { href: `/guides/optimizer`, label: 'Show me the data' },
-      { href: `/guides/switching`, label: 'Switching apps' },
-      { href: `/guides/switching/fitnotes`, label: 'From FitNotes' },
-      { href: `/guides/ai`, label: 'Use your own AI' },
+    ],
+  },
+  // The hub first, then one entry per app someone arrives from, in the order
+  // the hub itself lists them. Only FitNotes has a page so far; the other three
+  // point where their answer actually is until they earn one.
+  {
+    label: 'Switching to Badger',
+    items: [
+      { href: `/guides/switching`, label: 'How importing works' },
+      { href: `/guides/fitnotes-alternative`, label: 'From FitNotes' },
+      { href: `/guides/stronglifts-5x5-tracker#import`, label: 'From StrongLifts' },
+      { href: `/help/getting-started#importing-strong`, label: 'From Strong' },
+      { href: `/help/getting-started#importing-hevy`, label: 'From Hevy' },
+    ],
+  },
+  // Pages that answer a question someone arrives with rather than describing
+  // how they train. 'Everything Badger does' is last because it is the index
+  // you reach for when the specific pages did not cover it.
+  {
+    label: 'More Guides',
+    items: [
       { href: `/guides/stronglifts-5x5-tracker`, label: 'StrongLifts 5x5' },
       { href: `/guides/workout-tracker-no-subscription`, label: 'No subscription' },
+      { href: `/guides/ai`, label: 'Use your own AI' },
       { href: `/guides/overview`, label: 'Everything Badger does' },
     ],
   },
