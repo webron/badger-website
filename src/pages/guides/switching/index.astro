@@ -1,0 +1,152 @@
+---
+import HelpLayout from '../../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+
+const description =
+  'Import your history from FitNotes, Strong, Hevy, or Stronglifts, then pick the guide that fits how you train.';
+
+// One entry per app someone arrives from. Only FitNotes has a page of its own
+// so far, because only FitNotes has enough that is specific to it to fill one
+// (its backup is a database, not a CSV, so far more survives the move).
+//
+// StrongLifts points at the 5x5 program page on purpose. That page already
+// carries the import walkthrough, and a second page of ours aimed at the same
+// query would split the two rather than adding anything.
+//
+// Strong and Hevy point at the help anchors. When there is something worth
+// saying that is specific to one of them, it gets a sibling of fitnotes.astro
+// and this entry changes to point at it.
+const fromApps = [
+  {
+    app: 'FitNotes',
+    href: '/guides/switching/fitnotes',
+    note: 'The backup is a database, so your categories, library, body weight and measurements come too.',
+    full: true,
+  },
+  {
+    app: 'StrongLifts',
+    href: '/guides/stronglifts-5x5-tracker#import',
+    note: 'Covered on the 5x5 page, together with the template that ships in the app.',
+    full: false,
+  },
+  {
+    app: 'Strong',
+    href: '/help/getting-started#importing-strong',
+    note: 'A CSV export. Badger reads the unit from the header and handles the European semicolon variant.',
+    full: false,
+  },
+  {
+    app: 'Hevy',
+    href: '/help/getting-started#importing-hevy',
+    note: 'A CSV export, and the one that marks its warmup sets, so they arrive as warmups.',
+    full: false,
+  },
+];
+---
+
+<HelpLayout title="Switching from another workout tracker" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="Switching to Badger from another workout tracker"
+    description={description}
+    dateModified="2026-09-05"
+    about={['FitNotes', 'Strong', 'Hevy', 'StrongLifts']}
+  />
+
+  <h1>Switching to Badger</h1>
+  <p>Coming from another tracker? Bring your history over first so your PRs and graphs start out full, then settle into how you like to train.</p>
+
+  <h2>Your first 5 minutes</h2>
+  <ol>
+    <li>During first-launch onboarding, tap <strong>Import</strong>. You can also do this any time later from <strong>Settings → Your data → Import</strong>.</li>
+    <li>Choose your old app: FitNotes, Strong, Hevy, or Stronglifts.</li>
+    <li>Select the export file you saved from that app.</li>
+    <li>Review the preview: exercises, workout days, sets, and the detected weight unit.</li>
+    <li>Tap <strong>Import</strong> to bring it all in.</li>
+  </ol>
+
+  <h2>What carries over</h2>
+  <ul>
+    <li>Your exercises, your workouts, and every set within them.</li>
+    <li>Weights come in their original unit, so nothing gets rounded or converted on the way in.</li>
+    <li>New exercises land in an "Imported" category, so you can find and re-sort them later. Coming from FitNotes is the exception: its backup carries your own categories, so your exercises land where you already had them.</li>
+    <li>If a session already exists on the same date, the imported sets merge in rather than overwriting it.</li>
+  </ul>
+
+  <h2>The 3 things to know</h2>
+  <ul>
+    <li>PRs are recalculated from your imported history, so your records show up on their own without any extra step.</li>
+    <li>Nothing leaves your device. The import runs locally, straight from the file you selected.</li>
+    <li>You can import more than once, so a partial or second export is fine to add later.</li>
+  </ul>
+
+  <h2 id="your-old-app">Your old app</h2>
+  <p>The steps above are the same everywhere. What differs is how much survives the move, and that depends on what your old app exports.</p>
+
+  <ul class="from-rows">
+    {fromApps.map((a) => (
+      <li>
+        <a class="from-row" href={a.href}>
+          <span class="from-row__app">{a.app}</span>
+          <span class="from-row__note">{a.note}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <h2>Now pick your path</h2>
+  <p>With your history in place, choose the guide that fits how you train: <a href="/guides/just-lifting">just lifting</a>, <a href="/guides/program-runner">running a program</a>, or <a href="/guides/optimizer">tracking the data</a>. Or browse <a href="/guides/overview">everything Badger does</a> for the full list.</p>
+</HelpLayout>
+
+<style>
+  /* Same ledger row as the guide picker on /guides: label left, note under or
+     beside it. Reused rather than reinvented so the two indexes read as one
+     site. */
+  .from-rows {
+    list-style: none;
+    margin: 0 0 26px;
+    padding: 0;
+  }
+
+  .from-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--hair);
+    text-decoration: none;
+  }
+
+  .from-row:hover {
+    text-decoration: none;
+  }
+
+  .from-row__app {
+    flex: 0 0 auto;
+    min-width: 110px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .from-row:hover .from-row__app {
+    color: var(--accent-ink);
+  }
+
+  .from-row__note {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 560px) {
+    .from-row {
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .from-row__app {
+      min-width: 0;
+    }
+  }
+</style>

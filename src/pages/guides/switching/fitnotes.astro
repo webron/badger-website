@@ -1,6 +1,6 @@
 ---
-import HelpLayout from '../../layouts/HelpLayout.astro';
-import ArticleSchema from '../../components/ArticleSchema.astro';
+import HelpLayout from '../../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
 
 /**
  * SEO / compatibility page, same shape and same rules as
@@ -36,7 +36,7 @@ const description =
 const modified = '2026-09-05';
 ---
 
-<HelpLayout title="FitNotes alternative" description={description}>
+<HelpLayout title="Moving from FitNotes" description={description}>
   <ArticleSchema
     slot="head"
     headline="Moving to Badger from FitNotes"
@@ -44,6 +44,8 @@ const modified = '2026-09-05';
     dateModified={modified}
     about={['FitNotes', 'Workout tracking']}
   />
+
+  <p class="crumb"><a href="/guides/switching">Switching to Badger</a></p>
 
   <h1>Moving to Badger from FitNotes</h1>
 
@@ -206,6 +208,14 @@ const modified = '2026-09-05';
 </HelpLayout>
 
 <style>
+  /* The section this page sits in, named above the h1 so a reader landing here
+     from a search knows there are sibling pages for the other apps. */
+  .crumb {
+    margin: 0 0 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
   /* Matches the StrongLifts page: a disclaimer should read as one rather than
      competing with the guidance above it. Muted is AA-checked in both themes. */
   .fineprint {
