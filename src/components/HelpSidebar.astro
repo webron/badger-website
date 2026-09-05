@@ -533,17 +533,90 @@ const nav = [
       details.removeAttribute('open');
     }
 
-    // Preserve nav scroll position across clicks.
-    const KEY = 'help-sidebar-scroll';
     const nav = document.getElementById('help-sidebar-nav');
-    if (!nav) return;
+    const aside = document.getElementById('help-sidebar');
+    if (!nav || !aside) return;
+
+    // WHICH element actually scrolls depends on the breakpoint, and getting it
+    // wrong is silent: writing scrollTop on a box with no overflow does
+    // nothing and throws nothing. Desktop caps the sticky ASIDE; mobile caps
+    // the NAV inside the disclosure. The media query matches the CSS.
+    function scroller() {
+      return window.matchMedia('(min-width: 769px)').matches ? aside : nav;
+    }
+
+    // Keep the index where the reader left it when they click through to
+    // another page, so the list does not jump under them.
+    const KEY = 'help-sidebar-scroll';
+
+    // Bring the current page's entry into view when it is not already there.
+    // Without this, landing deep in the index (a search result, a shared link,
+    // anything under Settings) shows the top of a list 2987px long and no hint
+    // of where you are.
+    //
+    // Runs AFTER the saved position is restored and does nothing when the entry
+    // is already visible, so the two do not fight: a click within one region
+    // keeps the list still, a jump across the index corrects it.
+    function revealActive() {
+      const box = scroller();
+      const active = box.querySelector('.sgroup-link.active');
+      if (!active) return;
+
+      const boxRect = box.getBoundingClientRect();
+      const aRect = active.getBoundingClientRect();
+      if (aRect.top >= boxRect.top && aRect.bottom <= boxRect.bottom) return;
+
+      // Prefer showing the whole group, so the entry arrives with its heading
+      // and its siblings rather than stranded against the top edge.
+      const group = active.closest('.sgroup') || active;
+      const gRect = group.getBoundingClientRect();
+      let target = box.scrollTop + (gRect.top - boxRect.top) - 12;
+
+      // A group taller than the box would leave the entry itself below the
+      // fold, which is the one thing this must not do. Center the entry then.
+      if (aRect.bottom - gRect.top > boxRect.height - 12) {
+        target =
+          box.scrollTop +
+          (aRect.top - boxRect.top) -
+          (boxRect.height - aRect.height) / 2;
+      }
+
+      // Out-of-range values are clamped by the browser, so no min/max needed.
+      box.scrollTop = target;
+    }
 
     const saved = sessionStorage.getItem(KEY);
-    if (saved) nav.scrollTop = parseInt(saved, 10);
+    if (saved) scroller().scrollTop = parseInt(saved, 10);
+    revealActive();
+
+    // The bundled faces load after first layout and change row heights, which
+    // moves the entry we just revealed. Correct once more when they land, but
+    // not if the reader has already taken over: a list that jumps under a
+    // moving finger is worse than one that is slightly off.
+    let userScrolled = false;
+    scroller().addEventListener(
+      'wheel',
+      function () {
+        userScrolled = true;
+      },
+      { passive: true, once: true }
+    );
+    scroller().addEventListener(
+      'touchstart',
+      function () {
+        userScrolled = true;
+      },
+      { passive: true, once: true }
+    );
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        if (!userScrolled) revealActive();
+      });
+    }
 
     nav.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', function () {
-        sessionStorage.setItem(KEY, nav.scrollTop);
+        sessionStorage.setItem(KEY, scroller().scrollTop);
       });
     });
   })();
