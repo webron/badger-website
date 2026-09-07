@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -63,10 +64,56 @@ def utc_window(days: int) -> tuple[date, date]:
     return today - timedelta(days=days - 1), today
 
 
+# Statuses worth trying again. A weekly report runs once, unattended, so a
+# one-second blip at the wrong moment blanks a whole section until the next
+# Monday. 429 is GoatCounter's rate limiter (4 requests a second, and the
+# GoatCounter fetcher makes four in a row). 5xx is the far side having a bad
+# moment. 404 is here because it was observed once on 2026-09-07 from an
+# endpoint that answered normally minutes later, which a real missing resource
+# does not do. Everything else - 400, 401, 403 - is a configuration answer, and
+# retrying it only delays a message the reader needs to see.
+RETRY_STATUSES = frozenset({404, 429, 500, 502, 503, 504})
+RETRY_ATTEMPTS = 3
+RETRY_BACKOFF = 1.5  # seconds, doubled per attempt
+
+
+def _retry_after(exc: urllib.error.HTTPError, fallback: float) -> float:
+    """How long to wait, preferring what the server asked for."""
+    for header in ("Retry-After", "X-Rate-Limit-Reset"):
+        raw = exc.headers.get(header) if exc.headers else None
+        if raw and raw.strip().isdigit():
+            # Cap it: a server asking for a coffee break is not worth blocking
+            # the rest of the report for.
+            return min(float(raw.strip()), 30.0)
+    return fallback
+
+
 def _get_json(url: str, headers: dict, data: bytes | None = None, timeout: int = 30):
-    req = urllib.request.Request(url, data=data, headers=headers)
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return json.load(resp)
+    """GET/POST JSON, retrying the failures that are not answers.
+
+    Raises the last error once the attempts run out, so every caller's existing
+    error handling still reports the real reason.
+    """
+    delay = RETRY_BACKOFF
+    for attempt in range(1, RETRY_ATTEMPTS + 1):
+        req = urllib.request.Request(url, data=data, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return json.load(resp)
+        except urllib.error.HTTPError as exc:
+            if attempt == RETRY_ATTEMPTS or exc.code not in RETRY_STATUSES:
+                raise
+            wait = _retry_after(exc, delay)
+        except (urllib.error.URLError, TimeoutError):
+            # A refused connection or a timed-out one. URLError is the parent of
+            # HTTPError, so this arm only sees the transport failures the arm
+            # above did not already claim.
+            if attempt == RETRY_ATTEMPTS:
+                raise
+            wait = delay
+        time.sleep(wait)
+        delay *= 2
+    raise AssertionError("unreachable: the loop returns or raises")
 
 
 def goatcounter(days: int) -> dict:
