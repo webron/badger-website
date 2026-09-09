@@ -396,8 +396,14 @@ const shouldnt = [
     padding: 68px 24px 4px;
   }
 
+  /* Capped and centered on the same 1012px measure as every other band. Left
+     uncapped it filled the section, so past about 1060px of viewport the line
+     kept widening while the bands above and below it stayed at 1012 - the same
+     detachment the switching rows had. The text is centered, so today's short
+     sentence hides it; a longer one would wrap at the full viewport width. */
   .teaser-line {
-    margin: 0;
+    margin: 0 auto;
+    max-width: 1012px;
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 500;
