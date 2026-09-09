@@ -42,9 +42,6 @@ const { items, class: className } = Astro.props;
     text-align: center;
   }
 
-  .strip-cell + .strip-cell {
-    border-left: 1px solid var(--hair);
-  }
 
   .strip-value {
     display: block;
@@ -62,6 +59,18 @@ const { items, class: className } = Astro.props;
     margin-top: 2px;
   }
 
+  /* Each layout owns its own verticals, rather than one rule setting them and
+     the other trying to unset them. A media query adds no specificity, and
+     Astro's scoping attribute adds one class-worth per compound, so a
+     `.strip-cell + .strip-cell` rule outranks any `.strip-cell:nth-child()`
+     reset no matter which comes later. That fight is what left a stray vertical
+     line on the bottom-left cell, against the band's outer edge. */
+  @media (min-width: 641px) {
+    .strip-cell + .strip-cell {
+      border-left: 1px solid var(--hair);
+    }
+  }
+
   /* 2x2. The verticals move to the second column and a hairline opens between
      the rows, so the grid keeps reading as one ruled band. */
   @media (max-width: 640px) {
@@ -71,7 +80,6 @@ const { items, class: className } = Astro.props;
 
     .strip-cell {
       flex: 1 1 50%;
-      border-left: none;
     }
 
     .strip-cell:nth-child(even) {

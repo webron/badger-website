@@ -116,18 +116,18 @@ const HEIGHT = 1121;
       gap: 14px;
     }
 
-    .phone {
-      width: 46%;
-    }
-
-    .phone.big {
-      width: 50%;
-    }
-
     /* Two frames is the story at phone width; a third would be too small to
        read. Everything it shows is stated in words by the feature ledger. */
     .frames-row > :global(*:nth-child(3)) {
       display: none;
+    }
+
+    /* With the third frame gone, the middle one is no longer a centerpiece
+       flanked by two, so its extra width stops reading as emphasis and starts
+       reading as a mistake. The remaining pair matches. */
+    .phone,
+    .phone.big {
+      width: 48%;
     }
   }
 </style>
