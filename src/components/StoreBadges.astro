@@ -96,13 +96,15 @@ const APP_STORE_URL = 'https://apps.apple.com/app/id6782743069';
     width: auto;
   }
 
-  /* Google's PNG carries about 10% of transparent padding inside its box and
-     Apple's SVG carries none, so 56px of Play badge is roughly 45px of visible
-     button. The two are matched on what the eye sees, not on equal boxes -
-     Apple's guidelines ask that their badge is never the smaller of the pair. */
+  /* Matched on what the eye sees, not on equal boxes. Google's PNG is 646x250
+     with the button itself only 564x168 of it (16.4% of transparent padding top
+     and bottom), so a 56px box paints a 37.6px button. Apple's SVG has no
+     padding at all, so it is set to that same 37.6px - equal to Play, which is
+     also what Apple's guidelines ask for (their badge is never the smaller of
+     the pair). Re-measure both numbers if either store ships new artwork. */
   .badge-appstore img {
     display: block;
-    height: 45px;
+    height: 38px;
     width: auto;
   }
 </style>
