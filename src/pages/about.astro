@@ -32,11 +32,7 @@ const description =
   <main class="doc">
     <span class="kicker">Who is behind this</span>
     <h1>About Badger</h1>
-    <p class="lede">
-      Badger holds years of your training history, so it is fair to ask who is behind it.
-    </p>
-
-    <div class="prose">
+    <div class="intro">
       <p>
         Badger is made by one person. I am Ron. No team, no investors, no company. Nobody
         here needs your data to be worth anything.
@@ -111,19 +107,19 @@ const description =
     color: var(--text);
   }
 
-  .lede {
-    margin: 14px 0 0;
-    font-size: 16px;
-    line-height: 1.65;
-    color: var(--text-secondary);
-    max-width: 56ch;
-  }
-
-  .prose {
+  .intro {
     margin-top: 26px;
   }
 
-  .prose p {
+  .intro p a,
+  .note a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: color-mix(in srgb, var(--accent-ink) 45%, transparent);
+  }
+
+  .intro p {
     margin: 0 0 14px;
     font-size: 15.5px;
     line-height: 1.75;
