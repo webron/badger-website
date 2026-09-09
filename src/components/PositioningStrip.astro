@@ -27,11 +27,12 @@ const { items, class: className } = Astro.props;
 <style>
   /* The same 1012px measure every other band on the homepage uses (the caps
      label and its rule, the feature ledger, the two-column spread, the
-     switching rows, the CTA). At 940 this band's 2px ink rule sat 36px inside
-     every one of them from about 1060px of viewport up, where the others reach
-     their cap and this one had already reached its own. Two ruled bands on one
-     centered page that do not share their left and right edges read as one of
-     them having come loose. */
+     switching rows, the CTA). At 940 this band's 2px ink rule sat inside every
+     one of them from about 988px of viewport up, where the section padding
+     stops being the limit and this cap takes over while the others keep
+     growing to theirs; the gap opens to its full 36px a side at 1060 and stays
+     there. Two ruled bands on one centered page that do not share their left
+     and right edges read as one of them having come loose. */
   .strip {
     max-width: 1012px;
     width: 100%;
