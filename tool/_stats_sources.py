@@ -1,8 +1,9 @@
 """Fetch badger.fit's numbers from every source that has them.
 
 Each source returns plain dicts and lists, so the callers (a text summary and an
-HTML report) share one definition of what a figure means. Adding Play Console or
-App Store Connect later means adding a fetcher here, not touching the renderers.
+HTML report) share one definition of what a figure means. Four places have
+numbers about Badger - the website, Google search, Play and the App Store - and
+each is a fetcher here rather than anything the renderers know about.
 
 Every source is allowed to be absent. A missing credential, a revoked token or a
 new property with no data yet returns an `error` or an empty list rather than
@@ -52,6 +53,35 @@ SC_KEY_PATH = os.path.expanduser("~/.config/badger-stats/search-console.json")
 SC_PROPERTY = "https://badger.fit/"
 SC_SCOPE = "https://www.googleapis.com/auth/webmasters.readonly"
 
+# --- App Store --------------------------------------------------------------
+
+ASC_APP_ID = "6782743069"
+ASC_BUNDLE_ID = "fit.badger.app"
+ASC_API = "https://api.appstoreconnect.apple.com"
+# The key fastlane already publishes with, and the dotenv holding its two ids.
+# Reusing them means no second App Store credential to create, rotate or leak.
+ASC_KEY_PATH = "/Users/ron/Development/badger-fit/ios/fastlane/asc_api_key.p8"
+ASC_ENV_PATH = "/Users/ron/Development/badger-fit/ios/fastlane/.env"
+# The one thing that lives nowhere else. The vendor number is not in any API:
+# App Store Connect shows it under Payments and Financial Reports, and the
+# sales report endpoint refuses to answer without it.
+ASC_CONFIG_PATH = os.path.expanduser("~/.config/badger-stats/app-store.json")
+# Apple publishes a day's sales report the following day. Asking for a date it
+# has not written yet returns the same 404 as a genuinely quiet day, so the
+# most recent days are dropped rather than drawn as a collapse.
+ASC_REPORT_LAG_DAYS = 2
+# Badger's first day on the App Store. Every date before it is a guaranteed 404,
+# and asking anyway costs thirty round trips a run for no number.
+ASC_FIRST_RELEASE = date(2026, 9, 9)
+# A 404 from the sales endpoint is its ordinary answer for a day with nothing
+# in it, not a blip, so it must not be retried the way GoatCounter's is.
+SALES_RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
+# The public storefront record. No key, no rate limit worth worrying about, and
+# it carries the two figures the authenticated API does not expose at all: the
+# lifetime star average and how many people left one.
+ITUNES_LOOKUP = "https://itunes.apple.com/lookup"
+
+
 
 def utc_window(days: int) -> tuple[date, date]:
     """The reporting window, anchored to UTC.
@@ -88,32 +118,48 @@ def _retry_after(exc: urllib.error.HTTPError, fallback: float) -> float:
     return fallback
 
 
-def _get_json(url: str, headers: dict, data: bytes | None = None, timeout: int = 30):
-    """GET/POST JSON, retrying the failures that are not answers.
+def _fetch(url: str, headers: dict, data: bytes | None, timeout: int,
+           read, retry_statuses: frozenset):
+    """Make the request, retrying the failures that are not answers.
 
     Raises the last error once the attempts run out, so every caller's existing
-    error handling still reports the real reason.
+    error handling still reports the real reason. `retry_statuses` is a
+    parameter because 404 means different things to different endpoints: a blip
+    from GoatCounter, but the ordinary answer for a day the App Store had no
+    sales, where retrying it would sleep through every quiet day in the window.
     """
     delay = RETRY_BACKOFF
     for attempt in range(1, RETRY_ATTEMPTS + 1):
         req = urllib.request.Request(url, data=data, headers=headers)
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                return json.load(resp)
+                return read(resp)
         except urllib.error.HTTPError as exc:
-            if attempt == RETRY_ATTEMPTS or exc.code not in RETRY_STATUSES:
+            if attempt == RETRY_ATTEMPTS or exc.code not in retry_statuses:
                 raise
             wait = _retry_after(exc, delay)
         except (urllib.error.URLError, TimeoutError):
             # A refused connection or a timed-out one. URLError is the parent of
             # HTTPError, so this arm only sees the transport failures the arm
-            # above did not already claim.
+            # above did not already claim. A bare TimeoutError is NOT a URLError
+            # and has to be named, or an unattended run dies on a slow socket.
             if attempt == RETRY_ATTEMPTS:
                 raise
             wait = delay
         time.sleep(wait)
         delay *= 2
     raise AssertionError("unreachable: the loop returns or raises")
+
+
+def _get_json(url: str, headers: dict, data: bytes | None = None, timeout: int = 30):
+    """GET/POST JSON, retrying the failures that are not answers."""
+    return _fetch(url, headers, data, timeout, json.load, RETRY_STATUSES)
+
+
+def _get_bytes(url: str, headers: dict, timeout: int = 60,
+               retry_statuses: frozenset = RETRY_STATUSES) -> bytes:
+    """GET a binary body, with the same retry policy."""
+    return _fetch(url, headers, None, timeout, lambda resp: resp.read(), retry_statuses)
 
 
 def goatcounter(days: int) -> dict:
@@ -423,3 +469,283 @@ def play_quality() -> dict:
         return {"error": "; ".join(problems)}
     return {"empty": "No crash or ANR rate yet. Play needs a minimum number of "
                      "sessions before it reports one."}
+
+
+# --- App Store ---------------------------------------------------------------
+
+
+def _asc_config() -> dict:
+    """Where the App Store credentials are, and which vendor account to read.
+
+    The key ids come from fastlane's dotenv so there is one place to change
+    them; the optional JSON overrides any of it and is the only home the vendor
+    number has.
+    """
+    conf = {"key_path": ASC_KEY_PATH, "key_id": "", "issuer_id": "", "vendor_number": ""}
+
+    try:
+        with open(ASC_ENV_PATH, encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if line.startswith("#") or "=" not in line:
+                    continue
+                name, _, value = line.partition("=")
+                if name.strip() == "ASC_KEY_ID":
+                    conf["key_id"] = value.strip()
+                elif name.strip() == "ASC_ISSUER_ID":
+                    conf["issuer_id"] = value.strip()
+    except OSError:
+        pass
+
+    if os.path.exists(ASC_CONFIG_PATH):
+        try:
+            with open(ASC_CONFIG_PATH, encoding="utf-8") as fh:
+                conf.update({k: v for k, v in json.load(fh).items() if v})
+        except (OSError, ValueError) as exc:
+            return {"error": f"{ASC_CONFIG_PATH} could not be read: {exc}"}
+
+    if not conf["key_id"] or not conf["issuer_id"]:
+        return {"error": f"No ASC_KEY_ID / ASC_ISSUER_ID in {ASC_ENV_PATH}."}
+    if not os.path.exists(conf["key_path"]):
+        return {"error": f"No App Store Connect key at {conf['key_path']}."}
+    return conf
+
+
+def _asc_token(conf: dict) -> str:
+    from _apple_auth import token
+    return token(conf["key_path"], conf["key_id"], conf["issuer_id"])
+
+
+def _sales_report(day: date, vendor: str, token: str) -> list[dict] | None:
+    """One day of sales, or None when Apple has nothing for that date.
+
+    The reports come back as a gzipped tab-separated file, and a date with no
+    sales - or one Apple has not compiled yet - is a 404 rather than an empty
+    file. The caller decides which of those it is from how recent the day is.
+    """
+    import gzip
+    import io as _io
+
+    query = urllib.parse.urlencode({
+        "filter[frequency]": "DAILY",
+        "filter[reportDate]": day.isoformat(),
+        "filter[reportSubType]": "SUMMARY",
+        "filter[reportType]": "SALES",
+        "filter[vendorNumber]": vendor,
+    })
+    try:
+        raw = gzip.decompress(_get_bytes(
+            f"{ASC_API}/v1/salesReports?{query}",
+            {"Authorization": f"Bearer {token}", "Accept": "application/a-gzip"},
+            retry_statuses=SALES_RETRY_STATUSES,
+        ))
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return None
+        raise
+
+    import csv
+    text = raw.decode("utf-8-sig")
+    return list(csv.DictReader(_io.StringIO(text), delimiter="\t"))
+
+
+def _units(row: dict) -> int:
+    try:
+        return int(row.get("Units") or 0)
+    except ValueError:
+        return 0
+
+
+def _is_update(row: dict) -> bool:
+    """Apple's product type identifiers for an update all start with 7.
+
+    Everything else a free app can produce - 1F, 1T, 1E and their universal
+    variants - is someone getting the app, whether for the first time or again
+    on a new phone. The summary report does not split those two, so the figure
+    is named "downloads" rather than "new users".
+    """
+    return str(row.get("Product Type Identifier") or "").startswith("7")
+
+
+def app_store(days: int) -> dict:
+    """Downloads and updates from the App Store's daily sales reports."""
+    conf = _asc_config()
+    if "error" in conf:
+        return conf
+    if not conf["vendor_number"]:
+        return {"error": (
+            "No vendor number. It is the one figure with no API: App Store "
+            "Connect shows it under Payments and Financial Reports. Put it in "
+            f'{ASC_CONFIG_PATH} as {{"vendor_number": "..."}}.')}
+
+    try:
+        token = _asc_token(conf)
+    except Exception as exc:  # noqa: BLE001 - any auth failure reads the same here
+        return {"error": f"App Store auth failed: {exc}"}
+
+    # Ask for the lag days on top of the window. The most recent ones get
+    # dropped below because Apple has not compiled them, and without the
+    # padding the series comes back short: the weekly buckets then silently
+    # lose a whole comparison week while the page header still claims to be
+    # measuring against it.
+    start, today = utc_window(days + ASC_REPORT_LAG_DAYS)
+    start = max(start, ASC_FIRST_RELEASE)
+    # Everything is kept per day and folded up only after the window is
+    # trimmed, so the totals, the countries and the devices all describe the
+    # same days the sparkline draws.
+    per_day: list[dict] = []
+    unpublished: list[str] = []
+
+    day = start
+    while day <= today:
+        try:
+            rows = _sales_report(day, conf["vendor_number"], token)
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode(errors="replace")[:200]
+            return {"error": f"App Store sales report returned HTTP {exc.code}: {detail}"}
+        except (urllib.error.URLError, TimeoutError) as exc:
+            # TimeoutError is not a URLError, and an uncaught one here would
+            # take the whole report down, panels that already succeeded and all.
+            reason = getattr(exc, "reason", exc)
+            return {"error": f"App Store unreachable: {reason}"}
+
+        entry = {"day": day.isoformat(), "downloads": 0, "updates": 0,
+                 "countries": {}, "devices": {}}
+        if rows is None:
+            # Either a quiet day or one Apple has not written yet. Record it and
+            # let the trim below decide, so a real zero still shows as a zero.
+            unpublished.append(entry["day"])
+        else:
+            for row in rows:
+                n = _units(row)
+                if n <= 0:
+                    continue
+                if _is_update(row):
+                    entry["updates"] += n
+                    continue
+                entry["downloads"] += n
+                country = row.get("Country Code") or "??"
+                entry["countries"][country] = entry["countries"].get(country, 0) + n
+                device = row.get("Device") or "Unknown"
+                entry["devices"][device] = entry["devices"].get(device, 0) + n
+        per_day.append(entry)
+        day += timedelta(days=1)
+
+    # Drop the trailing days Apple has plausibly not compiled yet. Older gaps
+    # stay in as zeros, because a quiet week must not be able to hide itself by
+    # shortening the window.
+    horizon = (today - timedelta(days=ASC_REPORT_LAG_DAYS)).isoformat()
+    pending = 0
+    while per_day and per_day[-1]["day"] in unpublished and per_day[-1]["day"] > horizon:
+        per_day.pop()
+        pending += 1
+
+    # Now cut back to the window that was actually asked for.
+    per_day = per_day[-days:]
+
+    by_country: dict[str, int] = {}
+    by_device: dict[str, int] = {}
+    for entry in per_day:
+        for name, n in entry["countries"].items():
+            by_country[name] = by_country.get(name, 0) + n
+        for name, n in entry["devices"].items():
+            by_device[name] = by_device.get(name, 0) + n
+
+    return {
+        "start": per_day[0]["day"] if per_day else start.isoformat(),
+        "end": per_day[-1]["day"] if per_day else today.isoformat(),
+        "downloads": sum(e["downloads"] for e in per_day),
+        "updates": sum(e["updates"] for e in per_day),
+        "daily": [(e["day"], e["downloads"]) for e in per_day],
+        "countries": sorted(by_country.items(), key=lambda kv: -kv[1]),
+        "devices": sorted(by_device.items(), key=lambda kv: -kv[1]),
+        "pending_days": pending,
+    }
+
+
+def app_store_reviews(days: int, limit: int = 200) -> dict:
+    """Reviews left in the window, newest first.
+
+    Apple has no date filter here, so this walks the newest reviews and stops
+    at the first one older than the window. On an app this size that is one
+    page; the limit is there so a sudden pile of reviews cannot turn a weekly
+    report into an unbounded crawl.
+    """
+    conf = _asc_config()
+    if "error" in conf:
+        return conf
+    try:
+        token = _asc_token(conf)
+    except Exception as exc:  # noqa: BLE001
+        return {"error": f"App Store auth failed: {exc}"}
+
+    start, _ = utc_window(days)
+    headers = {"Authorization": f"Bearer {token}"}
+    url = (f"{ASC_API}/v1/apps/{ASC_APP_ID}/customerReviews"
+           "?sort=-createdDate&limit=50")
+
+    reviews: list[dict] = []
+    total = 0
+    try:
+        while url and len(reviews) < limit:
+            payload = _get_json(url, headers)
+            total = payload.get("meta", {}).get("paging", {}).get("total", total)
+            stop = False
+            for item in payload.get("data", []):
+                attrs = item.get("attributes", {})
+                created = (attrs.get("createdDate") or "")[:10]
+                if created and created < start.isoformat():
+                    stop = True
+                    break
+                reviews.append({
+                    "date": created,
+                    "rating": attrs.get("rating"),
+                    "title": attrs.get("title") or "",
+                    "body": attrs.get("body") or "",
+                    "reviewer": attrs.get("reviewerNickname") or "",
+                    "territory": attrs.get("territory") or "",
+                })
+            url = None if stop else payload.get("links", {}).get("next")
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode(errors="replace")[:200]
+        return {"error": f"App Store reviews returned HTTP {exc.code}: {detail}"}
+    except urllib.error.URLError as exc:
+        return {"error": f"App Store reviews unreachable: {exc.reason}"}
+
+    rated = [r["rating"] for r in reviews if isinstance(r.get("rating"), int)]
+    return {
+        "start": start.isoformat(),
+        "new": len(reviews),
+        "lifetime": total,
+        "average": round(sum(rated) / len(rated), 2) if rated else None,
+        "reviews": reviews,
+    }
+
+
+def app_store_listing(country: str = "us") -> dict:
+    """The live storefront record: version, release date, stars.
+
+    Star ratings are not in the App Store Connect API at all. The public lookup
+    endpoint has them, needs no credential, and is the same data the store page
+    shows, so it is the honest source rather than a workaround.
+    """
+    query = urllib.parse.urlencode({"id": ASC_APP_ID, "country": country})
+    try:
+        payload = _get_json(f"{ITUNES_LOOKUP}?{query}", {})
+    except urllib.error.HTTPError as exc:
+        return {"error": f"App Store lookup returned HTTP {exc.code}."}
+    except urllib.error.URLError as exc:
+        return {"error": f"App Store lookup unreachable: {exc.reason}"}
+
+    results = payload.get("results") or []
+    if not results:
+        return {"error": "The App Store lookup returned no record for this app."}
+    app = results[0]
+    return {
+        "version": app.get("version"),
+        "released": (app.get("currentVersionReleaseDate") or "")[:10],
+        "rating": app.get("averageUserRating") or 0,
+        "ratings": app.get("userRatingCount") or 0,
+        "url": app.get("trackViewUrl", ""),
+        "minimum_os": app.get("minimumOsVersion", ""),
+    }

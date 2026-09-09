@@ -26,7 +26,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from _stats_sources import (  # noqa: E402
-    STORE_EVENTS, goatcounter, play, play_quality, search_console,
+    STORE_EVENTS, app_store, app_store_listing, app_store_reviews,
+    goatcounter, play, play_quality, search_console,
 )
 
 DEFAULT_OUT = Path.home() / "Development/badger-artifacts/site-stats/weekly.html"
@@ -222,6 +223,91 @@ def build_play(days: int) -> str:
     return panel("Play Store", f"{p['start']} to {p['end']}.{note}", "".join(parts))
 
 
+def stars(rating: object) -> str:
+    """A rating as filled and empty stars, so the shape reads before the number."""
+    try:
+        n = int(rating)
+    except (TypeError, ValueError):
+        return "?"
+    n = max(0, min(5, n))
+    return "\u2605" * n + "\u2606" * (5 - n)
+
+
+def build_app_store(days: int) -> str:
+    """The iOS panel.
+
+    Three sources with three different failure modes, so each degrades on its
+    own: downloads need a vendor number that lives only in a local config,
+    reviews need the API key, and the storefront record needs neither. A panel
+    that vanished because one of them was missing would hide the other two.
+    """
+    listing = app_store_listing()
+    subtitle = ""
+    parts: list[str] = []
+
+    store = app_store(days)
+    if "error" in store:
+        # Not a dead panel: the ratings and reviews below still stand.
+        parts.append(f'<p class="error">{esc(store["error"])}</p>')
+    else:
+        buckets = weekly_buckets(store["daily"])
+        this_week, context = trend(buckets, store["downloads"])
+        pending = ""
+        if store["pending_days"]:
+            pending = (f' Apple has not published the last {store["pending_days"]} '
+                       f'day(s) yet, so they are left out rather than drawn as zero.')
+        parts.append(f'<p class="figure">{this_week}<span> downloads this week</span></p>')
+        parts.append(f'<p class="sub">{esc(context)} {store["updates"]} updates '
+                     f'over the window.{esc(pending)}</p>')
+        parts.append(sparkline(buckets))
+        subtitle = f'{store["start"]} to {store["end"]}'
+
+    if "error" in listing:
+        parts.append(f'<p class="error">{esc(listing["error"])}</p>')
+    else:
+        rating = listing["rating"]
+        if listing["ratings"]:
+            summary = (f'{stars(round(rating))} {rating:.1f} from '
+                       f'{listing["ratings"]} ratings.')
+        else:
+            summary = "No star ratings yet."
+        parts.append("<h3>Listing</h3>")
+        parts.append(f'<p class="sub">{esc(summary)} Live version '
+                     f'{esc(listing["version"])}, released {esc(listing["released"])}, '
+                     f'iOS {esc(listing["minimum_os"])} and up.</p>')
+
+    reviews = app_store_reviews(days)
+    parts.append("<h3>Reviews</h3>")
+    if "error" in reviews:
+        parts.append(f'<p class="error">{esc(reviews["error"])}</p>')
+    else:
+        if reviews["new"]:
+            parts.append(f'<p class="sub">{reviews["new"]} new this window, '
+                         f'{reviews["lifetime"]} in total.</p>')
+        parts.append(rows_table(
+            ["Stars", "Date", "Where", "Review"],
+            [[esc(stars(r["rating"])), esc(r["date"]), esc(r["territory"]),
+              f'<strong>{esc(r["title"])}</strong><br>{esc(r["body"][:400])}'
+              if r["title"] else esc(r["body"][:400])]
+             for r in reviews["reviews"][:10]],
+            "Nobody has left a review in this window."))
+
+    if "error" not in store:
+        parts.append("<h3>Where downloads came from</h3>")
+        parts.append(rows_table(
+            ["Downloads", "Country"],
+            [[str(c), esc(name)] for name, c in store["countries"][:10]],
+            "No downloads recorded in this window."))
+        if store["devices"]:
+            parts.append("<h3>Devices</h3>")
+            parts.append(rows_table(
+                ["Downloads", "Device"],
+                [[str(c), esc(name)] for name, c in store["devices"]],
+                "Nothing yet."))
+
+    return panel("App Store", subtitle, "".join(parts))
+
+
 CSS = """
 :root{color-scheme:light dark;--bg:#F1EDE3;--card:#FBF8F1;--ink:#211E19;--muted:#6B655A;
 --rule:#DCD5C6;--accent:#2E7E90;--bad:#9C3B2E}
@@ -274,8 +360,7 @@ def main() -> None:
         build_goatcounter(days),
         build_search_console(days),
         build_play(days),
-        panel("App Store", "",
-              '<p class="empty">Waiting on the iOS release.</p>'),
+        build_app_store(days),
     ])
 
     page = (
