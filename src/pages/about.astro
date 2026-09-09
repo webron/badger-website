@@ -22,30 +22,23 @@ const description =
 const sections = [
   {
     title: 'One person, not a company',
-    body: `I am Ron, and I build Badger on my own. There is no team, no investors, and
-    no company behind it. That is not a pitch for scrappiness, it is just the fact that
-    shapes everything else on this page: what gets built, how fast it moves, and why
-    nobody here needs your data to be worth something.`,
+    body: `Badger is made by one person, me. No team, no investors, no company. It
+    matters mainly because nobody here needs your data to be worth something.`,
   },
   {
     title: 'Why it exists',
-    body: `I lift, and I wanted a log that behaved like a notebook. Fast enough to use
-    between sets, complete offline, and honest about my numbers being mine. Most of what
-    is in Badger got built because I hit the gap myself on a Tuesday evening and fixed it
-    that week.`,
+    body: `I built it because I wanted it, and I still use it every week. That is the
+    whole reason.`,
   },
   {
     title: 'How it is paid for',
-    body: `It is not. Badger is free, with no ads, no subscription, no analytics, and no
-    tracking of any kind. Nothing in the app is trying to sell you anything, because there
-    is nothing to sell. <a href="/promise/">The Badger promise</a> writes down the five
-    commitments this rests on, in more detail than most people will ever want.`,
+    body: `It is not. Badger is free. No ads, no subscription, no analytics. If you want
+    that written down properly, it is on <a href="/promise/">the promise page</a>.`,
   },
   {
     title: 'Where it is going',
-    body: `Badger is on Android today, and iOS is in progress. Beyond that I do not keep
-    a public roadmap, because I would rather ship a thing than announce it. The
-    <a href="/changelog/">changelog</a> is the honest record of what has actually landed.`,
+    body: `Android today, iOS in progress. There is no public roadmap. The
+    <a href="/changelog/">changelog</a> is what has actually shipped.`,
   },
 ];
 ---
@@ -57,8 +50,7 @@ const sections = [
     <span class="kicker">Who is behind this</span>
     <h1>About Badger</h1>
     <p class="lede">
-      You are about to trust a piece of software with a few years of your training history.
-      It is reasonable to want to know who is on the other end of that.
+      Badger holds years of your training history, so it is fair to ask who is behind it.
     </p>
 
     <div class="sections">
@@ -75,8 +67,7 @@ const sections = [
     <section class="entry contact" id="contact">
       <h2>Get in touch</h2>
       <p>
-        There is a real person reading these, and it is the same person who wrote the app.
-        Bug reports, feature ideas, and "this bit makes no sense" are all welcome.
+        These go to me, not a support desk. Bugs, ideas, and complaints all welcome.
       </p>
 
       <dl class="addresses">
@@ -89,8 +80,7 @@ const sections = [
           <dd>
             <a href="mailto:feedback@badger.fit">feedback@badger.fit</a>
             <span class="note">
-              Or use <em>Send feedback</em> in the app, which fills in your device and version
-              for you.
+              Or <em>Send feedback</em> in the app, which fills in your device and version.
             </span>
           </dd>
         </div>
@@ -99,17 +89,12 @@ const sections = [
           <dd>
             <a href="mailto:privacy@badger.fit">privacy@badger.fit</a>
             <span class="note">
-              See the <a href="/legal/privacy/">privacy policy</a> for what Badger does and
-              does not collect. The short version is: nothing.
+              The <a href="/legal/privacy/">privacy policy</a> has the full answer.
             </span>
           </dd>
         </div>
       </dl>
     </section>
-
-    <div class="close-line">
-      <p class="close-copy">Made by someone who has to live with it too.</p>
-    </div>
 
     <div class="cta-min">
       <a class="btn-accent" href="/#download">Get the app</a>
@@ -208,23 +193,6 @@ const sections = [
     color: var(--text-secondary);
   }
 
-  .close-line {
-    margin-top: 44px;
-    padding: 30px 0 0;
-    border-top: 1px solid var(--hair);
-    text-align: center;
-  }
-
-  .close-copy {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 1.4;
-    color: var(--text);
-  }
-
   .cta-min {
     text-align: center;
     margin-top: 30px;
@@ -237,10 +205,6 @@ const sections = [
 
     .doc h1 {
       font-size: 30px;
-    }
-
-    .close-copy {
-      font-size: 18px;
     }
   }
 </style>
