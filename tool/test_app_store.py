@@ -126,9 +126,46 @@ class AppStoreAggregation(unittest.TestCase):
         out = self.run_with(lambda day: None)
         self.assertEqual(out["pending_days"], 2)
         self.assertEqual(out["downloads"], 0)
-        self.assertEqual(len(out["daily"]), 5)
         self.assertEqual(out["end"],
                          (self.today - timedelta(days=2)).isoformat())
+
+    def test_the_asked_for_window_survives_the_pending_trim(self):
+        """The lag is normal, not an edge case, so it must not shorten the run.
+
+        Apple is behind by a day or two on every ordinary run. When those days
+        were simply dropped, a 35-day request came back as 33, the weekly
+        buckets fell from five to four, and the page went on claiming it was
+        measuring against four previous weeks while showing three.
+        """
+        rows = [{"Product Type Identifier": "1F", "Units": "1",
+                 "Country Code": "US", "Device": "iPhone"}]
+        published = self.today - timedelta(days=2)
+
+        out = self.run_with(lambda day: None if day > published else rows, days=35)
+        self.assertEqual(out["pending_days"], 2)
+        self.assertEqual(len(out["daily"]), 35)
+        self.assertEqual(out["downloads"], 35)
+        self.assertEqual(out["end"], published.isoformat())
+
+        # And with nothing pending, the window is still exactly what was asked
+        # for rather than the padded one.
+        caught_up = self.run_with(lambda day: rows, days=35)
+        self.assertEqual(caught_up["pending_days"], 0)
+        self.assertEqual(len(caught_up["daily"]), 35)
+        self.assertEqual(caught_up["end"], self.today.isoformat())
+
+    def test_totals_cover_the_same_days_the_sparkline_draws(self):
+        """The padded days are fetched, then must not leak into the figures."""
+        rows = [{"Product Type Identifier": "1F", "Units": "1",
+                 "Country Code": "US", "Device": "iPhone"},
+                {"Product Type Identifier": "7F", "Units": "2",
+                 "Country Code": "US", "Device": "iPhone"}]
+        out = self.run_with(lambda day: rows, days=7)
+        self.assertEqual(len(out["daily"]), 7)
+        self.assertEqual(out["downloads"], 7)
+        self.assertEqual(out["updates"], 14)
+        self.assertEqual(dict(out["countries"]), {"US": 7})
+        self.assertEqual(dict(out["devices"]), {"iPhone": 7})
 
     def test_an_older_quiet_day_stays_in_as_a_zero(self):
         quiet = self.today - timedelta(days=4)
@@ -159,6 +196,19 @@ class AppStoreAggregation(unittest.TestCase):
                                side_effect=lambda day, v, t: per_day(day)):
             src.app_store(30)
         self.assertEqual(min(asked), released)
+
+    def test_a_bare_timeout_is_reported_rather_than_thrown(self):
+        """TimeoutError is not a URLError.
+
+        An uncaught one here would take down the whole weekly report, losing
+        the panels that had already rendered, on an unattended run with nobody
+        watching.
+        """
+        def per_day(day):
+            raise TimeoutError("timed out")
+
+        out = self.run_with(per_day)
+        self.assertIn("unreachable", out["error"])
 
     def test_a_missing_vendor_number_says_so_instead_of_calling_apple(self):
         with mock.patch.object(src, "_asc_config",

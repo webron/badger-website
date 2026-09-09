@@ -73,10 +73,14 @@ ASC_REPORT_LAG_DAYS = 2
 # Badger's first day on the App Store. Every date before it is a guaranteed 404,
 # and asking anyway costs thirty round trips a run for no number.
 ASC_FIRST_RELEASE = date(2026, 9, 9)
+# A 404 from the sales endpoint is its ordinary answer for a day with nothing
+# in it, not a blip, so it must not be retried the way GoatCounter's is.
+SALES_RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
 # The public storefront record. No key, no rate limit worth worrying about, and
 # it carries the two figures the authenticated API does not expose at all: the
 # lifetime star average and how many people left one.
 ITUNES_LOOKUP = "https://itunes.apple.com/lookup"
+
 
 
 def utc_window(days: int) -> tuple[date, date]:
@@ -114,32 +118,48 @@ def _retry_after(exc: urllib.error.HTTPError, fallback: float) -> float:
     return fallback
 
 
-def _get_json(url: str, headers: dict, data: bytes | None = None, timeout: int = 30):
-    """GET/POST JSON, retrying the failures that are not answers.
+def _fetch(url: str, headers: dict, data: bytes | None, timeout: int,
+           read, retry_statuses: frozenset):
+    """Make the request, retrying the failures that are not answers.
 
     Raises the last error once the attempts run out, so every caller's existing
-    error handling still reports the real reason.
+    error handling still reports the real reason. `retry_statuses` is a
+    parameter because 404 means different things to different endpoints: a blip
+    from GoatCounter, but the ordinary answer for a day the App Store had no
+    sales, where retrying it would sleep through every quiet day in the window.
     """
     delay = RETRY_BACKOFF
     for attempt in range(1, RETRY_ATTEMPTS + 1):
         req = urllib.request.Request(url, data=data, headers=headers)
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                return json.load(resp)
+                return read(resp)
         except urllib.error.HTTPError as exc:
-            if attempt == RETRY_ATTEMPTS or exc.code not in RETRY_STATUSES:
+            if attempt == RETRY_ATTEMPTS or exc.code not in retry_statuses:
                 raise
             wait = _retry_after(exc, delay)
         except (urllib.error.URLError, TimeoutError):
             # A refused connection or a timed-out one. URLError is the parent of
             # HTTPError, so this arm only sees the transport failures the arm
-            # above did not already claim.
+            # above did not already claim. A bare TimeoutError is NOT a URLError
+            # and has to be named, or an unattended run dies on a slow socket.
             if attempt == RETRY_ATTEMPTS:
                 raise
             wait = delay
         time.sleep(wait)
         delay *= 2
     raise AssertionError("unreachable: the loop returns or raises")
+
+
+def _get_json(url: str, headers: dict, data: bytes | None = None, timeout: int = 30):
+    """GET/POST JSON, retrying the failures that are not answers."""
+    return _fetch(url, headers, data, timeout, json.load, RETRY_STATUSES)
+
+
+def _get_bytes(url: str, headers: dict, timeout: int = 60,
+               retry_statuses: frozenset = RETRY_STATUSES) -> bytes:
+    """GET a binary body, with the same retry policy."""
+    return _fetch(url, headers, None, timeout, lambda resp: resp.read(), retry_statuses)
 
 
 def goatcounter(days: int) -> dict:
@@ -513,13 +533,12 @@ def _sales_report(day: date, vendor: str, token: str) -> list[dict] | None:
         "filter[reportType]": "SALES",
         "filter[vendorNumber]": vendor,
     })
-    req = urllib.request.Request(
-        f"{ASC_API}/v1/salesReports?{query}",
-        headers={"Authorization": f"Bearer {token}", "Accept": "application/a-gzip"},
-    )
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            raw = gzip.decompress(resp.read())
+        raw = gzip.decompress(_get_bytes(
+            f"{ASC_API}/v1/salesReports?{query}",
+            {"Authorization": f"Bearer {token}", "Accept": "application/a-gzip"},
+            retry_statuses=SALES_RETRY_STATUSES,
+        ))
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
             return None
@@ -564,12 +583,17 @@ def app_store(days: int) -> dict:
     except Exception as exc:  # noqa: BLE001 - any auth failure reads the same here
         return {"error": f"App Store auth failed: {exc}"}
 
-    start, today = utc_window(days)
+    # Ask for the lag days on top of the window. The most recent ones get
+    # dropped below because Apple has not compiled them, and without the
+    # padding the series comes back short: the weekly buckets then silently
+    # lose a whole comparison week while the page header still claims to be
+    # measuring against it.
+    start, today = utc_window(days + ASC_REPORT_LAG_DAYS)
     start = max(start, ASC_FIRST_RELEASE)
-    daily: list[tuple[str, int]] = []
-    updates = 0
-    by_country: dict[str, int] = {}
-    by_device: dict[str, int] = {}
+    # Everything is kept per day and folded up only after the window is
+    # trimmed, so the totals, the countries and the devices all describe the
+    # same days the sparkline draws.
+    per_day: list[dict] = []
     unpublished: list[str] = []
 
     day = start
@@ -579,31 +603,32 @@ def app_store(days: int) -> dict:
         except urllib.error.HTTPError as exc:
             detail = exc.read().decode(errors="replace")[:200]
             return {"error": f"App Store sales report returned HTTP {exc.code}: {detail}"}
-        except urllib.error.URLError as exc:
-            return {"error": f"App Store unreachable: {exc.reason}"}
+        except (urllib.error.URLError, TimeoutError) as exc:
+            # TimeoutError is not a URLError, and an uncaught one here would
+            # take the whole report down, panels that already succeeded and all.
+            reason = getattr(exc, "reason", exc)
+            return {"error": f"App Store unreachable: {reason}"}
 
+        entry = {"day": day.isoformat(), "downloads": 0, "updates": 0,
+                 "countries": {}, "devices": {}}
         if rows is None:
             # Either a quiet day or one Apple has not written yet. Record it and
             # let the trim below decide, so a real zero still shows as a zero.
-            unpublished.append(day.isoformat())
-            daily.append((day.isoformat(), 0))
-            day += timedelta(days=1)
-            continue
-
-        count = 0
-        for row in rows:
-            n = _units(row)
-            if n <= 0:
-                continue
-            if _is_update(row):
-                updates += n
-                continue
-            count += n
-            country = row.get("Country Code") or "??"
-            by_country[country] = by_country.get(country, 0) + n
-            device = row.get("Device") or "Unknown"
-            by_device[device] = by_device.get(device, 0) + n
-        daily.append((day.isoformat(), count))
+            unpublished.append(entry["day"])
+        else:
+            for row in rows:
+                n = _units(row)
+                if n <= 0:
+                    continue
+                if _is_update(row):
+                    entry["updates"] += n
+                    continue
+                entry["downloads"] += n
+                country = row.get("Country Code") or "??"
+                entry["countries"][country] = entry["countries"].get(country, 0) + n
+                device = row.get("Device") or "Unknown"
+                entry["devices"][device] = entry["devices"].get(device, 0) + n
+        per_day.append(entry)
         day += timedelta(days=1)
 
     # Drop the trailing days Apple has plausibly not compiled yet. Older gaps
@@ -611,16 +636,27 @@ def app_store(days: int) -> dict:
     # shortening the window.
     horizon = (today - timedelta(days=ASC_REPORT_LAG_DAYS)).isoformat()
     pending = 0
-    while daily and daily[-1][0] in unpublished and daily[-1][0] > horizon:
-        daily.pop()
+    while per_day and per_day[-1]["day"] in unpublished and per_day[-1]["day"] > horizon:
+        per_day.pop()
         pending += 1
 
+    # Now cut back to the window that was actually asked for.
+    per_day = per_day[-days:]
+
+    by_country: dict[str, int] = {}
+    by_device: dict[str, int] = {}
+    for entry in per_day:
+        for name, n in entry["countries"].items():
+            by_country[name] = by_country.get(name, 0) + n
+        for name, n in entry["devices"].items():
+            by_device[name] = by_device.get(name, 0) + n
+
     return {
-        "start": start.isoformat(),
-        "end": daily[-1][0] if daily else today.isoformat(),
-        "downloads": sum(c for _, c in daily),
-        "updates": updates,
-        "daily": daily,
+        "start": per_day[0]["day"] if per_day else start.isoformat(),
+        "end": per_day[-1]["day"] if per_day else today.isoformat(),
+        "downloads": sum(e["downloads"] for e in per_day),
+        "updates": sum(e["updates"] for e in per_day),
+        "daily": [(e["day"], e["downloads"]) for e in per_day],
         "countries": sorted(by_country.items(), key=lambda kv: -kv[1]),
         "devices": sorted(by_device.items(), key=lambda kv: -kv[1]),
         "pending_days": pending,

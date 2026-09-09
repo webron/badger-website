@@ -69,6 +69,9 @@ def token(key_path: str, key_id: str, issuer_id: str) -> str:
         ["openssl", "dgst", "-sha256", "-sign", key_path],
         input=signing_input,
         capture_output=True,
+        # This runs unattended. An openssl that blocks with no timeout takes
+        # the whole weekly report with it, and nothing is there to notice.
+        timeout=30,
     )
     if proc.returncode != 0:
         raise RuntimeError(f"openssl signing failed: {proc.stderr.decode().strip()}")

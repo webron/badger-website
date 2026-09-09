@@ -31,6 +31,9 @@ def sign_with_key(message: bytes, key_path: str) -> bytes:
         ["openssl", "dgst", "-sha256", "-sign", key_path],
         input=message,
         capture_output=True,
+        # Same reasoning as the Apple side: an unattended run must not be able
+        # to hang forever on a subprocess that never returns.
+        timeout=30,
     )
     if proc.returncode != 0:
         raise RuntimeError(f"openssl signing failed: {proc.stderr.decode().strip()}")
