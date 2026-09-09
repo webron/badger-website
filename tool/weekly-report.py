@@ -250,17 +250,27 @@ def build_app_store(days: int) -> str:
         # Not a dead panel: the ratings and reviews below still stand.
         parts.append(f'<p class="error">{esc(store["error"])}</p>')
     else:
-        buckets = weekly_buckets(store["daily"])
-        this_week, context = trend(buckets, store["downloads"])
         pending = ""
         if store["pending_days"]:
+            days_word = "day" if store["pending_days"] == 1 else "days"
             pending = (f' Apple has not published the last {store["pending_days"]} '
-                       f'day(s) yet, so they are left out rather than drawn as zero.')
-        parts.append(f'<p class="figure">{this_week}<span> downloads this week</span></p>')
-        parts.append(f'<p class="sub">{esc(context)} {store["updates"]} updates '
-                     f'over the window.{esc(pending)}</p>')
-        parts.append(sparkline(buckets))
-        subtitle = f'{store["start"]} to {store["end"]}'
+                       f'{days_word} yet, so they are left out rather than drawn '
+                       f'as zero.')
+        if not store["daily"]:
+            # Everything in range is still unpublished, which is the state for a
+            # day or two after a launch. A confident zero here would read as
+            # nobody downloading it.
+            parts.append('<p class="empty">Apple has not published a sales '
+                         'report for any day in this window yet.</p>')
+        else:
+            buckets = weekly_buckets(store["daily"])
+            this_week, context = trend(buckets, store["downloads"])
+            parts.append(f'<p class="figure">{this_week}'
+                         f'<span> downloads this week</span></p>')
+            parts.append(f'<p class="sub">{esc(context)} {store["updates"]} updates '
+                         f'over the window.{esc(pending)}</p>')
+            parts.append(sparkline(buckets))
+            subtitle = f'{store["start"]} to {store["end"]}'
 
     if "error" in listing:
         parts.append(f'<p class="error">{esc(listing["error"])}</p>')
