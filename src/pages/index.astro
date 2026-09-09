@@ -47,11 +47,12 @@ const ORG_ID = 'https://badger.fit/#organization';
 // One @graph rather than two <script> blocks, so the app node can point at the
 // organization node by @id instead of restating it.
 //
-// Every claim here has to be true of the shipped product. sameAs carries the
-// Google Play listing only: it is the one public profile page that is actually
-// ours. Badger has no social accounts, and inventing them would be the exact
-// kind of unverifiable markup that gets structured data ignored. The TestFlight
-// invite is deliberately not listed either - it is a join link, not a profile.
+// Every claim here has to be true of the shipped product. sameAs carries the two
+// store listings: they are the public profile pages that are actually ours.
+// Badger has no social accounts, and inventing them would be the exact kind of
+// unverifiable markup that gets structured data ignored. The App Store page
+// joined the list on 2026-09-09; the retired TestFlight invite never did, since
+// a join link is not a profile.
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -67,7 +68,10 @@ const structuredData = {
       alternateName: 'Badger workout tracker',
       url: 'https://badger.fit',
       logo: 'https://badger.fit/assets/badger_logo_stacked.svg',
-      sameAs: ['https://play.google.com/store/apps/details?id=fit.badger.app'],
+      sameAs: [
+        'https://play.google.com/store/apps/details?id=fit.badger.app',
+        'https://apps.apple.com/app/id6782743069',
+      ],
     },
     {
       // MobileApplication is a subtype of SoftwareApplication and is the more
@@ -75,13 +79,11 @@ const structuredData = {
       '@type': 'MobileApplication',
       name: 'Badger',
       applicationCategory: 'HealthApplication',
-      // Re-checked 2026-07-23 (M-web-3): the iOS build is still TestFlight-only,
-      // the App Store submission has not gone in. iOS stays listed because this
-      // field states which operating systems the app runs on, not where it can be
-      // bought, and the iOS build is real and installable; downloadUrl and the CTA
-      // below both say Play and TestFlight in plain words, so nothing here promises
-      // an App Store listing. Revisit at App Store launch together with that CTA
-      // clause (copy worklist section 1).
+      // Both operating systems now have a public store listing: the App Store
+      // release went live 2026-09-09 (1.1.10, build 28), fifteen days after
+      // submission. downloadUrl takes one URL, so it keeps Play, the older and
+      // larger listing; the App Store page is reachable through sameAs and the
+      // CTA below, which now names both stores in plain words.
       operatingSystem: 'Android, iOS',
       url: 'https://badger.fit',
       downloadUrl: 'https://play.google.com/store/apps/details?id=fit.badger.app',
@@ -273,7 +275,7 @@ const shouldnt = [
 
     <section class="cta">
       <h2>Ready to start?</h2>
-      <p>Badger is free on Google Play, with an iOS beta open in TestFlight.</p>
+      <p>Badger is free on Google Play and the App Store.</p>
       <StoreBadges />
     </section>
   </main>
@@ -490,9 +492,16 @@ const shouldnt = [
 
   /* ---- switching band ---- */
 
+  /* Same 1012px measure and centering as every other section child (the caps
+     label and its rule directly above, the feature ledger, the two-column
+     spread, the CTA). Without it the rows ran the full width of the section,
+     which only shows above about 1060px of viewport: past that the label and
+     rule stay centered at 1012 while the rows underneath keep widening, so the
+     band reads as detached from its own heading. */
   .switch-rows {
     list-style: none;
-    margin: 0;
+    max-width: 1012px;
+    margin: 0 auto;
     padding: 0;
   }
 
