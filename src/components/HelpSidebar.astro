@@ -333,6 +333,15 @@ const nav = [
     overflow-y: auto;
   }
 
+  /* Pagefind leaves the results box in the DOM with nothing in it when a query
+     matches nothing, so its own top and bottom borders collapsed into a stray
+     2px hairline with a drop shadow, floating under the "No results" message
+     (which is a sibling, not a child). It was always there; widening the panel
+     to the field made it wide enough to read as a mistake. */
+  #help-search .pagefind-ui__results:empty {
+    display: none;
+  }
+
   #help-search .pagefind-ui__result {
     padding: 0.5rem 0.75rem;
     border-bottom: 1px solid var(--hair);
