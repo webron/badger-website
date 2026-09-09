@@ -308,11 +308,23 @@ const nav = [
     color: var(--text);
   }
 
-  /* Results float over the page, so this one keeps a surface and a border. */
+  /* Results float over the page, so this one keeps a surface and a border.
+
+     The panel spans its own field rather than carrying a width of its own. It
+     used to be a flat 220px, the width of the desktop sidebar, with no mobile
+     override - so below 769px, where the sidebar becomes a full-width block
+     above the article, the panel stayed 220px while the field it belongs to
+     grew with the viewport. At 768px that was a 220px panel hanging off the
+     left end of a 736px field, with the article showing through beside it and
+     every excerpt wrapping at three words. Left and right resolve against
+     .help-search-wrap, which is position: relative for exactly this. Top is
+     left unset so the panel keeps its static position under the field. */
   #help-search .pagefind-ui__results {
     position: absolute;
     z-index: 50;
-    width: 220px;
+    left: 0;
+    right: 0;
+    width: auto;
     background: var(--surface);
     border: 1px solid var(--outline);
     border-radius: 8px;
@@ -450,6 +462,12 @@ const nav = [
 
   .help-search-wrap {
     margin-bottom: 22px;
+    /* The containing block for the results panel, which is absolutely
+       positioned. Without it the panel resolved against #help-sidebar on
+       desktop (sticky, so positioned) and against something further up the tree
+       on mobile (static), which is why the panel could not be sized in
+       percentages and carried a hard pixel width instead. */
+    position: relative;
     /* Pagefind ships this div empty and injects the search input at runtime, so
        without a reservation everything below it drops by the input's height the
        moment the bundle lands. That shift was always here; it only became
