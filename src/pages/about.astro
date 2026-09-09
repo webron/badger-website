@@ -1,0 +1,246 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+/**
+ * About Badger. First person, first name only, no photo (Ron, 2026-09-08).
+ * The Play and App Store listings already carry the full legal name; the site
+ * deliberately does not repeat it.
+ *
+ * This page is the site's only contact surface. Before this page, the three
+ * addresses only appeared inside Privacy, Terms and the Programs page, so a
+ * reader with a question had nowhere obvious to go. The footer carries both an
+ * "About" and a "Contact" link, the second pointing at #contact here.
+ *
+ * DRAFT COPY - every first-person claim below is awaiting Ron's sign-off.
+ */
+
+const description =
+  'Badger is made by one person, not a company. Who builds it, why it exists, how it is paid for, and how to get in touch.';
+
+const sections = [
+  {
+    title: 'One person, not a company',
+    body: `I am Ron, and I build Badger on my own. There is no team, no investors, and
+    no company behind it. That is not a pitch for scrappiness, it is just the fact that
+    shapes everything else on this page: what gets built, how fast it moves, and why
+    nobody here needs your data to be worth something.`,
+  },
+  {
+    title: 'Why it exists',
+    body: `I lift, and I wanted a log that behaved like a notebook. Fast enough to use
+    between sets, complete offline, and honest about my numbers being mine. Most of what
+    is in Badger got built because I hit the gap myself on a Tuesday evening and fixed it
+    that week.`,
+  },
+  {
+    title: 'How it is paid for',
+    body: `It is not. Badger is free, with no ads, no subscription, no analytics, and no
+    tracking of any kind. Nothing in the app is trying to sell you anything, because there
+    is nothing to sell. <a href="/promise/">The Badger promise</a> writes down the five
+    commitments this rests on, in more detail than most people will ever want.`,
+  },
+  {
+    title: 'Where it is going',
+    body: `Badger is on Android today, and iOS is in progress. Beyond that I do not keep
+    a public roadmap, because I would rather ship a thing than announce it. The
+    <a href="/changelog/">changelog</a> is the honest record of what has actually landed.`,
+  },
+];
+---
+
+<BaseLayout title="About" description={description}>
+  <Header currentPath={Astro.url.pathname} />
+
+  <main class="doc">
+    <span class="kicker">Who is behind this</span>
+    <h1>About Badger</h1>
+    <p class="lede">
+      You are about to trust a piece of software with a few years of your training history.
+      It is reasonable to want to know who is on the other end of that.
+    </p>
+
+    <div class="sections">
+      {
+        sections.map(({ title, body }) => (
+          <section class="entry">
+            <h2>{title}</h2>
+            <p set:html={body} />
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="entry contact" id="contact">
+      <h2>Get in touch</h2>
+      <p>
+        There is a real person reading these, and it is the same person who wrote the app.
+        Bug reports, feature ideas, and "this bit makes no sense" are all welcome.
+      </p>
+
+      <dl class="addresses">
+        <div class="address">
+          <dt>Anything at all</dt>
+          <dd><a href="mailto:hello@badger.fit">hello@badger.fit</a></dd>
+        </div>
+        <div class="address">
+          <dt>Bugs and feature requests</dt>
+          <dd>
+            <a href="mailto:feedback@badger.fit">feedback@badger.fit</a>
+            <span class="note">
+              Or use <em>Send feedback</em> in the app, which fills in your device and version
+              for you.
+            </span>
+          </dd>
+        </div>
+        <div class="address">
+          <dt>Your data and privacy</dt>
+          <dd>
+            <a href="mailto:privacy@badger.fit">privacy@badger.fit</a>
+            <span class="note">
+              See the <a href="/legal/privacy/">privacy policy</a> for what Badger does and
+              does not collect. The short version is: nothing.
+            </span>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <div class="close-line">
+      <p class="close-copy">Made by someone who has to live with it too.</p>
+    </div>
+
+    <div class="cta-min">
+      <a class="btn-accent" href="/#download">Get the app</a>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .doc {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 0;
+  }
+
+  .kicker {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .doc h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 1.15;
+    color: var(--text);
+  }
+
+  .lede {
+    margin: 14px 0 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 56ch;
+  }
+
+  /* Ledger sections: 2px ink top per section, matching /promise. */
+  .entry {
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 2px solid var(--ink);
+  }
+
+  .entry h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.25;
+    color: var(--text);
+  }
+
+  .entry p {
+    margin: 8px 0 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 60ch;
+  }
+
+  .addresses {
+    margin: 22px 0 0;
+  }
+
+  .address {
+    padding: 14px 0;
+    border-top: 1px solid var(--hair);
+  }
+
+  .address:last-child {
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .address dt {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .address dd {
+    margin: 6px 0 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .note {
+    display: block;
+    margin-top: 5px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .close-line {
+    margin-top: 44px;
+    padding: 30px 0 0;
+    border-top: 1px solid var(--hair);
+    text-align: center;
+  }
+
+  .close-copy {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .cta-min {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 640px) {
+    .doc {
+      padding: 44px 20px 0;
+    }
+
+    .doc h1 {
+      font-size: 30px;
+    }
+
+    .close-copy {
+      font-size: 18px;
+    }
+  }
+</style>
