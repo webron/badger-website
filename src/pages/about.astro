@@ -13,34 +13,17 @@ import Footer from '../components/Footer.astro';
  * reader with a question had nowhere obvious to go. The footer carries both an
  * "About" and a "Contact" link, the second pointing at #contact here.
  *
+ * Prose, not headed sections: there is not enough here to earn subheads, and
+ * a section per sentence is what made the first draft read as generated. The
+ * one remaining h2 is "Get in touch", which stays because #contact is a footer
+ * link target.
+ *
  * DRAFT COPY - every first-person claim below is awaiting Ron's sign-off.
  */
 
 const description =
-  'Badger is made by one person, not a company. Who builds it, why it exists, how it is paid for, and how to get in touch.';
+  'Badger is made by one person, not a company. Who builds it, why it exists, and how to get in touch.';
 
-const sections = [
-  {
-    title: 'One person, not a company',
-    body: `Badger is made by one person, me. No team, no investors, no company. It
-    matters mainly because nobody here needs your data to be worth something.`,
-  },
-  {
-    title: 'Why it exists',
-    body: `I built it because I wanted it, and I still use it every week. That is the
-    whole reason.`,
-  },
-  {
-    title: 'How it is paid for',
-    body: `It is not. Badger is free. No ads, no subscription, no analytics. If you want
-    that written down properly, it is on <a href="/promise/">the promise page</a>.`,
-  },
-  {
-    title: 'Where it is going',
-    body: `Android today, iOS in progress. There is no public roadmap. The
-    <a href="/changelog/">changelog</a> is what has actually shipped.`,
-  },
-];
 ---
 
 <BaseLayout title="About" description={description}>
@@ -53,15 +36,18 @@ const sections = [
       Badger holds years of your training history, so it is fair to ask who is behind it.
     </p>
 
-    <div class="sections">
-      {
-        sections.map(({ title, body }) => (
-          <section class="entry">
-            <h2>{title}</h2>
-            <p set:html={body} />
-          </section>
-        ))
-      }
+    <div class="prose">
+      <p>
+        Badger is made by one person. I am Ron. No team, no investors, no company. Nobody
+        here needs your data to be worth anything.
+      </p>
+      <p>
+        I built it because I wanted it, and I still use it every week.
+      </p>
+      <p>
+        It is free. No ads, no subscription, no analytics. That is written down properly on
+        <a href="/promise/">the promise page</a>.
+      </p>
     </div>
 
     <section class="entry contact" id="contact">
@@ -133,7 +119,19 @@ const sections = [
     max-width: 56ch;
   }
 
-  /* Ledger sections: 2px ink top per section, matching /promise. */
+  .prose {
+    margin-top: 26px;
+  }
+
+  .prose p {
+    margin: 0 0 14px;
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    max-width: 60ch;
+  }
+
+  /* The one ledger section left: 2px ink top, matching /promise. */
   .entry {
     margin-top: 40px;
     padding-top: 22px;
