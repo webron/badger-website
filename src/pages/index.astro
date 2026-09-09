@@ -492,9 +492,16 @@ const shouldnt = [
 
   /* ---- switching band ---- */
 
+  /* Same 1012px measure and centering as every other section child (the caps
+     label and its rule directly above, the feature ledger, the two-column
+     spread, the CTA). Without it the rows ran the full width of the section,
+     which only shows above about 1060px of viewport: past that the label and
+     rule stay centered at 1012 while the rows underneath keep widening, so the
+     band reads as detached from its own heading. */
   .switch-rows {
     list-style: none;
-    margin: 0;
+    max-width: 1012px;
+    margin: 0 auto;
     padding: 0;
   }
 
