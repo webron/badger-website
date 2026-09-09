@@ -219,6 +219,54 @@ class AppStoreAggregation(unittest.TestCase):
         fetch.assert_not_called()
 
 
+class AscConfig(unittest.TestCase):
+    """The reports key is deliberately separate from the publishing one.
+
+    Apple refuses report downloads to the key fastlane publishes with, and a
+    key with a reporting role cannot necessarily read apps and reviews, so one
+    credential for both would only move which section comes back empty.
+    """
+
+    def write(self, body: str):
+        import json as _json
+        import tempfile
+        path = Path(tempfile.mkdtemp()) / "app-store.json"
+        path.write_text(body if isinstance(body, str) else _json.dumps(body))
+        env = path.parent / ".env"
+        env.write_text("ASC_KEY_ID=PUBLISH\nASC_ISSUER_ID=ISSUER\n"
+                       "MATCH_PASSWORD=not a key id\n")
+        key = path.parent / "asc_api_key.p8"
+        key.write_text("")
+        return path, env, key
+
+    def config(self, stored: dict, reports: bool):
+        path, env, key = self.write({**stored})
+        with mock.patch.object(src, "ASC_CONFIG_PATH", str(path)), \
+             mock.patch.object(src, "ASC_ENV_PATH", str(env)), \
+             mock.patch.object(src, "ASC_KEY_PATH", str(key)):
+            return src._asc_config(reports=reports)
+
+    def test_the_publishing_key_is_the_default_for_both(self):
+        stored = {"vendor_number": "94483508"}
+        for reports in (False, True):
+            conf = self.config(stored, reports)
+            self.assertEqual(conf["key_id"], "PUBLISH")
+            self.assertEqual(conf["vendor_number"], "94483508")
+
+    def test_a_reports_key_overrides_only_the_reports_side(self):
+        stored = {"vendor_number": "1", "reports_key_id": "REPORTS",
+                  "reports_issuer_id": "OTHER"}
+        self.assertEqual(self.config(stored, reports=False)["key_id"], "PUBLISH")
+        conf = self.config(stored, reports=True)
+        self.assertEqual(conf["key_id"], "REPORTS")
+        self.assertEqual(conf["issuer_id"], "OTHER")
+
+    def test_the_dotenv_password_is_not_mistaken_for_a_key_id(self):
+        conf = self.config({"vendor_number": "1"}, reports=False)
+        self.assertEqual(conf["key_id"], "PUBLISH")
+        self.assertNotIn("not a key id", conf.values())
+
+
 class AppleJwtSignature(unittest.TestCase):
     def test_der_integers_are_stripped_and_repadded_to_thirty_two_bytes(self):
         # r has a leading zero byte DER adds to keep it positive; s is short.

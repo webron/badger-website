@@ -474,12 +474,19 @@ def play_quality() -> dict:
 # --- App Store ---------------------------------------------------------------
 
 
-def _asc_config() -> dict:
+def _asc_config(reports: bool = False) -> dict:
     """Where the App Store credentials are, and which vendor account to read.
 
     The key ids come from fastlane's dotenv so there is one place to change
     them; the optional JSON overrides any of it and is the only home the vendor
     number has.
+
+    Sales reports get their own optional key. The key fastlane publishes with
+    can read apps, versions and reviews but is refused for reports, and a key
+    with a reporting role cannot necessarily read the rest, so forcing both
+    through one credential would trade one blank section for another. With no
+    `reports_*` entries this falls back to the publishing key, which is the
+    right answer if a single key ever covers both.
     """
     conf = {"key_path": ASC_KEY_PATH, "key_id": "", "issuer_id": "", "vendor_number": ""}
 
@@ -500,9 +507,13 @@ def _asc_config() -> dict:
     if os.path.exists(ASC_CONFIG_PATH):
         try:
             with open(ASC_CONFIG_PATH, encoding="utf-8") as fh:
-                conf.update({k: v for k, v in json.load(fh).items() if v})
+                stored = json.load(fh)
         except (OSError, ValueError) as exc:
             return {"error": f"{ASC_CONFIG_PATH} could not be read: {exc}"}
+        conf.update({k: v for k, v in stored.items() if v and not k.startswith("reports_")})
+        if reports:
+            conf.update({k[len("reports_"):]: v for k, v in stored.items()
+                         if v and k.startswith("reports_")})
 
     if not conf["key_id"] or not conf["issuer_id"]:
         return {"error": f"No ASC_KEY_ID / ASC_ISSUER_ID in {ASC_ENV_PATH}."}
@@ -569,7 +580,7 @@ def _is_update(row: dict) -> bool:
 
 def app_store(days: int) -> dict:
     """Downloads and updates from the App Store's daily sales reports."""
-    conf = _asc_config()
+    conf = _asc_config(reports=True)
     if "error" in conf:
         return conf
     if not conf["vendor_number"]:
@@ -602,6 +613,18 @@ def app_store(days: int) -> dict:
             rows = _sales_report(day, conf["vendor_number"], token)
         except urllib.error.HTTPError as exc:
             detail = exc.read().decode(errors="replace")[:200]
+            if exc.code == 403:
+                # Observed 2026-09-09 with the key fastlane publishes with,
+                # which reads apps, versions and reviews perfectly well. Apple
+                # gates report downloads separately, and says only "the API key
+                # in use does not allow this request", which reads like a
+                # broken vendor number if you do not know that.
+                return {"error": (
+                    "This App Store Connect key is not allowed to download "
+                    "reports. Create one with a reporting role (Users and "
+                    "Access, Integrations) and point "
+                    f'{ASC_CONFIG_PATH} at it with "reports_key_path", '
+                    '"reports_key_id" and "reports_issuer_id".')}
             return {"error": f"App Store sales report returned HTTP {exc.code}: {detail}"}
         except (urllib.error.URLError, TimeoutError) as exc:
             # TimeoutError is not a URLError, and an uncaught one here would
