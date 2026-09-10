@@ -139,6 +139,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p><strong>1+ is how you program a set to failure.</strong> At least one rep, then as many as you can - which is the whole instruction. There is no version without a floor, deliberately: every set carries a minimum, and the minimum is what "did I meet the plan?" is measured against.</p>
   <p>To set one: open a routine's <a href="/help/routines/#predefined-sets">predefined sets</a>, and under a working set tap <strong>+ AMRAP</strong>. Warmups can't have one, and it replaces a rep range if the set had one.</p>
   <p>Meeting the plan on an open target just means clearing the floor. Going well past it is the point of the set, not a second bar to clear - and an open set never triggers the "work toward N reps" progression prompt, because there's no top to work toward. See <a href="/help/routines/#amrap-targets">open-topped targets</a> for how it behaves in a routine.</p>
+  <p>In a program that carries a <a href="/help/routines/#progression">progression rule</a>, an open set is often the <a href="#driver-sets">driver</a>: the one set whose reps decide what next session looks like. That is how 5/3/1 and nSuns work - the reps you got on the open set choose the increment.</p>
 
   <h3 id="to-failure">To failure: what you record afterward</h3>
   <p><strong>Training to failure</strong> means taking a set until you can't complete another rep. Where AMRAP is what the plan asked for, this is what you report back: the <a href="#rpe-rir">To failure</a> chip under Set details marks the set you just logged as having gone all the way, which is the same thing as recording <strong>RIR 0</strong>.</p>
@@ -260,10 +261,32 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>When a working set beats your all-time estimated 1RM for that exercise (on the same machine, if one is set), a trophy badge appears on the set row, a SnackBar notification appears at the bottom of the screen, and a haptic pulse fires (if haptics are enabled in Settings).</p>
   <p>Records are also kept separately per <a href="/help/gyms/#bar-prs">bar</a>, since a trap-bar deadlift and a straight-bar deadlift aren't the same lift. And sets logged with an <a href="/help/gyms/#accessories-and-records">accessory</a> attached are left out of records in both directions - they never badge, and they never stand in the way of a bare set's record.</p>
 
-  <h2>Progressive overload suggestions</h2>
+  <h2 id="rules-in-preview">Starting a session from a program with rules</h2>
+  <p>If the routine slot carries a <a href="/help/routines/#progression">progression rule</a>, the work happens before you start, on the routine log preview. Badger reads your last session against the rule and <strong>proposes</strong> a weight - it never edits your routine and never changes anything silently.</p>
+  <ul>
+    <li>The proposed weight sits in the working sets, with a line under it naming the part of the rule that fired: <em>Rule met: all sets met &middot; +2.5 kg &middot; tap weight to override</em>.</li>
+    <li><strong>Tap the weight to type your own.</strong> The reason stays and the line reads <em>overridden</em>. Your rule is not disabled or deleted by disagreeing with it once.</li>
+    <li>Only weight is proposed. Reps come from your <a href="/help/routines/#starting">rep target</a> setting as usual.</li>
+    <li>Nothing is recorded until you tap Start, so backing out and coming in again gives you the same number.</li>
+    <li>If the rule has nothing to propose, there is no line - Badger does not narrate a session where nothing changed.</li>
+  </ul>
+
+  <h3 id="percent-sets-preview">Percentage sets</h3>
+  <p>A set prescribed as a <a href="/help/routines/#percent-sets">percentage</a> of a <a href="/help/routines/#training-max">training max</a> shows you a real weight in the preview, not a percentage to work out at the rack. The number is snapped to what you can actually load - your gym's plates, the bar you have pinned, the machine's step - by the same arithmetic the <a href="/help/tools/">plate calculator</a> uses. If the percentage comes out below the bar, Badger clamps to the bar and says so.</p>
+  <p>Until the slot has a training max, there is nothing to take a percentage of, and the preview says <strong>"Set a training max to use this rule"</strong> rather than inventing one. Tap it to set the number.</p>
+
+  <h3 id="waved-day-preview">How a waved day reads</h3>
+  <p>On a <a href="/help/routines/#waves">waved day</a> - a day that runs as a cycle of weeks - the preview shows <em>this</em> week's sets and nothing else. Sets belonging to other weeks are not listed and not there to skip past, so a 5/3/1 Monday looks like a normal Monday rather than a four-week table. Sets that apply every week (your accessory work, usually) show every week.</p>
+  <p>The routine moves to the next week once you have trained every day in the cycle, in whatever order. Skip a day and you stay where you are rather than losing a week. You can set the week yourself at any time from the routine.</p>
+
+  <h3 id="driver-sets">Driver sets and AMRAP</h3>
+  <p>Some rules read one specific set: the <a href="/help/routines/#driver-set">driver</a>. It is usually an <a href="#amrap">open-topped</a> set - <strong>5+</strong> - and the reps you actually log on it decide what the rule does. Log it honestly: a 5+ you took to 12 and a 5+ you stopped at 5 are meant to lead to different weeks, and that only works if the number is real.</p>
+
+  <h2 id="progressive-overload">Progressive overload suggestions</h2>
   <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Coaching, default: 3).</p>
   <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce. The <strong>+</strong> and <strong>−</strong> buttons beside the weight field use the same grid, so a stack that steps by 10 moves by 10 - and a quiet line under the field says where that step came from: <em>Step: 25 lbs &middot; from Cybex Leg Press</em>. On dumbbells and kettlebells a <a href="#rack-stepper">rack</a> takes over from the grid. Tap × to dismiss the suggestion for this session.</p>
   <p>The suggestion is <strong>machine-scoped</strong>: it looks at history for the same machine you currently have set. Switching machines gives you a fresh suggestion based on that machine's history.</p>
+  <p><strong>An exercise with a <a href="/help/routines/#progression">progression rule</a> does not get this suggestion.</strong> Its program already says what happens next, and two mechanisms proposing different weights for the same lift would be worse than either alone. Everything without a rule behaves exactly as before.</p>
 
   <h2 id="auto-progress">Auto-progress routine weights</h2>
   <p>By default this is off. Turn it on in <strong>Settings → Coaching → "Auto-progress routine weights"</strong>. When it's on and you finish a workout that you started from a routine, Badger checks each exercise where you completed all the planned sets, looking for weights heavier than the routine planned. If it finds any, the <strong>workout summary</strong> shows an "Update [Routine] · [Day]?" section listing each exercise you progressed - for example <em>80 → 82.5 kg</em>.</p>
@@ -275,6 +298,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Warmups never count toward the comparison. And an exercise is only offered when every planned working set was completed - leave a planned set unfinished and that exercise sits out this time, so a half-done session can't raise your program.</li>
     <li>Nothing is ever changed silently: the setting controls whether the offer appears, and the checkboxes are your confirmation.</li>
     <li>If you swapped an exercise for an alternative mid-workout, that slot won't auto-progress (it's no longer the same exercise the routine planned).</li>
+    <li>A slot with a <a href="/help/routines/#progression">progression rule</a> sits this out too - its rule owns the weight, and it already proposed one at the start of the session.</li>
   </ul>
 
   <h2>Exercise navigation</h2>

@@ -6,6 +6,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h1>Routines</h1>
 
   <p>A routine is a saved training program - a collection of days, each with its own exercises and (optionally) predefined sets. When you start a workout from a routine, Badger pre-fills your exercises and suggests weights based on your previous performance.</p>
+  <p>A slot can also carry a <a href="#progression">progression rule</a>: a sentence saying what should happen to its weight next session. That is how a program runs itself rather than asking you to keep its arithmetic in your head.</p>
 
   <hr />
 
@@ -37,6 +38,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Default gym</strong> - Pre-set which gym this day is performed at.</li>
     <li><strong>Notes</strong> - Freeform notes for the day. When you start a workout from this day, the notes appear as a dismissable banner at the top of the training screen (useful for "Focus on pause reps today" or "Deload - 50% intensity" reminders). Dismissing the banner hides it for the current workout only; starting a new workout from the same day shows it again.</li>
+    <li><strong>Wave</strong> - Run this day as a cycle of weeks instead of the same session every time. Off by default. See <a href="#waves">waved days</a>.</li>
   </ul>
 
   <h3 id="routine-notes">Routine notes</h3>
@@ -50,7 +52,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Rep range</strong> - An optional top end, so the target reads "8-10" instead of "8". See below.</li>
     <li><strong>Open target (AMRAP)</strong> - No top end at all, so the target reads "8+". See below.</li>
     <li><strong>Warmup flag</strong> - Mark the set as a warmup.</li>
+    <li><strong>Percentage</strong> - Prescribe the set as a percentage of the slot's <a href="#training-max">training max</a> instead of a weight. See <a href="#percent-sets">percentage sets</a>.</li>
+    <li><strong>Driver</strong> - Mark this as the one set whose reps a <a href="#progression">progression rule</a> reads. See <a href="#driver-set">the set that drives the rule</a>.</li>
+    <li><strong>Week</strong> - Which week of a <a href="#waves">waved day</a> this set belongs to.</li>
   </ul>
+  <p>The last three only appear when they apply - when the slot has a rule, when the day is waved, or when the set is already using one of them. A routine that uses none of them looks exactly as it always has.</p>
   <p>Sets can be reordered by dragging.</p>
   <p>On a timed exercise, the duration field takes a time as readily as a number of seconds - type <strong>15:00</strong> for a fifteen-minute ride, or <strong>900</strong> if you prefer. See <a href="/help/logging/#duration-entry">typing a duration</a>.</p>
 
@@ -87,6 +93,80 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li id="default-accessories">Default accessories - program the band, chain or straps you always use on that slot, and they come with the exercise when you log the day instead of being re-picked every week. Sets logged with an accessory attached stay out of personal records, so a slot programmed this way is outside record-keeping by design.</li>
   </ul>
   <p><strong>Rest time is a property of the exercise, not the routine.</strong> Set a working/warmup rest on the exercise itself (Exercise → settings) and it applies everywhere you train it. A routine exercise still has a "Rest (seconds)" field, but it's only a fallback - it applies when the exercise has no rest configured, and never overrides the exercise's own rest.</p>
+
+
+  <h2 id="progression">Progression rules</h2>
+  <p>A routine slot can carry one <strong>progression rule</strong>: what Badger should do to that exercise's weight next time, based on how the last session went. A rule is written as a sentence you can read, not a formula and not a template with the workings hidden:</p>
+  <div class="callout">
+    <p>All sets met? <strong>Add 2.5 kg.</strong><br />Missed a set <strong>3</strong> sessions in a row? <strong>Drop 10%</strong> and start the count again.<br />Otherwise, <strong>keep the same weight.</strong></p>
+  </div>
+  <p>The lines are read top to bottom and the first one that matches is the one that fires - which is also exactly how Badger evaluates it, so what you read is what happens. Every rule ends with an "otherwise" line, so "what will it do next session?" always has an answer.</p>
+  <p>Nothing has a rule until you write one. A routine with no rules behaves exactly as it always has.</p>
+
+  <h3 id="writing-a-rule">Writing one</h3>
+  <p>Open a routine day, tap an exercise to open its <a href="#predefined-sets">predefined sets</a>, and use the <strong>Progression</strong> section at the top.</p>
+  <ul>
+    <li><strong>Linear</strong> and <strong>Double progression</strong> are buttons, not settings. Tapping one <em>writes</em> a sentence you then own: change any part of it and it stays yours, and Badger never re-applies the preset behind your back.</li>
+    <li>Every number in the sentence is a <strong>tappable chip</strong> - the increment, the percentage, the number of misses, the rep threshold. Tap it, type a new value, done. There is no free-text formula field anywhere.</li>
+    <li><strong>None</strong> clears the rule, behind a confirmation.</li>
+    <li><strong>Notes</strong> - a rule can carry a line of your own ("only while I'm eating enough"). Badger never reads it, and never writes one for you.</li>
+  </ul>
+
+  <h3 id="reading-a-rule">Reading one</h3>
+  <p>On the routine detail screen, a slot with a rule shows the sentence in the margin under its name, in the same wording the editor used. Slots without one read <strong>"No rule &middot; progression hints active"</strong> - but only on a day where some other slot has a rule, so a routine nobody has written a rule for looks exactly as it did before.</p>
+
+  <h3 id="when-a-rule-acts">When a rule acts</h3>
+  <p>Only at the <a href="#starting">routine log preview</a>, and only ever as a <strong>proposal</strong>. Rules never edit your routine.</p>
+  <ul>
+    <li>The proposed weight replaces the working sets' weight in the preview, with a line under it saying which part of the rule fired - for example <em>Rule met: all sets met &middot; +2.5 kg &middot; tap weight to override</em>.</li>
+    <li>Tap the weight and type your own. The reason stays on screen and the line reads <em>overridden</em>. Overriding does not disable or delete the rule.</li>
+    <li>Reps are never proposed. Rules move weight only.</li>
+    <li>Nothing is recorded until you actually start the workout, so opening the preview five times proposes the same number five times.</li>
+    <li>A rule that has nothing to propose says nothing at all.</li>
+  </ul>
+  <p><strong>One voice per slot.</strong> An exercise with a rule does not also get the generic <a href="/help/logging/#progressive-overload">progressive overload suggestion</a>, and it sits out the <a href="/help/logging/#auto-progress">auto-progress</a> offer on the workout summary. Two mechanisms proposing different weights for the same lift would be worse than either alone. Slots without a rule keep both, unchanged.</p>
+  <p><strong>A deload pauses the count, it never resets it.</strong> A <a href="/help/tools/#deload">deload</a> week is not treated as a real session: it does not advance a cycle, and a run of misses you were three-quarters through survives it intact. A deload week that is <em>part of the program</em> - 5/3/1's fourth week - is ordinary plan data and does count.</p>
+
+  <h3 id="set-up-progression">Setting up rules on a routine you already have</h3>
+  <p>Badger never writes rules into routines you have been editing for months. Instead, on the routine detail screen's <strong>⋮ menu</strong>, tap <strong>Set up progression</strong>: it lists every sentence it would write, slot by slot and day by day, and writes nothing until you confirm. It skips any slot that already has a rule, and never offers weight arithmetic to an exercise with no weight. Slots programmed with a rep range are offered double progression; fixed-rep slots, linear.</p>
+
+  <h3 id="training-max">Training max</h3>
+  <p>Some programs - 5/3/1, nSuns - do not prescribe a weight. They prescribe a percentage of a <strong>training max</strong>: a number you keep per lift that is deliberately below your real one-rep max, and that <strong>never appears on the bar</strong>. It exists to be multiplied.</p>
+  <p>A slot that uses one shows a line under its name on routine detail: <strong>Training max 135 lbs &middot; 120 → 130 → 135 ›</strong>. Tap it to open the training max sheet, which explains what the number is, lets you set or change it, and shows every move it has made and what caused each one.</p>
+  <ul>
+    <li>Badger proposes <strong>90% of your best estimated 1RM</strong> for that lift and shows its working, so you can see where the number came from before accepting it.</li>
+    <li><strong>With no history for the lift, Badger proposes nothing</strong> and asks you for a number. A training max is never guessed.</li>
+    <li>A rule can move it. Every move is written into the same history, marked as coming from the rule, from you, or from the first time it was set.</li>
+    <li>Your own edit always wins.</li>
+    <li>Until a slot has a training max, its percentage sets have nothing to work from, and the preview says <strong>"Set a training max to use this rule"</strong> rather than guessing.</li>
+  </ul>
+
+  <h3 id="percent-sets">Percentage sets</h3>
+  <p>In the predefined-sets editor, a set can be prescribed as a <strong>percentage</strong> instead of a weight - 85% rather than 100 kg. When you turn a percentage on, it replaces the weight field, because a weight box nothing is reading would be a lie about where the load comes from. Turn it off and the weight you last typed comes back untouched.</p>
+  <ul>
+    <li>The load is worked out when you open the log preview, from the slot's training max, and then <strong>snapped to something you can actually load</strong> - your gym's plates, the bar you have pinned, the machine's step size, whether that machine is logged per side. The same arithmetic the plate calculator and warm-up generator use.</li>
+    <li>A percentage that lands below the bar clamps up to the bar and tells you it did.</li>
+    <li>Percentage and plain-weight sets mix freely within one day.</li>
+    <li><a href="#starting">Weight source</a> and history scope do not apply to a percentage set - the percentage is the source.</li>
+  </ul>
+
+  <h3 id="driver-set">The set that drives the rule</h3>
+  <p>Some rules read one specific set rather than the whole exercise: nSuns keys off a particular set out of nine, and 5/3/1's last main set is the one that decides the week. Mark that set as the <strong>driver</strong> in the predefined-sets editor and rules like <em>"driver reps 8 or more? Add 5 lbs"</em> read its logged reps.</p>
+  <p>It is an explicit flag, not "the last one" or "the third one" - a position would break the first time you deleted a set. Only one set per slot can be the driver, and marking a new one clears the old. A warmup can never be the driver.</p>
+  <p>Driver sets are usually <a href="#amrap-targets">open-topped</a> (<strong>5+</strong>), which is what makes the reps you got the useful input.</p>
+
+  <h3 id="waves">Waved days (a cycle of weeks)</h3>
+  <p>A training day can run as a <strong>cycle of weeks</strong> rather than the same session every time - 5/3/1's four-week wave being the obvious case. Set it in <strong>Day options → Wave</strong> on the routine detail screen, beside the day's notes and schedule.</p>
+  <ul>
+    <li>Each set is written once and tagged with the week it belongs to. In the predefined-sets editor, a waved day gives each set a week field.</li>
+    <li>A set with <strong>no week</strong> appears in <em>every</em> week - that is how the accessory work you do all cycle long gets written once instead of four times.</li>
+    <li>The log preview shows only the current week's sets. Sets from other weeks are not there to skip past.</li>
+    <li>The routine tracks which week it is on and moves to the next once every day of the cycle has been trained. Skipping a day leaves you where you were rather than losing a week, and you can always set the week yourself.</li>
+    <li>Off is how every existing day behaves. A wave of one week is not a wave, so stepping below two turns it off.</li>
+  </ul>
+
+  <h3 id="sharing-rules">What travels when you share a program</h3>
+  <p>Progression rules, percentage sets, driver flags and waves all travel in a <a href="/badger-format/"><code>.badger</code></a> file, because they are the program. <strong>Your training max does not.</strong> A shared file is a program, not the sender's numbers - the recipient sets their own training max from their own history, the same line Badger draws around your photos and your private setup notes. See <a href="/badger-format/#progression">the format reference</a>.</p>
 
   <h2 id="starting">Starting a routine workout</h2>
   <p>From the <strong>home screen</strong>, tap a day row under your active routine. This opens the <strong>routine log preview</strong>, which shows:</p>
@@ -165,18 +245,20 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <hr />
 
   <h2 id="programs">Built-in programs</h2>
-  <p>Badger ships with 8 pre-built programs in 3 folders:</p>
+  <p>Badger ships with 10 pre-built programs in 3 folders. Six of them carry their own <a href="#progression">progression rules</a>, so the program's own arithmetic runs where you can read it:</p>
 
   <h3>Beginner</h3>
   <ul>
-    <li><strong>StrongLifts 5×5</strong> - Two alternating full-body days (A and B), 5 sets of 5 reps on the major compound lifts. Add weight every session.</li>
-    <li><strong>Starting Strength</strong> - Similar structure to StrongLifts, with slight exercise differences and 3×5 progression.</li>
+    <li><strong>StrongLifts 5×5</strong> - Two alternating full-body days (A and B), 5 sets of 5 reps on the major compound lifts. Adds weight every session you complete, and drops 10% after three misses in a row.</li>
+    <li><strong>Starting Strength</strong> - Similar structure to StrongLifts, with slight exercise differences and 3×5 progression. Its rule halves your increment when you stall rather than deloading you.</li>
   </ul>
 
   <h3>Intermediate</h3>
   <ul>
-    <li><strong>GZCLP</strong> - Three-tier approach: heavy compound lifts (T1), medium compounds (T2), and accessory work (T3). Progressive rep schemes per tier.</li>
-    <li><strong>5/3/1 BBB</strong> - Wendler's 5/3/1 main sets followed by Boring But Big 5×10 volume work at 50% of training max.</li>
+    <li><strong>GZCLP</strong> - Three-tier approach: heavy compound lifts (T1), medium compounds (T2), and accessory work (T3). Each tier has its own rule, and the T1 and T2 stage ladders (5×3+ → 6×2+ → 10×1+) are written as stages Badger moves you through when you stall.</li>
+    <li><strong>5/3/1 BBB</strong> - Wendler's 5/3/1 main sets followed by Boring But Big 5×10 volume work, both as percentages of a <a href="#training-max">training max</a>, on a four-week <a href="#waves">wave</a>. Set your training max per lift the first time you run it; the rule moves it each cycle after that.</li>
+    <li><strong>nSuns 531LP</strong> - A long percentage ramp per session with one driver set, and rules that read the reps you got on it to decide the week's increment. Percentages come off a training max.</li>
+    <li><strong>Madcow 5×5</strong> - Weekly rather than per-session progression: each day ramps off its own top set, adding weight once a week and deloading after two misses.</li>
   </ul>
 
   <h3>Splits</h3>
@@ -190,4 +272,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <div class="callout">
     <strong>Note:</strong> Built-in programs use standard exercise names. If you've renamed or customized exercises, you may need to swap them in the routine after installing.
   </div>
+
+  <p>Built-in programs arrive on a <strong>new install only</strong> - Badger never adds routines to a list you have already built. If you have been using Badger a while, download the one you want from the <a href="/programs/">program files</a> page, or write the rules onto a routine you already have with <a href="#set-up-progression">Set up progression</a>.</p>
+
+  <p>Two places where the seeded rules deliberately depart from the source program, both stated in the routine's own notes: StrongLifts' 5×5 → 3×5 → 1×5 stall ladder is not modeled, because it changes the number of sets and no rule sentence can say that; and Madcow's reference is kept per slot, so each day ramps off its own top set rather than Friday's triple setting Monday's target.</p>
 </HelpLayout>
