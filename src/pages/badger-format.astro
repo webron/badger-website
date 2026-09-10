@@ -43,6 +43,15 @@ const description =
   </p>
 
   <p>
+    A routine file carries the whole program, not just its sets and reps: supersets and tempo, and -
+    where the program has them - its <a href="#progression">progression rules</a>, percentage-based
+    sets, which set drives the rule, and a day written as a
+    <a href="#waves">cycle of weeks</a>. Every one of those is an optional key that is simply left
+    out when unused, so a file that uses none of them is byte-identical to one written before they
+    existed, and an older copy of Badger reads it unchanged.
+  </p>
+
+  <p>
     This page documents it properly because three groups of people want it. Curious users, who would
     rather see what they are importing before they import it. Tool authors, who want to write
     something that emits a file Badger can read. And AI assistants: point yours at this page, hand it
@@ -205,6 +214,17 @@ const description =
           <td>string</td>
           <td>Gym this day defaults to. The gym is created on import if the name is new.</td>
         </tr>
+        <tr>
+          <td><code>cycle_length</code></td>
+          <td>integer</td>
+          <td>
+            How many weeks this day's cycle runs for, if it is <a href="#waves">waved</a> -
+            <code>4</code> for a 5/3/1 day. Leave the key out for a day that runs the same session
+            every time, which is every day written before this key existed and most days anybody
+            writes by hand. When it is present, each set's <a href="#predefined-set"><code>week_index</code></a>
+            says which week it belongs to.
+          </td>
+        </tr>
         <tr><td><code>exercises</code></td><td>array of <a href="#day-exercise"><code>DayExercise</code></a></td><td>The day's exercise slots.</td></tr>
       </tbody>
     </table>
@@ -287,6 +307,15 @@ const description =
           </td>
         </tr>
         <tr>
+          <td><code>progression</code></td>
+          <td><a href="#progression"><code>Progression</code></a></td>
+          <td>
+            This slot's progression rule: what happens to its weight next session. At most one per
+            slot. Omit the key entirely for a slot with no rule, which is every slot written before
+            this key existed.
+          </td>
+        </tr>
+        <tr>
           <td><code>predefined_sets</code></td>
           <td>array of <a href="#predefined-set"><code>PredefinedSet</code></a></td>
           <td>The planned sets. An empty list is valid but pointless.</td>
@@ -359,9 +388,286 @@ const description =
         </tr>
         <tr><td><code>duration_seconds</code></td><td>integer</td><td>Planned time, for timed exercises.</td></tr>
         <tr><td><code>distance</code></td><td>number</td><td>Planned distance in kilometers.</td></tr>
+        <tr>
+          <td><code>percent_of_reference</code></td>
+          <td>number</td>
+          <td>
+            Prescribes this set as a percentage of the slot's reference weight - <code>85.0</code> is
+            85%. The reader works out the load from the recipient's own reference and snaps it to a
+            weight they can load. Leave it out for an ordinary absolute-weight set, which is every
+            set written before this key existed. <code>100.0</code> is legal and means exactly what
+            it says. Import accepts anything above 0 and up to 200; a value outside that is a typo
+            rather than a prescription, and the set is read as an ordinary absolute-weight set.
+            <br /><br />
+            <strong>Write <code>weight</code> alongside it, not instead of it.</strong> The two travel
+            together on purpose: an older reader that has never heard of this key still finds a usable
+            target, and turning the percentage off restores the number rather than blanking the set.
+            That is the whole reason this key needed no new schema version.
+          </td>
+        </tr>
+        <tr>
+          <td><code>is_progression_driver</code></td>
+          <td>boolean, defaults to false</td>
+          <td>
+            Marks this as the one set whose logged reps a rule's <code>driver_reps_at_least</code> /
+            <code>driver_reps_between</code> triggers read. It is an explicit flag rather than a
+            position, because "the third set" stops being true the moment somebody deletes a set.
+            <strong>At most one per slot, and never on a warmup</strong> - a file carrying more gets
+            the first in array order and the rest cleared, and one on a warmup is dropped. Omitted
+            when false.
+          </td>
+        </tr>
+        <tr>
+          <td><code>week_index</code></td>
+          <td>integer</td>
+          <td>
+            Which week of its day's <a href="#waves">cycle</a> this set belongs to, counting from
+            <strong>0</strong>. Leave it out and the set applies to <em>every</em> week - which is
+            every set written before this key existed, every set on an unwaved day, and how a 5/3/1
+            file writes its accessory work once instead of four times. A value at or above the day's
+            <code>cycle_length</code> is out of range and the set is treated as applying to every
+            week.
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
+
+  <h3 id="progression">Progression</h3>
+
+  <p>
+    The object in a <a href="#day-exercise"><code>DayExercise</code></a>'s <code>progression</code>
+    key: that slot's rule for what happens to its weight next session. At most one per slot.
+  </p>
+
+  <p>
+    <strong>The rule travels; the sender's progress against it does not.</strong> No counters, no
+    stage index, no record of which session was last evaluated, and
+    <strong>no training max</strong>. A shared file is a program, not somebody else's numbers - see
+    <a href="#not-carried">what a file does not carry</a>. A <code>training_max</code> key written
+    into a file by hand is an unknown key like any other and is ignored.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>cadence</code></td>
+          <td>string, required</td>
+          <td>
+            When the rule is evaluated: <code>session</code> (after every qualifying session),
+            <code>week</code> (once a week), or <code>cycle</code> (once per cycle boundary). An
+            unrecognized value drops the whole rule.
+          </td>
+        </tr>
+        <tr>
+          <td><code>reference_kind</code></td>
+          <td>string, required</td>
+          <td>
+            Which number the arithmetic moves: <code>working_weight</code> (a real weight on the bar)
+            or <code>training_max</code> (a number that never appears on the bar and only ever gets
+            multiplied). A rule whose <code>reference_kind</code> is <code>working_weight</code> may
+            not carry a clause targeting <code>reference</code> - it has no training max to move -
+            and a file that does is dropped rather than repaired.
+          </td>
+        </tr>
+        <tr>
+          <td><code>clauses</code></td>
+          <td>array of <a href="#clause"><code>Clause</code></a>, required</td>
+          <td>
+            The rule itself, <strong>in evaluation order</strong>: the first clause whose trigger
+            matches is the one that fires, and nothing after it runs. The array order is the order,
+            as everywhere else in this format. Must be non-empty and must end with an
+            <code>always</code> clause.
+          </td>
+        </tr>
+        <tr>
+          <td><code>scheme</code></td>
+          <td>string</td>
+          <td>
+            Where the rule came from, as a label: <code>linear</code>,
+            <code>double_progression</code>, <code>gzclp_t1</code>, <code>gzclp_t2</code>,
+            <code>gzclp_t3</code>, <code>wave_531</code>, <code>nsuns_t1</code>,
+            <code>nsuns_t2</code>, <code>madcow_weekly</code>, <code>custom</code>.
+            <strong>Provenance only - nothing behaves differently because of it.</strong> The clauses
+            are the behavior. Unlike every other enum here, an unrecognized value falls back to
+            <code>custom</code> rather than dropping the rule: the field is inert, so a rule from a
+            newer build stays perfectly executable under a name this build has never heard of.
+          </td>
+        </tr>
+        <tr>
+          <td><code>note</code></td>
+          <td>string</td>
+          <td>
+            The author's own line about the rule. Displayed word for word and
+            <strong>never parsed</strong>, the same promise an
+            <a href="#accessory">accessory's</a> <code>label</code> carries. Omit it for no note;
+            nothing generates one.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="clause">Clause</h3>
+
+  <p>
+    The objects in <code>clauses</code>. Each one is a trigger and the action it fires. The keys drop
+    the trigger/action prefixes because the grouping inside a clause is already unambiguous:
+    <code>count</code>, <code>reps_min</code> and <code>reps_max</code> belong to the trigger;
+    <code>target</code>, <code>amount</code>, <code>amount_unit</code> and <code>percent</code>
+    belong to the action.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>trigger</code></td>
+          <td>string, required</td>
+          <td>
+            What makes the clause fire. One of:
+            <ul>
+              <li><code>all_sets_met</code> - every planned working set reached its rep target (at or above the minimum, for a range).</li>
+              <li><code>all_sets_top_of_range</code> - every ranged working set hit the top of its range. Open (<code>N+</code>) sets are skipped.</li>
+              <li><code>any_set_missed</code> - at least one planned working set came in under its minimum.</li>
+              <li><code>driver_reps_at_least</code> - the <a href="#predefined-set">driver</a> set's logged reps are at least <code>reps_min</code>.</li>
+              <li><code>driver_reps_between</code> - the driver set's reps fall in <code>[reps_min, reps_max]</code>, inclusive at both ends.</li>
+              <li><code>consecutive_failures_at_least</code> - the run of missed sessions has reached <code>count</code>, counting this one.</li>
+              <li><code>stage_is_last</code> - the slot is on its final stage and the session failed.</li>
+              <li><code>cycle_complete</code> - the routine's cycle has come round since this slot last acted.</li>
+              <li><code>always</code> - unconditionally. The terminal "otherwise" clause every rule ends with.</li>
+            </ul>
+            Any other value drops the whole rule.
+          </td>
+        </tr>
+        <tr>
+          <td><code>count</code></td>
+          <td>integer</td>
+          <td>
+            How many qualifying sessions in a row the trigger needs. Leave it out for
+            <strong>no repetition requirement</strong> - the trigger fires on a single occurrence.
+            A written <code>1</code> and an absent key behave the same, but the written one is a
+            choice and Badger prints it as "for 1 session in a row".
+          </td>
+        </tr>
+        <tr>
+          <td><code>reps_min</code> / <code>reps_max</code></td>
+          <td>integer</td>
+          <td>
+            Inclusive rep bounds for the two <code>driver_reps_*</code> triggers. Leaving both out
+            means <strong>this trigger does not look at reps at all</strong> - they are never
+            defaulted to zero or to the plan's own numbers. A <code>driver_reps_*</code> trigger with
+            no <code>reps_min</code>, or a <code>reps_max</code> below the <code>reps_min</code>,
+            drops the whole rule.
+          </td>
+        </tr>
+        <tr>
+          <td><code>action</code></td>
+          <td>string, required</td>
+          <td>
+            What happens when it fires. One of:
+            <ul>
+              <li><code>add_absolute</code> - add <code>amount</code>.</li>
+              <li><code>add_percent</code> - multiply by <code>percent</code>. A negative value is a reduction; the sign is carried, never inferred from the name.</li>
+              <li><code>hold</code> - the weight stays; counters still move.</li>
+              <li><code>none</code> - nothing changes at all, counters included.</li>
+              <li><code>next_stage</code> - move up a stage, weight unchanged.</li>
+              <li><code>reset_stage</code> - back to the first stage, plus whatever weight action the same clause carries.</li>
+              <li><code>set_from_remembered</code> - the remembered weight plus <code>amount</code>. With nothing remembered, the clause does nothing and says so, rather than inventing a base.</li>
+              <li><code>halve_increment</code> - halve the increment this rule adds from here on.</li>
+            </ul>
+            Any other value drops the whole rule.
+          </td>
+        </tr>
+        <tr>
+          <td><code>target</code></td>
+          <td>string, required</td>
+          <td>
+            What the action moves: <code>working_weight</code>, <code>reference</code> (the training
+            max), <code>stage</code>, or <code>increment</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>amount</code></td>
+          <td>number</td>
+          <td>
+            The absolute amount, in the unit named beside it. Required for
+            <code>add_absolute</code> and <code>set_from_remembered</code>; leaving it out on either
+            drops the whole rule. It <strong>never</strong> falls back to the exercise's own
+            increment - a rule that means "plus the usual step" writes the number, because the
+            sentence has to be able to print it.
+          </td>
+        </tr>
+        <tr>
+          <td><code>amount_unit</code></td>
+          <td>string</td>
+          <td><code>"kg"</code> or <code>"lbs"</code>, for <code>amount</code>. Absent means kg, as everywhere else in the format.</td>
+        </tr>
+        <tr>
+          <td><code>percent</code></td>
+          <td>number</td>
+          <td>
+            The percentage for <code>add_percent</code>, where <code>-10</code> means "drop 10%".
+            Required for that action and meaningless for any other. Absent means
+            <strong>this is not a percentage action</strong>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <span class="caps">A rule is dropped, not repaired</span>
+    <p>
+      Anything Badger cannot read exactly as written means the <em>whole</em> rule is skipped and
+      counted in the import preview's warning - the rest of the file imports normally. A clause
+      quietly reinterpreted as some other clause would make the sentence on screen say one thing
+      while the app did another, which is the failure the whole design exists to prevent.
+    </p>
+    <p>
+      The six things that drop a rule: an unrecognized <code>trigger</code>, <code>action</code>,
+      <code>target</code>, <code>cadence</code> or <code>reference_kind</code>; a
+      <code>driver_reps_*</code> trigger with no <code>reps_min</code>; a
+      <code>driver_reps_between</code> whose <code>reps_max</code> is below its <code>reps_min</code>;
+      a missing <code>amount</code> or <code>percent</code> the action requires; a clause targeting
+      <code>reference</code> under <code>reference_kind: "working_weight"</code>; and no clauses at
+      all, or a <code>clauses</code> array that does not <em>end</em> with an <code>always</code>
+      (an <code>always</code> in the middle makes everything after it dead, which is the same lie).
+    </p>
+  </div>
+
+  <h3 id="waves">Waves: cycle_length and week_index</h3>
+
+  <p>
+    A day that runs a cycle of weeks - 5/3/1's four is the standard case - is written once rather
+    than four times. Two keys do it, and they only make sense together:
+  </p>
+
+  <ul>
+    <li>
+      <a href="#day"><code>Day</code></a>'s <code>cycle_length</code> says how many weeks the cycle
+      runs for. Absent means not waved, which is the normal case.
+    </li>
+    <li>
+      each <a href="#predefined-set"><code>PredefinedSet</code></a>'s <code>week_index</code> says
+      which week that set belongs to, counting from 0. Absent means <strong>every week</strong> -
+      which is how the accessory work you do all cycle long is written once.
+    </li>
+  </ul>
+
+  <p>
+    A <code>week_index</code> that matches no week - negative, or at or above the day's
+    <code>cycle_length</code> - is read as "every week" rather than kept, because keeping it would
+    make the set silently never appear in any week at all. Which week a reader is <em>on</em> does
+    not travel: a recipient starts the program at its beginning.
+  </p>
 
   <h3 id="exercise">Exercise</h3>
 
@@ -766,6 +1072,15 @@ const description =
       open wins.
     </li>
     <li>
+      <strong>An unreadable progression rule is dropped, not guessed at.</strong> A rule Badger
+      cannot read exactly as written is skipped whole and counted in the import preview's warning;
+      the rest of the file imports normally. The <a href="#clause">six things that drop one</a> are
+      listed above. Per-set flags are repaired rather than dropped: two driver sets in one slot
+      become the first one, a driver on a warmup is cleared, and a
+      <code>week_index</code> or <code>percent_of_reference</code> that cannot mean anything is read
+      as absent.
+    </li>
+    <li>
       <strong>Files over 10 MB are refused</strong> without being read. A real export is a few
       kilobytes, so this only ever catches something that has gone wrong.
     </li>
@@ -782,6 +1097,14 @@ const description =
     <li><strong>No history.</strong> No workouts, no logged sets, no PRs. Those are yours and they stay on your phone. To move your own history to a new phone, use a backup instead: see <a href="/help/phone-migration/">moving to a new phone</a>.</li>
     <li><strong>No notes below the routine level.</strong> Routine notes travel; per-day and per-exercise notes do not. A gym file is the exception that proves the rule: notes on a machine, attachment, bar or accessory travel, because they describe the equipment. The setup cues you save against one exercise on one machine never do - those describe you.</li>
     <li><strong>No default attachment, default bar, or default grip</strong> on a slot - those stay personal setup. Superset group <strong>color</strong> also stays behind; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel, because that one is the thing's name rather than decoration.)</li>
+    <li>
+      <strong>No training max, and no progress against a rule.</strong> A slot's
+      <a href="#progression">progression rule</a> travels, because it is the program. The training
+      max it multiplies does not, and neither does any counter behind it: a run of missed sessions,
+      a stage, a cycle position, which session was last evaluated. A training max is a claim about
+      the sender's body, and importing one would prescribe their weights to your bar. The recipient
+      sets their own, from their own history, the first time they run the program.
+    </li>
     <li><strong>No per-exercise detail beyond name, type, and category.</strong> An exercise that gets created on import starts blank: no instructions, no muscles, no rest default, no increment. Anything you already had keeps everything it already has.</li>
     <li><strong>No photos</strong> of machines, attachments, or bars. A <code>.badger</code> file is a small text document, and your photo of a leg press is yours.</li>
     <li><strong>Nothing about you.</strong> No account, no device identifier, no settings, no training notes.</li>
@@ -807,7 +1130,9 @@ const description =
     <p>
       Last checked against Badger <strong>{appVersion}</strong>, schema <code>share/v1</code>. The
       example above and the files in the <a href="/programs/">program gallery</a> were exported by that
-      build and imported back into it before publishing.
+      build and imported back into it before publishing. The <a href="#progression">progression</a>,
+      percentage, driver and wave keys arrived after that export and are documented from the reader
+      and writer themselves; the published files are regenerated whenever the seeded programs change.
     </p>
   </div>
 </HelpLayout>
