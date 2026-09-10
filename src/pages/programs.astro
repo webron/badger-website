@@ -18,10 +18,11 @@ import { join } from 'node:path';
  * The counts and the app version below are read from the files at build time,
  * so this page cannot drift from what it is handing out.
  *
- * The "not yet" section is the point of the page, not an apology: it is how
- * demand for percentage-based programming gets measured on a site whose
- * analytics count page views and nothing else. A view is not a want, so the
- * email stays the only real signal here.
+ * The closing section used to be a "not yet" list, and it existed to measure
+ * demand for percentage-based programming on a site whose analytics count page
+ * views and nothing else. Schema v69 (progression rules, training max, percent
+ * sets, waves) answered both entries on it, so the section now states what the
+ * files carry and keeps the one email link - a view is still not a want.
  */
 
 // From the project root: at build time this module lives in dist/, so a
@@ -43,7 +44,7 @@ const programCopy: ProgramCopy[] = [
     level: 'Beginner',
     cadence: '3 days a week',
     blurb:
-      'Two sessions you alternate, five sets of five on the barbell lifts, and you add weight the moment you finish all your reps. It is the shortest route to a real squat, bench, row, press and deadlift, and it runs out somewhere around your first stubborn plateau.',
+      'Two sessions you alternate, five sets of five on the barbell lifts, and you add weight the moment you finish all your reps. The file carries that as a rule you can read in one sentence, including the deload after three misses in a row. It is the shortest route to a real squat, bench, row, press and deadlift, and it runs out somewhere around your first stubborn plateau.',
   },
   {
     slug: 'starting-strength',
@@ -51,7 +52,7 @@ const programCopy: ProgramCopy[] = [
     level: 'Beginner',
     cadence: '3 days a week',
     blurb:
-      'The same alternating shape as StrongLifts with three work sets instead of five, so each session is shorter and easier to recover from. It asks more of your technique and of how much you eat than of your schedule.',
+      'The same alternating shape as StrongLifts with three work sets instead of five, so each session is shorter and easier to recover from. Its rule halves your increment when you stall rather than dropping the weight. It asks more of your technique and of how much you eat than of your schedule.',
   },
   {
     slug: 'full-body-3-day',
@@ -67,7 +68,7 @@ const programCopy: ProgramCopy[] = [
     level: 'Late beginner',
     cadence: '4 days a week',
     blurb:
-      'Three tiers a session: a heavy main lift, a lighter second movement, and accessory volume, rotating across four days. The file gives you the structure; when a lift stalls you move it down a tier yourself, because Badger does not run the tier logic for you.',
+      'Three tiers a session: a heavy main lift, a lighter second movement, and accessory volume, rotating across four days. The T1 stage ladder is written into the file as a rule, so when a lift stalls Badger moves it down a stage and says so, instead of leaving the bookkeeping to you.',
   },
   {
     slug: 'upper-lower-4-day',
@@ -124,20 +125,47 @@ function readProgram(slug: string): ProgramFile {
 const programs = programCopy.map((p) => ({ ...p, file: readProgram(p.slug) }));
 const appVersion = programs[0].file.appVersion;
 
+// The copy below says the seeded files carry their progression rules. That is a
+// claim about the FILES, not just about the app, so it is checked here rather
+// than trusted: a `.badger` file carries a rule as a `progression` object on a
+// day exercise. Regenerate with
+//   flutter test test/tools/program_gallery_export_test.dart
+// against a build that has both the v69 rule seeds and the `.badger` rule keys,
+// then copy build/program_gallery/*.badger into public/programs/.
+const ruleBearing = programs.filter((p) =>
+  readFileSync(`${filesDir}/${p.slug}.badger`, 'utf8').includes('"progression"'),
+);
+if (ruleBearing.length === 0) {
+  console.warn(
+    '[programs.astro] None of the published .badger files carry a "progression" object, ' +
+      'but the page copy says the seeded files are rule-bearing. Regenerate ' +
+      'public/programs/*.badger before publishing this branch.',
+  );
+}
+
 const fmtSize = (bytes: number) => `${(bytes / 1024).toFixed(1)} KB`;
 
-// The honest waiting list. Percentage waves need a training max and a cycle
-// Badger cannot compute yet, so these are listed as missing rather than faked.
-const notYet = [
+// The percentage-wave "not yet" entries came out when Badger learned to carry a
+// training max and run a rule (schema v69). What replaced them is a plain
+// statement of what the app now runs, and one open invitation - the email is
+// still the only real demand signal this site has, because it counts page views
+// and nothing else.
+const nowRuns = [
   {
-    title: '5/3/1 and its variants',
-    body: "Wendler's cycles set every working weight as a percentage of a training max that moves each cycle. Badger can hold the sets and reps, but it will not do the percentage arithmetic for you, so a 5/3/1 file would be a shell you refill by hand every week. The app does ship a 5/3/1 BBB skeleton under Routines; the point stands: until Badger can carry a training max, the percentages are yours to compute.",
-    subject: 'Program request: 5/3/1',
+    title: 'A rule you can read',
+    body: 'Every slot in a program can carry one progression rule, written as a sentence rather than a formula: "All sets met? Add 2.5 kg. Missed a set three sessions in a row? Drop 10% and start again." Every number in it is a chip you can tap and change, and Badger tells you which line fired each time it proposes a weight.',
   },
   {
-    title: 'nSuns and other percentage waves',
-    body: 'Same problem, more of it: nSuns drives a long list of sets from one training max per lift. Until Badger can carry a training max and compute a wave from it, a downloadable file would be a table of numbers that goes stale after your first cycle.',
-    subject: 'Program request: nSuns',
+    title: 'A training max, and percentages off it',
+    body: "Badger now holds a training max per lift - a number that never appears on the bar - and prescribes sets as a percentage of it. The load is worked out from your own plates, bar and machine, so what you read is a weight you can actually load. A shared file carries the percentages; it never carries the sender's training max.",
+  },
+  {
+    title: 'AMRAP sets that drive the rule',
+    body: 'One set in a slot can be marked as the one that drives progression. Get 12 on your 5+ and the rule that reads "8 reps or more" fires; get 6 and the one below it does. That is how nSuns and 5/3/1 decide what next week looks like.',
+  },
+  {
+    title: 'Waved days',
+    body: "A day can run as a cycle of weeks - 5/3/1's four is the obvious case - with each week's sets written once and the right week shown when you train. Accessory work you do every week is written once and rides through all of them.",
   },
 ];
 
@@ -159,10 +187,12 @@ const description =
     <p class="sub">
       All seven also ship inside the app, under Routines, on a new install. Badger does not add
       routines to a list you have already built, so if you have been using it a while, the file is how
-      you pick one up. The files are here for other reasons too: read one before you commit to it,
-      edit it, hand it to someone else, or give it to an AI as a worked example of the
-      <a href="/badger-format/">file format</a>. If that last one is why you are here, the
-      <a href="/guides/ai/">Use your own AI</a> guide has the prompts.
+      you pick one up. Where a program has a rule for what happens next session - add 2.5 kg, repeat
+      the weight, drop 10% after three misses - the rule travels in the file too, so what you import
+      is the program rather than a table of numbers you keep up by hand. The files are here for other
+      reasons: read one before you commit to it, edit it, hand it to someone else, or give it to an AI
+      as a worked example of the <a href="/badger-format/">file format</a>. If that last one is why
+      you are here, the <a href="/guides/ai/">Use your own AI</a> guide has the prompts.
     </p>
 
     <div class="rule-ink section-rule"></div>
@@ -222,40 +252,34 @@ const description =
     </p>
 
     <div class="rule-ink section-rule"></div>
-    <p class="caps section-label">Not yet</p>
+    <p class="caps section-label">What the files now carry</p>
     <p class="notyet-lede">
-      These are the programs people ask for that Badger cannot run honestly today. They are listed
-      here rather than quietly left out, because a file that pretends to run a program it cannot is
-      worse than no file.
+      This page used to list 5/3/1 and nSuns as programs Badger could not run honestly. It can now.
+      A file no longer stops at sets and reps: where a program has a rule for what happens next, the
+      rule travels with it, and Badger runs it.
     </p>
 
     <ul class="programs">
       {
-        notYet.map((n) => (
-          <li class="program program--pending">
+        nowRuns.map((n) => (
+          <li class="program">
             <div class="program-head">
               <h2>{n.title}</h2>
-              <span class="program-tag program-tag--pending">Not yet</span>
             </div>
             <p class="program-blurb">{n.body}</p>
-            <p class="program-get">
-              <a
-                class="want"
-                href={`mailto:hello@badger.fit?subject=${encodeURIComponent(n.subject)}`}
-              >
-                Want this? Say so
-              </a>
-            </p>
           </li>
         ))
       }
     </ul>
 
     <p class="note">
-      That link opens an email to <a href="mailto:hello@badger.fit">hello@badger.fit</a> with the
-      subject filled in. Say nothing else if you like: the count is the signal. This site counts
-      page views and sets no cookies, which tells us a page was read but nothing about what any
-      one person wants, so asking is the only way anyone here knows.
+      In the app, <strong>5/3/1 BBB</strong>, <strong>nSuns 531LP</strong> and{' '}
+      <strong>Madcow 5x5</strong> ship as built-in routines with all of that already written in, and
+      the four beginner programs above carry their rules too. Full detail in{' '}
+      <a href="/help/routines/#progression">progression rules</a>. A program still on nobody's list?{' '}
+      <a href="mailto:hello@badger.fit?subject=Program%20request">Say so</a> - the count is the
+      signal. This site counts page views and sets no cookies, so asking is the only way anyone here
+      knows.
     </p>
 
     <div class="close-line">
@@ -355,10 +379,6 @@ const description =
     white-space: nowrap;
   }
 
-  .program-tag--pending {
-    color: var(--warning);
-  }
-
   .program-meta {
     margin: 6px 0 0;
     font-size: 12.5px;
@@ -377,8 +397,7 @@ const description =
     margin: 10px 0 0;
   }
 
-  .download,
-  .want {
+  .download {
     font-size: 13.5px;
     font-weight: 600;
     color: var(--accent-ink);
@@ -388,8 +407,7 @@ const description =
     text-decoration-color: color-mix(in srgb, var(--accent-ink) 45%, transparent);
   }
 
-  .download:hover,
-  .want:hover {
+  .download:hover {
     text-decoration-color: var(--accent-ink);
   }
 
