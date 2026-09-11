@@ -264,11 +264,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="rules-in-preview">Starting a session from a program with rules</h2>
   <p>If the routine slot carries a <a href="/help/routines/#progression">progression rule</a>, the work happens before you start, on the routine log preview. Badger reads your last session against the rule and <strong>proposes</strong> a weight - it never edits your routine and never changes anything silently.</p>
   <ul>
-    <li>The proposed weight sits in the working sets, with a line under it naming the part of the rule that fired: <em>Rule met: all sets met &middot; +2.5 kg &middot; tap weight to override</em>.</li>
-    <li><strong>Tap the weight to type your own.</strong> The reason stays and the line reads <em>overridden</em>. Your rule is not disabled or deleted by disagreeing with it once.</li>
+    <li>The proposed weight sits in the working sets, with a line under it naming the part of the rule that fired: <em>Rule met: all sets hit the plan last session &middot; tap edit to override</em>. The line gives the reason; the new weight is in the set rows above it.</li>
+    <li>A slot on a <a href="/help/routines/#waves">waved</a> day or a training max says where the number came from first: <em>Week 2 of 4 &middot; from TM 135 lbs &middot; Rule met: the cycle finished &middot; tap edit to override</em>.</li>
+    <li><strong>Tap the edit pencil and type your own weight.</strong> The reason stays and the line reads <em>overridden</em>. Your rule is not disabled or deleted by disagreeing with it once.</li>
     <li>Only weight is proposed. Reps come from your <a href="/help/routines/#starting">rep target</a> setting as usual.</li>
     <li>Nothing is recorded until you tap Start, so backing out and coming in again gives you the same number.</li>
-    <li>If the rule has nothing to propose, there is no line - Badger does not narrate a session where nothing changed.</li>
+    <li>If the rule has nothing to propose, there is no line - Badger does not narrate a session where nothing changed. A rule that <em>deliberately</em> held is different, and says so: <em>Holding: a set missed the plan last session</em>.</li>
   </ul>
 
   <h3 id="percent-sets-preview">Percentage sets</h3>
@@ -277,7 +278,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="waved-day-preview">How a waved day reads</h3>
   <p>On a <a href="/help/routines/#waves">waved day</a> - a day that runs as a cycle of weeks - the preview shows <em>this</em> week's sets and nothing else. Sets belonging to other weeks are not listed and not there to skip past, so a 5/3/1 Monday looks like a normal Monday rather than a four-week table. Sets that apply every week (your accessory work, usually) show every week.</p>
-  <p>The routine moves to the next week once you have trained every day in the cycle, in whatever order. Skip a day and you stay where you are rather than losing a week. You can set the week yourself at any time from the routine.</p>
+  <p>The routine moves to the next week once you have trained every day in the cycle, in whatever order. Skip a day and you stay where you are rather than losing a week. You can set the week yourself at any time from the <strong>WAVE</strong> section on the routine detail screen - it reads <em>Week 2 of 4</em>, and picking a different one moves every waved day in that routine.</p>
+  <p>The preview names the week too, at the head of the line under the sets: <em>Week 2 of 4 &middot; Rule met: the cycle finished</em>. A <a href="/help/routines/#waves">stage ladder</a> reads <em>Stage 2 of 3</em> there instead, because a stage is something you only move down by stalling.</p>
 
   <h3 id="driver-sets">Driver sets and AMRAP</h3>
   <p>Some rules read one specific set: the <a href="/help/routines/#driver-set">driver</a>. It is usually an <a href="#amrap">open-topped</a> set - <strong>5+</strong> - and the reps you actually log on it decide what the rule does. Log it honestly: a 5+ you took to 12 and a 5+ you stopped at 5 are meant to lead to different weeks, and that only works if the number is real.</p>
