@@ -539,6 +539,8 @@ const description =
               <li><code>any_set_missed</code> - at least one planned working set came in under its minimum.</li>
               <li><code>driver_reps_at_least</code> - the <a href="#predefined-set">driver</a> set's logged reps are at least <code>reps_min</code>.</li>
               <li><code>driver_reps_between</code> - the driver set's reps fall in <code>[reps_min, reps_max]</code>, inclusive at both ends.</li>
+              <li><code>driver_reps_below_plan</code> - the driver set did not reach the minimum <em>its own plan row</em> asked for. States no number, because the number is the plan's - on a waved day that is this week's own minimum. Cannot fire when the session has no driver set, or when the driver's plan states no minimum.</li>
+              <li><code>cycle_missed_minimum</code> - <code>driver_reps_below_plan</code> with a memory: a driver set has come up short at some point in the cycle now running, this session included. Clears when the cycle ends. A rule on a day with no <a href="#waves"><code>cycle_length</code></a> can never fire it.</li>
               <li><code>consecutive_failures_at_least</code> - the run of missed sessions has reached <code>count</code>, counting this one.</li>
               <li><code>stage_is_last</code> - the slot is on its final stage and the session failed.</li>
               <li><code>cycle_complete</code> - the routine's cycle has come round since this slot last acted.</li>
@@ -554,7 +556,7 @@ const description =
             How many qualifying sessions in a row the trigger needs. Leave it out for
             <strong>no repetition requirement</strong> - the trigger fires on a single occurrence.
             A written <code>1</code> and an absent key behave the same, but the written one is a
-            choice and Badger prints it as "for 1 session in a row".
+            choice and Badger prints it as "for 1 session".
           </td>
         </tr>
         <tr>
