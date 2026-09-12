@@ -1,0 +1,222 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * SEO / compatibility page, same shape and same rules as
+ * stronglifts-5x5-tracker.astro and fitnotes-alternative.astro. Read the
+ * StrongLifts file's header before editing this one; the reasoning is
+ * identical.
+ *
+ * This page was deliberately PARKED until iOS shipped (spec section 4 of
+ * badger-fit docs/superpowers/specs/2026-07-18-m-web-4-orphaned-pages.md, "at
+ * the iOS launch moment"), because until 2026-09-09 the honest answer to
+ * "FitNotes on iPhone" ended at "there isn't one, and nor is there a Badger".
+ * It is built now because Badger is on the App Store.
+ *
+ * TRADEMARK HYGIENE, binding: FitNotes is someone else's app. Everything here
+ * is phrased as compatibility (Badger reads the backup file their app writes),
+ * never as affiliation or endorsement, and never as a criticism of their app.
+ * The searcher arriving here LIKES FitNotes - that is why they typed its name -
+ * so a page that opens by running it down loses them in one sentence. Do not
+ * reword the title or h1 into anything that reads as "FitNotes for iPhone",
+ * which would claim to BE their app on a platform they do not ship to.
+ *
+ * Division of labor with the sibling page, so neither grows into the other:
+ * /guides/fitnotes-alternative/ owns the full account of what the import
+ * carries. THIS page owns the phone-switch mechanics, which is the part that
+ * page has no reason to cover: getting the file off an Android phone you may be
+ * about to sell, and onto an iPhone. The "what comes across" section here is a
+ * deliberate summary that links there rather than repeating the table.
+ *
+ * Claims checked against the app source on 2026-09-12, app version 1.1.11:
+ *   - no iOS release of FitNotes exists (external fact, and the reason for the
+ *     page; nothing in our code to check)
+ *   - the parser and importer have NO platform branch at all: no Platform.is,
+ *     no defaultTargetPlatform anywhere under lib/features/import/. The file is
+ *     read with dart:io File and sqflite, both of which are first-class on iOS,
+ *     so the iPhone import is the same code path as the Android one
+ *     (fitnotes_parser.dart, fitnotes_importer.dart)
+ *   - the picker is FileType.any, which on iOS is the system Files picker, so
+ *     any location Files can see works (fitnotes_import_screen.dart:74)
+ *   - in-app path: Settings, Your data, Import from FitNotes
+ *     (settings_screen.dart:1084, under the "Your data" section header), and
+ *     the same import is offered in first-launch onboarding
+ *     (onboarding_screen.dart:339)
+ *   - re-importing merges rather than duplicating (fitnotes_importer.dart)
+ *   - iPhone only, iOS 15.0 or later: TARGETED_DEVICE_FAMILY = 1 and
+ *     IPHONEOS_DEPLOYMENT_TARGET = 15.0 in ios/Runner.xcodeproj, which matches
+ *     what the App Store listing's own Compatibility section says
+ * Note for a future editor: the app's own settings row calls the FitNotes file
+ * "a FitNotes CSV export", which is wrong - it is a SQLite database. Do not
+ * copy that wording onto the site to match; the site is right and the app row
+ * is the thing to fix.
+ */
+
+const description =
+  'FitNotes is an Android app and has no iPhone version. Here is what to do with the log you already have: Badger is on the App Store and reads the .fitnotes backup file directly.';
+
+const modified = '2026-09-12';
+---
+
+<HelpLayout title="FitNotes on iPhone" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="FitNotes on iPhone"
+    description={description}
+    dateModified={modified}
+    about={['FitNotes', 'iPhone', 'Workout tracking']}
+    breadcrumb={[
+      { name: 'Guides', url: '/guides/' },
+      { name: 'Switching to Badger', url: '/guides/switching/' },
+    ]}
+  />
+
+  <p class="crumb"><a href="/guides/switching/">Switching to Badger</a></p>
+
+  <h1>FitNotes on iPhone</h1>
+
+  <p>
+    The short answer is that there is no iPhone version. FitNotes is an Android app and always has
+    been, so switching phones means picking something else to log in. That is an annoying answer, and
+    the useful part is what happens next, because the years of training in it do not have to stay on
+    the old phone.
+  </p>
+
+  <h2 id="your-log">Your log can come with you</h2>
+
+  <p>
+    FitNotes backs up to a <code>.fitnotes</code> file, and that file is a real database rather than
+    a flattened export. Badger reads it directly, on the phone, with nothing uploaded anywhere, and
+    Badger is on the App Store. So the move is three steps: back up while you still have the Android
+    phone, get the file onto the iPhone, import it.
+  </p>
+
+  <p>
+    It is the same import code on both platforms, not an Android-only feature with an iPhone excuse
+    attached. Nothing in it branches on which phone you are holding.
+  </p>
+
+  <h2 id="how">Doing it</h2>
+
+  <ol>
+    <li>
+      <strong>On the Android phone, before you let go of it.</strong> In FitNotes, go to
+      <strong>Settings &rarr; Backup</strong> and write a <code>.fitnotes</code> file. Do this before
+      you wipe or trade in the phone. Apple's switch-to-iPhone tools move photos, contacts, messages
+      and the like, but not a third-party Android app's saved data, and there is no iPhone FitNotes
+      for it to land in even if they did.
+    </li>
+    <li>
+      <strong>Move the file to the iPhone.</strong> Email it to yourself, or drop it in iCloud Drive,
+      Google Drive, Dropbox or OneDrive, or move it with a computer and a cable. AirDrop is not an
+      option here, since it only talks to other Apple devices. Anything that ends with the file
+      reachable in the iPhone's Files app will do.
+    </li>
+    <li>
+      <strong>Install Badger</strong> from the App Store.
+    </li>
+    <li>
+      <strong>Import.</strong> Go to <strong>Settings &rarr; Your data &rarr; Import from
+      FitNotes</strong> and pick the file. It is the standard iOS file picker, so browse to wherever
+      the file landed. The same import is offered during first-launch onboarding if you would rather
+      do it straight away.
+    </li>
+    <li>
+      <strong>Check the preview</strong> before you commit: exercises, workout days, sets, and the
+      weight unit it detected. Then import.
+    </li>
+  </ol>
+
+  <p>
+    It runs more than once safely. Sets landing on a date you already have merge into that session
+    and nothing already logged is overwritten, so if you find an older backup later you can add it
+    without making a mess. Step-by-step detail is in
+    <a href="/help/getting-started/#importing-fitnotes">importing from FitNotes</a>.
+  </p>
+
+  <h2 id="what-comes">What comes across</h2>
+
+  <p>
+    Because the backup is a database, considerably more survives the move than the sets alone:
+  </p>
+
+  <ul>
+    <li>Your categories, keeping the colors you gave them.</li>
+    <li>Your exercise library, landing back in those categories rather than in an "Imported" bucket.</li>
+    <li>Every set, with its date, weight, reps, distance, time and any comment on it.</li>
+    <li>Your body weight history, and your custom measurements with their units.</li>
+    <li>Your records, worked out again from the history once it lands, so the graphs start out full.</li>
+  </ul>
+
+  <p>
+    What does not: warmups as warmups, because FitNotes does not mark them and nothing can guess
+    retroactively, and routines, which are a separate thing you set up in Badger. The full account,
+    including the older pre-2018 backup layout and how pounds stay pounds, is on
+    <a href="/guides/fitnotes-alternative/">moving to Badger from FitNotes</a>.
+  </p>
+
+  <h2 id="what-youre-getting">What you are switching to</h2>
+
+  <p>
+    Worth saying plainly, because a page that only talks about the import is selling you the door
+    rather than the room. Badger is a training log with tools attached, not a coach that runs your
+    program for you. If you liked FitNotes for being fast, free, offline and uninterested in your
+    email address, that is the same list Badger was built against: no account, no sign-in, no
+    subscription, no ads, and no sync you did not ask for.
+  </p>
+
+  <p>
+    On top of that you get routines that pre-fill each session with your last weights,
+    <a href="/programs/">programs that ship built in</a>, per-machine and per-gym records, a plate
+    calculator and a warmup generator that work from the plates your gym actually owns, a rest timer
+    that starts itself, and <a href="/help/progress/">graphs worth opening</a>. And you can leave
+    again whenever you like: every set exports to CSV, and the whole database backs up to a
+    <a href="/badger-format/">documented file format</a> that is ordinary readable text. Neither is a
+    paid feature. <a href="/promise/">The promise</a> is that written down where you can hold us to
+    it.
+  </p>
+
+  <h2 id="requirements">What it needs</h2>
+
+  <p>
+    An iPhone running iOS 15 or later. Badger is an iPhone app only: there is no iPad build, because
+    it has never been designed or tested for that screen and shipping it untested would be worse than
+    leaving it out. It is free, with no paid tier to graduate to, which
+    <a href="/guides/workout-tracker-no-subscription/">the no-subscription guide</a> spells out
+    against the trackers people usually weigh up.
+  </p>
+
+  <p>
+    If you end up with a phone on each platform, or move back later, Badger is on Google Play too and
+    its own backup file carries the whole database between them.
+    <a href="/help/phone-migration/">Moving to a new phone</a> covers that.
+  </p>
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    FitNotes is the work of its own developer, and Badger is not affiliated with, endorsed by,
+    sponsored by, or connected to it in any way. This page describes compatibility and nothing else:
+    Badger reads the backup file that their app writes. FitNotes is a good app, and the only thing
+    wrong with it here is that it does not run on the phone you are holding.
+  </p>
+</HelpLayout>
+
+<style>
+  /* The section this page sits in, named above the h1 so a reader landing here
+     from a search knows there are sibling pages for the other apps. Same as
+     fitnotes-alternative.astro. */
+  .crumb {
+    margin: 0 0 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Matches the sibling pages: a disclaimer should read as one rather than
+     competing with the guidance above it. Muted is AA-checked in both themes. */
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>
