@@ -14,6 +14,11 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <BaseLayout title={title} description={description}>
+  <!-- Forwarded so a guide page can pass its own JSON-LD (see ArticleSchema)
+       into <head>. Without this the named slot is swallowed here and the
+       markup lands in the article body, where a crawler ignores it. -->
+  <slot name="head" slot="head" />
+
   <Header currentPath={currentPath} />
 
   <div class="help-shell">

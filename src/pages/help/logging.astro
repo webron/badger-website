@@ -16,7 +16,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>This Week</strong> - A compact card showing how many days you've trained this week, plus muscle-balance warnings if any groups haven't been trained for a while. Visible whenever you're on the Today screen - whether mid-workout or between sessions.</li>
     <li><strong>Weekly volume chips</strong> - Colored chips showing sets logged per muscle category this week. Colored dots indicate groups that need attention. Tap any chip to open the muscle balance detail sheet.</li>
     <li><strong>Monthly report</strong> - During the first two weeks of a new month, a dismissible card shows last month's highlights: workout count, total volume (with % change vs the month before), and how many exercises you tried for the first time. Tap × to dismiss it.</li>
-    <li><strong>Deload banner</strong> and <strong>Plateau card</strong> appear here when those features are active (see <a href={`/help/tools#deload`}>Deload</a> and <a href={`/help/progress#plateau-detection`}>Plateau detection</a>).</li>
+    <li><strong>Deload banner</strong> and <strong>Plateau card</strong> appear here when those features are active (see <a href={`/help/tools/#deload`}>Deload</a> and <a href={`/help/progress/#plateau-detection`}>Plateau detection</a>).</li>
     <li><strong>One year ago</strong> - If you trained on this date a year back, a quiet line at the very bottom of the screen says so: "One year ago &middot; Entry &#8470; 63 &middot; Push Day". Tap it to open that session. It names the day by its routine day, or by the first exercise you logged. When there is nothing a year ago, the line simply is not there.</li>
   </ul>
 
@@ -34,7 +34,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Some machines are loaded one side at a time, and plenty of people write down what is on one side rather than the total. Badger can record which one you mean.</p>
   <p>When an exercise or its machine is set to per side, the weight field's label says so - <strong>WEIGHT (LBS / SIDE)</strong> - and every set you log carries that answer with it. In your history, on the workout summary, and in the exercise's own log, those sets read <strong>90 lbs &times; 8 /side</strong>. Sets logged as a total read the way they always have.</p>
   <p>Two things it deliberately does <em>not</em> do. Nothing is doubled or converted: your totals, volume, estimated 1RM and personal records all use exactly the number you wrote, so switching the setting never rewrites your history. And sets you logged before Badger started asking are left alone rather than guessed at - they simply carry no mark.</p>
-  <p>Where to set it: on a plate-loaded machine under <a href={`/help/gyms#machines`}>How weight is logged</a> (it applies wherever that machine is used), or on the exercise itself under <strong>Weight is logged as</strong> for when you log it with no machine at all. The machine wins when both have an answer. Dumbbells and kettlebells are never asked: those are per hand by definition.</p>
+  <p>Where to set it: on a plate-loaded machine under <a href={`/help/gyms/#machines`}>How weight is logged</a> (it applies wherever that machine is used), or on the exercise itself under <strong>Weight is logged as</strong> for when you log it with no machine at all. The machine wins when both have an answer. Dumbbells and kettlebells are never asked: those are per hand by definition.</p>
   <p>Your planned routines say the same thing: a slot's weight column reads <strong>WEIGHT (LBS / SIDE &middot; CYBEX LEG PRESS)</strong>, naming the machine the answer came from, so you plan in the same terms you lift in.</p>
 
   <h3 id="duration-entry">Typing a duration</h3>
@@ -77,7 +77,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Why track intensity at all</h3>
   <p>Weight and reps say what you lifted. They don't say what it cost you. Two sets of 8 at 80 kg can be a comfortable working set one week and a grind the next, and only one of those is a sign to back off. Recording the effort gives you the second half of that picture, which is what makes a stalled lift readable later: same numbers, rising effort is a different story from same numbers, same effort.</p>
-  <p>It also feeds Badger's <a href={`/help/tools#deload`}>deload detection</a> if you have the RPE/RIR trigger switched on.</p>
+  <p>It also feeds Badger's <a href={`/help/tools/#deload`}>deload detection</a> if you have the RPE/RIR trigger switched on.</p>
 
   <h3>RPE: how hard it felt</h3>
   <p>A 10-point scale. In practice the useful range is 6 to 10.</p>
@@ -109,7 +109,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>The zero-thought option</h3>
   <p>Next to the steppers there's a <strong>To failure</strong> chip. If the only thing you want to record is that a set went all the way, tap it and move on - it writes RIR 0 in one tap instead of three, and tapping it again clears it. It is a shortcut for the RIR stepper, nothing more, so the two always agree.</p>
-  <p>Marking a set to failure is about effort, not about coming up short. If you were aiming for 8 and got 6, log the 6 - see <a href={`/help/logging#missed-vs-skipped`}>coming up short vs skipping</a>.</p>
+  <p>Marking a set to failure is about effort, not about coming up short. If you were aiming for 8 and got 6, log the 6 - see <a href={`/help/logging/#missed-vs-skipped`}>coming up short vs skipping</a>.</p>
 
   <h3>Where the fields show up</h3>
   <p>Both are hidden while the warmup toggle is active, since a warmup has no effort worth grading. Logged values appear as small badges on each set row, and you can add or change them after the fact by tapping any past set in your history.</p>
@@ -135,10 +135,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="amrap-target">AMRAP: "8+" in the plan</h3>
   <p><strong>AMRAP</strong> stands for <em>as many reps as possible</em>. A routine set with an open-topped target is written <strong>8+</strong>: do at least 8, then keep going as far as you can that day. The notation comes from 5/3/1-style programs, where the last set of a lift is deliberately left open so a good day and a bad day both count for what they were.</p>
-  <p>It is not the same as a <a href="/help/routines#rep-ranges">rep range</a>. An <strong>8-10</strong> target has a top you're meant to reach and then stop at; an <strong>8+</strong> target has a floor and no ceiling. A set can be one or the other, never both.</p>
+  <p>It is not the same as a <a href="/help/routines/#rep-ranges">rep range</a>. An <strong>8-10</strong> target has a top you're meant to reach and then stop at; an <strong>8+</strong> target has a floor and no ceiling. A set can be one or the other, never both.</p>
   <p><strong>1+ is how you program a set to failure.</strong> At least one rep, then as many as you can - which is the whole instruction. There is no version without a floor, deliberately: every set carries a minimum, and the minimum is what "did I meet the plan?" is measured against.</p>
-  <p>To set one: open a routine's <a href="/help/routines#predefined-sets">predefined sets</a>, and under a working set tap <strong>+ AMRAP</strong>. Warmups can't have one, and it replaces a rep range if the set had one.</p>
-  <p>Meeting the plan on an open target just means clearing the floor. Going well past it is the point of the set, not a second bar to clear - and an open set never triggers the "work toward N reps" progression prompt, because there's no top to work toward. See <a href="/help/routines#amrap-targets">open-topped targets</a> for how it behaves in a routine.</p>
+  <p>To set one: open a routine's <a href="/help/routines/#predefined-sets">predefined sets</a>, and under a working set tap <strong>+ AMRAP</strong>. Warmups can't have one, and it replaces a rep range if the set had one.</p>
+  <p>Meeting the plan on an open target just means clearing the floor. Going well past it is the point of the set, not a second bar to clear - and an open set never triggers the "work toward N reps" progression prompt, because there's no top to work toward. See <a href="/help/routines/#amrap-targets">open-topped targets</a> for how it behaves in a routine.</p>
 
   <h3 id="to-failure">To failure: what you record afterward</h3>
   <p><strong>Training to failure</strong> means taking a set until you can't complete another rep. Where AMRAP is what the plan asked for, this is what you report back: the <a href="#rpe-rir">To failure</a> chip under Set details marks the set you just logged as having gone all the way, which is the same thing as recording <strong>RIR 0</strong>.</p>
@@ -152,13 +152,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Under the input fields, one wrapping row carries the context for the set you're about to log: the <strong>machine</strong>, its <strong>attachment</strong>, the <strong>grip</strong> when the machine uses grips, the <strong>bar</strong> and the <strong>accessories</strong> when those apply, and the <strong>rest</strong> that will start when you finish. Tap any of them to change it, or long-press the machine chip to open that machine's own screen. They used to sit on three separate lines; sharing one row keeps the whole recorder on screen without scrolling.</p>
   <p>Every chip has to earn its place, so you only ever see the ones that mean something for the exercise in front of you:</p>
   <ul>
-    <li>The <strong><a href="/help/gyms#picking-a-bar">bar</a></strong> chip appears on a barbell exercise, at a gym that has bars set up. The bar you pick feeds the plate calculator and your warm-ups, and your records are kept per bar.</li>
-    <li>The <strong><a href="/help/gyms#picking-accessories">accessories</a></strong> chip appears on barbell and bodyweight exercises at a gym with accessories, and on a machine only when that machine is marked as supporting bands. You can attach several at once, and the chip reads back as a count with the colors beside it - "2 bands".</li>
+    <li>The <strong><a href="/help/gyms/#picking-a-bar">bar</a></strong> chip appears on a barbell exercise, at a gym that has bars set up. The bar you pick feeds the plate calculator and your warm-ups, and your records are kept per bar.</li>
+    <li>The <strong><a href="/help/gyms/#picking-accessories">accessories</a></strong> chip appears on barbell and bodyweight exercises at a gym with accessories, and on a machine only when that machine is marked as supporting bands. You can attach several at once, and the chip reads back as a count with the colors beside it - "2 bands".</li>
   </ul>
   <p><strong>One thing to know before you attach an accessory:</strong> while an exercise has any accessory on it, every set of that exercise stays out of your personal records - it can't earn a PR badge and it can't block one either, so a banded 100 kg bench never stops a bare 95 kg bench from counting. Clear the accessories and those sets go back into the running. Badger records what you added but never guesses what it was worth: nothing about an accessory changes a weight, the plate math, or the stepper.</p>
 
   <h3 id="rack-stepper">The stepper on dumbbells and kettlebells</h3>
-  <p>If you've told a gym what's on its <a href="/help/gyms#racks">dumbbell or kettlebell rack</a>, the <strong>+</strong> and <strong>−</strong> buttons walk that list instead of ticking by a fixed increment - so a rack that runs 5, 10, 15 up to 50 and then jumps moves the way the rack actually does. A line under the field says so: <strong>"Step: rack · My Gym"</strong>.</p>
+  <p>If you've told a gym what's on its <a href="/help/gyms/#racks">dumbbell or kettlebell rack</a>, the <strong>+</strong> and <strong>−</strong> buttons walk that list instead of ticking by a fixed increment - so a rack that runs 5, 10, 15 up to 50 and then jumps moves the way the rack actually does. A line under the field says so: <strong>"Step: rack · My Gym"</strong>.</p>
   <p>Typing is untouched. You can still enter any weight at all, nothing is snapped or rejected, and a weight above or below the rack goes back to stepping by your ordinary increment. If a rack isn't set up yet, a quiet link under the field offers to do it.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
@@ -258,7 +258,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Personal records</h2>
   <p>When a working set beats your all-time estimated 1RM for that exercise (on the same machine, if one is set), a trophy badge appears on the set row, a SnackBar notification appears at the bottom of the screen, and a haptic pulse fires (if haptics are enabled in Settings).</p>
-  <p>Records are also kept separately per <a href="/help/gyms#bar-prs">bar</a>, since a trap-bar deadlift and a straight-bar deadlift aren't the same lift. And sets logged with an <a href="/help/gyms#accessories-and-records">accessory</a> attached are left out of records in both directions - they never badge, and they never stand in the way of a bare set's record.</p>
+  <p>Records are also kept separately per <a href="/help/gyms/#bar-prs">bar</a>, since a trap-bar deadlift and a straight-bar deadlift aren't the same lift. And sets logged with an <a href="/help/gyms/#accessories-and-records">accessory</a> attached are left out of records in both directions - they never badge, and they never stand in the way of a bare set's record.</p>
 
   <h2>Progressive overload suggestions</h2>
   <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Coaching, default: 3).</p>
@@ -289,12 +289,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The top-right menu offers additional actions for the current exercise:</p>
   <ul>
     <li><strong>Replace exercise</strong> - Swap the current exercise for a different one. Existing sets remain attached.</li>
-    <li><strong>Plate calculator</strong> - Opens the plate calculator pre-filled with your current weight. Shown only when plate math applies - see <a href="/help/tools">Tools</a>.</li>
+    <li><strong>Plate calculator</strong> - Opens the plate calculator pre-filled with your current weight. Shown only when plate math applies - see <a href="/help/tools/">Tools</a>.</li>
     <li><strong>Exercise settings</strong> - Open the exercise notes screen to adjust defaults, notes, and muscle assignments.</li>
     <li><strong>Change gym</strong> - Switch which gym is associated with this workout.</li>
     <li><strong>Set machine</strong> - Assign a machine and attachment to the current exercise. At the bottom of the machine picker, tap <strong>New machine…</strong> to create one inline without navigating away. Similarly, at the bottom of the attachment picker, tap <strong>New attachment…</strong> to add a new attachment on the spot.</li>
-    <li><strong>Set bar</strong> - Pick which <a href="/help/gyms#bars">bar</a> you're using, on a barbell exercise at a gym that has bars. <strong>New bar…</strong> at the bottom adds one on the spot.</li>
-    <li><strong>Set accessories</strong> - Attach <a href="/help/gyms#accessories">bands, chains or straps</a> to this exercise. Several at once; tap Done when you're finished.</li>
+    <li><strong>Set bar</strong> - Pick which <a href="/help/gyms/#bars">bar</a> you're using, on a barbell exercise at a gym that has bars. <strong>New bar…</strong> at the bottom adds one on the spot.</li>
+    <li><strong>Set accessories</strong> - Attach <a href="/help/gyms/#accessories">bands, chains or straps</a> to this exercise. Several at once; tap Done when you're finished.</li>
   </ul>
 
   <h2 id="resuming">Resuming a workout</h2>

@@ -10,9 +10,9 @@ const { currentPath = '' } = Astro.props;
 const path = currentPath.replace(/\/$/, '') || '/';
 
 const navLinks = [
-  { href: '/help', label: 'Help', match: (p: string) => p === '/help' || p.startsWith('/help/') },
-  { href: '/guides', label: 'Guides', match: (p: string) => p === '/guides' || p.startsWith('/guides/') },
-  { href: '/glossary', label: 'Glossary', match: (p: string) => p === '/glossary' },
+  { href: '/help/', label: 'Help', match: (p: string) => p === '/help/' || p.startsWith('/help/') },
+  { href: '/guides/', label: 'Guides', match: (p: string) => p === '/guides/' || p.startsWith('/guides/') },
+  { href: '/glossary/', label: 'Glossary', match: (p: string) => p === '/glossary/' },
 ];
 ---
 

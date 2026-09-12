@@ -1,0 +1,226 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+/**
+ * About Badger. First person, first name only, no photo (Ron, 2026-09-08).
+ * The Play and App Store listings already carry the full legal name; the site
+ * deliberately does not repeat it.
+ *
+ * This page is the site's only contact surface. Before this page, the three
+ * addresses only appeared inside Privacy, Terms and the Programs page, so a
+ * reader with a question had nowhere obvious to go. The footer carries both an
+ * "About" and a "Contact" link, the second pointing at #contact here.
+ *
+ * Prose, not headed sections: there is not enough here to earn subheads, and
+ * a section per sentence is what made the first draft read as generated. The
+ * one remaining h2 is "Get in touch", which stays because #contact is a footer
+ * link target.
+ *
+ * The copy is RON'S OWN WORDS (2026-09-08), edited only for grammar. Do not
+ * "improve" the voice: the rhetorical questions, the exclamation marks and the
+ * repetition are the point, and every earlier draft written in a smoother
+ * register was rejected for sounding machine-written.
+ *
+ * The free/no-subscription pitch was REMOVED on purpose (Ron, 2026-09-08): it is
+ * true, but it is not what this page is for, and the same easing-off applies to
+ * the privacy stance over time. /promise still makes the argument in full for
+ * anyone who wants it. Do not reintroduce either claim here as a selling point.
+ */
+
+const description =
+  "Badger is made by one person, not a company. Who builds it, why it exists, and how to get in touch.";
+
+---
+
+<BaseLayout title="About" description={description}>
+  <Header currentPath={Astro.url.pathname} />
+
+  <main class="doc">
+    <span class="kicker">Who is behind this</span>
+    <h1>About Badger</h1>
+    <div class="intro">
+      <p>
+        Hey there, Ron here.
+      </p>
+      <p>
+        Badger was born after years of using an app I really liked, but always felt some
+        things were missing. The goal was to build something that supports a wide range of
+        use cases, on top of just logging your workout. We all know that using different
+        machines for the same exercise doesn't translate to the same working weight. What if
+        you travel a lot and go to multiple gyms? Or even just have a gym close to home and
+        one close to work? Need to remember which attachment you used? All of those and more
+        led me to build Badger.
+      </p>
+      <p>
+        Yes, I built it for myself. Then I figured, it's already built, so why not share it
+        with others? Some may find use for it. If it helps and encourages people to stay
+        fit, that's a win for me. It's humbling knowing people out there use it.
+      </p>
+      <p>
+        Why Badger? You may be familiar with the viral video of "Honey Badger Don't Care".
+        Badgers are fierce, and if you're lifting weights, you're fierce too! No matter if
+        you're just starting or if you're an experienced lifter, you are awesome for doing
+        it!
+      </p>
+    </div>
+
+    <section class="entry contact" id="contact">
+      <h2>Get in touch</h2>
+      <p>
+        I'm here to listen to your feedback, suggestions and ideas. You have the contact
+        information, so don't hold back from using it.
+      </p>
+
+      <dl class="addresses">
+        <div class="address">
+          <dt>Anything at all</dt>
+          <dd><a href="mailto:hello@badger.fit">hello@badger.fit</a></dd>
+        </div>
+        <div class="address">
+          <dt>Bugs and feature requests</dt>
+          <dd>
+            <a href="mailto:feedback@badger.fit">feedback@badger.fit</a>
+            <span class="note">
+              Or use <em>Send feedback</em> in the app, which fills in your device and
+              version so you don't have to.
+            </span>
+          </dd>
+        </div>
+        <div class="address">
+          <dt>Your data and privacy</dt>
+          <dd>
+            <a href="mailto:privacy@badger.fit">privacy@badger.fit</a>
+            <span class="note">
+              The <a href="/legal/privacy/">privacy policy</a> has the full answer.
+            </span>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <div class="cta-min">
+      <a class="btn-accent" href="/#download">Get the app</a>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .doc {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 0;
+  }
+
+  .kicker {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .doc h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 1.15;
+    color: var(--text);
+  }
+
+  .intro {
+    margin-top: 26px;
+  }
+
+  .intro p a,
+  .note a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: color-mix(in srgb, var(--accent-ink) 45%, transparent);
+  }
+
+  .intro p {
+    margin: 0 0 14px;
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    max-width: 60ch;
+  }
+
+  /* The one ledger section left: 2px ink top, matching /promise. */
+  .entry {
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 2px solid var(--ink);
+  }
+
+  .entry h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.25;
+    color: var(--text);
+  }
+
+  .entry p {
+    margin: 8px 0 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 60ch;
+  }
+
+  .addresses {
+    margin: 22px 0 0;
+  }
+
+  .address {
+    padding: 14px 0;
+    border-top: 1px solid var(--hair);
+  }
+
+  .address:last-child {
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .address dt {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .address dd {
+    margin: 6px 0 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .note {
+    display: block;
+    margin-top: 5px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .cta-min {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 640px) {
+    .doc {
+      padding: 44px 20px 0;
+    }
+
+    .doc h1 {
+      font-size: 30px;
+    }
+  }
+</style>

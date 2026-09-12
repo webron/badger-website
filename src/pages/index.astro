@@ -16,17 +16,44 @@ import { APP_STORE_URL, PLAY_URL } from '../store-links';
 const description =
   'Badger is a workout and strength tracker for Android and iOS. As capable as the big trackers, as private as a notebook. No account, no subscription, works offline.';
 
+// The switching band. These pages answer a question someone arrives with, and
+// they were previously reachable only from /guides, two clicks in. A crawler
+// reads internal links as a statement of what matters on a site, and so does a
+// person who landed here from a search for their old app's name.
+const switchingGuides = [
+  {
+    href: '/guides/fitnotes-alternative/',
+    app: 'FitNotes',
+    blurb: 'Your .fitnotes backup brings the whole library, not just the sets.',
+  },
+  {
+    href: '/guides/stronglifts-5x5-tracker/',
+    app: 'StrongLifts',
+    blurb: 'The 5x5 template that ships in the app, and what the CSV carries.',
+  },
+  {
+    href: '/guides/strong-alternative/',
+    app: 'Strong',
+    blurb: 'A CSV, and a fuller one than most: your RPE and per-set notes come too.',
+  },
+  {
+    href: '/guides/hevy-alternative/',
+    app: 'Hevy',
+    blurb: 'The richest export of the four. Your warmups arrive as warmups.',
+  },
+];
+
 const ORG_ID = 'https://badger.fit/#organization';
 
 // One @graph rather than two <script> blocks, so the app node can point at the
 // organization node by @id instead of restating it.
 //
 // Every claim here has to be true of the shipped product. sameAs carries the two
-// store listings and nothing else: they are the public profile pages that are
-// actually ours. Badger has no social accounts, and inventing them would be the
-// exact kind of unverifiable markup that gets structured data ignored. The
-// TestFlight invite is deliberately not listed - it is a join link, not a
-// profile, and it is no longer how anyone gets the app.
+// store listings: they are the public profile pages that are actually ours.
+// Badger has no social accounts, and inventing them would be the exact kind of
+// unverifiable markup that gets structured data ignored. The App Store page
+// joined the list on 2026-09-09; the retired TestFlight invite never did, since
+// a join link is not a profile.
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -34,9 +61,15 @@ const structuredData = {
       '@type': 'Organization',
       '@id': ORG_ID,
       name: 'Badger',
+      // "Badger" alone is an animal, a US state mascot and a meter company, and
+      // the site currently ranks around #32 for its own name. alternateName is
+      // the field schema.org provides for exactly this: it states the name
+      // people actually mean without turning every page title into keyword
+      // stuffing. It does not fix ranking on its own; authority does that.
+      alternateName: 'Badger workout tracker',
       url: 'https://badger.fit',
       logo: 'https://badger.fit/assets/badger_logo_stacked.svg',
-      sameAs: [APP_STORE_URL, PLAY_URL],
+      sameAs: [PLAY_URL, APP_STORE_URL],
     },
     {
       // MobileApplication is a subtype of SoftwareApplication and is the more
@@ -44,10 +77,11 @@ const structuredData = {
       '@type': 'MobileApplication',
       name: 'Badger',
       applicationCategory: 'HealthApplication',
-      // Both platforms are public store releases as of 1.1.10, so this field and
-      // downloadUrl finally say the same thing. iOS is iPhone only: the iPad build
-      // was dropped rather than shipped on a screen size Badger has never been
-      // tested on.
+      // Both operating systems now have a public store listing: the App Store
+      // release went live 2026-09-09 (1.1.10, build 28), fifteen days after
+      // submission. downloadUrl takes one URL, so it keeps Play, the older and
+      // larger listing; the App Store page is reachable through sameAs and the
+      // CTA below, which now names both stores in plain words.
       operatingSystem: 'Android, iOS',
       url: 'https://badger.fit',
       downloadUrl: [APP_STORE_URL, PLAY_URL],
@@ -91,17 +125,17 @@ const features = [
   {
     glyph: 'program',
     title: 'Routines and programs',
-    body: 'Build your own or start from <a href="/programs">7 built-in programs</a> (StrongLifts, 5/3/1, PPL, and more). Supersets, scheduled days, predefined sets.',
+    body: 'Build your own or start from <a href="/programs/">7 built-in programs</a> (StrongLifts, 5/3/1, PPL, and more). Supersets, scheduled days, predefined sets.',
   },
   {
     glyph: 'trend',
     title: 'Progress you can read',
-    body: '<a href="/help/progress">PR detection for every exercise type</a>, estimated 1RM, 11 graphs per exercise, activity heatmap, weekly volume by muscle group.',
+    body: '<a href="/help/progress/">PR detection for every exercise type</a>, estimated 1RM, 11 graphs per exercise, activity heatmap, weekly volume by muscle group.',
   },
   {
     glyph: 'gym',
     title: 'Your gym, modeled',
-    body: '<a href="/help/gyms">Track which gym and which machine every set was done on</a>. Machine-scoped PRs, real weight increments, attachments and grips.',
+    body: '<a href="/help/gyms/">Track which gym and which machine every set was done on</a>. Machine-scoped PRs, real weight increments, attachments and grips.',
   },
   {
     glyph: 'plate',
@@ -116,7 +150,7 @@ const features = [
   {
     glyph: 'import',
     title: 'Bring your history',
-    body: '<a href="/guides/switching">Import from FitNotes, Strong, Hevy, or StrongLifts</a>. Export every set to CSV or back up the full database anytime.',
+    body: '<a href="/guides/switching/">Import from FitNotes, Strong, Hevy, or StrongLifts</a>. Export every set to CSV or back up the full database anytime.',
   },
   {
     glyph: 'wave',
@@ -176,7 +210,7 @@ const shouldnt = [
         <StoreBadges id="download" />
       </div>
 
-      <a class="docs-link" href="/help/getting-started">
+      <a class="docs-link" href="/help/getting-started/">
         Read the docs <ArrowGlyph />
       </a>
 
@@ -214,16 +248,32 @@ const shouldnt = [
       </div>
     </section>
 
+    <section class="block switching">
+      <h2 class="caps section-label">Coming from another app</h2>
+      <div class="rule-ink section-rule"></div>
+
+      <ul class="switch-rows">
+        {switchingGuides.map((g) => (
+          <li>
+            <a class="switch-row" href={g.href}>
+              <span class="switch-row__app">{g.app}</span>
+              <span class="switch-row__blurb">{g.blurb}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
     <section class="promise-teaser">
       <p class="teaser-line">Your data is yours. That is the whole business model.</p>
-      <a class="teaser-link" href="/promise">
+      <a class="teaser-link" href="/promise/">
         Read the Badger promise <ArrowGlyph />
       </a>
     </section>
 
     <section class="cta">
       <h2>Ready to start?</h2>
-      <p>Badger is free on the App Store and Google Play.</p>
+      <p>Badger is free on Google Play and the App Store.</p>
       <StoreBadges />
     </section>
   </main>
@@ -344,8 +394,14 @@ const shouldnt = [
     padding: 68px 24px 4px;
   }
 
+  /* Capped and centered on the same 1012px measure as every other band. Left
+     uncapped it filled the section, so past about 1060px of viewport the line
+     kept widening while the bands above and below it stayed at 1012 - the same
+     detachment the switching rows had. The text is centered, so today's short
+     sentence hides it; a longer one would wrap at the full viewport width. */
   .teaser-line {
-    margin: 0;
+    margin: 0 auto;
+    max-width: 1012px;
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 500;
@@ -435,6 +491,65 @@ const shouldnt = [
     .cta {
       margin-top: 52px;
       padding: 28px 20px 8px;
+    }
+  }
+
+  /* ---- switching band ---- */
+
+  /* Same 1012px measure and centering as every other section child (the caps
+     label and its rule directly above, the feature ledger, the two-column
+     spread, the CTA). Without it the rows ran the full width of the section,
+     which only shows above about 1060px of viewport: past that the label and
+     rule stay centered at 1012 while the rows underneath keep widening, so the
+     band reads as detached from its own heading. */
+  .switch-rows {
+    list-style: none;
+    max-width: 1012px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .switch-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--hair);
+    text-decoration: none;
+  }
+
+  .switch-row:hover {
+    text-decoration: none;
+  }
+
+  .switch-row__app {
+    flex: 0 0 auto;
+    min-width: 130px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .switch-row:hover .switch-row__app {
+    color: var(--accent-ink);
+  }
+
+  .switch-row__blurb {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  /* Same reasoning as the guide picker: the pair does not fit side by side on a
+     phone, so the blurb drops under the app name rather than being shredded. */
+  @media (max-width: 560px) {
+    .switch-row {
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .switch-row__app {
+      min-width: 0;
     }
   }
 </style>

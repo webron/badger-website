@@ -70,7 +70,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>If the exercise isn't a barbell movement, or you have no gym set, or your gym has no bars linked, nothing bar-related appears. Nobody gets asked which bar they used on a leg press.</p>
 
   <h3 id="bar-weight">What the bar's weight is used for</h3>
-  <p>The bar you pick is the first place Badger looks for a starting weight, ahead of the machine's and then the exercise's own. That one answer feeds both the <a href="/help/tools">plate calculator</a> and the <a href="/help/logging#set-types">warm-up calculator</a>, so they can't disagree with each other.</p>
+  <p>The bar you pick is the first place Badger looks for a starting weight, ahead of the machine's and then the exercise's own. That one answer feeds both the <a href="/help/tools/">plate calculator</a> and the <a href="/help/logging/#set-types">warm-up calculator</a>, so they can't disagree with each other.</p>
   <p>A bar with no weight entered doesn't blank anything out - it just falls through, and whatever the machine or exercise already said still applies. Adding "Trap bar" purely so your records stay separate never costs you a bar weight you'd already set up.</p>
 
   <h3 id="bar-prs">Records are kept per bar</h3>
@@ -99,7 +99,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Two ways to handle a session that's part banded and part bare:</p>
   <ul>
     <li><strong>Bands for some sets, then bare for the rest</strong> - add the exercise twice, once with the accessory and once without. The bare rows keep their records.</li>
-    <li><strong>Alternating within a session</strong> - do the same thing and put the two in a <a href="/help/logging#supersets">superset</a>, which is how you alternate between anything else.</li>
+    <li><strong>Alternating within a session</strong> - do the same thing and put the two in a <a href="/help/logging/#supersets">superset</a>, which is how you alternate between anything else.</li>
   </ul>
 
   <h2 id="racks">Dumbbell and kettlebell racks</h2>
@@ -131,7 +131,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Attachment photos also show as a small thumbnail in the attachment picker during a workout, which is the point: "the rope or the short V-bar?" is easier to answer from a picture than a name.</p>
   <ul>
     <li><strong>Photos stay on your device unless you ask otherwise.</strong> Nothing is uploaded on its own, and Badger only asks for camera or photo access at the moment you first use it.</li>
-    <li><strong>Cloud backup leaves photos out unless you turn them on.</strong> Backups stay small and quick by default, so photos are not included and a restore onto a new phone brings your machines and attachments back without their pictures. To carry them across, turn on <strong>Back up equipment photos</strong> on the <a href={`/help/settings#cloud-backup`}>Cloud backup</a> screen. It is off by default, because photos make backups considerably larger and they use your own Drive storage.</li>
+    <li><strong>Cloud backup leaves photos out unless you turn them on.</strong> Backups stay small and quick by default, so photos are not included and a restore onto a new phone brings your machines and attachments back without their pictures. To carry them across, turn on <strong>Back up equipment photos</strong> on the <a href={`/help/settings/#cloud-backup`}>Cloud backup</a> screen. It is off by default, because photos make backups considerably larger and they use your own Drive storage.</li>
     <li>Deleting a machine, attachment, or bar deletes its photo too.</li>
   </ul>
 
@@ -184,5 +184,5 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Gym detail → <strong>⋮ → Share gym</strong> writes a <code>.badger</code> file you can send to anyone. It is meant for the friend who just joined your gym: it hands over the place as it stands, so they are not spending their first week telling their phone what is on the wall.</p>
   <p>That means everything about the equipment - the machines with their resistance types, increments and units, the attachments, the bars with their weights, the bands and chains with their colors, and the notes on any of them. It also carries the two things that are lists rather than objects: the <a href="#racks">dumbbell and kettlebell racks</a>, and the plate inventory - whichever of them you have actually set up. A gym still running on Badger's built-in plate defaults carries no plate list, because the app opening the file already ships those.</p>
   <p>The line it draws is simple: <strong>what describes the gym travels, what describes you does not</strong>. Your photos stay on your phone. So do the personal setup cues you save against one exercise on one machine, which are about how you lift rather than about the machine.</p>
-  <p>Nothing is overwritten on the way in. If they already have that gym with their own rack set up, theirs is left exactly as it was and only the gaps are filled. The import preview says so before anything is written: the racks and the plate inventory each get a line of their own, marked <em>yours are kept</em> when that gym already has one, and the attachments, bars and accessories are counted alongside the machines. The full field-by-field breakdown lives on the <a href="/badger-format">file format page</a>.</p>
+  <p>Nothing is overwritten on the way in. If they already have that gym with their own rack set up, theirs is left exactly as it was and only the gaps are filled. The import preview says so before anything is written: the racks and the plate inventory each get a line of their own, marked <em>yours are kept</em> when that gym already has one, and the attachments, bars and accessories are counted alongside the machines. The full field-by-field breakdown lives on the <a href="/badger-format/">file format page</a>.</p>
 </HelpLayout>

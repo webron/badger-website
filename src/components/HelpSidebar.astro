@@ -7,128 +7,153 @@ interface Props {
 const { currentPath } = Astro.props;
 
 const nav = [
+  // 'Starting Guides' had grown into a bin of ten items holding three unrelated
+  // things: the four persona guides, the migration pages, and a run of
+  // standalone topic pages. Split into the three groups it already was, so the
+  // group label tells you what the items under it have in common.
   {
     label: 'Starting Guides',
     items: [
-      { href: `/guides`, label: 'Pick your guide' },
-      { href: `/guides/just-lifting`, label: 'Just lifting' },
-      { href: `/guides/program-runner`, label: 'Running a program' },
-      { href: `/guides/optimizer`, label: 'Show me the data' },
-      { href: `/guides/switching`, label: 'Switching apps' },
-      { href: `/guides/ai`, label: 'Use your own AI' },
-      { href: `/guides/stronglifts-5x5-tracker`, label: 'StrongLifts 5x5' },
-      { href: `/guides/workout-tracker-no-subscription`, label: 'No subscription' },
-      { href: `/guides/overview`, label: 'Everything Badger does' },
+      { href: `/guides/`, label: 'Pick your guide' },
+      { href: `/guides/just-lifting/`, label: 'Just lifting' },
+      { href: `/guides/program-runner/`, label: 'Running a program' },
+      { href: `/guides/optimizer/`, label: 'Show me the data' },
+    ],
+  },
+  // The hub first, then one entry per app someone arrives from, in the order
+  // the hub itself lists them: the three with pages of their own, then
+  // StrongLifts, whose import section lives on its 5x5 program page rather than
+  // on a page of its own (see the hub for why).
+  {
+    label: 'Switching to Badger',
+    items: [
+      { href: `/guides/switching/`, label: 'How importing works' },
+      { href: `/guides/fitnotes-alternative/`, label: 'From FitNotes' },
+      { href: `/guides/strong-alternative/`, label: 'From Strong' },
+      { href: `/guides/hevy-alternative/`, label: 'From Hevy' },
+      { href: `/guides/stronglifts-5x5-tracker/#import`, label: 'From StrongLifts' },
+    ],
+  },
+  // Pages that answer a question someone arrives with rather than describing
+  // how they train. 'Everything Badger does' is last because it is the index
+  // you reach for when the specific pages did not cover it.
+  {
+    label: 'More Guides',
+    items: [
+      { href: `/guides/stronglifts-5x5-tracker/`, label: 'StrongLifts 5x5' },
+      { href: `/guides/workout-tracker-no-subscription/`, label: 'No subscription' },
+      { href: `/guides/ai/`, label: 'Use your own AI' },
+      { href: `/guides/overview/`, label: 'Everything Badger does' },
     ],
   },
   {
     label: 'Getting Started',
     items: [
-      { href: `/help/getting-started`, label: 'Quick start' },
-      { href: `/help/getting-started#first-workout`, label: 'Your first workout' },
-      { href: `/help/getting-started#importing`, label: 'Importing from another app' },
+      { href: `/help/getting-started/`, label: 'Quick start' },
+      { href: `/help/getting-started/#first-workout`, label: 'Your first workout' },
+      { href: `/help/getting-started/#importing`, label: 'Importing from another app' },
     ],
   },
   {
     label: 'Logging Workouts',
     items: [
-      { href: `/help/logging`, label: 'Logging sets' },
-      { href: `/help/logging#set-types`, label: 'Warmup & working sets' },
-      { href: `/help/logging#amrap`, label: 'AMRAP & to failure' },
-      { href: `/help/logging#rest-timer`, label: 'Rest timer' },
-      { href: `/help/logging#supersets`, label: 'Supersets' },
+      { href: `/help/logging/`, label: 'Logging sets' },
+      { href: `/help/logging/#set-types`, label: 'Warmup & working sets' },
+      { href: `/help/logging/#amrap`, label: 'AMRAP & to failure' },
+      { href: `/help/logging/#rest-timer`, label: 'Rest timer' },
+      { href: `/help/logging/#supersets`, label: 'Supersets' },
     ],
   },
   {
     label: 'Exercises',
     items: [
-      { href: `/help/exercises`, label: 'Exercise library' },
-      { href: `/help/exercises#search-filter`, label: 'Search & filters' },
-      { href: `/help/exercises#categories`, label: 'Categories' },
-      { href: `/help/exercises#creating`, label: 'Creating exercises' },
-      { href: `/help/exercises#types`, label: 'Exercise types' },
+      { href: `/help/exercises/`, label: 'Exercise library' },
+      { href: `/help/exercises/#search-filter`, label: 'Search & filters' },
+      { href: `/help/exercises/#categories`, label: 'Categories' },
+      { href: `/help/exercises/#creating`, label: 'Creating exercises' },
+      { href: `/help/exercises/#types`, label: 'Exercise types' },
     ],
   },
   {
     label: 'Routines',
     items: [
-      { href: `/help/routines`, label: 'Overview' },
-      { href: `/help/routines#creating`, label: 'Creating routines' },
-      { href: `/help/routines#predefined-sets`, label: 'Predefined sets' },
-      { href: `/help/routines#starting`, label: 'Starting a routine workout' },
-      { href: `/help/routines#programs`, label: 'Built-in programs' },
+      { href: `/help/routines/`, label: 'Overview' },
+      { href: `/help/routines/#creating`, label: 'Creating routines' },
+      { href: `/help/routines/#predefined-sets`, label: 'Predefined sets' },
+      { href: `/help/routines/#starting`, label: 'Starting a routine workout' },
+      { href: `/help/routines/#programs`, label: 'Built-in programs' },
     ],
   },
   {
     label: 'Gyms & Equipment',
     items: [
-      { href: `/help/gyms`, label: 'Managing gyms' },
-      { href: `/help/gyms#machines`, label: 'Machines & attachments' },
-      { href: `/help/gyms#bars`, label: 'Bars' },
-      { href: `/help/gyms#accessories`, label: 'Bands, chains & straps' },
-      { href: `/help/gyms#racks`, label: 'Dumbbell & kettlebell racks' },
-      { href: `/help/gyms#grip-types`, label: 'Grip types' },
-      { href: `/help/gyms#workout-context`, label: 'Gym context in workouts' },
-      { href: `/help/gyms#sharing`, label: 'Sharing a gym' },
+      { href: `/help/gyms/`, label: 'Managing gyms' },
+      { href: `/help/gyms/#machines`, label: 'Machines & attachments' },
+      { href: `/help/gyms/#bars`, label: 'Bars' },
+      { href: `/help/gyms/#accessories`, label: 'Bands, chains & straps' },
+      { href: `/help/gyms/#racks`, label: 'Dumbbell & kettlebell racks' },
+      { href: `/help/gyms/#grip-types`, label: 'Grip types' },
+      { href: `/help/gyms/#workout-context`, label: 'Gym context in workouts' },
+      { href: `/help/gyms/#sharing`, label: 'Sharing a gym' },
     ],
   },
   {
     label: 'History',
     items: [
-      { href: `/help/history`, label: 'Viewing history' },
-      { href: `/help/history#views`, label: 'List & calendar views' },
-      { href: `/help/history#filtering`, label: 'Filtering workouts' },
-      { href: `/help/history#search`, label: 'Searching your journal' },
-      { href: `/help/history#per-exercise`, label: 'Per-exercise history' },
+      { href: `/help/history/`, label: 'Viewing history' },
+      { href: `/help/history/#views`, label: 'List & calendar views' },
+      { href: `/help/history/#filtering`, label: 'Filtering workouts' },
+      { href: `/help/history/#search`, label: 'Searching your journal' },
+      { href: `/help/history/#per-exercise`, label: 'Per-exercise history' },
     ],
   },
   {
     label: 'Progress',
     items: [
-      { href: `/help/progress`, label: 'Exercise progress' },
-      { href: `/help/progress#prs`, label: 'Personal records' },
-      { href: `/help/progress#graphs`, label: 'Graphs & charts' },
-      { href: `/help/progress#muscle-balance`, label: 'Muscle balance' },
-      { href: `/help/progress#plateau-detection`, label: 'Plateau detection' },
+      { href: `/help/progress/`, label: 'Exercise progress' },
+      { href: `/help/progress/#prs`, label: 'Personal records' },
+      { href: `/help/progress/#graphs`, label: 'Graphs & charts' },
+      { href: `/help/progress/#muscle-balance`, label: 'Muscle balance' },
+      { href: `/help/progress/#plateau-detection`, label: 'Plateau detection' },
     ],
   },
   {
     label: 'Body',
     items: [
-      { href: `/help/body`, label: 'Body tracking' },
-      { href: `/help/body#what-you-track`, label: 'Choosing what you track' },
-      { href: `/help/body#trend`, label: 'Reading the trend' },
-      { href: `/help/body#health`, label: 'Apple Health & Health Connect' },
-      { href: `/help/body#heart-rate`, label: 'Heart rate on your sets' },
+      { href: `/help/body/`, label: 'Body tracking' },
+      { href: `/help/body/#what-you-track`, label: 'Choosing what you track' },
+      { href: `/help/body/#trend`, label: 'Reading the trend' },
+      { href: `/help/body/#health`, label: 'Apple Health & Health Connect' },
+      { href: `/help/body/#heart-rate`, label: 'Heart rate on your sets' },
     ],
   },
   {
     label: 'Tools',
     items: [
-      { href: `/help/tools`, label: 'Plate calculator' },
-      { href: `/help/tools#warmup-calc`, label: 'Warmup calculator' },
-      { href: `/help/tools#deload`, label: 'Deload' },
+      { href: `/help/tools/`, label: 'Plate calculator' },
+      { href: `/help/tools/#warmup-calc`, label: 'Warmup calculator' },
+      { href: `/help/tools/#deload`, label: 'Deload' },
     ],
   },
   {
     label: 'Settings & Data',
     items: [
-      { href: `/help/settings`, label: 'Settings overview' },
-      { href: `/help/settings#logging`, label: 'Logging settings' },
-      { href: `/help/settings#coaching`, label: 'Coaching settings' },
-      { href: `/help/settings#app`, label: 'App settings' },
-      { href: `/help/settings#data`, label: 'Your data' },
-      { href: `/help/settings#export`, label: 'Exporting data' },
-      { href: `/help/settings#importing`, label: 'Importing history' },
-      { href: `/help/phone-migration`, label: 'Moving to a new phone' },
+      { href: `/help/settings/`, label: 'Settings overview' },
+      { href: `/help/settings/#logging`, label: 'Logging settings' },
+      { href: `/help/settings/#coaching`, label: 'Coaching settings' },
+      { href: `/help/settings/#app`, label: 'App settings' },
+      { href: `/help/settings/#data`, label: 'Your data' },
+      { href: `/help/settings/#export`, label: 'Exporting data' },
+      { href: `/help/settings/#importing`, label: 'Importing history' },
+      { href: `/help/phone-migration/`, label: 'Moving to a new phone' },
     ],
   },
   {
     label: 'Reference',
     items: [
-      { href: `/glossary`, label: 'Glossary' },
-      { href: `/programs`, label: 'Program files' },
-      { href: `/badger-format`, label: 'The .badger format' },
+      { href: `/glossary/`, label: 'Glossary' },
+      { href: `/programs/`, label: 'Program files' },
+      { href: `/badger-format/`, label: 'The .badger format' },
     ],
   },
 ];
@@ -156,7 +181,12 @@ const nav = [
             // /help/logging lit up all four of its rows and the keyline ran down
             // the group as one accent block. Astro sees no fragment server-side,
             // so this resolves to exactly one row per page: the page's own entry.
-            const active = currentPath === item.href;
+            // Links carry a trailing slash so a crawler is not sent through a
+            // redirect; currentPath arrives already stripped of one, so strip
+            // the href to compare. An anchor item ends in its fragment, is
+            // untouched by this, and so still never matches - which is the
+            // one-row-per-page behavior described above.
+            const active = currentPath === item.href.replace(/\/$/, "");
             return (
               <li>
                 <a
@@ -278,17 +308,38 @@ const nav = [
     color: var(--text);
   }
 
-  /* Results float over the page, so this one keeps a surface and a border. */
+  /* Results float over the page, so this one keeps a surface and a border.
+
+     The panel spans its own field rather than carrying a width of its own. It
+     used to be a flat 220px, the width of the desktop sidebar, with no mobile
+     override - so below 769px, where the sidebar becomes a full-width block
+     above the article, the panel stayed 220px while the field it belongs to
+     grew with the viewport. At 768px that was a 220px panel hanging off the
+     left end of a 736px field, with the article showing through beside it and
+     every excerpt wrapping at three words. Left and right resolve against
+     .help-search-wrap, which is position: relative for exactly this. Top is
+     left unset so the panel keeps its static position under the field. */
   #help-search .pagefind-ui__results {
     position: absolute;
     z-index: 50;
-    width: 220px;
+    left: 0;
+    right: 0;
+    width: auto;
     background: var(--surface);
     border: 1px solid var(--outline);
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(38, 34, 25, 0.28);
     max-height: 60vh;
     overflow-y: auto;
+  }
+
+  /* Pagefind leaves the results box in the DOM with nothing in it when a query
+     matches nothing, so its own top and bottom borders collapsed into a stray
+     2px hairline with a drop shadow, floating under the "No results" message
+     (which is a sibling, not a child). It was always there; widening the panel
+     to the field made it wide enough to read as a mistake. */
+  #help-search .pagefind-ui__results:empty {
+    display: none;
   }
 
   #help-search .pagefind-ui__result {
@@ -339,16 +390,39 @@ const nav = [
 </style>
 
 <style>
-  /* Desktop: a plain sticky column. We do NOT cap the height with an internal
-     scroll, because that scroll relied on a flex chain running through the
-     <details> element, which does not establish a reliable flex height context,
-     so the nav would spill past the footer. With no cap, the sidebar's full
-     height stays in the flex flow and the footer always lands below it. */
+  /* Desktop: a sticky column that scrolls independently of the page.
+     
+     The uncapped version was broken and the breakage grew with the index. A
+     sticky element TALLER than the viewport pins its top at the offset and then
+     stays there, so everything past one screenful sat below the fold with no
+     way to reach it: measured 2987px of sidebar in an 800px viewport, which put
+     the last two thirds of the index permanently out of reach on a laptop.
+
+     An earlier attempt at a cap ran the height through a flex chain including
+     the <details> element, which does not establish a reliable flex height
+     context, and the nav spilled past the footer. This caps the STICKY BOX
+     itself instead. A sticky element sizes normally, so no flex chain is
+     involved and the footer is unaffected: the aside's height in the page flow
+     is the capped one.
+
+     The cap pairs with top: 1.5rem, leaving the same gap at the bottom. The
+     search field scrolls with the index rather than staying pinned, which is
+     the deliberate trade for not reintroducing the flex chain: the field is at
+     the top of the box and is on screen whenever the sidebar is at rest. */
   #help-sidebar {
     width: 220px;
     flex-shrink: 0;
     position: sticky;
     top: 1.5rem;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+    /* Room for the scrollbar so it never sits over a label, and a stable gutter
+       so the index does not shift sideways when the bar appears. */
+    padding-right: 6px;
+    scrollbar-gutter: stable;
+    /* Bottoming out the index should not then start scrolling the article
+       underneath it. */
+    overscroll-behavior: contain;
   }
 
   /* ---- the index ---- */
@@ -397,6 +471,12 @@ const nav = [
 
   .help-search-wrap {
     margin-bottom: 22px;
+    /* The containing block for the results panel, which is absolutely
+       positioned. Without it the panel resolved against #help-sidebar on
+       desktop (sticky, so positioned) and against something further up the tree
+       on mobile (static), which is why the panel could not be sized in
+       percentages and carried a hard pixel width instead. */
+    position: relative;
     /* Pagefind ships this div empty and injects the search input at runtime, so
        without a reservation everything below it drops by the input's height the
        moment the bundle lands. That shift was always here; it only became
@@ -433,6 +513,12 @@ const nav = [
       width: 100%;
       position: static;
       max-height: none;
+      /* The desktop rules above make the aside its own scroll container. On
+         mobile it is a plain block above the article and must not be one, or
+         the whole index gets a second scrollbar inside the page. */
+      overflow-y: visible;
+      padding-right: 0;
+      overscroll-behavior: auto;
       margin-bottom: 1.5rem;
     }
 
@@ -479,17 +565,90 @@ const nav = [
       details.removeAttribute('open');
     }
 
-    // Preserve nav scroll position across clicks.
-    const KEY = 'help-sidebar-scroll';
     const nav = document.getElementById('help-sidebar-nav');
-    if (!nav) return;
+    const aside = document.getElementById('help-sidebar');
+    if (!nav || !aside) return;
+
+    // WHICH element actually scrolls depends on the breakpoint, and getting it
+    // wrong is silent: writing scrollTop on a box with no overflow does
+    // nothing and throws nothing. Desktop caps the sticky ASIDE; mobile caps
+    // the NAV inside the disclosure. The media query matches the CSS.
+    function scroller() {
+      return window.matchMedia('(min-width: 769px)').matches ? aside : nav;
+    }
+
+    // Keep the index where the reader left it when they click through to
+    // another page, so the list does not jump under them.
+    const KEY = 'help-sidebar-scroll';
+
+    // Bring the current page's entry into view when it is not already there.
+    // Without this, landing deep in the index (a search result, a shared link,
+    // anything under Settings) shows the top of a list 2987px long and no hint
+    // of where you are.
+    //
+    // Runs AFTER the saved position is restored and does nothing when the entry
+    // is already visible, so the two do not fight: a click within one region
+    // keeps the list still, a jump across the index corrects it.
+    function revealActive() {
+      const box = scroller();
+      const active = box.querySelector('.sgroup-link.active');
+      if (!active) return;
+
+      const boxRect = box.getBoundingClientRect();
+      const aRect = active.getBoundingClientRect();
+      if (aRect.top >= boxRect.top && aRect.bottom <= boxRect.bottom) return;
+
+      // Prefer showing the whole group, so the entry arrives with its heading
+      // and its siblings rather than stranded against the top edge.
+      const group = active.closest('.sgroup') || active;
+      const gRect = group.getBoundingClientRect();
+      let target = box.scrollTop + (gRect.top - boxRect.top) - 12;
+
+      // A group taller than the box would leave the entry itself below the
+      // fold, which is the one thing this must not do. Center the entry then.
+      if (aRect.bottom - gRect.top > boxRect.height - 12) {
+        target =
+          box.scrollTop +
+          (aRect.top - boxRect.top) -
+          (boxRect.height - aRect.height) / 2;
+      }
+
+      // Out-of-range values are clamped by the browser, so no min/max needed.
+      box.scrollTop = target;
+    }
 
     const saved = sessionStorage.getItem(KEY);
-    if (saved) nav.scrollTop = parseInt(saved, 10);
+    if (saved) scroller().scrollTop = parseInt(saved, 10);
+    revealActive();
+
+    // The bundled faces load after first layout and change row heights, which
+    // moves the entry we just revealed. Correct once more when they land, but
+    // not if the reader has already taken over: a list that jumps under a
+    // moving finger is worse than one that is slightly off.
+    let userScrolled = false;
+    scroller().addEventListener(
+      'wheel',
+      function () {
+        userScrolled = true;
+      },
+      { passive: true, once: true }
+    );
+    scroller().addEventListener(
+      'touchstart',
+      function () {
+        userScrolled = true;
+      },
+      { passive: true, once: true }
+    );
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        if (!userScrolled) revealActive();
+      });
+    }
 
     nav.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', function () {
-        sessionStorage.setItem(KEY, nav.scrollTop);
+        sessionStorage.setItem(KEY, scroller().scrollTop);
       });
     });
   })();
