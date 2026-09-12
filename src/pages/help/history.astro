@@ -104,6 +104,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Meeting the plan means hitting the rep target, or anywhere at or above the lower number when the target is a range. A <a href="/help/routines/#rep-ranges">rep range</a> only ever widens what counts as met - it never turns a set that used to count into one that doesn't.</p>
   <p>The wins card only shows positive outcomes. There is no overall adherence percentage - a bad session shouldn't need a score. The last-session comparison uses an estimated 1RM for weight + reps sets (so more weight, more reps, or both count as a win), and the relevant scalar for reps-only, time-only, and distance exercises. Free workouts (not started from a routine) show the summary unchanged.</p>
 
+  <h2 id="share">Sharing a workout as an image</h2>
+  <p>The workout summary has a <strong>Share</strong> action that builds a card from the session and hands it to your phone's share sheet as an image. You see the finished card before anything is shared, and nothing is sent anywhere unless you pick a destination yourself.</p>
+  <p>The card is a page from your own journal: your theme and your accent color, the date, your entry number, and the program and day name if the workout came from a routine. What it leads with depends on the session:</p>
+  <ul>
+    <li><strong>An ordinary day</strong> leads with the standout set: the lift, the set, and a plain line saying why it is there - "Heaviest set of the day", "Most reps of the day", "Longest hold of the day". Which one it says follows the exercise, so an assisted movement reads "Lightest set of the day".</li>
+    <li><strong>A day you set a personal best</strong> leads with the record instead, and names what it beat: "New personal best - was 57.5 kg x 5".</li>
+  </ul>
+  <p>Under that, a summary line (sets, exercises, time, volume), then one line per exercise: the set count as tally marks and that exercise's best set. Up to eight exercises are listed; anything beyond that is counted as "+N more". Exercise names wrap rather than getting cut off. Warmups never appear on the card.</p>
+  <p>Two things are deliberately off by default. The <strong>gym name</strong> is a per-share toggle on the share sheet, because a gym is a location; it is off every time and the choice is not remembered. And the card never carries a link, a referral code, or an app banner.</p>
+
   <h2 id="per-exercise">Per-exercise history</h2>
   <p>You can also view history for a single exercise. From the <a href={`/help/progress/`}>Progress tab</a>, select an exercise and open the <strong>History</strong> tab on its detail screen. This shows every session where that exercise was logged, newest first. The same History tab appears in the <strong>training screen</strong> while you're mid-workout - swipe to the History tab to see past sessions for the exercise you're currently logging.</p>
   <p>Each entry in the per-exercise history shows:</p>
