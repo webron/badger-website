@@ -98,7 +98,10 @@ const HEIGHT = 1121;
       if (explicit === 'dark' || explicit === 'light') {
         return explicit === 'dark' ? 'slate' : 'paper';
       }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'slate' : 'paper';
+      // Mirrors global.css, which defaults to slate and swaps to paper inside
+      // a (prefers-color-scheme: light) query. Asking the same question the
+      // stylesheet asks keeps the two from disagreeing.
+      return window.matchMedia('(prefers-color-scheme: light)').matches ? 'paper' : 'slate';
     }
 
     function loadVariant(theme) {
@@ -176,6 +179,15 @@ const HEIGHT = 1121;
     overflow: hidden;
     background: var(--bg);
     box-shadow: 0 10px 34px rgba(38, 34, 25, 0.14);
+  }
+
+  /* The frame holds its own shape only while nothing inside it has a src: a
+     visitor whose JavaScript never ran gets three empty boxes rather than three
+     collapsed lines. It is scoped to that case on purpose. aspect-ratio is
+     measured on the border box, so with a screenshot actually loaded it would
+     reserve 1.5px of border twice over and leave a ~3px band of --bg sitting
+     under the app's own nav bar. */
+  .phone:not(:has(img[src])) {
     aspect-ratio: 540 / 1121;
   }
 
