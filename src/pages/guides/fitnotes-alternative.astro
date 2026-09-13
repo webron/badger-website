@@ -28,6 +28,14 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  *   - custom measurements: their own types, carrying the unit string
  * There is deliberately no warmup claim: FitNotes does not mark warmups, so
  * the importer has nothing to read and every set arrives as a working set.
+ *
+ * 2026-09-12: the preview step used to say Badger "detects" the weight unit. It
+ * does not, for the schema most people will have. `_parseWorkoutEntry` (the
+ * post-2018 table) builds its entries with no storedUnit at all, so the import
+ * runs on the kg/lbs control the user sets on the preview screen
+ * (`_importWeightUnit`, defaulting to kg). Only `_parseTrainingLog`, the legacy
+ * table, reads a per-row unit column. Both this page and
+ * /guides/fitnotes-on-iphone now say which is which.
  */
 
 const description =
@@ -131,7 +139,11 @@ const modified = '2026-09-05';
       In Badger, go to <strong>Settings &rarr; Your data &rarr; Import from FitNotes</strong> and pick
       the file. It is also offered during first-launch onboarding.
     </li>
-    <li>Check the preview: exercises, workout days, sets, and the detected weight unit.</li>
+    <li>
+      Check the preview: exercises, workout days and sets. Tell it which unit the backup holds while
+      you are there. It assumes kilograms, which is what FitNotes normally stores, so change it only
+      if yours does not. A pre-2018 backup carries the unit per set and needs no answer.
+    </li>
     <li>Import.</li>
   </ol>
 
@@ -174,7 +186,9 @@ const modified = '2026-09-05';
     </li>
     <li>
       <strong>It runs on iPhone.</strong> Badger is on Google Play and the App Store, so a phone
-      switch does not mean an app switch.
+      switch does not mean an app switch. If that is what brought you here,
+      <a href="/guides/fitnotes-on-iphone/">FitNotes on iPhone</a> covers getting the backup off the
+      Android phone and onto the new one.
     </li>
   </ul>
 
