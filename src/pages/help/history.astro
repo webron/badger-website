@@ -32,15 +32,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </div>
 
   <h3>Calendar view</h3>
-  <p>A month calendar where days with logged workouts show small colored dots - one dot per exercise category trained that day. Tap any day to see a summary of that day's workout below the calendar. The summary card shows the same exercise preview as the list (up to three exercise rows plus a "+ N more" line); tap the card to open full details. A <strong>Copy to today</strong> button (past days only) and <strong>Save as routine day</strong> button sit below it.</p>
+  <p>Days with logged workouts show small colored dots on the month calendar - one dot per exercise category trained that day. Tap any day for a summary below the calendar (the same exercise preview as the list, up to three rows plus a "+ N more" line); tap the card for full details.</p>
+  <p>A <strong>Copy to today</strong> button (past days only) and <strong>Save as routine day</strong> button sit below the summary.</p>
   <ul>
     <li>Today is outlined with the accent color.</li>
     <li>Use the left and right arrows to move between months.</li>
     <li>Tap <strong>Today</strong> in the top-right to jump back to the current month and select today.</li>
     <li>Days with scheduled routine days (but no workout yet logged) show a faint dot as a reminder.</li>
-    <li><strong>Logging a past workout.</strong> Tap any past (or today's) day with no workout, then tap <strong>Log a workout</strong> in the summary below the calendar. You get three choices: <strong>From a routine</strong> (pick a routine and day, then confirm the prefilled session), <strong>Manual entry</strong> (start an empty workout and add exercises by hand), or <strong>Copy from another day</strong> (duplicate a previous session's exercises and sets onto this date). Useful if you forgot to log during the session. Future dates can't be logged.</li>
-    <li>Backdated workouts run no timers - the duration is simply left blank rather than recording the time you spent entering it, and no rest-timer countdown fires while you log.</li>
-    <li><strong>Adding to a past workout later.</strong> Open any past workout's summary and tap <strong>Add exercises</strong> to reopen it and log more movements - a backdated entry isn't one-shot. Leaving a backdated log returns you to that workout's summary, not the Today screen.</li>
+    <li><strong>Logging a past workout.</strong> Tap any past (or today's) day with no workout, then tap <strong>Log a workout</strong> in the summary below the calendar. Choose <strong>From a routine</strong> (pick a routine and day, then confirm the prefilled session), <strong>Manual entry</strong> (start an empty workout and add exercises by hand), or <strong>Copy from another day</strong> (duplicate a previous session's exercises and sets onto this date). Future dates can't be logged.</li>
+    <li>Backdated workouts run no timers: the duration stays blank instead of recording how long you spent entering it, and no rest-timer countdown fires while you log.</li>
+    <li><strong>Adding to a past workout later.</strong> Open any past workout's summary and tap <strong>Add exercises</strong> to reopen it and log more movements - a backdated entry isn't one-shot. Leaving a backdated log returns you to that workout's summary rather than the Today screen.</li>
   </ul>
 
   <h2 id="filtering">Filtering workouts</h2>
@@ -64,7 +65,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Routine and routine day notes</strong> - program context and per-day instructions.</li>
     <li><strong>Training notes</strong> - the app-level notes on your You screen.</li>
   </ul>
-  <p>Results start appearing as soon as you have typed two characters, and they arrive in two groups: <strong>Notes</strong> first (everything undated), then <strong>Entries</strong> (results tied to a workout, newest first). Each result shows where it came from, the date if it has one, and the line of text your search matched, with the matching words highlighted. Tap any result to jump straight to the screen that owns it - the workout summary, the exercise's notes, the machine, the routine, or your training notes.</p>
+  <p>Results appear as soon as you've typed two characters, in two groups: <strong>Notes</strong> first (everything undated), then <strong>Entries</strong> (results tied to a workout, newest first). Each result shows where it came from, its date if it has one, and the matched line with the matching words highlighted.</p>
+  <p>Tap any result to jump to the screen that owns it - the workout summary, the exercise's notes, the machine, the routine, or your training notes.</p>
   <div class="callout">
     <strong>It searches your writing, not the app's.</strong> The built-in technique instructions that ship with each exercise are not included - only notes you wrote yourself. Everything stays on your device; nothing is sent anywhere to search it.
   </div>
@@ -84,7 +86,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li>A gap longer than ten minutes counts as a <strong>break</strong> rather than rest - a phone call or a wait for a rack does not get averaged into your rest times. Breaks are listed on their own line.</li>
     <li>An exercise only reports average rest for gaps between its own sets, so a superset shows how long it took without pretending the partner exercise was rest.</li>
-    <li>These are your actual times, not a comparison against the rest timer you configured.</li>
+    <li>These are your actual times. They aren't a comparison against the rest timer you configured.</li>
   </ul>
   <p>Pace appears once a session has at least four completed sets and a running clock. Backdated logs never show it - there is no real timing to report - and neither do sessions logged before the feature existed.</p>
 
@@ -102,7 +104,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>"2 of 5 exercises: all sets met or exceeded last session"</li>
   </ul>
   <p>Meeting the plan means hitting the rep target, or anywhere at or above the lower number when the target is a range. A <a href="/help/routines/#rep-ranges">rep range</a> only ever widens what counts as met - it never turns a set that used to count into one that doesn't.</p>
-  <p>The wins card only shows positive outcomes. There is no overall adherence percentage - a bad session shouldn't need a score. The last-session comparison uses an estimated 1RM for weight + reps sets (so more weight, more reps, or both count as a win), and the relevant scalar for reps-only, time-only, and distance exercises. Free workouts (not started from a routine) show the summary unchanged.</p>
+  <p>The wins card only shows positive outcomes - there is no overall adherence percentage. The last-session comparison uses an estimated 1RM for weight + reps sets, so more weight, more reps, or both count as a win, and the relevant scalar for reps-only, time-only, and distance exercises.</p>
+  <p>Free workouts (not started from a routine) show the summary unchanged.</p>
 
   <h2 id="share">Sharing a workout as an image</h2>
   <p>The workout summary has a <strong>Share</strong> action that builds a card from the session and hands it to your phone's share sheet as an image. You see the finished card before anything is shared, and nothing is sent anywhere unless you pick a destination yourself.</p>
@@ -112,11 +115,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>An ordinary day</strong> leads with the standout set: the lift, the set, and a plain line saying why it is there - "Heaviest set of the day", "Most reps of the day", "Longest hold of the day", "Farthest of the day". Which one it says follows the exercise, so an assisted movement reads "Lightest set of the day" and a timed sprint reads "Fastest of the day".</li>
     <li><strong>A day you set a personal best</strong> leads with the record instead, and names what it beat: "New personal best · was 57.5 kg × 5".</li>
   </ul>
-  <p>Under that, a summary line (sets, exercises, time, volume), then one line per exercise: the set count as tally marks and that exercise's best set. The card lists as many exercises as fit its fixed height, up to eight, and counts the rest as "+N more", so a session of eight long exercise names shows fewer rows than a session of eight short ones. Exercise names wrap rather than getting cut off. Warmups never appear on the card.</p>
+  <p>Under that: a summary line (sets, exercises, time, volume), then one line per exercise showing its set count as tally marks and its best set. The card lists as many exercises as fit its fixed height, up to eight, and counts the rest as "+N more" - so a session of eight long exercise names shows fewer rows than one of eight short ones.</p>
+  <p>Exercise names wrap instead of getting cut off, and warmups never appear on the card.</p>
   <p>Two things are deliberately off by default. The <strong>gym name</strong> is a per-share toggle on the share sheet, because a gym is a location; it is off every time and the choice is not remembered. And the card never carries a link, a referral code, or an app banner.</p>
 
   <h2 id="per-exercise">Per-exercise history</h2>
-  <p>You can also view history for a single exercise. From the <a href={`/help/progress/`}>Progress tab</a>, select an exercise and open the <strong>History</strong> tab on its detail screen. This shows every session where that exercise was logged, newest first. The same History tab appears in the <strong>training screen</strong> while you're mid-workout - swipe to the History tab to see past sessions for the exercise you're currently logging.</p>
+  <p>To view history for a single exercise, open the <a href={`/help/progress/`}>Progress tab</a>, select the exercise, and open its detail screen's <strong>History</strong> tab - every session where it was logged, newest first. The same tab appears in the <strong>training screen</strong> mid-workout: swipe to History to see past sessions for the exercise you're currently logging.</p>
   <p>Each entry in the per-exercise history shows:</p>
   <ul>
     <li>The workout date and gym/machine used, if any.</li>
