@@ -127,13 +127,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>To unlink, tap the linked-exercise chip (it carries an <strong>×</strong>). A confirmation dialog appears - after confirming, the two exercises no longer share history. Both remain in the library; linking never merges or deletes either exercise.</p>
 
   <h2 id="merged-duplicates">Merged duplicate exercises</h2>
-  <p>The built-in library shipped two movements twice under slightly different names: <em>Lying Leg Curl</em> duplicated <em>Leg Curl (Lying)</em>, and <em>Good Morning (Legs)</em> duplicated <em>Good Morning</em>. Each pair has been merged into a single entry. If you logged sets against either name, that history moved onto the surviving exercise rather than being deleted, so your records and graphs are intact.</p>
+  <p>The built-in library used to list two movements twice under slightly different names: <em>Lying Leg Curl</em> duplicated <em>Leg Curl (Lying)</em>, and <em>Good Morning (Legs)</em> duplicated <em>Good Morning</em>. Each pair is now merged into one entry, and if you logged sets against either name, that history moved onto the surviving exercise - your records and graphs are intact.</p>
 
   <h2 id="favorites">Favorites</h2>
   <p>Tap the star on any exercise row to make it a favorite. Starred exercises show the star in the library list, and the <strong>Favorites</strong> chip above the list filters down to just those. Tapping the star again removes it.</p>
 
   <h2>Avoided exercises</h2>
-  <p>Open the <strong>⋮</strong> menu on any exercise row and choose <strong>Mark as avoided</strong> to flag an exercise you don't want in your program (injury, personal preference, equipment you don't have). Avoided exercises show a small "Avoided" tag and a dimmed name so they're easy to spot. This is separate from Favorites - it's a "no thanks" signal, not a positive one. Avoided exercises stay fully usable; the flag is a marker, not a block. Choose <strong>Remove from avoided</strong> from the same menu to clear it.</p>
+  <p>Open the <strong>⋮</strong> menu on any exercise row and choose <strong>Mark as avoided</strong> to flag an exercise you don't want in your program - an injury, a preference, or equipment you don't have. Avoided exercises show a small "Avoided" tag and a dimmed name so they're easy to spot.</p>
+  <p>The flag doesn't block the exercise: avoided exercises stay fully usable, so you can still log one if you change your mind. It is the opposite of a favorite, and it filters and dims rather than hides. Choose <strong>Remove from avoided</strong> from the same menu to clear it.</p>
 
   <h2>Exercise settings (per workout)</h2>
   <p>From the training screen, tap <strong>⋮ → Exercise settings</strong> to open the exercise notes screen. This lets you set per-exercise overrides for the current session and beyond:</p>
@@ -147,7 +148,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2>Deleting exercises</h2>
-  <p>Open an exercise in the library → tap <strong>Edit</strong> → scroll to the bottom and tap <strong>Delete</strong>. To protect your history, Badger won't delete an exercise that's still in use: if it appears in any logged workouts or routines, you'll see a note telling you how many of each, and the delete is blocked. Remove it from those routines and delete the related workouts first if you really want it gone. An exercise with no history attached deletes immediately after you confirm.</p>
+  <p>Open an exercise in the library → tap <strong>Edit</strong> → scroll to the bottom and tap <strong>Delete</strong>.</p>
+  <p>An exercise still logged in a workout or used in a routine can't be deleted until you clear it from there. You'll see a note counting how many of each, so you know what to remove first: delete the related workouts and take it out of those routines. An exercise with no history deletes immediately once you confirm.</p>
 </HelpLayout>
 
 <style>
