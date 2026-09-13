@@ -223,6 +223,12 @@ const description =
             every time, which is every day written before this key existed and most days anybody
             writes by hand. When it is present, each set's <a href="#predefined-set"><code>week_index</code></a>
             says which week it belongs to.
+            <br /><br />
+            A <strong>stage ladder</strong> is written with these same two keys, so a GZCLP or
+            StrongLifts export carries them too. The difference is in the rule, not in the file:
+            a rule that can change stage walks the variants by stalling, and one that cannot walks
+            them by the cycle. A reader that only wants to render the plan does not have to tell
+            them apart.
           </td>
         </tr>
         <tr><td><code>exercises</code></td><td>array of <a href="#day-exercise"><code>DayExercise</code></a></td><td>The day's exercise slots.</td></tr>
@@ -458,9 +464,12 @@ const description =
           <td><code>cadence</code></td>
           <td>string, required</td>
           <td>
-            When the rule is evaluated: <code>session</code> (after every qualifying session),
-            <code>week</code> (once a week), or <code>cycle</code> (once per cycle boundary). An
-            unrecognized value drops the whole rule.
+            How often the program intends the rule to be looked at: <code>session</code>,
+            <code>week</code> or <code>cycle</code>. <strong>Provenance only</strong>, like
+            <code>scheme</code> below: it is written, stored and round-tripped, and nothing reads
+            it. Badger evaluates the most recent qualifying session whenever the log preview
+            opens, and keeps that honest by remembering which session it last acted on rather
+            than by a clock. An unrecognized value still drops the whole rule.
           </td>
         </tr>
         <tr>
@@ -1134,7 +1143,8 @@ const description =
       example above and the files in the <a href="/programs/">program gallery</a> were exported by that
       build and imported back into it before publishing. The <a href="#progression">progression</a>,
       percentage, driver and wave keys arrived after that export and are documented from the reader
-      and writer themselves; the published files are regenerated whenever the seeded programs change.
+      and writer themselves, read against <strong>1.1.12</strong>; the published files are
+      regenerated whenever the seeded programs change.
     </p>
   </div>
 </HelpLayout>
