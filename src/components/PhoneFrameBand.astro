@@ -14,6 +14,11 @@
  * The swap is CSS (.paper-only / .slate-only in global.css) rather than a
  * <picture> media source, because the site's theme toggle is a data-theme
  * attribute that a media query cannot see.
+ *
+ * To avoid downloading hidden screenshots on initial paint, only the active
+ * theme variant is given a src on load. The alternate variant is populated on
+ * the first theme toggle, after which both variants remain in the DOM for instant
+ * CSS-driven toggling.
  */
 const SHOTS = [
   {
@@ -42,7 +47,7 @@ const HEIGHT = 1121;
         <div class:list={['phone', { big: shot.big }]}>
           <img
             class="shot paper-only"
-            src={`/assets/screenshots/${shot.key}-paper.webp`}
+            data-src={`/assets/screenshots/${shot.key}-paper.webp`}
             alt={shot.alt}
             width={WIDTH}
             height={HEIGHT}
@@ -51,13 +56,33 @@ const HEIGHT = 1121;
           />
           <img
             class="shot slate-only"
-            src={`/assets/screenshots/${shot.key}-slate.webp`}
+            data-src={`/assets/screenshots/${shot.key}-slate.webp`}
             alt={shot.alt}
             width={WIDTH}
             height={HEIGHT}
             loading="lazy"
             decoding="async"
           />
+          <noscript>
+            <img
+              class="shot paper-only"
+              src={`/assets/screenshots/${shot.key}-paper.webp`}
+              alt={shot.alt}
+              width={WIDTH}
+              height={HEIGHT}
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              class="shot slate-only"
+              src={`/assets/screenshots/${shot.key}-slate.webp`}
+              alt={shot.alt}
+              width={WIDTH}
+              height={HEIGHT}
+              loading="lazy"
+              decoding="async"
+            />
+          </noscript>
         </div>
       ))
     }
@@ -65,6 +90,80 @@ const HEIGHT = 1121;
 
   <figcaption>Today, logging a set, and progress. Real screens from the app.</figcaption>
 </figure>
+
+<script is:inline>
+  (function () {
+    function loadVariant(theme) {
+      const selector = theme === 'slate' ? '.frames .slate-only' : '.frames .paper-only';
+      const shots = document.querySelectorAll(selector);
+      shots.forEach((img) => {
+        const dataSrc = img.getAttribute('data-src');
+        if (dataSrc && !img.getAttribute('src')) {
+          img.src = dataSrc;
+        }
+      });
+    }
+
+    // Both variants. This is what main shipped to everyone, and it is the
+    // fallback whenever this script cannot work out which one to show: three
+    // srcless images are three blank frames, which is worse than three
+    // redundant downloads.
+    function loadBoth() {
+      loadVariant('paper');
+      loadVariant('slate');
+    }
+
+    try {
+      const mq = window.matchMedia('(prefers-color-scheme: light)');
+
+      function getActiveTheme() {
+        const explicit = document.documentElement.getAttribute('data-theme');
+        if (explicit === 'dark' || explicit === 'light') {
+          return explicit === 'dark' ? 'slate' : 'paper';
+        }
+        // Mirrors global.css, which defaults to slate and swaps to paper inside
+        // a (prefers-color-scheme: light) query. Asking the same question the
+        // stylesheet asks keeps the two from disagreeing.
+        return mq.matches ? 'paper' : 'slate';
+      }
+
+      // Populate active theme variant on initial paint (3 images downloaded)
+      loadVariant(getActiveTheme());
+
+      // On first toggle or OS change, populate the alternate variant so both are in the DOM
+      let alternateLoaded = false;
+      function loadAlternateIfNeeded() {
+        if (!alternateLoaded) {
+          alternateLoaded = true;
+          loadBoth();
+        }
+      }
+
+      const observer = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          if (m.attributeName === 'data-theme') {
+            loadAlternateIfNeeded();
+          }
+        }
+      });
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+
+      const onOsChange = () => {
+        if (!document.documentElement.getAttribute('data-theme')) {
+          loadAlternateIfNeeded();
+        }
+      };
+      // Safari below 14 has no addEventListener on a MediaQueryList and throws.
+      if (mq.addEventListener) mq.addEventListener('change', onOsChange);
+      else if (mq.addListener) mq.addListener(onOsChange);
+    } catch (e) {
+      loadBoth();
+    }
+  })();
+</script>
 
 <style>
   .frames {
@@ -98,6 +197,16 @@ const HEIGHT = 1121;
     box-shadow: 0 10px 34px rgba(38, 34, 25, 0.14);
   }
 
+  /* The frame holds its own shape only while nothing inside it has a src: a
+     visitor whose JavaScript never ran gets three empty boxes rather than three
+     collapsed lines. It is scoped to that case on purpose. aspect-ratio is
+     measured on the border box, so with a screenshot actually loaded it would
+     reserve 1.5px of border twice over and leave a ~3px band of --bg sitting
+     under the app's own nav bar. */
+  .phone:not(:has(img[src])) {
+    aspect-ratio: 540 / 1121;
+  }
+
   .phone.big {
     width: 244px;
   }
@@ -105,6 +214,13 @@ const HEIGHT = 1121;
   .shot {
     width: 100%;
     height: auto;
+  }
+
+  /* An image without a src attribute (inactive variant or no-JS fallback)
+     must occupy no space so no-JS visitors do not get an empty gap above
+     the <noscript> fallback. */
+  img.shot:not([src]) {
+    display: none;
   }
 
   @media (max-width: 640px) {
