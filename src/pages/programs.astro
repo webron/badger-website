@@ -73,6 +73,30 @@ const programCopy: ProgramCopy[] = [
       'Three tiers a session: a heavy main lift, a lighter second movement, and accessory volume, rotating across four days. In the app the T1 and T2 stage ladders are written as a rule, so when a lift stalls Badger moves it to the next stage and says so, instead of leaving the bookkeeping to you.',
   },
   {
+    slug: '531-bbb',
+    title: '5/3/1 Boring But Big',
+    level: 'Intermediate',
+    cadence: '4 days a week',
+    blurb:
+      'One main lift a day over a four-week cycle: 5s, then 3s, then a 1+ single, then a lighter week, with five sets of ten of the same lift behind it. Every working set is a percentage of a training max rather than a weight, and Badger holds that number per lift, raises it at the end of a cycle, and holds it back if you missed the minimum on the way through. The first program here that is a wave rather than a ladder.',
+  },
+  {
+    slug: 'nsuns-531lp',
+    title: 'nSuns 531LP',
+    level: 'Intermediate',
+    cadence: '4 days a week',
+    blurb:
+      'A denser take on 5/3/1: nine working sets of the main lift, all percentage-based, with one marked as the set that decides what happens next. Hit enough reps on it and the training max goes up this week rather than at the end of a cycle. It asks for more work per session than anything else on this page.',
+  },
+  {
+    slug: 'madcow-5x5',
+    title: 'Madcow 5x5',
+    level: 'Intermediate',
+    cadence: '3 days a week',
+    blurb:
+      'The usual step after StrongLifts stops working: a heavy day, a light day and a medium day each week, with the lighter days written as percentages of the heavy one so the whole week moves together when the top set does. Progress is weekly instead of per session, which is the point.',
+  },
+  {
     slug: 'upper-lower-4-day',
     title: 'Upper / Lower',
     level: 'Intermediate',
@@ -178,7 +202,7 @@ const nowRuns = [
 ];
 
 const description =
-  'Seven starter programs as .badger files you can import straight into Badger: StrongLifts 5x5, Starting Strength, full body, GZCLP, upper/lower, a five-day push/pull/legs and upper/lower hybrid, and six-day push/pull/legs.';
+  'Ten starter programs as .badger files you can import straight into Badger: StrongLifts 5x5, Starting Strength, full body, GZCLP, 5/3/1 Boring But Big, nSuns 531LP, Madcow 5x5, upper/lower, a five-day push/pull/legs and upper/lower hybrid, and six-day push/pull/legs. Six of them carry their own progression rules.';
 ---
 
 <BaseLayout title="Program files" description={description}>
@@ -207,7 +231,7 @@ const description =
     </p>
 
     <div class="rule-ink section-rule"></div>
-    <p class="caps section-label">Seven programs, ready to import</p>
+    <p class="caps section-label">Ten programs, ready to import</p>
 
     <ul class="programs">
       {
