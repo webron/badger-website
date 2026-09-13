@@ -93,17 +93,6 @@ const HEIGHT = 1121;
 
 <script is:inline>
   (function () {
-    function getActiveTheme() {
-      const explicit = document.documentElement.getAttribute('data-theme');
-      if (explicit === 'dark' || explicit === 'light') {
-        return explicit === 'dark' ? 'slate' : 'paper';
-      }
-      // Mirrors global.css, which defaults to slate and swaps to paper inside
-      // a (prefers-color-scheme: light) query. Asking the same question the
-      // stylesheet asks keeps the two from disagreeing.
-      return window.matchMedia('(prefers-color-scheme: light)').matches ? 'paper' : 'slate';
-    }
-
     function loadVariant(theme) {
       const selector = theme === 'slate' ? '.frames .slate-only' : '.frames .paper-only';
       const shots = document.querySelectorAll(selector);
@@ -115,37 +104,64 @@ const HEIGHT = 1121;
       });
     }
 
-    // Populate active theme variant on initial paint (3 images downloaded)
-    const initialTheme = getActiveTheme();
-    loadVariant(initialTheme);
-
-    // On first toggle or OS change, populate the alternate variant so both are in the DOM
-    let alternateLoaded = false;
-    function loadAlternateIfNeeded() {
-      if (!alternateLoaded) {
-        alternateLoaded = true;
-        loadVariant('paper');
-        loadVariant('slate');
-      }
+    // Both variants. This is what main shipped to everyone, and it is the
+    // fallback whenever this script cannot work out which one to show: three
+    // srcless images are three blank frames, which is worse than three
+    // redundant downloads.
+    function loadBoth() {
+      loadVariant('paper');
+      loadVariant('slate');
     }
 
-    const observer = new MutationObserver((mutations) => {
-      for (const m of mutations) {
-        if (m.attributeName === 'data-theme') {
-          loadAlternateIfNeeded();
+    try {
+      const mq = window.matchMedia('(prefers-color-scheme: light)');
+
+      function getActiveTheme() {
+        const explicit = document.documentElement.getAttribute('data-theme');
+        if (explicit === 'dark' || explicit === 'light') {
+          return explicit === 'dark' ? 'slate' : 'paper';
+        }
+        // Mirrors global.css, which defaults to slate and swaps to paper inside
+        // a (prefers-color-scheme: light) query. Asking the same question the
+        // stylesheet asks keeps the two from disagreeing.
+        return mq.matches ? 'paper' : 'slate';
+      }
+
+      // Populate active theme variant on initial paint (3 images downloaded)
+      loadVariant(getActiveTheme());
+
+      // On first toggle or OS change, populate the alternate variant so both are in the DOM
+      let alternateLoaded = false;
+      function loadAlternateIfNeeded() {
+        if (!alternateLoaded) {
+          alternateLoaded = true;
+          loadBoth();
         }
       }
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
 
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      if (!document.documentElement.getAttribute('data-theme')) {
-        loadAlternateIfNeeded();
-      }
-    });
+      const observer = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          if (m.attributeName === 'data-theme') {
+            loadAlternateIfNeeded();
+          }
+        }
+      });
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+
+      const onOsChange = () => {
+        if (!document.documentElement.getAttribute('data-theme')) {
+          loadAlternateIfNeeded();
+        }
+      };
+      // Safari below 14 has no addEventListener on a MediaQueryList and throws.
+      if (mq.addEventListener) mq.addEventListener('change', onOsChange);
+      else if (mq.addListener) mq.addListener(onOsChange);
+    } catch (e) {
+      loadBoth();
+    }
   })();
 </script>
 
