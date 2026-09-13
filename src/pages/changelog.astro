@@ -7,12 +7,25 @@ import Footer from '../components/Footer.astro';
 // (badger-fit: lib/features/about/domain/changelog.dart) and the store
 // release notes. Newest first.
 //
-// 1.1.10 is the exception, and deliberately so. It has no kChangelog entry,
+// The website entry is the longer register of the two (Ron's ruling,
+// 2026-08-12): the in-app card is terse on purpose and this page explains. Do
+// not "fix" that drift by copying one into the other.
+//
+// 1.1.10 is a further exception, and deliberately so. It has no kChangelog entry,
 // because the in-app changelog is for users and nothing about using the app
 // changed in it. That makes this page the only written account of the release,
 // so the entry below explains the milestone rather than listing features, and
 // is longer than the store notes rather than a copy of them.
 const releases = [
+  {
+    version: '1.1.11',
+    date: 'September 2026',
+    highlights: [
+      'An under-the-hood change to how Badger stores your data. Every row in the database now carries an identifier that is unique across devices rather than only within your phone. Nothing about using the app changed: no screen moved, no setting was renamed, and your workouts, routines, exercises, gyms and settings are all exactly where you left them.',
+      'It exists so that a future version can tell two phones\' records apart without guessing. That work is not here yet, and this release does not add an account, does not switch on any sync, and does not send anything anywhere. It only gets the change onto real phones ahead of the features that will need it.',
+      'The update runs once, the first time you open the new version, and is normally over before you notice. If anything about your data looks wrong afterwards, get in touch through Settings, Feedback.',
+    ],
+  },
   {
     version: '1.1.10',
     date: 'August 2026',
