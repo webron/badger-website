@@ -53,6 +53,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Open target (AMRAP)</strong> - No top end at all, so the target reads "8+". See below.</li>
     <li><strong>Warmup flag</strong> - Mark the set as a warmup.</li>
     <li><strong>Percentage</strong> - Prescribe the set as a percentage of the slot's <a href="#training-max">training max</a> instead of a weight. See <a href="#percent-sets">percentage sets</a>.</li>
+    <li><strong>RPE or RIR</strong> - How hard the set is meant to be, rather than only how heavy. See <a href="#intensity-targets">intensity targets</a>.</li>
     <li><strong>Driver</strong> - Mark this as the one set whose reps a <a href="#progression">progression rule</a> reads. See <a href="#driver-set">the set that drives the rule</a>.</li>
     <li><strong>Week</strong> - Which week of a <a href="#waves">waved day</a> this set belongs to.</li>
   </ul>
@@ -154,6 +155,26 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><a href="#starting">Weight source</a> and history scope do not apply to a percentage set - the percentage is the source.</li>
   </ul>
 
+  <h3 id="percent-of-another-lift">A percentage of another lift</h3>
+  <p>Plenty of programs prescribe a variation as a percentage of the lift it assists - a close-grip bench at 80% of your bench, a front squat at 70% of your back squat. Those are two different exercises, so Badger cannot work out on its own which number the percentage means. You tell it.</p>
+  <p>When a slot has at least one percentage set, its set editor grows a <strong>Percent of</strong> row under Progression. It reads <strong>This lift</strong> by default and lists the other lifts your routine programs; pick one and every percentage in that slot is taken from that lift's <a href="#training-max">training max</a> or top set instead.</p>
+  <ul>
+    <li><strong>Borrowed, never owned.</strong> Nothing is written back to the lift you borrowed from, so one lift never ends up with two numbers quietly drifting apart. Change the bench's training max and the close-grip work follows it the same session.</li>
+    <li>It stays inside the routine. A lift you train in another program is a separate progression there, and one program's numbers do not reach into another's.</li>
+    <li>If you later remove that lift from the routine, the row says <strong>Not in this routine</strong> and the percentages go back to resolving against this slot's own number, rather than silently pretending you chose that.</li>
+    <li>This is not the same thing as <a href="#set-up-progression">progressing together</a>. Two slots that progress together share one number <em>and</em> one set of counters; this only borrows the number.</li>
+  </ul>
+
+  <h3 id="intensity-targets">Intensity targets (RPE and RIR)</h3>
+  <p>A routine can state how hard a set should be, not just how heavy: <strong>RPE 8</strong>, or <strong>RIR 2</strong>. Most programs written in the last decade say at least some of their work that way, and some say nothing else.</p>
+  <p>In the predefined-sets editor, a working set offers <strong>+ RPE</strong> and <strong>+ RIR</strong> beside the rep-target controls. Tapping either gives you the same stepper you use when <a href="/help/logging/#rpe-rir">logging</a> a set. The target then shows on the log preview beside the set, and on the training screen above the entry area - <em>Plan 8-10 @ RPE 8</em>.</p>
+  <ul>
+    <li><strong>One or the other, not both.</strong> RPE and RIR are the same statement in two dialects, so picking one clears the other. If you are not sure which you want, <a href="/help/logging/#rpe-rir">the logging page explains both</a>.</li>
+    <li><strong>Whole numbers.</strong> Badger logs RPE in whole numbers, so it prescribes them that way too - a target you could never record against would be a dead end. A shared file written against a half-step scale rounds up when you import it.</li>
+    <li>Warm-ups do not carry one. A warm-up is defined by being easy.</li>
+    <li><strong>Nothing marks your homework.</strong> The target is there to tell you what the set is for; Badger never compares it to the RPE you logged, and no progression rule reads it. What you report and what the program asked for are two different facts, and only you are in a position to reconcile them.</li>
+  </ul>
+
   <h3 id="driver-set">The set that drives the rule</h3>
   <p>Some rules read one specific set rather than the whole exercise: nSuns keys off a particular set out of nine, and 5/3/1's last main set is the one that decides the week. Mark that set as the <strong>driver</strong> in the predefined-sets editor, and a clause like <em>"If the driver set reaches 8, add 5 lbs"</em> reads its logged reps. Give it a label - a <strong>5+</strong> set says so - and the sentence uses the label instead: <em>"If the 5+ set reaches 8, add 5 lbs."</em></p>
   <p>It is an explicit flag, not "the last one" or "the third one" - a position would break the first time you deleted a set. Only one set per slot can be the driver, and marking a new one clears the old. A warmup can never be the driver.</p>
@@ -167,6 +188,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>The log preview shows only the current week's sets. Sets from other weeks are not there to skip past.</li>
     <li>Off is how every existing day behaves. A wave of one week is not a wave, so stepping below two turns it off.</li>
   </ul>
+
+  <h4 id="rotating-exercises">Rotating the exercise itself</h4>
+  <p>A week can change which lifts you do, not only their sets. Conjugate-style max-effort days are the usual case: a board press one week, a good morning the next.</p>
+  <p>Write each variation as its own exercise in the day, and tag its sets with the week it belongs to. A slot whose every set belongs to another week is <strong>not in the day that week at all</strong> - it does not appear in the log preview and it is not written into the workout, so you are not deleting empty exercises before you start. An exercise with no sets at all is left alone: an empty slot is a deliberate "log this freehand", and it shows up every week.</p>
 
   <h4>Which week the routine is on</h4>
   <p>The week is <strong>the routine's</strong>, not the day's - every waved day in the routine runs on the same one - so it has its own <strong>WAVE</strong> section near the top of the routine detail screen, above Starting weights. It reads <strong>Week 2 of 4</strong>, with a note underneath: <em>"Moves on by itself once every day of the cycle has been trained."</em></p>
