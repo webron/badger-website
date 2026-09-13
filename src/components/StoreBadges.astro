@@ -2,25 +2,58 @@
 /**
  * The two store affordances, used in the hero and again in the closing CTA.
  *
- * Both badges are the store's own supplied artwork and ship as the images they
- * are. Apple's identity guidelines require the provided App Store badge rather
- * than a recreated lockup, which is what the hand-drawn TestFlight pill here
- * was until the App Store release on 2026-09-09. Both keep their own fixed
- * colors: they are third-party marks, not journal chrome, and they do not
- * follow the theme tokens.
+ * Both marks are the store owner's own supplied artwork and ship as the files
+ * they are: Google's PNG, and Apple's black "Download on the App Store" SVG
+ * pulled from Apple's marketing toolbox. Neither follows the site theme tokens.
+ * They are third-party trademarks, not journal chrome, so they keep their own
+ * fixed colors in light and dark alike.
+ *
+ * Apple's App Store Marketing Guidelines drive four things here, and none of
+ * them are cosmetic preferences to tune later:
+ *
+ *  - The App Store badge comes FIRST when badges for other platforms are in the
+ *    same layout. That is why Apple is the first child and Google the second.
+ *  - The preferred black badge is the one to use whenever another platform's
+ *    badge is present. The gray hairline around it is part of the artwork.
+ *  - Minimum clear space is one quarter of the badge height, which is the 10px
+ *    padding below (40 / 4). Nothing may sit inside it.
+ *  - Minimum height onscreen is 40px. The artwork is authored at exactly 40, so
+ *    it renders at its native size and is never recolored, angled or animated.
+ *
+ * Using the badge also obliges an Apple trademark credit line, which lives once
+ * in the site footer next to the other legal notices.
+ *
+ * Both hrefs come from src/store-links.ts. Both listings are live: Google Play
+ * since the Android release, the App Store since 2026-09-09.
+ *
+ * The Play badge sits in a 56px box whose PNG carries about 16% built-in
+ * padding, so its visible button is roughly 37.6px tall. Apple's 40px lands
+ * within a couple of pixels of that, which is why the pair reads as balanced
+ * despite the different box heights.
  */
+import { APP_STORE_URL, PLAY_URL } from '../store-links';
+
 interface Props {
   /** Only the hero instance takes the #download target the header links to. */
   id?: string;
 }
 
 const { id } = Astro.props;
-
-const PLAY_URL = 'https://play.google.com/store/apps/details?id=fit.badger.app';
-const APP_STORE_URL = 'https://apps.apple.com/app/id6782743069';
 ---
 
 <div class="store-badges" id={id}>
+  <a class="badge-apple" href={APP_STORE_URL} data-store-event="store-appstore">
+    <!-- Apple's artwork, unmodified. Intrinsic 119.66407x40; the width and
+         height attributes let the browser reserve the box before the SVG
+         arrives, which is what keeps CLS at 0. -->
+    <img
+      src="/assets/badges/app-store-badge.svg"
+      alt="Download on the App Store"
+      width="120"
+      height="40"
+    />
+  </a>
+
   <a class="badge-play" href={PLAY_URL} data-store-event="store-play">
     <!-- Intrinsic 646x250. The attributes are what let the browser reserve the
          box before the PNG arrives, which is what keeps CLS at 0. -->
@@ -32,17 +65,6 @@ const APP_STORE_URL = 'https://apps.apple.com/app/id6782743069';
     />
   </a>
 
-  <a class="badge-appstore" href={APP_STORE_URL} data-store-event="store-appstore">
-    <!-- Apple's supplied badge artwork, unmodified. Intrinsic 119.66x40; the
-         width/height attributes reserve the box so this badge costs no CLS
-         either. -->
-    <img
-      src="/assets/badges/app-store-badge.svg"
-      alt="Download on the App Store"
-      width="120"
-      height="40"
-    />
-  </a>
 </div>
 
 <script>
@@ -73,38 +95,41 @@ const APP_STORE_URL = 'https://apps.apple.com/app/id6782743069';
 <style>
   .store-badges {
     display: flex;
-    gap: 12px;
+    /* Column gap is small because both marks carry padding of their own: Apple's
+       required clear space below, and the padding baked into Google's PNG. */
+    column-gap: 6px;
+    row-gap: 10px;
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  .badge-play,
-  .badge-appstore {
+  .badge-apple,
+  .badge-play {
     display: inline-flex;
     text-decoration: none;
   }
 
-  .badge-play:hover,
-  .badge-appstore:hover {
+  .badge-apple:hover,
+  .badge-play:hover {
     text-decoration: none;
+  }
+
+  /* 10px is Apple's minimum clear space: one quarter of the 40px badge height.
+     Don't reduce it, and don't let anything be placed inside it. */
+  .badge-apple {
+    padding: 10px;
+  }
+
+  .badge-apple img {
+    display: block;
+    height: 40px;
+    width: auto;
   }
 
   .badge-play img {
     display: block;
     height: 56px;
-    width: auto;
-  }
-
-  /* Matched on what the eye sees, not on equal boxes. Google's PNG is 646x250
-     with the button itself only 564x168 of it (16.4% of transparent padding top
-     and bottom), so a 56px box paints a 37.6px button. Apple's SVG has no
-     padding at all, so it is set to that same 37.6px - equal to Play, which is
-     also what Apple's guidelines ask for (their badge is never the smaller of
-     the pair). Re-measure both numbers if either store ships new artwork. */
-  .badge-appstore img {
-    display: block;
-    height: 38px;
     width: auto;
   }
 </style>

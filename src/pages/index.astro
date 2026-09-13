@@ -8,6 +8,7 @@ import PhoneFrameBand from '../components/PhoneFrameBand.astro';
 import FeatureRow from '../components/FeatureRow.astro';
 import LedgerRow from '../components/LedgerRow.astro';
 import ArrowGlyph from '../components/ArrowGlyph.astro';
+import { APP_STORE_URL, PLAY_URL } from '../store-links';
 
 // Kept at or under 165 characters: Google truncates the displayed snippet at
 // roughly that width, and this string is the snippet, the og:description and
@@ -68,10 +69,7 @@ const structuredData = {
       alternateName: 'Badger workout tracker',
       url: 'https://badger.fit',
       logo: 'https://badger.fit/assets/badger_logo_stacked.svg',
-      sameAs: [
-        'https://play.google.com/store/apps/details?id=fit.badger.app',
-        'https://apps.apple.com/app/id6782743069',
-      ],
+      sameAs: [PLAY_URL, APP_STORE_URL],
     },
     {
       // MobileApplication is a subtype of SoftwareApplication and is the more
@@ -86,7 +84,7 @@ const structuredData = {
       // CTA below, which now names both stores in plain words.
       operatingSystem: 'Android, iOS',
       url: 'https://badger.fit',
-      downloadUrl: 'https://play.google.com/store/apps/details?id=fit.badger.app',
+      downloadUrl: [APP_STORE_URL, PLAY_URL],
       description,
       publisher: { '@id': ORG_ID },
       // Genuinely free: no paid tier, no in-app purchase, nothing paywalled.
