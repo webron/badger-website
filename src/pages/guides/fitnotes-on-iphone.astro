@@ -38,7 +38,7 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  *     so the iPhone import is the same code path as the Android one
  *     (fitnotes_parser.dart, fitnotes_importer.dart)
  *   - the picker is FileType.any, which on iOS is the system Files picker, so
- *     any location Files can see works (fitnotes_import_screen.dart:74)
+ *     any location Files can see works (fitnotes_import_screen.dart:75)
  *   - in-app path: Settings, Your data, Import from FitNotes
  *     (settings_screen.dart:1084, under the "Your data" section header), and
  *     the same import is offered in first-launch onboarding
@@ -123,8 +123,11 @@ const modified = '2026-09-12';
       do it straight away.
     </li>
     <li>
-      <strong>Check the preview</strong> before you commit: exercises, workout days, sets, and the
-      weight unit it detected. Then import.
+      <strong>Check the preview</strong> before you commit: exercises, workout days and sets. This is
+      also where you tell Badger which unit the backup holds. It assumes kilograms, which is what
+      FitNotes normally stores, so switch it to pounds only if yours does not. An older backup, from
+      before FitNotes changed its database layout around 2018, carries the unit per set and needs no
+      answer from you. Then import.
     </li>
   </ol>
 
