@@ -19,7 +19,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <p>That's it. You're dropped straight into the home screen.</p>
 
   <div class="callout">
-    <strong>iOS beta builds.</strong> Badger's iPhone releases are tested in <a href={TESTFLIGHT_URL}>TestFlight</a> before they reach the App Store. You do not need it - the App Store version is the same app, a little later - but if you would rather see changes early and send feedback on them, that is where to get them. Everyone else should use the App Store.
+    <strong>iOS beta builds</strong> - Badger's iPhone releases are tested in <a href={TESTFLIGHT_URL}>TestFlight</a> before they reach the App Store. You do not need it - the App Store version is the same app, a little later - but if you would rather see changes early and send feedback on them, that is where to get them. Everyone else should use the App Store.
   </div>
 
   <h2 id="first-workout">Your first workout</h2>
@@ -58,6 +58,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
     <li>Tap <strong>Import</strong> to confirm.</li>
   </ol>
   <p>New exercises are placed in an "Imported" category. Sets are appended to any existing workouts on the same date - nothing is overwritten. You can edit exercises and reassign categories in the exercise library afterwards.</p>
+  <p>Where an exercise name states its equipment, Badger fills the equipment type in for you: "Cable Fly" arrives as cable, "Smith Machine Squat" as machine. Names that don't state it are left blank, and you can set them on the exercise later.</p>
 
   <h3 id="importing-fitnotes">FitNotes</h3>
   <p>Export from FitNotes via <strong>Settings → Backup</strong> to produce a <code>.fitnotes</code> file, then select it in Badger.</p>
@@ -73,7 +74,8 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
 
   <h2 id="home-screen-widget">Home-screen widget (Android)</h2>
   <p>Badger has a resizable <strong>Journal</strong> widget for your Android home screen. Long-press an empty spot on the home screen, tap <strong>Widgets</strong>, find Badger, and drag the Journal widget into place (it starts at about 4×2 and resizes freely).</p>
-  <p>It shows a page of your training log at a glance: the week attendance strip (a dot for each day you trained this week), your last entry, and - when you're following a routine - the next day to train. Tap it to open the app. It refreshes when you open Badger and after you finish a workout, so it stays current without draining your battery.</p>
+  <p>It shows a page of your training log at a glance: the week attendance strip (a dot for each day you trained this week), your last entry, and - when you're following a routine - the next day to train. Tap it to open the app.</p>
+  <p>It refreshes when you open Badger and after you finish a workout, so it stays current without draining your battery.</p>
   <p>The widget follows your system light/dark theme and your chosen accent color. On a fresh install with nothing logged yet, it simply invites you to start a workout. There is no iOS home-screen widget yet.</p>
 
   <h2>Key concepts</h2>
@@ -81,8 +83,8 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <ul>
     <li><strong>Working set</strong> - A regular logged set at your training weight.</li>
     <li><strong>Warmup set</strong> - A lighter set done before working sets. Toggle the warmup chip before logging.</li>
-    <li><strong>RPE</strong> - Rate of Perceived Exertion (1-10). How hard did the set feel? Optional per-set field.</li>
-    <li><strong>RIR</strong> - Reps in Reserve (0-5). How many more reps could you have done? Optional per-set field.</li>
+    <li><strong>RPE</strong> - Rate of Perceived Exertion (1-10), an optional per-set field for how hard the set felt.</li>
+    <li><strong>RIR</strong> - Reps in Reserve (0-5), an optional per-set field for how many more reps you could have done.</li>
     <li><strong>1RM</strong> - One-rep max. Badger estimates this from your sets using the Epley formula.</li>
   </ul>
   <p>Full definitions in the <a href={`/glossary/`}>Glossary</a>.</p>

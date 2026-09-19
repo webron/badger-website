@@ -14,7 +14,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Exercises sort by recency by default (most recently trained first). Tap the sort icon to switch to alphabetical order.</p>
 
   <h2 id="prs">Personal records</h2>
-  <p>Every exercise type earns personal records, not just weight &times; reps lifts. When you log a working set that beats your previous best, the set is marked with a trophy badge and a brief notification appears at the bottom of the training screen.</p>
+  <p>Every exercise type earns personal records - not just weight &times; reps lifts. When you log a working set that beats your previous best, the set is marked with a trophy badge and a brief notification appears at the bottom of the training screen.</p>
   <p>What counts as a record depends on the exercise type:</p>
   <ul>
     <li><strong>Weight + reps</strong> - benchmarked on <strong>estimated 1RM</strong> (Epley formula: <code>weight × (1 + reps / 30)</code>). A heavier weight or more reps at a given weight is a PR.</li>
@@ -24,7 +24,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Time</strong> - by default the <strong>longest</strong> hold (planks, dead hangs, carries). For timed efforts where you want to be quicker, switch it to shortest.</li>
     <li><strong>Combined types</strong> (e.g. distance + time) track both together - going farther, or covering the same distance faster, each counts.</li>
   </ul>
-  <p id="record-weight"><strong>Assisted (counterweight) exercises.</strong> On an assisted pull-up or dip machine the weight you select is a <em>counterweight</em> - it takes weight off you, so a lower number is the harder set. Open the exercise's edit screen and set <strong>Record weight</strong> to <em>Lighter</em>, and Badger will treat less assistance as the personal record instead of more. <em>Assisted Pull-Up</em> is already set up this way. Two things change for these exercises: their records show a <strong>Lightest</strong> best rather than an estimated 1RM (which does not mean anything on a counterweight), and Badger stops offering progressive-overload and warm-up weight suggestions for them, since those would tell you to add assistance rather than remove it.</p>
+  <p id="record-weight"><strong>Assisted (counterweight) exercises.</strong> On an assisted pull-up or dip machine, the weight you select is a <em>counterweight</em> that takes weight off you, so a lower number is the harder set. Set <strong>Record weight</strong> to <em>Lighter</em> on the exercise's edit screen so less assistance counts as the record; <em>Assisted Pull-Up</em> is already set up this way.</p>
+  <p>Two things change for these exercises: their records show a <strong>Lightest</strong> best instead of an estimated 1RM (which doesn't mean anything on a counterweight), and Badger stops offering progressive-overload and warm-up weight suggestions, since those would tell you to add assistance instead of remove it.</p>
 
   <p id="record-time"><strong>Which time is the record?</strong> For timed exercises, open the exercise's edit screen and use the <strong>Record time</strong> setting: <em>Longer</em> (a longer time is better, the default for most holds), <em>Shorter</em> (a shorter time is better, for timed runs and for-time efforts), or <em>Default</em> to use the sensible default for that type. Distance + time exercises default to faster-is-better.</p>
   <p>PRs are <strong>machine-scoped</strong>: if you have a machine set on the current exercise, the PR is compared only against other sessions on the same machine. If no machine is set, all history is compared.</p>
@@ -82,11 +83,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h3>The two questions, and why</h3>
-  <p>Strength standards differ by sex, so Badger needs one answer to read the right table. That single question is the only thing the app ever asks about you - there is no age, no name, no profile - and like everything else it stays on your phone. You can change it or withdraw it any time in <strong>Settings &rarr; Coaching &rarr; Strength standards</strong>. If you choose <strong>Prefer not to say</strong>, the standards stay off: without an answer there is no honest table to read, and Badger will not guess one.</p>
+  <p>Strength standards differ by sex, so Badger needs one answer to read the right table. That single question is the only thing the app ever asks about you - there is no age, no name, no profile - and like everything else it stays on your phone.</p>
+  <p>Change your answer or withdraw it any time in <strong>Settings &rarr; Coaching &rarr; Strength standards</strong>. Choose <strong>Prefer not to say</strong> and the standards stay off, since there's no honest table to read without an answer.</p>
   <p>Body weight comes from your <a href="/help/body/">body tracker</a>, since the levels are multiples of it. If you have never logged a weigh-in, the setup asks for one and saves it as an ordinary body tracker entry - there is no separate copy of your weight anywhere. Log new weigh-ins as usual and the lines follow along.</p>
 
   <h3>Reading the lines</h3>
-  <p>Only the levels near your data are drawn, so the chart stays readable: the next level up appears once you are within reach of it, and levels far above or below are left off. Your all-time best keeps its own darker line. The records list below the graph gains one quiet line showing your current level and your best estimated 1RM as a multiple of bodyweight, for example <em>Intermediate &middot; est 1RM 1.4x BW</em>.</p>
+  <p>Only the levels near your data are drawn, so the chart stays readable: the next level up appears once you are within reach of it, and levels far above or below are left off. Your all-time best keeps its own darker line.</p>
+  <p>The records list below the graph gains one quiet line showing your current level and your best estimated 1RM as a multiple of bodyweight, for example <em>Intermediate &middot; est 1RM 1.4x BW</em>.</p>
   <p>Two honest caveats. The table is Badger's own, put together by reading across several public strength references and rounding to defensible numbers - treat the lines as a rough map, not a verdict. And the levels are flat multiples of bodyweight, where real standards drift somewhat with how heavy and how old you are.</p>
 
   <h2 id="plateau-detection">Plateau detection</h2>

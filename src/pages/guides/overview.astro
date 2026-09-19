@@ -46,7 +46,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Routines and programs</h2>
   <ul>
     <li><strong><a href="/help/routines/#creating">Build routines</a></strong> - multi-day programs with set and rep targets per exercise.</li>
-    <li><strong><a href="/help/routines/#programs">Built-in programs</a></strong> - StrongLifts 5x5, Starting Strength, GZCLP, 5/3/1 BBB, PPL, PPL + Upper/Lower, Upper/Lower, and Full Body.</li>
+    <li><strong><a href="/help/routines/#programs">Built-in programs</a></strong> - StrongLifts 5x5, Starting Strength, GZCLP, 5/3/1 BBB, nSuns 531LP, Madcow 5x5, PPL, PPL + Upper/Lower, Upper/Lower, and Full Body. Six of them run their own progression.</li>
     <li><strong><a href="/help/routines/#predefined-sets">Predefined sets</a></strong> - your targets are filled in the moment you start a session.</li>
     <li><strong><a href="/help/routines/#starting">Schedule or rotation</a></strong> - pin days to weekdays, or rotate through them in order for any number of days.</li>
     <li><strong><a href="/help/routines/#starting">Starting weights</a></strong> - pull from your last session or from the routine plan.</li>
@@ -56,12 +56,25 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/routines/#rep-ranges">Rep ranges</a></strong> - set a target of "8-10" instead of a single number.</li>
     <li><strong><a href="/help/routines/#amrap-targets">AMRAP targets</a></strong> - an open-topped set written "8+": at least 8, then as many as you can. "1+" is a set to failure.</li>
     <li><strong><a href="/help/routines/#double-progression">Double progression</a></strong> - work up through the range, then add weight.</li>
+    <li><strong><a href="/help/routines/#progression">Progression rules</a></strong> - one sentence per slot saying what happens to its weight next session, with every number in it a chip you can tap.</li>
+    <li><strong><a href="/help/routines/#set-up-progression">Set up progression</a></strong> - write a program's rules onto a routine you already have, after showing you every sentence first.</li>
+    <li><strong><a href="/help/routines/#training-max">Training max</a></strong> - a number Badger keeps per lift that never appears on the bar, with the history of every move it has made.</li>
+    <li><strong><a href="/help/routines/#percent-sets">Percentage sets</a></strong> - prescribe a set as 85% instead of a weight, resolved to something your gym can actually load.</li>
+    <li><strong><a href="/help/routines/#percent-of-another-lift">A percentage of another lift</a></strong> - take a variation's percentages off the lift it assists, like a close-grip bench at 80% of your bench.</li>
+    <li><strong><a href="/help/routines/#intensity-targets">Intensity targets</a></strong> - prescribe a set at RPE 8 or 2 RIR, shown while you log it. Nothing marks your homework.</li>
+    <li><strong><a href="/help/routines/#driver-set">Driver sets</a></strong> - mark the one set whose reps decide what the rule does next.</li>
+    <li><strong><a href="/help/routines/#waves">Waved days</a></strong> - run a day as a cycle of weeks, 5/3/1 style, with each week written once.</li>
+    <li><strong><a href="/help/routines/#rotating-exercises">Rotate the exercise by week</a></strong> - a board press one week and a good morning the next, written as two slots in the same day.</li>
+    <li><strong><a href="/help/routines/#waves">Which week you are on</a></strong> - the routine shows the week of its cycle, advances once every day has been trained, and lets you set it yourself.</li>
+    <li><strong><a href="/help/logging/#rules-in-preview">Why this weight</a></strong> - the log preview names the line of the rule that fired, and you can override it without turning it off.</li>
     <li><strong><a href="/help/routines/">Progressive overload</a></strong> - suggests a weight bump after a run of solid sessions.</li>
     <li><strong><a href="/help/routines/">Auto-progress weights</a></strong> - write the heavier loads you hit back into the plan.</li>
     <li><strong><a href="/help/tools/#deload">Deload weeks</a></strong> - detect a due-for-lighter week and reduce weights and sets; start or end one manually, or skip a single workout.</li>
     <li><strong><a href="/help/routines/">Routine folders</a></strong> - group related routines together.</li>
     <li><strong><a href="/help/routines/">Routine from past workouts</a></strong> - turn sessions you already logged into a reusable routine.</li>
     <li><strong><a href="/help/routines/#routine-notes">Routine notes</a></strong> - program-level context on the routine itself; travels with a shared routine.</li>
+    <li><strong><a href="/help/routines/#sharing">Share a routine as an image</a></strong> - a card of the whole program, or of one day with its sets, reps and progression rules. Your weights stay off unless you turn them on.</li>
+    <li><strong><a href="/help/routines/#sharing">Send a routine file</a></strong> - a <code>.badger</code> file the other person can open and use as their own routine.</li>
   </ul>
 
   <h2>Tracking and progress</h2>
@@ -120,7 +133,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/logging/#today-screen">One year ago</a></strong> - a quiet line on Today when you trained on this date last year.</li>
     <li><strong><a href="/help/history/">Copy a workout</a></strong> - replicate a past session onto today.</li>
     <li><strong><a href="/help/history/">Log a past workout</a></strong> - backdate a session you forgot to record.</li>
-    <li><strong><a href="/help/history/">Share as an image</a></strong> - post a workout summary card.</li>
+    <li><strong><a href="/help/history/#share">Share as an image</a></strong> - post a card that leads with the session's standout set, or with the record you just set.</li>
   </ul>
 
   <h2>Your data</h2>
@@ -131,6 +144,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/settings/#data">Backup and restore</a></strong> - a local database snapshot you control.</li>
     <li><strong><a href="/help/settings/#cloud-backup">Cloud backup</a></strong> - optional automatic backup to your own Google Drive.</li>
     <li><strong><a href="/help/settings/">Share setups</a></strong> - send routines, gyms, and machines to someone as a .badger file.</li>
+    <li><strong><a href="/help/routines/#sharing-rules">Share a whole program</a></strong> - progression rules, percentages, supersets and tempo travel with a routine. Your training max does not.</li>
     <li><strong><a href="/help/phone-migration/">Move to a new phone</a></strong> - carry your history across devices.</li>
     <li><strong><a href="/help/settings/#app">Workout reminders</a></strong> - scheduled notifications based on your training days.</li>
     <li><strong><a href="/help/settings/#app">Themes and accent</a></strong> - dark, light, or system, with a custom accent color.</li>
