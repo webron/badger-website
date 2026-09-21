@@ -1,0 +1,398 @@
+{
+  "badger": "share/v1",
+  "app_version": "1.1.12",
+  "created_at": "2026-09-21T00:00:00.000000Z",
+  "type": "routine",
+  "payload": {
+    "routine": {
+      "name": "Reference Upper/Lower",
+      "notes": "A reference program. Every key the format defines for a routine appears somewhere in this file, so it is denser than a program you would write by hand.",
+      "weight_source": "last_performance",
+      "history_scope": "any_workout"
+    },
+    "days": [
+      {
+        "name": "Upper",
+        "scheduled_days": [1, 4],
+        "default_gym_name": "Home Gym",
+        "cycle_length": 4,
+        "exercises": [
+          {
+            "exercise_name": "Flat Barbell Bench Press",
+            "exercise_type": "weight_reps",
+            "rest_override_seconds": 180,
+            "progression_group_key": "bench",
+            "progression": {
+              "scheme": "wave_531",
+              "cadence": "cycle",
+              "reference_kind": "training_max",
+              "note": "Add 5 lb to the bench training max after a clean cycle.",
+              "clauses": [
+                {
+                  "trigger": "cycle_missed_minimum",
+                  "action": "hold",
+                  "target": "reference"
+                },
+                {
+                  "trigger": "driver_reps_between",
+                  "reps_min": 0,
+                  "reps_max": 4,
+                  "count": 2,
+                  "action": "add_percent",
+                  "percent": -10,
+                  "target": "reference"
+                },
+                {
+                  "trigger": "cycle_complete",
+                  "action": "add_absolute",
+                  "amount": 5,
+                  "amount_unit": "lbs",
+                  "target": "reference"
+                },
+                {
+                  "trigger": "always",
+                  "action": "none",
+                  "target": "reference"
+                }
+              ]
+            },
+            "predefined_sets": [
+              {
+                "is_warmup": true,
+                "weight": 45,
+                "weight_unit": "lbs",
+                "reps": 10
+              },
+              {
+                "is_warmup": false,
+                "week_index": 0,
+                "percent_of_reference": 65,
+                "weight": 130,
+                "weight_unit": "lbs",
+                "reps": 5
+              },
+              {
+                "is_warmup": false,
+                "week_index": 0,
+                "percent_of_reference": 85,
+                "weight": 170,
+                "weight_unit": "lbs",
+                "reps": 5,
+                "is_amrap": true,
+                "is_progression_driver": true
+              },
+              {
+                "is_warmup": false,
+                "week_index": 1,
+                "percent_of_reference": 70,
+                "weight": 140,
+                "weight_unit": "lbs",
+                "reps": 3
+              },
+              {
+                "is_warmup": false,
+                "week_index": 1,
+                "percent_of_reference": 90,
+                "weight": 180,
+                "weight_unit": "lbs",
+                "reps": 3,
+                "is_amrap": true,
+                "is_progression_driver": true
+              },
+              {
+                "is_warmup": false,
+                "week_index": 2,
+                "percent_of_reference": 75,
+                "weight": 150,
+                "weight_unit": "lbs",
+                "reps": 5
+              },
+              {
+                "is_warmup": false,
+                "week_index": 2,
+                "percent_of_reference": 95,
+                "weight": 190,
+                "weight_unit": "lbs",
+                "reps": 1,
+                "is_amrap": true,
+                "is_progression_driver": true
+              },
+              {
+                "is_warmup": false,
+                "week_index": 3,
+                "percent_of_reference": 60,
+                "weight": 120,
+                "weight_unit": "lbs",
+                "reps": 5
+              }
+            ]
+          },
+          {
+            "exercise_name": "Close-Grip Bench Press",
+            "exercise_type": "weight_reps",
+            "tempo": "3-1-1-0",
+            "percent_reference": {
+              "exercise_name": "Flat Barbell Bench Press",
+              "exercise_type": "weight_reps"
+            },
+            "predefined_sets": [
+              {
+                "is_warmup": false,
+                "percent_of_reference": 60,
+                "weight": 120,
+                "weight_unit": "lbs",
+                "reps": 8,
+                "target_rpe": 8
+              },
+              {
+                "is_warmup": false,
+                "percent_of_reference": 60,
+                "weight": 120,
+                "weight_unit": "lbs",
+                "reps": 8,
+                "target_rpe": 8
+              }
+            ]
+          },
+          {
+            "exercise_name": "Dumbbell Row",
+            "exercise_type": "weight_reps",
+            "alternatives": [
+              {
+                "exercise_name": "Chest-Supported Row",
+                "exercise_type": "weight_reps"
+              }
+            ],
+            "predefined_sets": [
+              {
+                "is_warmup": false,
+                "weight": 60,
+                "weight_unit": "lbs",
+                "reps": 8,
+                "reps_max": 12
+              },
+              {
+                "is_warmup": false,
+                "weight": 60,
+                "weight_unit": "lbs",
+                "reps": 8,
+                "reps_max": 12
+              },
+              {
+                "is_warmup": false,
+                "weight": 60,
+                "weight_unit": "lbs",
+                "reps": 8,
+                "reps_max": 12
+              }
+            ]
+          },
+          {
+            "exercise_name": "Cable Face Pull",
+            "exercise_type": "weight_reps",
+            "default_machine_name": "Cable Tower",
+            "superset_key": "ss-a",
+            "superset_name": "Superset A",
+            "predefined_sets": [
+              {
+                "is_warmup": false,
+                "weight": 40,
+                "weight_unit": "lbs",
+                "reps": 15,
+                "target_rir": 2
+              },
+              {
+                "is_warmup": false,
+                "weight": 40,
+                "weight_unit": "lbs",
+                "reps": 15,
+                "target_rir": 2
+              }
+            ]
+          },
+          {
+            "exercise_name": "Hanging Leg Raise",
+            "exercise_type": "reps_only",
+            "superset_key": "ss-a",
+            "predefined_sets": [
+              {
+                "is_warmup": false,
+                "reps": 10,
+                "is_amrap": true
+              },
+              {
+                "is_warmup": false,
+                "reps": 10,
+                "is_amrap": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Lower",
+        "scheduled_days": [2, 5],
+        "default_gym_name": "Home Gym",
+        "exercises": [
+          {
+            "exercise_name": "Barbell Back Squat",
+            "exercise_type": "weight_reps",
+            "default_machine_name": "Squat Rack",
+            "rest_override_seconds": 210,
+            "progression_group_key": "squat",
+            "progression": {
+              "scheme": "linear",
+              "cadence": "session",
+              "reference_kind": "working_weight",
+              "clauses": [
+                {
+                  "trigger": "all_sets_met",
+                  "action": "add_absolute",
+                  "amount": 5,
+                  "amount_unit": "lbs",
+                  "target": "working_weight"
+                },
+                {
+                  "trigger": "consecutive_failures_at_least",
+                  "count": 3,
+                  "action": "add_percent",
+                  "percent": -10,
+                  "target": "working_weight"
+                },
+                {
+                  "trigger": "always",
+                  "action": "hold",
+                  "target": "working_weight"
+                }
+              ]
+            },
+            "predefined_sets": [
+              {
+                "is_warmup": true,
+                "weight": 45,
+                "weight_unit": "lbs",
+                "reps": 5
+              },
+              {
+                "is_warmup": false,
+                "weight": 185,
+                "weight_unit": "lbs",
+                "reps": 5
+              },
+              {
+                "is_warmup": false,
+                "weight": 185,
+                "weight_unit": "lbs",
+                "reps": 5
+              },
+              {
+                "is_warmup": false,
+                "weight": 185,
+                "weight_unit": "lbs",
+                "reps": 5
+              }
+            ]
+          },
+          {
+            "exercise_name": "Plank",
+            "exercise_type": "time_only",
+            "predefined_sets": [
+              {
+                "is_warmup": false,
+                "duration_seconds": 60
+              },
+              {
+                "is_warmup": false,
+                "duration_seconds": 60
+              }
+            ]
+          },
+          {
+            "exercise_name": "Treadmill Run",
+            "exercise_type": "distance_time",
+            "predefined_sets": [
+              {
+                "is_warmup": false,
+                "distance": 3.0,
+                "duration_seconds": 1800
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exercises": [
+      {
+        "name": "Flat Barbell Bench Press",
+        "type": "weight_reps",
+        "category_name": "Chest"
+      },
+      {
+        "name": "Close-Grip Bench Press",
+        "type": "weight_reps",
+        "category_name": "Chest"
+      },
+      {
+        "name": "Dumbbell Row",
+        "type": "weight_reps",
+        "category_name": "Back"
+      },
+      {
+        "name": "Chest-Supported Row",
+        "type": "weight_reps",
+        "category_name": "Back"
+      },
+      {
+        "name": "Cable Face Pull",
+        "type": "weight_reps",
+        "category_name": "Shoulders"
+      },
+      {
+        "name": "Hanging Leg Raise",
+        "type": "reps_only",
+        "category_name": "Core"
+      },
+      {
+        "name": "Barbell Back Squat",
+        "type": "weight_reps",
+        "category_name": "Legs"
+      },
+      {
+        "name": "Plank",
+        "type": "time_only",
+        "category_name": "Core"
+      },
+      {
+        "name": "Treadmill Run",
+        "type": "distance_time",
+        "category_name": "Cardio"
+      }
+    ],
+    "machines": [
+      {
+        "name": "Cable Tower",
+        "uses_attachments": true,
+        "uses_grip_types": true,
+        "notes": "Dual stack, left post is the one with the long cable.",
+        "machine_type": "selectorized",
+        "plate_calculator_mode": "none",
+        "weight_unit": "lbs",
+        "weight_increment": 10,
+        "weight_increment2": 5,
+        "increment_threshold": 60,
+        "logs_weight_per_side": false,
+        "supports_bands": true
+      },
+      {
+        "name": "Squat Rack",
+        "uses_attachments": false,
+        "uses_grip_types": false,
+        "machine_type": "plate_loaded",
+        "plate_calculator_mode": "dual_loaded",
+        "bar_weight": 45,
+        "bar_weight_unit": "lbs",
+        "logs_weight_per_side": false
+      }
+    ]
+  }
+}

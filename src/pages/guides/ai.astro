@@ -1,4 +1,6 @@
 ---
+import skillMarkdown from '../../data/writing-badger-routines.md?raw';
+
 import HelpLayout from '../../layouts/HelpLayout.astro';
 
 /**
@@ -69,24 +71,12 @@ Do not rewrite the file yet. Tell me what you would change first, then I will as
     id: 'write',
     title: 'Write me a program as a .badger file',
     intro:
-      'The round trip: your AI writes a routine, you save it with a .badger extension, tap it, and Badger imports it. Fill in the bracketed parts before sending. Optionally paste your gym\'s .badger file underneath, and the program gets planned around the machines you actually have.',
+      'The round trip: your AI writes a routine, you save it with a .badger extension, tap it, and Badger imports it. Paste the block above first, or install the skill, so it knows the format. Fill in the bracketed parts before sending. Optionally paste your gym\'s .badger file underneath, and the program gets planned around the machines you actually have.',
     body: `Write me a training program as a .badger file for the Badger workout tracker, so I can import it directly.
 
-The format is documented at https://badger.fit/badger-format/ and there is a small worked example at https://badger.fit/programs/example-routine.badger
-
-Follow the format exactly:
-- Top level: "badger": "share/v1", "type": "routine", plus app_version, created_at, and payload.
-- payload has routine, days, exercises, and machines (machines can be an empty array).
-- Every exercise a day references must also appear in payload.exercises with the same name and type.
-- Use ordinary exercise names ("Barbell Back Squat", not "BB squat"), so they match exercises I already have instead of creating duplicates.
-- For a rep range, set reps to the bottom of the range and reps_max to the top. For an exact target, use reps alone.
-- For an open-topped ("AMRAP") set, set reps to the minimum and "is_amrap": true, and leave reps_max out. That reads as "8+": at least 8 reps, then as many as possible. A set to failure is reps 1 with is_amrap true. Never set both is_amrap and reps_max on the same set.
+Follow the .badger writing rules I gave you. Two more that are about this request rather than the format:
 - Leave weight out. I fill in my own weights.
-- Never put reps_max or is_amrap on a warmup set.
-- Order matters: days, exercises, and sets import in the order they appear in their arrays.
-- To pair exercises as a superset, give both slots the same "superset_key". To pre-assign swap options, use "alternatives" with names that also appear in payload.exercises. For a tempo prescription, put it in "tempo" on the slot, like "3-1-2-0".
-- If I paste a gym .badger file below, plan around its equipment: only pick machine exercises its machines support (barbell, dumbbell, and bodyweight movements are always available). For an exercise done on one of those machines, set default_machine_name to that machine's name exactly as written in my file, and copy the machine's entry into payload.machines verbatim. Never invent or rename a machine.
-- A gym file may also list "bars" and "accessories". Read them for what the gym has, but do not put them in the routine: a routine slot carries no default bar and no accessories, so mention band or chain work in your explanation underneath instead of trying to encode it.
+- If I paste a gym .badger file below, plan around its equipment: only pick machine exercises its machines support (barbell, dumbbell, and bodyweight movements are always available). For an exercise done on one of those machines, set default_machine_name to that machine's name exactly as written in my file, and copy the machine's entry into payload.machines verbatim. Never invent or rename a machine. A gym file may also list "bars" and "accessories": read them for what the gym has, but do not put them in the routine, because a routine slot carries no default bar and no accessories. Mention band or chain work in your explanation underneath instead of trying to encode it.
 
 What I want:
 - Days a week: [4]
@@ -99,6 +89,19 @@ What I want:
 Give me the complete JSON in one code block, then explain the program in a few sentences underneath: what progresses, how, and when I should change something.`,
   },
 ];
+
+/**
+ * The routine-writing skill, read at build time from the mirror that
+ * `scripts/sync-skill.mjs` writes out of badger-fit. Reading the file rather
+ * than retyping it is what stops the page and the clipboard drifting apart,
+ * and stops this page becoming a third copy of rules that are tested
+ * somewhere else.
+ *
+ * The leading HTML comment in that file is a note to us about where it came
+ * from. It is not for the reader and it is not for the model, so it comes off
+ * here.
+ */
+const skillText = skillMarkdown.replace(/^<!--[\s\S]*?-->\n/, '').trim();
 ---
 
 <HelpLayout title="Use your own AI" description={description}>
@@ -151,9 +154,43 @@ Give me the complete JSON in one code block, then explain the program in a few s
     </li>
     <li>
       <strong>The format itself.</strong> <a href="/badger-format/">The <code>.badger</code> format</a>
-      is documented in public so an AI can write a file Badger will import.
+      is documented in public so an AI can write a file Badger will import. If you only want
+      routines written back, the short version is
+      <a href="#skill">the block below</a> rather than the whole schema.
     </li>
   </ul>
+
+  <h2 id="skill">Teach it the format once</h2>
+
+  <p>
+    Reading your data works out of the box. Writing a routine back is the half that goes wrong, and
+    it goes wrong quietly. A name that matches no definition drops that exercise from the day. A
+    weight with no unit is read as kilograms. A progression rule missing one clause is thrown away
+    whole. None of it errors.
+  </p>
+
+  <p>
+    The block below is the list of those traps, written against the importer and checked against it
+    on every build. Paste it once at the start of a conversation, before you ask for a program. It
+    carries the rules, so the prompts further down stay short.
+  </p>
+
+  <p>
+    You can install it instead of pasting, if your assistant takes skills:
+    <a href="https://github.com/badger-fit/badger-routine-skill">the skill on GitHub</a> has two
+    commands for Claude Code and a folder to upload anywhere else. ChatGPT keeps skills on its
+    business and education plans, so on a personal plan the paste is your route.
+  </p>
+
+  <div class="prompt" data-prompt>
+    <pre><code>{skillText}</code></pre>
+  </div>
+
+  <p class="skill-note">
+    It names a worked example that uses every key the format has:
+    <a href="/skill/example-routine.badger">example-routine.badger</a>. Hand that over too if your
+    assistant cannot open links.
+  </p>
 
   <h2 id="prompts">Prompts worth starting from</h2>
 
