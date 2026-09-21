@@ -114,7 +114,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Import from Hevy</strong> - Select a Hevy CSV export. Warmup sets are imported correctly.</li>
     <li><strong>Import from Stronglifts</strong> - Select a Stronglifts CSV export. Weight unit (kg or lbs) is detected automatically. Every logged set is imported as a working set, since the Stronglifts export does not distinguish warmups.</li>
   </ul>
-  <p><strong>If the file is not an export, Badger says so.</strong> Pick a shopping list, a screenshot renamed to <code>.csv</code>, or another app's export, and you get an error instead of a preview. Earlier versions showed a preview with zero of everything and still let you tap Import, which reported success having written nothing.</p>
+  <p><strong>If there is nothing in the file, Badger says so.</strong> Pick a shopping list, a screenshot renamed to <code>.csv</code>, or another app's export, and you get an error instead of a preview. Earlier versions showed a preview with zero of everything and still let you tap Import, which reported success having written nothing.</p>
   <p>Imported files are capped at 10&nbsp;MB - comfortably larger than any real export, even for many years of training. If you see a "file is too large" message, the file is almost certainly corrupted; try re-exporting it from the source app.</p>
   <p><strong>Avoid importing the same file twice.</strong> The preview warns you when some of the import's dates already have workouts - importing again adds those sets a second time (duplicating them on those days) rather than replacing them.</p>
   <p>See <a href={`/help/getting-started/#importing`}>Getting started → Importing from another app</a> for the full walkthrough.</p>
