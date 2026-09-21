@@ -166,9 +166,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Tap <strong>⋮ → Set machine…</strong> to pick a machine and (if applicable) an attachment. Machines already marked compatible with this exercise at your current gym come first; <strong>Other machines at this gym</strong> lists the rest, and picking one from there marks it compatible for next time.</p>
   <p>Badger remembers the last attachment used for each exercise + machine combination and pre-selects it next time.</p>
 
-  <h2>Progress filtering by machine</h2>
-  <p>On the Progress screen, if you've used the same exercise on multiple machines, a row of filter chips appears. Select a specific machine to see only that machine's history, or select <strong>All</strong> to see combined data.</p>
-  <p>The most recently used machine is selected by default. The same filter applies to PRs - they're scoped per machine when a machine is set, and per <a href="#bars">bar</a> when a bar is. The filter chips themselves are machine-only for now: the bar you used is named on every row, but you can't yet narrow the list to it.</p>
+  <h2>Progress filtering by equipment</h2>
+  <p>On the Progress screen, if you've used the same exercise on multiple machines, a row of filter chips appears. Select a specific machine to see only that machine's history, or select <strong>All</strong> to see combined data. The most recently used machine is selected by default.</p>
+  <p>A <a href="#bars">bar</a> row appears the same way once the exercise has history on two or more named bars, and an accessories row once the history mixes bare sets with sets logged under <a href="#accessories">accessories</a>. Neither one narrows the view on its own. The <a href="/help/progress/#chart-filters">Progress page</a> covers what each row does to the chart and the record marks.</p>
+  <p>The same scoping applies to PRs: they are tracked per machine when a machine is set, and per bar when a bar is.</p>
 
   <h2>Routine defaults</h2>
   <p>You can set default equipment at the routine level to avoid re-selecting it each session:</p>
