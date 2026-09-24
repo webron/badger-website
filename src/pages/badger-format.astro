@@ -309,7 +309,8 @@ const description =
           <td>array</td>
           <td>
             Pre-assigned swap options for this slot, in order: objects of the form
-            <code>&#123; "exercise_name": "...", "exercise_type": "..." &#125;</code>, resolved by
+            <code>&#123; "exercise_name": "...", "exercise_type": "..." &#125;</code>, where
+            <code>exercise_name</code> is required. Each is resolved by
             the same rules as the slot itself, so each one needs a definition in the payload's
             <code>exercises</code> list. An unmatched alternative is counted in the import
             preview's warning and skipped.
@@ -410,8 +411,8 @@ const description =
             <br /><br />
             <strong><code>weight</code> is optional beside it.</strong> While the percentage applies,
             Badger ignores the weight but keeps it: turning the percentage off restores the number
-            rather than blanking the set, and an older reader that has never heard of this key still
-            finds a usable target. That is why this key needed no new schema version. The built-in
+            rather than blanking the set, and when a weight is written, an older reader that has never
+            heard of this key still finds it as the target. The built-in
             program files leave the weight out. Needs Badger 1.1.12 or later.
           </td>
         </tr>
@@ -547,8 +548,8 @@ const description =
   <ul>
     <li>
       <strong>A missed session</strong> (a failure): a session of this slot in which at least one
-      planned working set was not completed or came in under its rep minimum. A session where
-      every planned working set met its minimum is a success. A session with no completed set of
+      logged working set was left incomplete or came in under its planned minimum. A skipped set
+      counts neither way. A session where every logged working set met its minimum is a success. A session with no completed set of
       the exercise at all is neither, and the rule ignores it.
     </li>
     <li>
@@ -691,7 +692,8 @@ const description =
     <p>
       The seven things that drop a rule: an unrecognized <code>trigger</code>, <code>action</code>,
       <code>target</code>, <code>cadence</code> or <code>reference_kind</code>; a
-      <code>driver_reps_*</code> trigger with no <code>reps_min</code>; a
+      <code>driver_reps_*</code> trigger with no <code>reps_min</code> (except
+      <code>driver_reps_below_plan</code>, which takes its minimum from the plan); a
       <code>driver_reps_between</code> whose <code>reps_max</code> is below its <code>reps_min</code>;
       a missing <code>amount</code> or <code>percent</code> the action requires; a clause targeting
       <code>reference</code> under <code>reference_kind: "working_weight"</code>; and no clauses at
@@ -734,20 +736,23 @@ const description =
 
   <p>
     <strong>The week counter belongs to the routine, not the day.</strong> It is one number that
-    every waved day in the routine reads, and it moves on once each of those days has been trained
-    for the week.
+    every waved day in the routine reads. It moves on once every day waved to the same length has
+    been trained since the last move. Stage-based days (below) do not move it.
   </p>
 
   <p>
     Each day reads the counter against its own <code>cycle_length</code>, so give every waved day
-    in a routine the same length. If they differ, the routine's cycle is the length most of its
-    days carry. <code>cycle_complete</code> fires when this counter wraps back to the first week.
+    in a routine the same length. <code>cycle_complete</code> fires when the counter wraps back to
+    the first week. If lengths differ, each length moves the shared counter on its own schedule,
+    and <code>cycle_complete</code> wraps at each day's own length.
   </p>
 
   <p>
     <strong>For a stage-based program</strong> (GZCLP, StrongLifts), use the same two keys, with
-    each <code>week_index</code> a stage and <code>cycle_length</code> the number of stages. A slot whose rule has a <code>next_stage</code> or <code>reset_stage</code> clause
-    shows the variant for its current <a href="#clause">stage</a>, and moves on only when you stall.
+    each <code>week_index</code> a stage and <code>cycle_length</code> the number of stages. A slot whose rule has a <code>next_stage</code> or <code>reset_stage</code> clause, or any
+    clause targeting <code>stage</code>, shows the variant for its current <a href="#clause">stage</a>.
+    The stage changes only when one of those clauses fires. In GZCLP and StrongLifts that happens
+    when you stall.
     Every other slot shows the variant for the routine's current week.
   </p>
 
@@ -923,7 +928,7 @@ const description =
         <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
       </thead>
       <tbody>
-        <tr><td><code>gym</code></td><td><code>Gym</code></td><td>A <code>Gym</code> is just <code>&#123; "name": "..." &#125;</code>.</td></tr>
+        <tr><td><code>gym</code></td><td><code>Gym</code>, required</td><td>A <code>Gym</code> is just <code>&#123; "name": "..." &#125;</code>.</td></tr>
         <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>The same <code>Machine</code> objects a routine payload carries.</td></tr>
         <tr><td><code>attachments</code></td><td>array of <code>Attachment</code></td><td>An <code>Attachment</code> is a <code>name</code> and optional <code>notes</code>.</td></tr>
         <tr><td><code>bars</code></td><td>array of <a href="#bar"><code>Bar</code></a></td><td>Named bars. Omitted entirely when the gym has none, so a bar-free file looks exactly like one written before bars existed.</td></tr>
@@ -996,10 +1001,10 @@ const description =
         <tr><td><code>name</code></td><td>string, required</td><td>Accessory name, for example "Green band".</td></tr>
         <tr>
           <td><code>kind</code></td>
-          <td>string, required</td>
+          <td>string</td>
           <td>
             One of <code>band</code>, <code>chain</code>, <code>suspension</code>, <code>other</code>.
-            An unrecognized value reads as <code>other</code>, which is exactly what it means: an
+            A missing or unrecognized value reads as <code>other</code>, which is exactly what it means: an
             add-on whose kind this build has no word for.
           </td>
         </tr>
