@@ -11,12 +11,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <hr />
 
   <h2>Routine list</h2>
-  <p>Go to <strong>You → Routines</strong> to see your routines. They can be organized into folders. The <strong>active routine</strong> appears at the top with an accent border - it's the one shown on the home screen.</p>
+  <p>Go to <strong>More → Routines</strong> to see your routines. They can be organized into folders. The <strong>active routine</strong> appears at the top with an accent border - it's the one shown on the Today screen.</p>
 
   <h3>Active routine</h3>
-  <p>Only one routine can be active at a time. To set one as active, long-press it and tap <strong>Set active</strong>. The active routine's days appear on the home screen as tappable rows.</p>
-  <p>For an <strong>alternating program</strong> (A/B-style, with no day tied to a fixed weekday), the home screen highlights the next day in the sequence and moves it to the top once you finish the one before it. You can still tap any day to start it - the order is only a suggestion.</p>
-  <p>If a routine's days are assigned to specific weekdays instead, the home screen highlights today's weekday.</p>
+  <p>Only one routine can be active at a time. To set one as active, long-press it and tap <strong>Set active</strong>. The active routine's days appear on the Today screen as tappable rows.</p>
+  <p>For an <strong>alternating program</strong> (A/B-style, with no day tied to a fixed weekday), the Today screen highlights the next day in the sequence and moves it to the top once you finish the one before it. You can still tap any day to start it - the order is only a suggestion.</p>
+  <p>If a routine's days are assigned to specific weekdays instead, the Today screen highlights today's weekday.</p>
 
   <h3>Folders</h3>
   <p>Tap the folder icon in the top bar to create a folder. Long-press a routine to move it into a folder. Routines not in any folder appear under "Other".</p>
@@ -31,7 +31,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ol>
 
   <h3>Day scheduling</h3>
-  <p>Tap the <strong>calendar icon</strong> on a day row to assign it to specific days of the week. The day will appear as "scheduled" on the home screen on those days. Scheduled days are shown as abbreviated weekday labels (Mon, Wed, Fri, etc.).</p>
+  <p>Tap the <strong>calendar icon</strong> on a day row to assign it to specific days of the week. The day will appear as "scheduled" on the Today screen on those days. Scheduled days are shown as abbreviated weekday labels (Mon, Wed, Fri, etc.).</p>
   <p>If two days share the same weekday, a warning appears in the routine detail screen.</p>
 
   <h3>Day options</h3>
@@ -78,7 +78,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="double-progression">Double progression</h3>
   <p>Ranges are what make double progression work: you add reps until you reach the top of the range, then you add weight and drop back to the bottom.</p>
-  <p>While you're working up through the range, the training screen suggests <strong>"Work toward 10 reps"</strong> instead of a weight increase. Once you've hit the top of the range on every working set, across as many sessions as your progression setting requires, it switches back to the usual weight suggestion.</p>
+  <p>While you're working up through the range, the training screen suggests <strong>"Work toward 10 reps"</strong> instead of a weight increase. Once you've hit the top of the range on every working set, across as many sessions as <a href="/help/settings/#coaching">Progressive overload trigger</a> in Settings requires, it switches back to the usual weight suggestion.</p>
   <p>Exercises with a plain rep target (no range) are unaffected - they use the same weight suggestion they always did.</p>
 
   <h3>Quick edit</h3>
@@ -128,7 +128,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li>The proposed weight replaces the working sets' weight in the preview, with a line under it saying which part of the rule fired - for example <em>Rule met: all sets hit the plan last session &middot; tap edit to override</em>. The new weight is in the set rows above; the line states only the reason.</li>
     <li>Tap the <strong>edit</strong> pencil on the exercise and type your own weight. The reason stays on screen and the line reads <em>overridden</em>. Overriding does not disable or delete the rule.</li>
-    <li>Reps are never proposed. Rules move weight only.</li>
+    <li>Rules move weight. On a laddered program such as StrongLifts or GZCLP, a rule can also move you to the next stage, a different set scheme already written into the routine (see <a href="#programs">Built-in programs</a>). A rule never proposes a rep count of its own.</li>
     <li>Nothing is recorded until you actually start the workout, so opening the preview five times proposes the same number five times.</li>
     <li>A rule that has nothing to propose says nothing at all.</li>
   </ul>
@@ -220,7 +220,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>That's the same line Badger draws around your photos and your private setup notes. See <a href="/badger-format/#progression">the format reference</a>.</p>
 
   <h2 id="starting">Starting a routine workout</h2>
-  <p>From the <strong>home screen</strong>, tap a day row under your active routine. This opens the <strong>routine log preview</strong>, which shows:</p>
+  <p>From the <strong>Today screen</strong>, tap a day row under your active routine. This opens the <strong>routine log preview</strong>, which shows:</p>
   <ul>
     <li>All exercises for the day with their resolved sets (predefined weights, or weights copied from your last session)</li>
     <li>An estimated workout duration</li>

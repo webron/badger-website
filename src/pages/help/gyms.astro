@@ -10,18 +10,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <hr />
 
   <h2>Managing gyms</h2>
-  <p>Go to <strong>You → Gyms</strong> to manage your gym list.</p>
+  <p>Go to <strong>More → Gyms</strong> to manage your gym list.</p>
   <ul>
     <li>Tap <strong>+</strong> to create a gym.</li>
     <li>Tap a gym to edit its name or notes, or to set it as the default.</li>
     <li>The <strong>default gym</strong> is automatically used when starting a workout if you have only one gym, or if a default is set among multiple.</li>
-    <li>Each gym has its own <strong>Plate inventory</strong> - open a gym and tap <em>Plate assortment</em> to set which plates (and how many) are available there. Competition gyms often stock both kg and lbs plates, so the set is kept per unit. A gym with no set of its own falls back to your global one, so the plate calculator works out of the box; per-gym editing is optional.</li>
+    <li>Each gym has its own plate set - open a gym and, under <strong>Plate inventory</strong>, tap <em>Plate assortment</em> to set which plates (and how many) are available there. Competition gyms often stock both kg and lbs plates, so the set is kept per unit. A gym with no set of its own falls back to your global one, so the plate calculator works out of the box; per-gym editing is optional.</li>
     <li>Each gym also has its own <a href="#racks"><strong>Racks</strong></a> - open a gym and use the <em>Racks</em> section to say which dumbbells and kettlebells it stocks, so the weight stepper walks the real rack while you train.</li>
     <li>Gyms can be <strong>archived</strong> (hidden from pickers but preserved for historical data) instead of deleted.</li>
   </ul>
 
   <h2 id="machines">Machines</h2>
-  <p>Go to <strong>You → Machines</strong> to manage machines.</p>
+  <p>Go to <strong>More → Machines</strong> to manage machines.</p>
   <ul>
     <li>Tap <strong>+</strong> to create a machine (e.g. "Cable station", "Leg press", "Smith machine"). Give it a name and pick which gyms it lives at - with only one gym, it links there automatically. You land on the new machine's page right away to fill in the rest of its details.</li>
     <li>Each machine has two toggles: <strong>Uses attachments</strong> and <strong>Uses grip types</strong>.</li>
@@ -46,7 +46,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>You don't have to set this up in advance. Pick a machine from the picker's second section, <strong>Other machines at this gym</strong>, and it moves to the top section from then on. Link machines while training, or up front via the exercise library → <strong>Edit</strong> → <strong>Compatible machines</strong>.</p>
 
   <h2>Attachments</h2>
-  <p>Attachments are cable/pulley accessories (e.g. "Straight bar", "Rope", "V-bar", "D-handle"). Go to <strong>You → Attachments</strong> to manage them.</p>
+  <p>Attachments are cable/pulley accessories (e.g. "Straight bar", "Rope", "V-bar", "D-handle"). Go to <strong>More → Attachments</strong> to manage them.</p>
   <ul>
     <li>Tap <strong>+</strong> to create an attachment. Like machines, you name it and pick its gyms (skipped when you only have one), then land on its page to finish up.</li>
     <li>Link attachments to gyms via the <strong>Available at</strong> section on each attachment's detail screen. An attachment with no gym isn't offered while training, and the section says so.</li>
@@ -56,7 +56,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Notes you write on an attachment show up in the training screen's notes card whenever that attachment is selected, next to the machine's own setup notes.</p>
 
   <h2 id="bars">Bars</h2>
-  <p>A bar is a thing you own, not a number on a settings screen. The Olympic bar, the trap bar, the EZ curl, and the worn 45 in the corner that actually weighs 44 are all different bars, so Badger lets you name them and pick one per exercise. Go to <strong>You → Bars</strong> to manage them.</p>
+  <p>A bar is a thing you own, not a number on a settings screen. The Olympic bar, the trap bar, the EZ curl, and the worn 45 in the corner that actually weighs 44 are all different bars, so Badger lets you name them and pick one per exercise. Go to <strong>More → Bars</strong> to manage them.</p>
   <ul>
     <li>Tap <strong>+</strong> to create a bar. Like machines and attachments, you name it and pick its gyms, then land on its page to finish up.</li>
     <li>Give it a <strong>weight</strong> in kg or lbs. It is stored exactly as you type it, never converted, so a 45 lb bar stays 45. Leave it blank if you don't know - a bar with no weight is still perfectly useful for the rest of what bars do.</li>
@@ -79,7 +79,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>A routine slot can carry a <strong>Default bar</strong>, so the right bar is already picked when you start the session. The bar you used shows in your history and on the workout summary, and you can change it after the fact by tapping the equipment line there.</p>
 
   <h2 id="accessories">Accessories: bands, chains, and straps</h2>
-  <p>Accessories are the things you add to a lift that aren't the load itself: resistance bands, chains, suspension straps. Go to <strong>You → Accessories</strong> to manage them. Each one has:</p>
+  <p>Accessories are the things you add to a lift that aren't the load itself: resistance bands, chains, suspension straps. Go to <strong>More → Accessories</strong> to manage them. Each one has:</p>
   <ul>
     <li>A <strong>name</strong> and a <strong>kind</strong> - Band, Chain, Suspension, or Other. (Suspension shows as "Suspension (TRX)" in lists and picker headings, where there is room for the qualifier.)</li>
     <li>A <strong>color</strong>. This is the point of the whole screen: people say "the green band", not "the 1.9 cm band". Pick from the preset swatches or set your own. An accessory with no color gets a hollow ring rather than a made-up one.</li>
@@ -131,7 +131,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Attachment photos also show as a small thumbnail in the attachment picker during a workout, which is the point: "the rope or the short V-bar?" is easier to answer from a picture than a name.</p>
   <ul>
     <li><strong>Photos stay on your device unless you ask otherwise.</strong> Nothing is uploaded on its own, and Badger only asks for camera or photo access at the moment you first use it.</li>
-    <li><strong>Cloud backup leaves photos out unless you turn them on.</strong> Backups stay small and quick by default, so photos are not included and a restore onto a new phone brings your machines and attachments back without their pictures. To carry them across, turn on <strong>Back up equipment photos</strong> on the <a href={`/help/settings/#cloud-backup`}>Cloud backup</a> screen. It is off by default, because photos make backups considerably larger and they use your own Drive storage.</li>
+    <li><strong>Cloud backup leaves photos out unless you turn them on.</strong> Backups stay small and quick by default, so photos are not included and a restore onto a new phone brings your machines, attachments and bars back without their pictures. To carry them across, turn on <strong>Back up equipment photos</strong> on the <a href={`/help/settings/#cloud-backup`}>Cloud backup</a> screen. It is off by default, because photos make backups considerably larger and they use your own Drive storage.</li>
     <li>Deleting a machine, attachment, or bar deletes its photo too.</li>
   </ul>
 
@@ -166,9 +166,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Tap <strong>⋮ → Set machine…</strong> to pick a machine and (if applicable) an attachment. Machines already marked compatible with this exercise at your current gym come first; <strong>Other machines at this gym</strong> lists the rest, and picking one from there marks it compatible for next time.</p>
   <p>Badger remembers the last attachment used for each exercise + machine combination and pre-selects it next time.</p>
 
-  <h2>Progress filtering by machine</h2>
-  <p>On the Progress screen, if you've used the same exercise on multiple machines, a row of filter chips appears. Select a specific machine to see only that machine's history, or select <strong>All</strong> to see combined data.</p>
-  <p>The most recently used machine is selected by default. The same filter applies to PRs - they're scoped per machine when a machine is set, and per <a href="#bars">bar</a> when a bar is. The filter chips themselves are machine-only for now: the bar you used is named on every row, but you can't yet narrow the list to it.</p>
+  <h2>Progress filtering by equipment</h2>
+  <p>On the Progress screen, once an exercise's history spans more than one machine or bar, or mixes sets with and without accessories, filter chips let you narrow its chart and history list. See <a href="/help/progress/#chart-filters">Chart filters</a>. Personal records are kept per machine and per bar whatever the filter shows; see <a href="/help/progress/#prs">Personal records</a>.</p>
 
   <h2>Routine defaults</h2>
   <p>You can set default equipment at the routine level to avoid re-selecting it each session:</p>

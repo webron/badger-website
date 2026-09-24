@@ -20,6 +20,12 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  * coverage (stronglifts_parser.dart). The "what Badger does not do" section is
  * the load-bearing half of the page: it is what makes the rest believable to
  * someone arriving from an app that did run the program for them.
+ *
+ * Re-checked for 1.1.12 on 2026-09-23: the seeded StrongLifts rules (+2.5 kg
+ * per lift, +5 kg deadlift, -10% after three misses) and the 5x5 -> 3x5 -> 1x5
+ * stall ladder (seed_programs.dart _seedProgramsV69Rules and
+ * _seedProgramsV70StallLadder, new installs only; the gallery file carries
+ * both), and re-importing duplicating overlapping sets (import_overlap.dart).
  */
 
 const description =
@@ -31,7 +37,7 @@ const description =
     slot="head"
     headline="StrongLifts 5x5 in Badger"
     description={description}
-    dateModified="2026-09-05"
+    dateModified="2026-09-23"
     about={['StrongLifts 5x5', '5x5 strength training']}
   />
 
@@ -40,15 +46,15 @@ const description =
   <p>
     Two things usually bring people to this page: they want to keep running 5x5 without paying a
     subscription for the privilege, and they do not want to abandon the history they already have.
-    Badger does both. It is a log with tools rather than an app that runs the program for you, and
-    that difference is worth understanding before you switch.
+    Badger does both. It proposes each session's weight from the program's own rules and leaves the
+    final say with you, and that difference is worth understanding before you switch.
   </p>
 
   <h2 id="whats-in-the-box">What Badger brings to a 5x5</h2>
 
   <ul>
     <li>
-      <strong>The template ships with the app.</strong> Under Routines, in the Beginner Programs
+      <strong>The template ships with the app.</strong> Under More &rarr; Routines, in the Beginner Programs
       folder, there is a StrongLifts 5x5 routine with two alternating days. Workout A is squat, bench
       press, and barbell row, five sets of five each. Workout B is squat and overhead press, five
       sets of five, plus one set of five deadlifts. Set it active and it is ready.
@@ -60,8 +66,17 @@ const description =
     </li>
     <li>
       <strong>Your weights, not ours.</strong> The template carries the rep scheme and no weights at
-      all. The first session is you entering what you actually lift; after that each session starts
-      prefilled from the last one.
+      all. The first session is you entering what you actually lift; after that the program's rules
+      propose each session's weight from the last one.
+    </li>
+    <li>
+      <strong>The program's rules come with it.</strong> Each lift carries the StrongLifts rule as a
+      sentence: <em>After 3 misses, drop 10%. When all working sets hit the plan, add 2.5 kg.</em> The
+      deadlift adds 5 kg. If you log in pounds, the steps read 5 lbs and 10 lbs.
+    </li>
+    <li>
+      <strong>The stall ladder is built in.</strong> Three misses in a row on a lift also move it from
+      5x5 to 3x5, then to 1x5. The deadlift is already 1x5 and stays there.
     </li>
     <li>
       <strong>A rest timer that starts itself.</strong> It runs when you complete a working set, two
@@ -91,31 +106,25 @@ const description =
 
   <ul>
     <li>
-      <strong>Badger does not add the weight for you.</strong> There is no setting that puts 2.5 kg on
-      the bar every session. What it does instead: once you have held the same top weight for three
-      sessions with every working set finished, a line appears above the entry row reading
-      <em>Suggested: 82.5 kg</em>. You type it in, or you do not. The trigger count is adjustable in
-      settings.
+      <strong>Every weight is a proposal.</strong> When you start a session, the preview shows the
+      weight the rule chose and the line of the rule that fired, for example <em>Rule met: all sets
+      hit the plan last session</em>. Type your own weight and the rule stays on. The rule never edits
+      the routine itself. See <a href="/help/routines/#progression">progression rules</a>.
     </li>
     <li>
-      <strong>There is an optional write-back, and it is conservative.</strong> Auto-progress routine
-      weights, off unless you switch it on, offers at the end of a workout to save weights you already
-      lifted above the plan back into the routine. It never invents an increment, and it asks per
-      exercise before it writes anything.
+      <strong>Every number in the rule is yours to change.</strong> Tap the increment, the percentage
+      or the number of misses and type a new value.
     </li>
     <li>
-      <strong>No "fail three times, drop ten percent" rule.</strong> Badger has a deload feature, off
-      by default, and it works on a different idea: it schedules a whole light week starting the
-      following Monday, at half the weight with two fewer working sets (the defaults; both are
-    adjustable), which you confirm or decline
-      when you start that session. It is a program-wide light week, not a per-lift reset triggered by
-      missed reps. Cutting one stalled lift by ten percent is something you do by hand.
+      <strong>Installed Badger before 1.1.12?</strong> Your copy of the template has no rules. Import
+      <a href="/programs/">stronglifts-5x5.badger</a> to get the rules and the stall ladder, or use
+      <a href="/help/routines/#set-up-progression">Set up progression</a> on the routine you have,
+      which adds the rules without the ladder.
     </li>
     <li>
-      <strong>Nothing decides you have stalled and moves you on.</strong> Plateau detection is
-      optional and off by default, applies only to weight-and-reps exercises, and needs at least five
-      sessions spanning three weeks of a flat estimated 1RM before it says anything. When it does, it
-      is a banner with three suggestions, not a decision taken for you.
+      <strong>The app-wide deload week is a separate feature.</strong> It is off by default and
+      schedules a whole light week, at half the weight with two fewer working sets (the defaults; both
+      are adjustable), which you confirm or decline when you start that session.
     </li>
     <li>
       <strong>No watch app</strong> on either platform, and no logging from your wrist.
@@ -131,10 +140,9 @@ const description =
   <div class="callout">
     <span class="caps">The short version</span>
     <p>
-      The honest summary: Badger will hold the program, remember your weights, time your rests, and
-      show you the graph. Deciding when to add weight, when to repeat, and when to back off stays
-      yours. Plenty of people prefer that. If you wanted the app to make those calls, it is better to
-      know now.
+      The honest summary: Badger will hold the program, propose each weight from its rules, time your
+      rests, and show you the graph. It proposes and you decide: every proposal says why, and you can
+      type over any of them.
     </p>
   </div>
 
@@ -196,9 +204,10 @@ const description =
   </ul>
 
   <p>
-    The import runs entirely on your phone, straight from the file you picked, and you can run it more
-    than once, so a second or partial export is fine to add later. Nothing already logged is
-    overwritten: sets landing on a date you already have merge into that session. Full detail in
+    The import runs entirely on your phone. Import each file once: sets on a date you already have
+    are added to that day's workout, so importing the same export again duplicates them. The preview
+    warns you when a file overlaps days you already logged.
+    Full detail in
     <a href="/help/getting-started/#importing-stronglifts">importing from Stronglifts</a> and
     <a href="/guides/switching/">switching from another app</a>.
   </p>
@@ -223,19 +232,18 @@ const description =
 
   <ul>
     <li>
-      <strong>Stretch it first.</strong> Smaller jumps, a light week, and rests long enough to be
-      boring will all buy time. Badger has the tools for each; none of them is automatic.
+      <strong>Stretch it first.</strong> The stall ladder does part of this for you, and smaller
+      jumps, a light week, and rests long enough to be boring will all buy more time.
     </li>
     <li>
-      <strong>GZCLP and Upper/Lower</strong> both ship as templates in the app and download as files
-      from the <a href="/programs/">program gallery</a>. Either is a reasonable next step.
+      <strong>Madcow 5x5</strong> is StrongLifts' own answer once 1x5 stalls, and it ships in the
+      Intermediate Programs folder with weekly progression written in.
     </li>
     <li>
-      <strong>5/3/1 and other percentage programs are a real limit.</strong> Badger ships a Boring But
-      Big skeleton, but it will not compute working weights as percentages of a training max, so the
-      arithmetic each cycle is yours. That is written up plainly on the
-      <a href="/programs/">program gallery</a>, together with a way to say you want it built, which is
-      the only signal this site collects.
+      <strong>GZCLP, 5/3/1 BBB and nSuns 531LP</strong> ship too, with their rules. 5/3/1 and nSuns
+      work from a <a href="/help/routines/#training-max">training max</a> that Badger keeps per lift
+      and turns into loads your plates can make. All of them download as files from the
+      <a href="/programs/">program gallery</a>.
     </li>
   </ul>
 

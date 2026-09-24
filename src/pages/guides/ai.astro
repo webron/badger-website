@@ -76,17 +76,51 @@ The format is documented at https://badger.fit/badger-format/ and there is a sma
 
 Follow the format exactly:
 - Top level: "badger": "share/v1", "type": "routine", plus app_version, created_at, and payload.
-- payload has routine, days, exercises, and machines (machines can be an empty array).
-- Every exercise a day references must also appear in payload.exercises with the same name and type.
+- payload has routine (an object with at least "name"), days, exercises, and machines (machines can be an empty array).
+- Each day has "name" and an "exercises" array of slots. Optionally add "scheduled_days": weekday numbers, 1 = Monday to 7 = Sunday.
+- Each slot's "exercise_name" and "exercise_type" must exactly equal a "name" and "type" in payload.exercises. The slot's planned sets go in its "predefined_sets" array.
+- Each entry in payload.exercises has "name", "type" and "category_name". type is one of: weight_reps, reps_only, time_only, distance_only, weight_only, weight_time, weight_distance, reps_time, reps_distance, distance_time.
+- A set uses the fields its type needs: "reps" (and "weight" when you have one) for weight_reps, "duration_seconds" for time_only, "distance" in kilometers for distance types. Mark warmups with "is_warmup": true.
 - Use ordinary exercise names ("Barbell Back Squat", not "BB squat"), so they match exercises I already have instead of creating duplicates.
 - For a rep range, set reps to the bottom of the range and reps_max to the top. For an exact target, use reps alone.
 - For an open-topped ("AMRAP") set, set reps to the minimum and "is_amrap": true, and leave reps_max out. That reads as "8+": at least 8 reps, then as many as possible. A set to failure is reps 1 with is_amrap true. Never set both is_amrap and reps_max on the same set.
 - Leave weight out. I fill in my own weights.
+- For a percentage-based set, write "percent_of_reference" (85.0 means 85%) and still leave weight out.
 - Never put reps_max or is_amrap on a warmup set.
 - Order matters: days, exercises, and sets import in the order they appear in their arrays.
-- To pair exercises as a superset, give both slots the same "superset_key". To pre-assign swap options, use "alternatives" with names that also appear in payload.exercises. For a tempo prescription, put it in "tempo" on the slot, like "3-1-2-0".
+- To pair exercises as a superset, give both slots the same "superset_key". To pre-assign swap options, use "alternatives": an array of objects like { "exercise_name": "...", "exercise_type": "..." }, each also defined in payload.exercises. For a tempo prescription, put it in "tempo" on the slot, like "3-1-2-0".
 - If I paste a gym .badger file below, plan around its equipment: only pick machine exercises its machines support (barbell, dumbbell, and bodyweight movements are always available). For an exercise done on one of those machines, set default_machine_name to that machine's name exactly as written in my file, and copy the machine's entry into payload.machines verbatim. Never invent or rename a machine.
 - A gym file may also list "bars" and "accessories". Read them for what the gym has, but do not put them in the routine: a routine slot carries no default bar and no accessories, so mention band or chain work in your explanation underneath instead of trying to encode it.
+- Progression can live in the file. If the program changes week to week (like 5/3/1), write the day once with "cycle_length" and give each set a 0-based "week_index"; a set with no week_index applies every week. If a slot progresses by a fixed rule, you may write it as a "progression" object on the slot, following the Progression and Clause sections of the format page exactly. It needs "cadence", "reference_kind" and a "clauses" array in evaluation order that ends with an "always" clause; each clause needs "trigger", "action" and "target", plus "amount" (add_absolute, set_from_remembered), "percent" (add_percent) or "reps_min" (driver_reps_at_least, driver_reps_between) where the format page says so. Mark the set a driver trigger reads with "is_progression_driver": true. A rule that breaks those rules is dropped on import while the rest of the file still imports, so when unsure, leave the rule out and describe it underneath instead.
+
+The smallest valid file looks like this:
+{
+  "badger": "share/v1",
+  "app_version": "1.1.12",
+  "created_at": "2026-09-23T00:00:00Z",
+  "type": "routine",
+  "payload": {
+    "routine": { "name": "My Program" },
+    "days": [
+      {
+        "name": "Day A",
+        "exercises": [
+          {
+            "exercise_name": "Barbell Back Squat",
+            "exercise_type": "weight_reps",
+            "predefined_sets": [
+              { "is_warmup": false, "reps": 5 }
+            ]
+          }
+        ]
+      }
+    ],
+    "exercises": [
+      { "name": "Barbell Back Squat", "type": "weight_reps", "category_name": "Legs" }
+    ],
+    "machines": []
+  }
+}
 
 What I want:
 - Days a week: [4]
@@ -139,9 +173,9 @@ Give me the complete JSON in one code block, then explain the program in a few s
       <a href="/help/settings/#export">exporting data</a>.
     </li>
     <li>
-      <strong>A routine, as a <code>.badger</code> file.</strong> Open a routine and pick Share
-      routine from its menu. It carries the plan and nothing about your history. The
-      <a href="/programs/">program gallery</a> has seven ready to read.
+      <strong>A routine, as a <code>.badger</code> file.</strong> Open a routine and pick Send
+      routine file from its menu. It carries the plan and nothing about your history. The
+      <a href="/programs/">program gallery</a> has every built-in program ready to read.
     </li>
     <li>
       <strong>Your gym, as a <code>.badger</code> file.</strong> Open a gym and pick Share gym from
@@ -183,9 +217,14 @@ Give me the complete JSON in one code block, then explain the program in a few s
 
   <ul>
     <li>
-      <strong>Save it with a <code>.badger</code> extension</strong>, then tap the file. Badger opens
-      with a preview before anything is written. Your file manager, or Files on an iPhone, opens it
-      just as well.
+      <strong>Turn the reply into a file.</strong> Copy the JSON from the chat into a plain-text file
+      named something like <code>my-program.badger</code>. On a computer any text editor will do;
+      then move the file to your phone however you usually move files. On a phone, ask the AI to give
+      you the JSON as a downloadable <code>.badger</code> file, if your chat app can do that.
+    </li>
+    <li>
+      <strong>Open the file on your phone.</strong> Tap it, or open it from your file manager (Files
+      on an iPhone). Badger opens with a preview before anything is written.
     </li>
     <li>
       <strong>Read the new-exercise count in that preview.</strong> A program of familiar lifts should

@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Settings & Data" description="Settings overview, backup, restore, and data export in Badger.">
   <h1>Settings & Data</h1>
 
-  <p>Go to <strong>You → Settings</strong> to access all preferences. The <strong>You → Data &amp; backup</strong> shortcut opens the same screen and scrolls straight to the Your data section.</p>
+  <p>Go to <strong>More → Settings</strong> to access all preferences. The <strong>More → Data &amp; backup</strong> shortcut opens the same screen and scrolls straight to the Your data section.</p>
 
   <p>Settings is grouped by what you are trying to do: <a href={`#logging`}>Logging</a>, the three timer families (<a href={`#rest-timer`}>Rest timer</a>, <a href={`#set-timer`}>Set timer</a>, and <a href={`#workout-timer`}>Workout timer</a>), <a href={`#coaching`}>Coaching</a>, <a href={`#app`}>App</a>, and <a href={`#data`}>Your data</a>.</p>
 
@@ -65,21 +65,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Theme</strong> - Light, Dark, or System (follows your device setting).</li>
     <li><strong>Accent color</strong> - Choose from a preset palette or pick a custom color. The accent applies globally throughout the app.</li>
     <li><strong>Calendar week start</strong> - Monday, Sunday, or Saturday.</li>
-    <li><strong>Default history view</strong> - Whether the calendar on the home screen defaults to list or calendar view.</li>
+    <li><strong>Default history view</strong> - Whether the History tab opens on the list or the calendar.</li>
     <li><strong>Keep screen on</strong> - Prevents your device from sleeping during a workout.</li>
     <li><strong>Haptic feedback</strong> - Vibration on interactions and timer events.</li>
     <li><strong>Workout notification</strong> - Android only. Shows the current exercise and your next set target in the notification bar while a workout is running, so you can check it from the lock screen. See <a href={`/help/logging/#workout-notification`}>Workout notification</a>.</li>
-    <li><strong>Workout reminders</strong> - Schedule a daily notification to remind you to train. Configure the time, how many minutes before to notify, and which days to send it.</li>
+    <li><strong>Workout reminders</strong> - A notification on each weekday a routine day is <a href={`/help/routines/#creating`}>scheduled for</a>. <strong>Remind me</strong> sets how long before 8:00 AM that day it arrives.</li>
     <li><strong>End of workout summary</strong> - Choose what the completion sheet shows when you finish a session.</li>
   </ul>
 
   <h2 id="training-notes">Training notes</h2>
-  <p>Under <strong>You → Training → Training notes</strong> is a private page for your own context - goals, injuries, training history, and anything else worth remembering. It's one free-text page; your notes save automatically as you type, so there's no save button. The text stays on your device and is never required.</p>
-  <p>Training notes are included in your <a href={`#backup`}>settings backup</a>, so they carry across to a new device when you restore. They are <strong>not</strong> shared when you export data or share individual routines. (Program-specific notes belong on the routine itself - see <a href={`/help/routines/#routine-notes`}>Routine notes</a>.)</p>
+  <p>Under <strong>More → Training notes</strong> is a private page for your own context - goals, injuries, training history, and anything else worth remembering. It's one free-text page; your notes save automatically as you type, so there's no save button. The text stays on your device and is never required.</p>
+  <p>Training notes are included in your <a href={`#backup`}>backup</a>, so they carry across to a new device when you restore. They are <strong>not</strong> shared when you export data or share individual routines. (Program-specific notes belong on the routine itself - see <a href={`/help/routines/#routine-notes`}>Routine notes</a>.)</p>
   <p>At the bottom of the page is <strong>Copy for AI</strong>, which bundles these notes together with your program, recent training, records and equipment into one block of text you can paste into any AI - see <a href={`#ai-context`}>Copying your context for an AI</a>.</p>
 
   <h2 id="data">Your data</h2>
-  <p>All the rows below live in the <strong>Your data</strong> section at the bottom of Settings. Tap <strong>You → Data &amp; backup</strong> to jump straight to it.</p>
+  <p>All the rows below live in the <strong>Your data</strong> section at the bottom of Settings. Tap <strong>More → Data &amp; backup</strong> to jump straight to it.</p>
 
   <h3 id="backup">Backup &amp; restore</h3>
   <p>Your workout data is stored locally in a SQLite database. You should back it up regularly.</p>
@@ -90,9 +90,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h3 id="cloud-backup">Cloud backup</h3>
-  <p><strong>Cloud backup</strong> opens its own screen where you can turn on automatic backup to your own Google Drive. It is off unless you enable it. See <a href={`/help/phone-migration/`}>Moving to a new phone</a> for how it fits into a device switch.</p>
+  <p><strong>Cloud backup</strong> opens its own screen where you can turn on automatic backup to your own Google Drive. It is off unless you enable it. <a href={`/help/phone-migration/#cloud-backup`}>Moving to a new phone</a> has the steps to set it up and to restore from it.</p>
   <p><strong>Back up equipment photos</strong>, on the same screen, is a second opt-in - off by default. Leave it off and backups hold your training data only.</p>
-  <p>Turn it on and photos of your machines and attachments ride along in every backup, so they come back when you restore. The cost is considerably larger files that use more of your Drive storage. Photos already on your machines and attachments are included starting with the next backup.</p>
+  <p>Turn it on and photos of your machines, attachments and bars ride along in every backup, so they come back when you restore. The cost is considerably larger files that use more of your Drive storage. Photos already on your equipment are included starting with the next backup.</p>
 
   <h3 id="export">Exporting data</h3>
   <p><strong>Export workout data</strong> generates a CSV file with one row per logged set, including date, exercise name, weight, reps, duration, warmup flag, RPE, RIR, and more. The file is shared via the system share sheet.</p>
@@ -104,7 +104,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>It then adds instructions telling the AI how to read the briefing, including how to write a routine back as a <a href={`/badger-format/`}><code>.badger</code> file</a>.</p>
   <p>Badger shows you the whole thing before anything leaves. Read it, then tap <strong>Copy</strong> to put it on your clipboard or <strong>Share</strong> to send it through the system share sheet. <strong>Badger transmits nothing.</strong> The text is assembled on your device, there is no account and no server involved, and where it goes next is entirely your choice.</p>
   <p>The briefing is trimmed to fit a chat window: if you train a lot, older sessions drop first, then equipment, then records. Your notes are the last thing cut, and your constraints and the closing instructions are never dropped. An empty section is left out instead of shown blank.</p>
-  <p>Your <strong>body measurements and any health data are deliberately not included</strong>, and nothing from your workout comments, per-set comments or exercise notes travels either. The same action is available at the bottom of your Training notes page. See <a href={`/guides/ai/`}>Use your own AI</a> for what to do with it.</p>
+  <p>Your <strong>body measurements and any health data are deliberately not included</strong>, and nothing from your workout comments, per-set comments or exercise notes travels either. The same action is available at the bottom of your Training notes page, labeled <strong>Copy for AI</strong>. See <a href={`/guides/ai/`}>Use your own AI</a> for what to do with it.</p>
 
   <h3 id="importing">Importing workout history</h3>
   <p>Badger can import your full history from FitNotes, Strong, Hevy, and Stronglifts. Each option appears in the same Your data section:</p>

@@ -57,7 +57,7 @@ const description =
     something that emits a file Badger can read. And AI assistants: point yours at this page, hand it
     the <a href="#example">example</a>, and ask it to write you a program as a valid
     <code>.badger</code> file. The <a href="/guides/ai/">BYO-AI guide</a> has prompts for exactly that,
-    and <a href="/programs/">the program gallery</a> has seven real files to read.
+    and <a href="/programs/">the program gallery</a> has every built-in program as a real file to read.
   </p>
 
   <div class="callout">
@@ -70,7 +70,7 @@ const description =
 
   <h2 id="envelope">The envelope</h2>
 
-  <p>Every file, whatever it holds, has the same five top-level fields.</p>
+  <p>Every file Badger writes, whatever it holds, has the same five top-level fields. Import needs three of them.</p>
 
   <div class="table-wrap">
   <table>
@@ -80,7 +80,7 @@ const description =
       <tbody>
         <tr>
           <td><code>badger</code></td>
-          <td>string</td>
+          <td>string, required</td>
           <td>
             Schema version. Today it is always <code>share/v1</code>. A build imports the versions it
             knows; anything else is refused rather than guessed at.
@@ -89,16 +89,16 @@ const description =
         <tr>
           <td><code>app_version</code></td>
           <td>string</td>
-          <td>The app version that wrote the file, for example <code>1.1.1</code>. Informational.</td>
+          <td>The app version that wrote the file, for example <code>1.1.1</code>. Informational, and optional on import.</td>
         </tr>
         <tr>
           <td><code>created_at</code></td>
           <td>string</td>
-          <td>UTC timestamp in ISO 8601. Informational.</td>
+          <td>UTC timestamp in ISO 8601. Informational, and optional on import.</td>
         </tr>
         <tr>
           <td><code>type</code></td>
-          <td>string</td>
+          <td>string, required</td>
           <td>
             One of <code>routine</code>, <code>gym</code>, <code>machines</code>. Any other value and
             the file is rejected as invalid.
@@ -106,7 +106,7 @@ const description =
         </tr>
         <tr>
           <td><code>payload</code></td>
-          <td>object</td>
+          <td>object, required</td>
           <td>The contents. Its shape depends on <code>type</code>: a <a href="#routine">routine payload</a> or a <a href="#gym">gym or machines payload</a>.</td>
         </tr>
       </tbody>
@@ -115,14 +115,21 @@ const description =
 
   <p>
     Optional fields are omitted rather than written as <code>null</code>, and unknown fields are
-    ignored on the way in. Writing a file by hand is therefore forgiving: include what you mean,
-    leave out what you do not.
+    ignored on the way in.
+  </p>
+
+  <p>
+    On import, a field marked <em>required</em> in the tables on this page must be present; any other field may be left out or written as <code>null</code>, and either
+    reads as if it were absent. Writing a file by hand is therefore forgiving: include what you
+    mean, leave out what you do not.
   </p>
 
   <h2 id="routine">A routine payload</h2>
 
   <p>
-    <code>type: "routine"</code>. The payload has four keys:
+    <code>type: "routine"</code>. The payload has four keys. Only <code>routine</code> is required:
+    a missing <code>days</code>, <code>exercises</code> or <code>machines</code> reads as an empty
+    list, though a routine needs days and exercise definitions to be of any use.
   </p>
 
   <div class="table-wrap">
@@ -131,10 +138,10 @@ const description =
         <tr><th>Key</th><th>Type</th><th>Contents</th></tr>
       </thead>
       <tbody>
-        <tr><td><code>routine</code></td><td><a href="#routine-object"><code>Routine</code></a></td><td>The routine itself: name, notes, and its settings.</td></tr>
+        <tr><td><code>routine</code></td><td><a href="#routine-object"><code>Routine</code></a>, required</td><td>The routine itself: name, notes, and its settings.</td></tr>
         <tr><td><code>days</code></td><td>array of <a href="#day"><code>Day</code></a></td><td>The days, in order. Each day carries its own <code>exercises</code> array: that day's slots, in order, with their planned sets.</td></tr>
         <tr><td><code>exercises</code></td><td>array of <a href="#exercise"><code>Exercise</code></a></td><td>The definition of every exercise any day references: its name, type, and category. Day slots point into this list by <code>exercise_name</code>.</td></tr>
-        <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>Machines the day slots pin. Always written; the import preview asks before creating any.</td></tr>
+        <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>Machines the day slots pin. Badger always writes it, but it may be left out. The import preview asks before creating any.</td></tr>
       </tbody>
   </table>
   </div>
@@ -218,20 +225,16 @@ const description =
           <td><code>cycle_length</code></td>
           <td>integer</td>
           <td>
-            How many weeks this day's cycle runs for, if it is <a href="#waves">waved</a> -
-            <code>4</code> for a 5/3/1 day. Leave the key out for a day that runs the same session
-            every time, which is every day written before this key existed and most days anybody
-            writes by hand. When it is present, each set's <a href="#predefined-set"><code>week_index</code></a>
-            says which week it belongs to.
-            <br /><br />
-            A <strong>stage ladder</strong> is written with these same two keys, so a GZCLP or
-            StrongLifts export carries them too. The difference is in the rule, not in the file:
-            a rule that can change stage walks the variants by stalling, and one that cannot walks
-            them by the cycle. A reader that only wants to render the plan does not have to tell
-            them apart.
+            How many set variants this day cycles through, if it is <a href="#waves">waved</a>:
+            <code>4</code> for a 5/3/1 day (four weeks), <code>3</code> for a GZCLP day (three
+            stages). Leave the key out for a day that runs the same session every time, which is
+            every day written before this key existed and most days anybody writes by hand. When it
+            is present, each set's <a href="#predefined-set"><code>week_index</code></a> says which
+            variant it belongs to. <a href="#waves">Waves</a> explains what picks the variant.
+            Needs Badger 1.1.12 or later.
           </td>
         </tr>
-        <tr><td><code>exercises</code></td><td>array of <a href="#day-exercise"><code>DayExercise</code></a></td><td>The day's exercise slots.</td></tr>
+        <tr><td><code>exercises</code></td><td>array of <a href="#day-exercise"><code>DayExercise</code></a></td><td>The day's exercise slots. Left out, the day imports empty.</td></tr>
       </tbody>
     </table>
   </div>
@@ -306,7 +309,8 @@ const description =
           <td>array</td>
           <td>
             Pre-assigned swap options for this slot, in order: objects of the form
-            <code>&#123; "exercise_name": "...", "exercise_type": "..." &#125;</code>, resolved by
+            <code>&#123; "exercise_name": "...", "exercise_type": "..." &#125;</code>, where
+            <code>exercise_name</code> is required. Each is resolved by
             the same rules as the slot itself, so each one needs a definition in the payload's
             <code>exercises</code> list. An unmatched alternative is counted in the import
             preview's warning and skipped.
@@ -324,7 +328,7 @@ const description =
         <tr>
           <td><code>predefined_sets</code></td>
           <td>array of <a href="#predefined-set"><code>PredefinedSet</code></a></td>
-          <td>The planned sets. An empty list is valid but pointless.</td>
+          <td>The planned sets. May be left out; an empty list is valid but pointless.</td>
         </tr>
       </tbody>
     </table>
@@ -405,22 +409,27 @@ const description =
             it says. Import accepts anything above 0 and up to 200; a value outside that is a typo
             rather than a prescription, and the set is read as an ordinary absolute-weight set.
             <br /><br />
-            <strong>Write <code>weight</code> alongside it, not instead of it.</strong> The two travel
-            together on purpose: an older reader that has never heard of this key still finds a usable
-            target, and turning the percentage off restores the number rather than blanking the set.
-            That is the whole reason this key needed no new schema version.
+            <strong><code>weight</code> is optional beside it.</strong> While the percentage applies,
+            Badger ignores the weight but keeps it: turning the percentage off restores the number
+            rather than blanking the set, and when a weight is written, an older reader that has never
+            heard of this key still finds it as the target. The built-in
+            program files leave the weight out. Needs Badger 1.1.12 or later.
           </td>
         </tr>
         <tr>
           <td><code>is_progression_driver</code></td>
           <td>boolean, defaults to false</td>
           <td>
-            Marks this as the one set whose logged reps a rule's <code>driver_reps_at_least</code> /
-            <code>driver_reps_between</code> triggers read. It is an explicit flag rather than a
+            Marks this as the one set whose logged reps a rule's <code>driver_reps_at_least</code>,
+            <code>driver_reps_between</code>, <code>driver_reps_below_plan</code> and
+            <code>cycle_missed_minimum</code> triggers read. It is an explicit flag rather than a
             position, because "the third set" stops being true the moment somebody deletes a set.
-            <strong>At most one per slot, and never on a warmup</strong> - a file carrying more gets
-            the first in array order and the rest cleared, and one on a warmup is dropped. Omitted
-            when false.
+            <strong>At most one per week of the slot's cycle, and never on a warmup.</strong> On a
+            <a href="#waves">waved</a> day each <code>week_index</code> may have its own driver, as
+            5/3/1's plus set does in weeks 1 to 3; a set with no <code>week_index</code> belongs to
+            every week, so it rules out any other driver in the slot. A file carrying more than that
+            keeps the first in array order and clears the rest, and one on a warmup is dropped.
+            Omitted when false. Needs Badger 1.1.12 or later.
           </td>
         </tr>
         <tr>
@@ -444,6 +453,8 @@ const description =
   <p>
     The object in a <a href="#day-exercise"><code>DayExercise</code></a>'s <code>progression</code>
     key: that slot's rule for what happens to its weight next session. At most one per slot.
+    Needs Badger 1.1.12 or later; an older version ignores the key and imports the slot without a
+    rule.
   </p>
 
   <p>
@@ -488,9 +499,11 @@ const description =
           <td>array of <a href="#clause"><code>Clause</code></a>, required</td>
           <td>
             The rule itself, <strong>in evaluation order</strong>: the first clause whose trigger
-            matches is the one that fires, and nothing after it runs. The array order is the order,
-            as everywhere else in this format. Must be non-empty and must end with an
-            <code>always</code> clause.
+            matches is the one that fires. Any clauses directly after it that state the same
+            <code>trigger</code> with the same numbers, and move a different <code>target</code>,
+            fire with it; that is how one outcome both resets the stage and cuts the weight. Nothing
+            else runs. The array order is the order, as everywhere else in this format. Must be
+            non-empty and must end with an <code>always</code> clause.
           </td>
         </tr>
         <tr>
@@ -530,6 +543,32 @@ const description =
     <code>target</code>, <code>amount</code>, <code>amount_unit</code> and <code>percent</code>
     belong to the action.
   </p>
+
+  <h4 id="clause-terms">Terms the triggers and actions use</h4>
+  <ul>
+    <li>
+      <strong>A missed session</strong> (a failure): a session of this slot in which at least one
+      logged working set was left incomplete or came in under its planned minimum. A skipped set
+      counts neither way. A session where every logged working set met its minimum is a success. A session with no completed set of
+      the exercise at all is neither, and the rule ignores it.
+    </li>
+    <li>
+      <strong>The failure counter</strong>: the run of missed sessions in a row. A success resets it
+      to 0, and so does a <code>consecutive_failures_at_least</code> or <code>stage_is_last</code>
+      clause firing. <code>hold</code> lets it move; <code>none</code> undoes this session's change
+      to it.
+    </li>
+    <li>
+      <strong>Stage</strong>: on a stage-based day, which of the day's set variants
+      (<code>week_index</code> values, see <a href="#waves">Waves</a>) the slot is on, counting from
+      0. Only <code>next_stage</code> and <code>reset_stage</code> move it.
+    </li>
+    <li>
+      <strong>Remembered weight</strong>: the slot's weight as it stood while the slot was on its
+      first stage, recorded each time the rule reads a session there. <code>set_from_remembered</code>
+      restarts from it.
+    </li>
+  </ul>
 
   <div class="table-wrap">
     <table>
@@ -586,11 +625,11 @@ const description =
             What happens when it fires. One of:
             <ul>
               <li><code>add_absolute</code> - add <code>amount</code>.</li>
-              <li><code>add_percent</code> - multiply by <code>percent</code>. A negative value is a reduction; the sign is carried, never inferred from the name.</li>
+              <li><code>add_percent</code> - change the weight by <code>percent</code> percent: <code>5</code> adds 5%, <code>-10</code> takes 10% off. The sign is carried, never inferred from the name.</li>
               <li><code>hold</code> - the weight stays; counters still move.</li>
               <li><code>none</code> - nothing changes at all, counters included.</li>
               <li><code>next_stage</code> - move up a stage, weight unchanged.</li>
-              <li><code>reset_stage</code> - back to the first stage, plus whatever weight action the same clause carries.</li>
+              <li><code>reset_stage</code> - back to the first stage (stage 0), with the weight unchanged. To reset and change the weight on the same outcome, follow it with a second clause carrying the same <code>trigger</code> and a weight action, as GZCLP does: <code>reset_stage</code> on <code>stage</code>, then <code>add_percent</code> <code>-10</code> on <code>working_weight</code>.</li>
               <li><code>set_from_remembered</code> - the remembered weight plus <code>amount</code>. With nothing remembered, the clause does nothing and says so, rather than inventing a base.</li>
               <li><code>halve_increment</code> - halve the increment this rule adds from here on.</li>
             </ul>
@@ -602,7 +641,15 @@ const description =
           <td>string, required</td>
           <td>
             What the action moves: <code>working_weight</code>, <code>reference</code> (the training
-            max), <code>stage</code>, or <code>increment</code>.
+            max), <code>stage</code>, or <code>increment</code>. Required on every clause, including
+            <code>hold</code> and <code>none</code>. The pairs Badger's own programs use:
+            <ul>
+              <li><code>add_absolute</code> (needs <code>amount</code>), <code>add_percent</code> (needs <code>percent</code>), <code>set_from_remembered</code> (needs <code>amount</code>), <code>hold</code> and <code>none</code>: the weight the rule moves, which is <code>reference</code> in a <code>training_max</code> rule and <code>working_weight</code> otherwise.</li>
+              <li><code>next_stage</code> and <code>reset_stage</code>: <code>stage</code>.</li>
+              <li><code>halve_increment</code>: <code>increment</code>, with <code>amount</code> and <code>amount_unit</code> set to the rule's <code>add_absolute</code> step, which is what it halves the first time.</li>
+            </ul>
+            The only pairing that drops a rule is <code>reference</code> in a
+            <code>working_weight</code> rule.
           </td>
         </tr>
         <tr>
@@ -619,7 +666,7 @@ const description =
         <tr>
           <td><code>amount_unit</code></td>
           <td>string</td>
-          <td><code>"kg"</code> or <code>"lbs"</code>, for <code>amount</code>. Absent means kg, as everywhere else in the format.</td>
+          <td><code>"kg"</code> or <code>"lbs"</code>, for <code>amount</code>. Absent means kg.</td>
         </tr>
         <tr>
           <td><code>percent</code></td>
@@ -643,14 +690,20 @@ const description =
       while the app did another, which is the failure the whole design exists to prevent.
     </p>
     <p>
-      The six things that drop a rule: an unrecognized <code>trigger</code>, <code>action</code>,
+      The seven things that drop a rule: an unrecognized <code>trigger</code>, <code>action</code>,
       <code>target</code>, <code>cadence</code> or <code>reference_kind</code>; a
-      <code>driver_reps_*</code> trigger with no <code>reps_min</code>; a
+      <code>driver_reps_*</code> trigger with no <code>reps_min</code> (except
+      <code>driver_reps_below_plan</code>, which takes its minimum from the plan); a
       <code>driver_reps_between</code> whose <code>reps_max</code> is below its <code>reps_min</code>;
       a missing <code>amount</code> or <code>percent</code> the action requires; a clause targeting
       <code>reference</code> under <code>reference_kind: "working_weight"</code>; and no clauses at
       all, or a <code>clauses</code> array that does not <em>end</em> with an <code>always</code>
       (an <code>always</code> in the middle makes everything after it dead, which is the same lie).
+    </p>
+    <p>
+      The seventh: a clause that can never fire because an earlier one already covers it, such as
+      <code>consecutive_failures_at_least</code> 2 before the same trigger at 3, or a run of
+      same-trigger clauses that moves one target twice.
     </p>
   </div>
 
@@ -658,7 +711,8 @@ const description =
 
   <p>
     A day that runs a cycle of weeks - 5/3/1's four is the standard case - is written once rather
-    than four times. Two keys do it, and they only make sense together:
+    than four times. Two keys do it, and they only make sense together. Both need Badger 1.1.12 or
+    later.
   </p>
 
   <ul>
@@ -678,6 +732,28 @@ const description =
     <code>cycle_length</code> - is read as "every week" rather than kept, because keeping it would
     make the set silently never appear in any week at all. Which week a reader is <em>on</em> does
     not travel: a recipient starts the program at its beginning.
+  </p>
+
+  <p>
+    <strong>The week counter belongs to the routine, not the day.</strong> It is one number that
+    every waved day in the routine reads. It moves on once every day waved to the same length has
+    been trained since the last move. Stage-based days (below) do not move it.
+  </p>
+
+  <p>
+    Each day reads the counter against its own <code>cycle_length</code>, so give every waved day
+    in a routine the same length. <code>cycle_complete</code> fires when the counter wraps back to
+    the first week. If lengths differ, each length moves the shared counter on its own schedule,
+    and <code>cycle_complete</code> wraps at each day's own length.
+  </p>
+
+  <p>
+    <strong>For a stage-based program</strong> (GZCLP, StrongLifts), use the same two keys, with
+    each <code>week_index</code> a stage and <code>cycle_length</code> the number of stages. A slot whose rule has a <code>next_stage</code> or <code>reset_stage</code> clause, or any
+    clause targeting <code>stage</code>, shows the variant for its current <a href="#clause">stage</a>.
+    The stage changes only when one of those clauses fires. In GZCLP and StrongLifts that happens
+    when you stall.
+    Every other slot shows the variant for the routine's current week.
   </p>
 
   <h3 id="exercise">Exercise</h3>
@@ -807,7 +883,7 @@ const description =
         <tr>
           <td><code>weight_unit</code></td>
           <td>string</td>
-          <td><code>"kg"</code> or <code>"lbs"</code>, when this machine is labeled in a different unit from the rest of your logging.</td>
+          <td><code>"kg"</code> or <code>"lbs"</code>, when this machine is labeled in a different unit from the rest of your logging. Absent means the machine follows the recipient's own logging unit, and <code>weight_increment</code>, <code>weight_increment2</code> and <code>increment_threshold</code> are read in that unit. Write it whenever the file states those numbers.</td>
         </tr>
         <tr>
           <td><code>logs_weight_per_side</code></td>
@@ -852,7 +928,7 @@ const description =
         <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
       </thead>
       <tbody>
-        <tr><td><code>gym</code></td><td><code>Gym</code></td><td>A <code>Gym</code> is just <code>&#123; "name": "..." &#125;</code>.</td></tr>
+        <tr><td><code>gym</code></td><td><code>Gym</code>, required</td><td>A <code>Gym</code> is just <code>&#123; "name": "..." &#125;</code>.</td></tr>
         <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>The same <code>Machine</code> objects a routine payload carries.</td></tr>
         <tr><td><code>attachments</code></td><td>array of <code>Attachment</code></td><td>An <code>Attachment</code> is a <code>name</code> and optional <code>notes</code>.</td></tr>
         <tr><td><code>bars</code></td><td>array of <a href="#bar"><code>Bar</code></a></td><td>Named bars. Omitted entirely when the gym has none, so a bar-free file looks exactly like one written before bars existed.</td></tr>
@@ -925,10 +1001,10 @@ const description =
         <tr><td><code>name</code></td><td>string, required</td><td>Accessory name, for example "Green band".</td></tr>
         <tr>
           <td><code>kind</code></td>
-          <td>string, required</td>
+          <td>string</td>
           <td>
             One of <code>band</code>, <code>chain</code>, <code>suspension</code>, <code>other</code>.
-            An unrecognized value reads as <code>other</code>, which is exactly what it means: an
+            A missing or unrecognized value reads as <code>other</code>, which is exactly what it means: an
             add-on whose kind this build has no word for.
           </td>
         </tr>
@@ -937,9 +1013,9 @@ const description =
           <td>integer</td>
           <td>
             Packed ARGB, for example <code>4283215696</code>. Omitted when the accessory has no color
-            set. This is the one visual property in the whole format that travels, because it is not
-            decoration: people name a band by its color, so importing "Green band" as a gray swatch
-            would throw away something the file plainly said. (Superset colors, by contrast, stay
+            set. Color travels here because it is not decoration: people name a band by its color,
+            so importing "Green band" as a gray swatch would throw away something the file plainly
+            said. (Superset colors, by contrast, stay
             behind - the recipient's palette assigns those.)
           </td>
         </tr>
@@ -1142,9 +1218,9 @@ const description =
       Last checked against Badger <strong>{appVersion}</strong>, schema <code>share/v1</code>. The
       example above and the files in the <a href="/programs/">program gallery</a> were exported by that
       build and imported back into it before publishing. The <a href="#progression">progression</a>,
-      percentage, driver and wave keys arrived after that export and are documented from the reader
-      and writer themselves, read against <strong>1.1.12</strong>; the published files are
-      regenerated whenever the seeded programs change.
+      percentage, driver and wave keys were checked against Badger <strong>1.1.12</strong>'s own
+      import and export code. The published files are regenerated whenever the seeded programs
+      change.
     </p>
   </div>
 </HelpLayout>

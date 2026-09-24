@@ -28,7 +28,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Two things change for these exercises: their records show a <strong>Lightest</strong> best instead of an estimated 1RM (which doesn't mean anything on a counterweight), and Badger stops offering progressive-overload and warm-up weight suggestions, since those would tell you to add assistance instead of remove it.</p>
 
   <p id="record-time"><strong>Which time is the record?</strong> For timed exercises, open the exercise's edit screen and use the <strong>Record time</strong> setting: <em>Longer</em> (a longer time is better, the default for most holds), <em>Shorter</em> (a shorter time is better, for timed runs and for-time efforts), or <em>Default</em> to use the sensible default for that type. Distance + time exercises default to faster-is-better.</p>
-  <p>PRs are <strong>machine-scoped</strong>: if you have a machine set on the current exercise, the PR is compared only against other sessions on the same machine. If no machine is set, all history is compared.</p>
+  <p>PRs are <strong>scoped to your equipment</strong>: with a machine or a <a href="/help/gyms/#bar-prs">bar</a> set on the exercise, a set competes only with sets logged on that same machine and bar. With neither set, it competes with all your history.</p>
+  <p>Warmup sets never count toward a record, and neither do <a href="/help/gyms/#accessories-and-records">sets logged with an accessory</a> such as a band or chains.</p>
   <p>PRs and progress graphs are also <strong>shared across linked exercises</strong>. If you've linked two exercises (see <a href="/help/exercises/#linking">Linked exercises</a>), a new best on either one counts as a PR on both, and the progress graphs combine their history.</p>
 
   <h2>Exercise progress screen</h2>
@@ -139,7 +140,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h3 id="muscle-balance">Muscle balance</h3>
-  <p>Badger tracks how often you train each muscle group and flags imbalances. You'll see colored dots on the weekly volume chips on the home screen when a muscle group needs attention.</p>
+  <p>Badger tracks how often you train each muscle group and flags imbalances. You'll see colored dots on the weekly volume chips on the Today screen when a muscle group needs attention.</p>
   <p>On the Overview tab, a <strong>Muscle balance card</strong> appears when any muscle group is flagged. It shows:</p>
   <ul>
     <li>Each muscle group's status (OK, warning, or neglected)</li>
@@ -155,7 +156,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The same filter chip rows as the chart appear at the top of the history list when your history earns them - machine, bar, and the accessories view - and scope the sessions shown the same way.</p>
 
   <h2>History in the training screen</h2>
-  <p>The <strong>History tab</strong> in the training screen (swipe right from the Log tab) shows all previous sessions for the current exercise, newest first. Skipped sets are excluded from the display. From there you can:</p>
+  <p>The <strong>History tab</strong> in the training screen (tap it, or swipe left from the Track tab) shows all previous sessions for the current exercise, newest first. Skipped sets are excluded from the display. From there you can:</p>
   <ul>
     <li>View the full workout summary by tapping the session header.</li>
     <li>Copy that session's sets to your current workout.</li>
