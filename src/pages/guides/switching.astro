@@ -59,7 +59,7 @@ const fromApps = [
     <li>During first-launch onboarding, tap <strong>Import</strong>. You can also do this any time later from <strong>Settings → Your data → Import</strong>.</li>
     <li>Choose your old app: FitNotes, Strong, Hevy, or Stronglifts.</li>
     <li>Select the export file you saved from that app.</li>
-    <li>Review the preview: exercises, workout days, sets, and the detected weight unit.</li>
+    <li>Review the preview: exercises, workout days, sets, and the weight unit (detected from Strong, Hevy and Stronglifts files; for a FitNotes backup, check it yourself).</li>
     <li>Tap <strong>Import</strong> to bring it all in.</li>
   </ol>
 
@@ -68,14 +68,14 @@ const fromApps = [
     <li>Your exercises, your workouts, and every set within them.</li>
     <li>Weights come in their original unit, so nothing gets rounded or converted on the way in.</li>
     <li>New exercises land in an "Imported" category, so you can find and re-sort them later. Coming from FitNotes is the exception: its backup carries your own categories, so your exercises land where you already had them.</li>
-    <li>If a session already exists on the same date, the imported sets merge in rather than overwriting it.</li>
+    <li>If a session already exists on the same date, the imported sets are added to it. Nothing already logged is overwritten.</li>
   </ul>
 
   <h2>The 3 things to know</h2>
   <ul>
     <li>PRs are recalculated from your imported history, so your records show up on their own without any extra step.</li>
     <li>Nothing leaves your device. The import runs locally, straight from the file you selected.</li>
-    <li>You can import more than once, so a partial or second export is fine to add later.</li>
+    <li>Import each file once. Importing a file again adds its sets a second time on any day you already have, and the preview warns you when that would happen. See <a href="/help/settings/#importing">importing workout history</a>.</li>
   </ul>
 
   <h2 id="your-old-app">Your old app</h2>

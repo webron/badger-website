@@ -43,7 +43,9 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  *     (settings_screen.dart:1084, under the "Your data" section header), and
  *     the same import is offered in first-launch onboarding
  *     (onboarding_screen.dart:339)
- *   - re-importing merges rather than duplicating (fitnotes_importer.dart)
+ *   - re-importing ADDS overlapping sets again (duplicates) and the preview
+ *     warns about overlapping days (fitnotes_importer.dart, import_overlap.dart;
+ *     corrected 2026-09-23)
  *   - iPhone only, iOS 15.0 or later: TARGETED_DEVICE_FAMILY = 1 and
  *     IPHONEOS_DEPLOYMENT_TARGET = 15.0 in ios/Runner.xcodeproj, which matches
  *     what the App Store listing's own Compatibility section says
@@ -56,7 +58,7 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
 const description =
   'FitNotes is an Android app and has no iPhone version. Here is what to do with the log you already have: Badger is on the App Store and reads the .fitnotes backup file directly.';
 
-const modified = '2026-09-12';
+const modified = '2026-09-23';
 ---
 
 <HelpLayout title="FitNotes on iPhone" description={description}>
@@ -132,9 +134,9 @@ const modified = '2026-09-12';
   </ol>
 
   <p>
-    It runs more than once safely. Sets landing on a date you already have merge into that session
-    and nothing already logged is overwritten, so if you find an older backup later you can add it
-    without making a mess. Step-by-step detail is in
+    Import it once. Sets on a date you already have are added to that day's workout, so importing
+    the same backup again, or an older one covering the same days, duplicates them, and
+    the preview warns you when a file overlaps days you already logged. Step-by-step detail is in
     <a href="/help/getting-started/#importing-fitnotes">importing from FitNotes</a>.
   </p>
 
@@ -163,8 +165,8 @@ const modified = '2026-09-12';
 
   <p>
     Worth saying plainly, because a page that only talks about the import is selling you the door
-    rather than the room. Badger is a training log with tools attached, not a coach that runs your
-    program for you. If you liked FitNotes for being fast, free, offline and uninterested in your
+    rather than the room. Badger is a training log with tools attached. Its built-in programs propose
+    each session's weight from their own rules, and the final say stays with you. If you liked FitNotes for being fast, free, offline and uninterested in your
     email address, that is the same list Badger was built against: no account, no sign-in, no
     subscription, no ads, and no sync you did not ask for.
   </p>
@@ -174,8 +176,9 @@ const modified = '2026-09-12';
     <a href="/programs/">programs that ship built in</a>, per-machine and per-gym records, a plate
     calculator and a warmup generator that work from the plates your gym actually owns, a rest timer
     that starts itself, and <a href="/help/progress/">graphs worth opening</a>. And you can leave
-    again whenever you like: every set exports to CSV, and the whole database backs up to a
-    <a href="/badger-format/">documented file format</a> that is ordinary readable text. Neither is a
+    again whenever you like: every set exports to CSV, and the whole database backs up to a file you
+    keep. Routines, exercises and equipment share as <code>.badger</code> files, a
+    <a href="/badger-format/">documented format</a> you can read in any text editor. None of it is a
     paid feature. <a href="/promise/">The promise</a> is that written down where you can hold us to
     it.
   </p>

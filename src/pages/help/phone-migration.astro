@@ -2,7 +2,7 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Moving to a new phone" description="How to carry your Badger workout history, routines, and settings to a new Android phone.">
+<HelpLayout title="Moving to a new phone" description="How to carry your Badger workout history, routines, and settings to a new phone.">
   <h1>Moving to a new phone</h1>
 
   <p>
@@ -10,6 +10,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     automatic cloud sync, so moving to a new phone is a deliberate two-step
     process: export a backup on the old phone, import it on the new one.
   </p>
+  <p>The same steps work on Android and iPhone.</p>
 
   <h2>What a backup contains</h2>
   <p>A <code>.workout_backup</code> file contains your full local database:</p>
@@ -18,19 +19,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Your full exercise library, including custom exercises and categories.</li>
     <li>All routines, days, and predefined sets.</li>
     <li>Body measurements and body-weight history.</li>
-    <li>Gyms, machines, attachments, and their links to exercises.</li>
+    <li>Gyms, machines, attachments, bars, accessories, and their links to exercises.</li>
   </ul>
   <p>
-    App settings (accent color, weight unit, theme, notification preferences)
-    ride along in the backup too. Photos you added to machines or attachments
-    are included only when <strong>Back up equipment photos</strong> is turned
+    App settings (accent color, weight unit, theme, notification preferences),
+    your training notes, and each gym's plates and racks ride along in the
+    backup too. Photos you added to machines, attachments or bars are included only when <strong>Back up equipment photos</strong> is turned
     on - see <a href={`/help/settings/#cloud-backup`}>Cloud backup</a>.
   </p>
 
   <h2>Step 1 - Back up on the old phone</h2>
   <ol>
     <li>Open Badger.</li>
-    <li>Go to <strong>You → Settings → Your data</strong>.</li>
+    <li>Go to <strong>More → Settings → Your data</strong>.</li>
     <li>Tap <strong>Manual backup</strong>. The system share sheet opens.</li>
     <li>Save the <code>.workout_backup</code> file somewhere you'll be able to reach from the new phone - Google Drive, email-to-self, WhatsApp, a USB transfer, or your preferred cloud storage app.</li>
   </ol>
@@ -48,7 +49,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Step 3 - Restore the backup</h2>
   <ol>
     <li>Make sure the backup file from Step 1 is reachable on the new phone (saved in Files, Drive, or attached to an email you've opened).</li>
-    <li>Open Badger → <strong>You → Settings → Your data</strong>.</li>
+    <li>Open Badger → <strong>More → Settings → Your data</strong>.</li>
     <li>Tap <strong>Restore from backup</strong>.</li>
     <li>Pick the <code>.workout_backup</code> file. Badger will confirm - tap <strong>Restore</strong>.</li>
     <li>The app replaces its current database with the one from the backup and restarts. When it comes back up, all of your history is there.</li>
@@ -60,7 +61,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     you're uncertain, take a manual backup of the new-phone state first.
   </div>
 
-  <h2>A note on cloud backup</h2>
+  <h2 id="cloud-backup">A note on cloud backup</h2>
   <p>
     Badger can also back itself up automatically to your own Google Drive -
     opt-in, off by default, under <strong>Settings → Cloud backup</strong>.
@@ -68,6 +69,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     stolen, or damaged, and you can restore straight from the cloud backup
     screen on the new phone.
   </p>
+  <p>To turn it on:</p>
+  <ol>
+    <li>Go to <strong>More → Settings → Cloud backup</strong>.</li>
+    <li>Turn on <strong>Auto backup to your Drive</strong> and sign in with your Google account. Badger takes the first backup straight away.</li>
+  </ol>
+  <p>After that, Badger backs up when you finish a workout (at most once an hour) and once a day, whenever something has changed. It keeps the five most recent backups in a hidden app folder on your Drive. Tap <strong>Back up now</strong> to take one yourself.</p>
+  <p>To restore on the new phone, open the same screen, turn it on with the same Google account, and tap <strong>Restore from cloud…</strong>. Pick a backup, confirm, and restart the app when it finishes.</p>
   <p>
     The manual route above still works and is the most direct way to move
     between phones on your own terms; manual backups go to the destination

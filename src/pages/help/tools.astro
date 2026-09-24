@@ -12,14 +12,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Modes</h3>
   <ul>
-    <li><strong>Dual-loaded (Barbell)</strong> - Splits the weight symmetrically across both sides. The bar weight is subtracted first, then the remaining weight is divided by two. Default bar weight is 20 kg; configurable per exercise.</li>
-    <li><strong>Machine (symmetric)</strong> - Target weight divided by two per side. Used for plate-loaded machines where weight is symmetric but you enter the total load.</li>
-    <li><strong>Single lever</strong> - Full target weight on one side. Used for single-arm/single-leg machines or lever-style equipment.</li>
+    <li><strong>Dual-loaded</strong> (barbell, leg press) - Splits the weight evenly across both sides. The bar weight is subtracted first, then the remaining weight is divided by two. The default bar weight is 20 kg (45 lb); set your own per exercise, per machine, or by picking a <a href="/help/gyms/#bars">bar</a>.</li>
+    <li><strong>Single-loaded</strong> (T-bar, landmine) - The full target weight goes on one side, with no bar weight subtracted.</li>
   </ul>
+  <p>A machine can also be set to <em>None</em>, which turns the calculator off for it. See <a href="#plate-calc-gate">When the calculator isn't offered</a>.</p>
 
   <h3>Plate configuration</h3>
   <p>Tap the settings icon to configure your available plates - weight, color, and quantity limit per plate type. Plates can be enabled or disabled. The calculator uses a greedy algorithm: it always picks the largest available plate that fits, within your quantity limits.</p>
-  <p>Plates are tracked <strong>per gym</strong>: when you open the calculator during a workout it uses the assortment for that workout's gym (and the unit you're logging in). Edit a gym's plates from <strong>You → Gyms → (gym) → Plate assortment</strong>. A gym with no custom plates falls back to your global default set.</p>
+  <p>Plates are tracked <strong>per gym</strong>: when you open the calculator during a workout it uses the assortment for that workout's gym (and the unit you're logging in). Edit a gym's plates from <strong>More → Gyms → (gym) → Plate assortment</strong>. A gym with no custom plates falls back to your global default set.</p>
 
   <h3>Remaining weight</h3>
   <p>If the target weight can't be matched exactly with your available plates, the calculator shows the remaining weight and the closest achievable load.</p>
@@ -57,7 +57,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h3>Deload schedule</h3>
-  <p>When a trigger fires, the next Monday is set as the start of your deload week (if today is Monday, it uses the following Monday). A banner appears on the home screen:</p>
+  <p>When a trigger fires, the next Monday is set as the start of your deload week (if today is Monday, it uses the following Monday). A banner appears on the Today screen:</p>
   <ul>
     <li><strong>Scheduled</strong> (before the week starts) - "Deload week next week." This banner is dismissible.</li>
     <li><strong>Active</strong> (during the deload week) - shows why the deload was suggested (for example, "It has been several weeks since your last deload") and when the week ends. This banner stays visible all week so the signal isn't lost.</li>
