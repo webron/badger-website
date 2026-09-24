@@ -12,6 +12,11 @@ import { join } from 'node:path';
  * those two files, not from memory. When either changes, update this page and
  * the "last verified" line at the bottom.
  *
+ * The page has two parts: a short one for people, then the specification,
+ * ordered envelope, routine, day, exercise and slot, set, progression rule,
+ * equipment. Compatibility notes live in one section at the end; only the
+ * "Needs Badger 1.1.12 or later" markers stay inline.
+ *
  * The worked example is not typed out here: it is read from the real
  * public/programs/example-routine.badger at build time and pretty-printed, so
  * the example and the downloadable file can never disagree.
@@ -29,6 +34,42 @@ const example = JSON.parse(exampleRaw);
 const examplePretty = JSON.stringify(example, null, 2);
 const appVersion = example.app_version;
 
+// The progression example is built only from keys and values this page
+// defines, with the clause order the shipped StrongLifts file uses. Written as
+// an object so it is always valid JSON.
+const ruleExample = {
+  exercise_name: 'Barbell Back Squat',
+  exercise_type: 'weight_reps',
+  progression: {
+    scheme: 'linear',
+    cadence: 'session',
+    reference_kind: 'working_weight',
+    clauses: [
+      {
+        trigger: 'consecutive_failures_at_least',
+        count: 3,
+        action: 'add_percent',
+        target: 'working_weight',
+        percent: -10,
+      },
+      {
+        trigger: 'all_sets_met',
+        action: 'add_absolute',
+        target: 'working_weight',
+        amount: 2.5,
+        amount_unit: 'kg',
+      },
+      { trigger: 'always', action: 'hold', target: 'working_weight' },
+    ],
+  },
+  predefined_sets: [
+    { is_warmup: false, reps: 5 },
+    { is_warmup: false, reps: 5 },
+    { is_warmup: false, reps: 5 },
+  ],
+};
+const ruleExamplePretty = JSON.stringify(ruleExample, null, 2);
+
 const description =
   'How a .badger file is put together: the share/v1 envelope, the routine, gym and machine payloads, what import does with each field, and a worked example.';
 ---
@@ -37,40 +78,119 @@ const description =
   <h1>The <code>.badger</code> file format</h1>
 
   <p>
-    A <code>.badger</code> file is how Badger hands a routine, a gym, or a set of machines to
-    somebody else. It is a single UTF-8 JSON file. Nothing is compressed, encoded, or encrypted:
-    open it in any text editor and you can read the whole thing.
+    A <code>.badger</code> file is how Badger hands a routine, a gym, or a set of machines to someone
+    else. It is a single JSON text file, so you can open one in any text editor and read all of it.
+  </p>
+
+  <h2 id="what-it-holds">What a file holds</h2>
+
+  <ul>
+    <li>
+      <strong>A routine file</strong> holds a program: its days, exercises, planned sets and rep
+      targets, supersets and tempo, and, where the program has them, progression rules, percentage
+      sets and weekly waves.
+    </li>
+    <li>
+      <strong>A gym file</strong> holds a gym's equipment: machines, attachments, bars, accessories,
+      dumbbell and kettlebell racks, and plates.
+    </li>
+    <li><strong>A machines file</strong> holds just machines.</li>
+  </ul>
+
+  <p>
+    A file never holds your workout history: no logged workouts, sets or PRs, no training max, and
+    nothing about you. To move your own history to a new phone, use a backup instead (see
+    <a href="/help/phone-migration/">moving to a new phone</a>). The full list is under
+    <a href="#not-carried">what a file does not carry</a>.
+  </p>
+
+  <h2 id="opening">Opening a file on your phone</h2>
+
+  <p>
+    Tap the file wherever it arrived (a message, an email, a download), or open it from your file
+    manager (Files on an iPhone). Badger shows a preview of what the file will add before anything
+    is saved.
   </p>
 
   <p>
-    A routine file carries the whole program, not just its sets and reps: supersets and tempo, and -
-    where the program has them - its <a href="#progression">progression rules</a>, percentage-based
-    sets, which set drives the rule, and a day written as a
-    <a href="#waves">cycle of weeks</a>. Every one of those is an optional key that is simply left
-    out when unused, so a file that uses none of them is byte-identical to one written before they
-    existed, and an older copy of Badger reads it unchanged.
+    Importing only adds. Nothing you already have is changed, and exercises you already have are
+    matched by name and type, so they keep their history.
+  </p>
+
+  <h2 id="ready-made">Where to find ready-made files</h2>
+
+  <p>
+    <a href="/programs/">Programs</a> has every program built into Badger as a file you can download
+    and open. To have an AI write one for you, the <a href="/guides/ai/">Use your own AI</a> guide
+    has a prompt for it. The rest of this page is the specification, for anyone writing a file by
+    hand, with a tool, or with an AI.
+  </p>
+
+  <h2 id="specification">Specification</h2>
+
+  <p>
+    From here to the end, this page defines what a file may contain and what import does with it.
+    Fields marked <em>required</em> must be present. Any other field may be left out or written as
+    <code>null</code>, and either reads as absent. Unknown fields are ignored.
   </p>
 
   <p>
-    This page documents it properly because three groups of people want it. Curious users, who would
-    rather see what they are importing before they import it. Tool authors, who want to write
-    something that emits a file Badger can read. And AI assistants: point yours at this page, hand it
-    the <a href="#example">example</a>, and ask it to write you a program as a valid
-    <code>.badger</code> file. The <a href="/guides/ai/">BYO-AI guide</a> has prompts for exactly that,
-    and <a href="/programs/">the program gallery</a> has every built-in program as a real file to read.
+    Keys marked "Needs Badger 1.1.12 or later" are ignored by older versions; see
+    <a href="#versioning">versions and compatibility</a>.
   </p>
 
-  <div class="callout">
-    <span class="caps">Tip</span>
-    <p>
-      A file is just a plan. It carries routines, exercise names, and equipment settings. It never
-      carries your logged workouts, your history, or anything about you.
-    </p>
-  </div>
+  <h3 id="clause-terms">Terms used below</h3>
+
+  <ul>
+    <li>
+      <strong>Slot</strong>: one exercise on one day of a routine, with its planned sets. A slot is
+      a <a href="#day-exercise"><code>DayExercise</code></a>.
+    </li>
+    <li>
+      <strong>Training max</strong>: a number a progression rule multiplies to get set weights. It
+      never goes on the bar itself.
+    </li>
+    <li>
+      <strong>Reference weight</strong>: the number a slot's percentage sets are a percentage of.
+      Under a rule whose <code>reference_kind</code> is <code>training_max</code>, it is the training
+      max. Each lifter has their own, and a file never carries it.
+    </li>
+    <li>
+      <strong>Waved day</strong>: a day whose sets change by week of a repeating cycle (5/3/1's four
+      weeks) or by stage. Each version of the day's sets is a <strong>variant</strong>. See
+      <a href="#waves">Waves</a>.
+    </li>
+    <li>
+      <strong>Stage</strong>: on a stage-based day (GZCLP, StrongLifts), which of the day's set
+      variants the slot is on, counting from 0. Only <code>next_stage</code> and
+      <code>reset_stage</code> move it.
+    </li>
+    <li>
+      <strong>Driver set</strong>: the one planned set whose logged reps some triggers read, marked
+      with <a href="#predefined-set"><code>is_progression_driver</code></a>.
+    </li>
+    <li>
+      <strong>Missed session</strong> (a failure): a session of this slot in which at least one
+      logged working set was left incomplete or came in under its planned minimum. A skipped set
+      counts neither way. A session where every logged working set met its minimum is a success. A
+      session with no completed set of the exercise at all is neither, and the rule ignores it.
+    </li>
+    <li>
+      <strong>Failure counter</strong>: the run of missed sessions in a row. A success resets it to
+      0, and so does a <code>consecutive_failures_at_least</code> or <code>stage_is_last</code>
+      clause firing. <code>hold</code> lets it move; <code>none</code> undoes this session's change
+      to it.
+    </li>
+    <li>
+      <strong>Remembered weight</strong>: the slot's weight as it stood while the slot was on its
+      first stage, recorded each time the rule reads a session there.
+      <code>set_from_remembered</code> restarts from it.
+    </li>
+  </ul>
 
   <h2 id="envelope">The envelope</h2>
 
-  <p>Every file Badger writes, whatever it holds, has the same five top-level fields. Import needs three of them.</p>
+  <p>Every file has the same five top-level fields. Import needs three of them.</p>
 
   <div class="table-wrap">
   <table>
@@ -82,19 +202,19 @@ const description =
           <td><code>badger</code></td>
           <td>string, required</td>
           <td>
-            Schema version. Today it is always <code>share/v1</code>. A build imports the versions it
-            knows; anything else is refused rather than guessed at.
+            Schema version. Today it is always <code>share/v1</code>. A file with any other value is
+            refused.
           </td>
         </tr>
         <tr>
           <td><code>app_version</code></td>
           <td>string</td>
-          <td>The app version that wrote the file, for example <code>1.1.1</code>. Informational, and optional on import.</td>
+          <td>The app version that wrote the file, for example <code>1.1.1</code>. Informational.</td>
         </tr>
         <tr>
           <td><code>created_at</code></td>
           <td>string</td>
-          <td>UTC timestamp in ISO 8601. Informational, and optional on import.</td>
+          <td>UTC timestamp in ISO 8601. Informational.</td>
         </tr>
         <tr>
           <td><code>type</code></td>
@@ -113,16 +233,7 @@ const description =
     </table>
   </div>
 
-  <p>
-    Optional fields are omitted rather than written as <code>null</code>, and unknown fields are
-    ignored on the way in.
-  </p>
-
-  <p>
-    On import, a field marked <em>required</em> in the tables on this page must be present; any other field may be left out or written as <code>null</code>, and either
-    reads as if it were absent. Writing a file by hand is therefore forgiving: include what you
-    mean, leave out what you do not.
-  </p>
+  <p>Files Badger writes leave optional fields out rather than writing <code>null</code>.</p>
 
   <h2 id="routine">A routine payload</h2>
 
@@ -140,20 +251,18 @@ const description =
       <tbody>
         <tr><td><code>routine</code></td><td><a href="#routine-object"><code>Routine</code></a>, required</td><td>The routine itself: name, notes, and its settings.</td></tr>
         <tr><td><code>days</code></td><td>array of <a href="#day"><code>Day</code></a></td><td>The days, in order. Each day carries its own <code>exercises</code> array: that day's slots, in order, with their planned sets.</td></tr>
-        <tr><td><code>exercises</code></td><td>array of <a href="#exercise"><code>Exercise</code></a></td><td>The definition of every exercise any day references: its name, type, and category. Day slots point into this list by <code>exercise_name</code>.</td></tr>
-        <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>Machines the day slots pin. Badger always writes it, but it may be left out. The import preview asks before creating any.</td></tr>
+        <tr><td><code>exercises</code></td><td>array of <a href="#exercise"><code>Exercise</code></a></td><td>The definition of every exercise any day references: its name, type, and category. Slots point into this list by <code>exercise_name</code>.</td></tr>
+        <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>Machines the slots pin. May be left out. The import preview asks before creating any.</td></tr>
       </tbody>
   </table>
   </div>
 
   <p>
-    Note that two arrays share the name <code>exercises</code> and they hold different types:
-    <code>exercises</code> at the top level is an array of <a href="#exercise"><code>Exercise</code></a>,
-    defining what each exercise <em>is</em>, while a day's <code>exercises</code> is an array of
-    <a href="#day-exercise"><code>DayExercise</code></a>, saying what that day <em>does</em> and
-    referencing the definitions by name. Every name a day uses should have a definition in the top-level list - a slot whose name
-    matches no definition is skipped - the import preview counts these and warns you before
-    anything is written.
+    Two arrays are called <code>exercises</code>. The top-level one is an array of
+    <a href="#exercise"><code>Exercise</code></a> and defines what each exercise is. Each day's
+    <code>exercises</code> is an array of <a href="#day-exercise"><code>DayExercise</code></a>: that
+    day's slots, which point at the definitions by name. A slot whose name matches no definition is
+    skipped, and the import preview warns about it.
   </p>
 
   <h3 id="routine-object">Routine</h3>
@@ -167,11 +276,7 @@ const description =
       </thead>
       <tbody>
         <tr><td><code>name</code></td><td>string, required</td><td>The routine name.</td></tr>
-        <tr>
-          <td><code>notes</code></td>
-          <td>string</td>
-          <td>Program-level notes. Carried, because they describe the program.</td>
-        </tr>
+        <tr><td><code>notes</code></td><td>string</td><td>Program-level notes.</td></tr>
         <tr>
           <td><code>weight_source</code></td>
           <td>string</td>
@@ -194,9 +299,7 @@ const description =
 
   <h3 id="day">Day</h3>
 
-  <p>The objects in <code>days</code>.</p>
-
-  <p>An array. One entry per session in the program.</p>
+  <p>The objects in <code>days</code>, one per session in the program.</p>
 
   <div class="table-wrap">
   <table>
@@ -210,10 +313,9 @@ const description =
           <td>array of integers</td>
           <td>
             Weekdays this day is scheduled on: <code>[1, 3, 5]</code> means Monday, Wednesday,
-            Friday. The numbering is fixed: 1 is always Monday and 7 is always Sunday, counting
-            from 1 rather than 0, and it does not change with the app's first-day-of-week setting
-            or where in the world the file is opened. Values outside 1-7 are dropped on import.
-            Leave the field out for a program you rotate through rather than pin to weekdays.
+            Friday. 1 is always Monday and 7 is always Sunday, whatever the app's first-day-of-week
+            setting and wherever the file is opened. Values outside 1 to 7 are dropped on import.
+            Leave the field out for a program you rotate through instead of pinning to weekdays.
           </td>
         </tr>
         <tr>
@@ -227,21 +329,71 @@ const description =
           <td>
             How many set variants this day cycles through, if it is <a href="#waves">waved</a>:
             <code>4</code> for a 5/3/1 day (four weeks), <code>3</code> for a GZCLP day (three
-            stages). Leave the key out for a day that runs the same session every time, which is
-            every day written before this key existed and most days anybody writes by hand. When it
-            is present, each set's <a href="#predefined-set"><code>week_index</code></a> says which
-            variant it belongs to. <a href="#waves">Waves</a> explains what picks the variant.
+            stages). Leave it out for a day that runs the same session every time. When it is
+            present, each set's <a href="#predefined-set"><code>week_index</code></a> says which
+            variant the set belongs to. <a href="#waves">Waves</a> explains what picks the variant.
             Needs Badger 1.1.12 or later.
           </td>
         </tr>
-        <tr><td><code>exercises</code></td><td>array of <a href="#day-exercise"><code>DayExercise</code></a></td><td>The day's exercise slots. Left out, the day imports empty.</td></tr>
+        <tr><td><code>exercises</code></td><td>array of <a href="#day-exercise"><code>DayExercise</code></a></td><td>The day's slots. Left out, the day imports empty.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="exercise">Exercise</h3>
+
+  <p>
+    The objects in the payload's top-level <code>exercises</code>: the definitions the slots point
+    at. List only the exercises the routine uses. Import matches each one against the recipient's
+    library first, so most usually resolve to exercises they already have.
+  </p>
+
+  <div class="table-wrap">
+  <table>
+      <thead>
+        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>name</code></td>
+          <td>string, required</td>
+          <td>
+            Matching is by name, so plain full names travel best. "Barbell Back Squat" lands on the
+            recipient's existing squat; "BB Squat (heavy day)" creates a new exercise.
+          </td>
+        </tr>
+        <tr>
+          <td><code>type</code></td>
+          <td>string</td>
+          <td>
+            One of <code>weight_reps</code> (the default), <code>reps_only</code>,
+            <code>time_only</code>, <code>distance_only</code>, <code>weight_only</code>,
+            <code>weight_time</code>, <code>weight_distance</code>, <code>reps_time</code>,
+            <code>reps_distance</code>, <code>distance_time</code>. An unrecognized value falls back to
+            <code>weight_reps</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>category_name</code></td>
+          <td>string</td>
+          <td>
+            Category for an exercise that has to be created. Any name is valid: an existing category
+            is reused by name, a new name creates one, and absent reads as "Other". A fresh install
+            has Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, and Cardio. These are not a fixed
+            list, since categories can be renamed or deleted, but using them puts new exercises where
+            most libraries already sort them.
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
 
   <h3 id="day-exercise">DayExercise</h3>
 
-  <p>The objects in a <a href="#day"><code>Day</code></a>'s <code>exercises</code> array: one slot in the plan.</p>
+  <p>
+    The objects in a <a href="#day"><code>Day</code></a>'s <code>exercises</code> array. Each is one
+    slot: one exercise on that day, with its planned sets.
+  </p>
 
   <div class="table-wrap">
   <table>
@@ -258,11 +410,11 @@ const description =
           <td><code>exercise_type</code></td>
           <td>string, same values as <a href="#exercise"><code>Exercise</code></a>.<code>type</code></td>
           <td>
-            The referenced exercise's type, repeated here. Optional, but include it: it is what keeps
-            a "Plank" you time apart from a "Plank" someone counts reps on. When present it must
-            exactly equal the referenced definition's <code>type</code> - import resolves the slot by
-            the name and type together, and a mismatch means the slot matches nothing - counted in
-            the import preview's warning and skipped, like an unmatched name.
+            The referenced exercise's type, repeated here. Optional, but include it: it tells a
+            "Plank" you time apart from a "Plank" someone counts reps on. When present it must
+            exactly equal the definition's <code>type</code>, because import matches the slot by
+            name and type together. A mismatch matches nothing, and the slot is skipped and counted
+            in the import preview's warning, like an unmatched name.
           </td>
         </tr>
         <tr>
@@ -274,29 +426,29 @@ const description =
           <td><code>default_machine_name</code></td>
           <td>string</td>
           <td>
-            Machine this slot is pinned to, by name. Resolved against the reader's own machines and
-            the payload's <code>machines</code> list together, so a machine the recipient already
-            has does not need to travel in the file. Include it in <code>machines</code> when the
-            file should also work for someone who lacks it; the name matching nothing just leaves
-            the slot unpinned. Import links the matched machine to the exercise.
+            Machine this slot is pinned to, by name. Import looks for it among the recipient's own
+            machines and the payload's <code>machines</code> list, so a machine the recipient already
+            has does not need to be in the file. Include it in <code>machines</code> if the file
+            should also work for someone who lacks it. A name that matches nothing leaves the slot
+            unpinned. Import links the matched machine to the exercise.
           </td>
         </tr>
         <tr>
           <td><code>superset_key</code></td>
           <td>string</td>
           <td>
-            Slots in the same day sharing a key become a superset, in the order they appear. The
-            key itself is opaque - <code>"1"</code>, <code>"a"</code>, anything - it only has to
-            match between the members. A key held by a single slot is ignored.
+            Slots in the same day sharing a key become a superset, in the order they appear. The key
+            can be anything (<code>"1"</code>, <code>"a"</code>); it only has to match between the
+            members. A key held by a single slot is ignored.
           </td>
         </tr>
         <tr>
           <td><code>superset_name</code></td>
           <td>string</td>
           <td>
-            Display name for the superset. The first member's value wins; leave it out and the app
-            names the group itself. Group color never travels - the recipient's own palette
-            assigns it.
+            Display name for the superset. The first member's value wins. Leave it out and the app
+            names the group itself. Group color does not travel: the recipient's own palette assigns
+            it.
           </td>
         </tr>
         <tr>
@@ -306,14 +458,13 @@ const description =
         </tr>
         <tr>
           <td><code>alternatives</code></td>
-          <td>array</td>
+          <td>array of objects</td>
           <td>
-            Pre-assigned swap options for this slot, in order: objects of the form
-            <code>&#123; "exercise_name": "...", "exercise_type": "..." &#125;</code>, where
-            <code>exercise_name</code> is required. Each is resolved by
-            the same rules as the slot itself, so each one needs a definition in the payload's
-            <code>exercises</code> list. An unmatched alternative is counted in the import
-            preview's warning and skipped.
+            Swap options for this slot, in order. Each is
+            <code>&#123; "exercise_name": "...", "exercise_type": "..." &#125;</code>, with
+            <code>exercise_name</code> required, and is matched by the same rules as the slot itself,
+            so each needs a definition in the payload's <code>exercises</code> list. An unmatched
+            alternative is skipped and counted in the import preview's warning.
           </td>
         </tr>
         <tr>
@@ -321,14 +472,13 @@ const description =
           <td><a href="#progression"><code>Progression</code></a></td>
           <td>
             This slot's progression rule: what happens to its weight next session. At most one per
-            slot. Omit the key entirely for a slot with no rule, which is every slot written before
-            this key existed.
+            slot. Leave the key out for a slot with no rule. Needs Badger 1.1.12 or later.
           </td>
         </tr>
         <tr>
           <td><code>predefined_sets</code></td>
           <td>array of <a href="#predefined-set"><code>PredefinedSet</code></a></td>
-          <td>The planned sets. May be left out; an empty list is valid but pointless.</td>
+          <td>The planned sets. May be left out or empty.</td>
         </tr>
       </tbody>
     </table>
@@ -336,12 +486,11 @@ const description =
 
   <h3 id="predefined-set">PredefinedSet</h3>
 
-  <p>The objects in a <a href="#day-exercise"><code>DayExercise</code></a>'s <code>predefined_sets</code>.</p>
-
   <p>
-    A planned set. Fill in the fields the exercise type actually uses: weight and reps for a bench
-    press, <code>duration_seconds</code> for a plank, <code>distance</code> for a row. Fields that do
-    not apply are simply left out.
+    The objects in a <a href="#day-exercise"><code>DayExercise</code></a>'s
+    <code>predefined_sets</code>, one per planned set. Fill in the fields the exercise type uses:
+    weight and reps for a bench press, <code>duration_seconds</code> for a plank,
+    <code>distance</code> for a row. Leave out fields that do not apply.
   </p>
 
   <div class="table-wrap">
@@ -353,14 +502,14 @@ const description =
         <tr>
           <td><code>is_warmup</code></td>
           <td>boolean, defaults to false</td>
-          <td>Defaults to <code>false</code>. Warmup sets do not count toward your working volume.</td>
+          <td>Marks a warmup set. Warmup sets do not count toward working volume.</td>
         </tr>
         <tr>
           <td><code>weight</code></td>
           <td>number</td>
           <td>
-            A planned weight, in the unit named by <code>weight_unit</code>. Most shared programs leave
-            this out and let each lifter's own weights fill in.
+            A planned weight, in the unit named by <code>weight_unit</code>. Most shared programs
+            leave it out so each lifter's own weights fill in.
           </td>
         </tr>
         <tr>
@@ -371,29 +520,24 @@ const description =
         <tr>
           <td><code>reps</code></td>
           <td>integer</td>
-          <td>
-            The rep target. With <code>reps_max</code> present it is the bottom of a range instead.
-          </td>
+          <td>The rep target. With <code>reps_max</code> present it is the bottom of a range instead.</td>
         </tr>
         <tr>
           <td><code>reps_max</code></td>
           <td>integer</td>
           <td>
-            Top of a rep range, so <code>reps: 8, reps_max: 10</code> reads as 8-10. Leave it out for an
-            exact target. Never valid on a warmup: import drops it there.
+            Top of a rep range: <code>reps: 8, reps_max: 10</code> reads as 8-10. Leave it out for an
+            exact target. Never valid on a warmup; import drops it there.
           </td>
         </tr>
         <tr>
           <td><code>is_amrap</code></td>
           <td>boolean, defaults to false</td>
           <td>
-            An open-topped target: <code>reps</code> becomes a required minimum with no ceiling, shown
-            as <code>8+</code>, and <code>reps: 1, is_amrap: true</code> is how a set to failure is
-            written. Mutually exclusive with <code>reps_max</code>, and if a file somehow carries
-            both, open wins and the range is dropped. Never valid on a warmup. Omitted when false, so
-            a program with no open targets is byte-identical to one written before the key existed -
-            and because <code>reps</code> still holds the floor, an older reader sees a sane exact
-            target rather than nothing.
+            An open-topped target: <code>reps</code> becomes a required minimum with no ceiling,
+            shown as <code>8+</code>. <code>reps: 1, is_amrap: true</code> is how a set to failure is
+            written. Mutually exclusive with <code>reps_max</code>: if a set carries both, import
+            keeps the open target and drops the range. Never valid on a warmup.
           </td>
         </tr>
         <tr><td><code>duration_seconds</code></td><td>integer</td><td>Planned time, for timed exercises.</td></tr>
@@ -402,34 +546,30 @@ const description =
           <td><code>percent_of_reference</code></td>
           <td>number</td>
           <td>
-            Prescribes this set as a percentage of the slot's reference weight - <code>85.0</code> is
-            85%. The reader works out the load from the recipient's own reference and snaps it to a
-            weight they can load. Leave it out for an ordinary absolute-weight set, which is every
-            set written before this key existed. <code>100.0</code> is legal and means exactly what
-            it says. Import accepts anything above 0 and up to 200; a value outside that is a typo
-            rather than a prescription, and the set is read as an ordinary absolute-weight set.
+            This set's weight as a percentage of the slot's
+            <a href="#clause-terms">reference weight</a>: <code>85.0</code> is 85%. Badger works out
+            the load from the recipient's own reference weight and snaps it to a weight they can
+            load. Leave it out for an ordinary set with an absolute weight. Import accepts values
+            above 0 and up to 200; anything outside that is read as an ordinary absolute-weight set.
             <br /><br />
             <strong><code>weight</code> is optional beside it.</strong> While the percentage applies,
-            Badger ignores the weight but keeps it: turning the percentage off restores the number
-            rather than blanking the set, and when a weight is written, an older reader that has never
-            heard of this key still finds it as the target. The built-in
-            program files leave the weight out. Needs Badger 1.1.12 or later.
+            Badger ignores the weight but keeps it, so turning the percentage off restores the
+            number. The built-in program files leave the weight out. Needs Badger 1.1.12 or later.
           </td>
         </tr>
         <tr>
           <td><code>is_progression_driver</code></td>
           <td>boolean, defaults to false</td>
           <td>
-            Marks this as the one set whose logged reps a rule's <code>driver_reps_at_least</code>,
-            <code>driver_reps_between</code>, <code>driver_reps_below_plan</code> and
-            <code>cycle_missed_minimum</code> triggers read. It is an explicit flag rather than a
-            position, because "the third set" stops being true the moment somebody deletes a set.
+            Marks the <a href="#clause-terms">driver set</a>: the set whose logged reps the
+            <code>driver_reps_at_least</code>, <code>driver_reps_between</code>,
+            <code>driver_reps_below_plan</code> and <code>cycle_missed_minimum</code> triggers read.
             <strong>At most one per week of the slot's cycle, and never on a warmup.</strong> On a
             <a href="#waves">waved</a> day each <code>week_index</code> may have its own driver, as
-            5/3/1's plus set does in weeks 1 to 3; a set with no <code>week_index</code> belongs to
-            every week, so it rules out any other driver in the slot. A file carrying more than that
-            keeps the first in array order and clears the rest, and one on a warmup is dropped.
-            Omitted when false. Needs Badger 1.1.12 or later.
+            5/3/1's plus set does in weeks 1 to 3. A set with no <code>week_index</code> belongs to
+            every week, so it rules out any other driver in the slot. If a file carries more than
+            that, import keeps the first in array order and clears the rest, and a driver on a
+            warmup is dropped. Needs Badger 1.1.12 or later.
           </td>
         </tr>
         <tr>
@@ -437,32 +577,106 @@ const description =
           <td>integer</td>
           <td>
             Which week of its day's <a href="#waves">cycle</a> this set belongs to, counting from
-            <strong>0</strong>. Leave it out and the set applies to <em>every</em> week - which is
-            every set written before this key existed, every set on an unwaved day, and how a 5/3/1
-            file writes its accessory work once instead of four times. A value at or above the day's
-            <code>cycle_length</code> is out of range and the set is treated as applying to every
-            week.
+            <strong>0</strong>. Leave it out and the set applies to <em>every</em> week: that is how
+            every set on an unwaved day is written, and how a 5/3/1 file writes its accessory work
+            once instead of four times. A value at or above the day's <code>cycle_length</code> is
+            out of range, and the set applies to every week.
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
+  <h3 id="waves">Waves: cycle_length and week_index</h3>
+
+  <p>
+    A day whose sets change from week to week is written once, not once per week. 5/3/1's four-week
+    cycle is the standard case. Two keys do it, and they only make sense together. Both need Badger
+    1.1.12 or later.
+  </p>
+
+  <ul>
+    <li>
+      <a href="#day"><code>Day</code></a>'s <code>cycle_length</code> says how many weeks the cycle
+      runs for. Absent means the day is not waved.
+    </li>
+    <li>
+      Each <a href="#predefined-set"><code>PredefinedSet</code></a>'s <code>week_index</code> says
+      which week that set belongs to, counting from 0. Absent means <strong>every week</strong>,
+      which is how accessory work done all cycle long is written once.
+    </li>
+  </ul>
+
+  <p>
+    A <code>week_index</code> that matches no week (negative, or at or above the day's
+    <code>cycle_length</code>) is read as every week. The recipient starts the program at its first
+    week: which week the sender is on does not travel.
+  </p>
+
+  <p>
+    <strong>The week counter belongs to the routine, not the day.</strong> It is one number that
+    every waved day in the routine reads. It moves on once every day waved to the same length has
+    been trained since the last move. Stage-based days (below) do not move it.
+  </p>
+
+  <p>
+    Each day reads the counter against its own <code>cycle_length</code>, so give every waved day in
+    a routine the same length. <code>cycle_complete</code> fires when the counter wraps back to the
+    first week. If lengths differ, each length moves the shared counter on its own schedule, and
+    <code>cycle_complete</code> wraps at each day's own length.
+  </p>
+
+  <p>
+    <strong>Stage-based programs</strong> (GZCLP, StrongLifts) use the same two keys, with each
+    <code>week_index</code> a stage and <code>cycle_length</code> the number of stages.
+  </p>
+
+  <p>
+    A slot whose
+    rule has a <code>next_stage</code> or <code>reset_stage</code> clause, or any clause targeting
+    <code>stage</code>, shows the variant for its current stage. The stage changes only when one of
+    those clauses fires; in GZCLP and StrongLifts that happens when you stall. Every other slot shows
+    the variant for the routine's current week.
+  </p>
+
+  <h2 id="example">A complete routine file</h2>
+
+  <p>
+    One routine, one day scheduled Monday and Thursday, two exercises. The bench press has a warmup
+    set and three working sets of 8-10; the plank is timed. This is the real
+    <a href="/programs/example-routine.badger" download>example-routine.badger</a>, indented for
+    reading. Files the app writes are minified, and whitespace makes no difference either way.
+  </p>
+
+  <pre><code>{examplePretty}</code></pre>
+
+  <p>
+    For files that use progression rules, percentage sets and waves, open the files on the
+    <a href="/programs/">Programs</a> page, such as
+    <a href="/programs/531-bbb.badger" download>531-bbb.badger</a> and
+    <a href="/programs/gzclp.badger" download>gzclp.badger</a>.
+  </p>
+
+  <h2 id="progression-rules">Progression rules</h2>
+
+  <p>
+    A slot's progression rule says what happens to its weight after each session. It is a
+    <a href="#progression"><code>Progression</code></a> object holding a list of
+    <a href="#clause"><code>Clause</code></a> objects. <a href="#progression-example">The example
+    below</a> shows a complete one.
+  </p>
+
   <h3 id="progression">Progression</h3>
 
   <p>
     The object in a <a href="#day-exercise"><code>DayExercise</code></a>'s <code>progression</code>
-    key: that slot's rule for what happens to its weight next session. At most one per slot.
-    Needs Badger 1.1.12 or later; an older version ignores the key and imports the slot without a
-    rule.
+    key. At most one per slot. Needs Badger 1.1.12 or later.
   </p>
 
   <p>
-    <strong>The rule travels; the sender's progress against it does not.</strong> No counters, no
-    stage index, no record of which session was last evaluated, and
-    <strong>no training max</strong>. A shared file is a program, not somebody else's numbers - see
-    <a href="#not-carried">what a file does not carry</a>. A <code>training_max</code> key written
-    into a file by hand is an unknown key like any other and is ignored.
+    <strong>The rule travels; the sender's progress against it does not</strong>, including their
+    training max (see <a href="#not-carried">what a file does not carry</a>). A
+    <code>training_max</code> key written into a file is an unknown key and is ignored.
   </p>
 
   <div class="table-wrap">
@@ -475,23 +689,19 @@ const description =
           <td><code>cadence</code></td>
           <td>string, required</td>
           <td>
-            How often the program intends the rule to be looked at: <code>session</code>,
-            <code>week</code> or <code>cycle</code>. <strong>Provenance only</strong>, like
-            <code>scheme</code> below: it is written, stored and round-tripped, and nothing reads
-            it. Badger evaluates the most recent qualifying session whenever the log preview
-            opens, and keeps that honest by remembering which session it last acted on rather
-            than by a clock. An unrecognized value still drops the whole rule.
+            How often the program means the rule to be looked at: <code>session</code>,
+            <code>week</code> or <code>cycle</code>. Badger stores it and nothing reads it, like
+            <code>scheme</code> below. Badger evaluates the most recent qualifying session whenever
+            the log preview opens. An unrecognized value still drops the whole rule.
           </td>
         </tr>
         <tr>
           <td><code>reference_kind</code></td>
           <td>string, required</td>
           <td>
-            Which number the arithmetic moves: <code>working_weight</code> (a real weight on the bar)
-            or <code>training_max</code> (a number that never appears on the bar and only ever gets
-            multiplied). A rule whose <code>reference_kind</code> is <code>working_weight</code> may
-            not carry a clause targeting <code>reference</code> - it has no training max to move -
-            and a file that does is dropped rather than repaired.
+            Which number the rule moves: <code>working_weight</code> (a real weight on the bar) or
+            <code>training_max</code>. A <code>working_weight</code> rule may not carry a clause
+            targeting <code>reference</code>, and a file that has one loses the rule.
           </td>
         </tr>
         <tr>
@@ -502,8 +712,7 @@ const description =
             matches is the one that fires. Any clauses directly after it that state the same
             <code>trigger</code> with the same numbers, and move a different <code>target</code>,
             fire with it; that is how one outcome both resets the stage and cuts the weight. Nothing
-            else runs. The array order is the order, as everywhere else in this format. Must be
-            non-empty and must end with an <code>always</code> clause.
+            else runs. Must be non-empty and must end with an <code>always</code> clause.
           </td>
         </tr>
         <tr>
@@ -513,21 +722,17 @@ const description =
             Where the rule came from, as a label: <code>linear</code>,
             <code>double_progression</code>, <code>gzclp_t1</code>, <code>gzclp_t2</code>,
             <code>gzclp_t3</code>, <code>wave_531</code>, <code>nsuns_t1</code>,
-            <code>nsuns_t2</code>, <code>madcow_weekly</code>, <code>custom</code>.
-            <strong>Provenance only - nothing behaves differently because of it.</strong> The clauses
-            are the behavior. Unlike every other enum here, an unrecognized value falls back to
-            <code>custom</code> rather than dropping the rule: the field is inert, so a rule from a
-            newer build stays perfectly executable under a name this build has never heard of.
+            <code>nsuns_t2</code>, <code>madcow_weekly</code>, <code>custom</code>. Nothing behaves
+            differently because of it; the clauses are the behavior. An unrecognized value reads as
+            <code>custom</code>, and the rule still imports.
           </td>
         </tr>
         <tr>
           <td><code>note</code></td>
           <td>string</td>
           <td>
-            The author's own line about the rule. Displayed word for word and
-            <strong>never parsed</strong>, the same promise an
-            <a href="#accessory">accessory's</a> <code>label</code> carries. Omit it for no note;
-            nothing generates one.
+            The author's own line about the rule. Displayed word for word and never parsed, like an
+            <a href="#accessory">accessory's</a> <code>label</code>.
           </td>
         </tr>
       </tbody>
@@ -537,38 +742,12 @@ const description =
   <h3 id="clause">Clause</h3>
 
   <p>
-    The objects in <code>clauses</code>. Each one is a trigger and the action it fires. The keys drop
-    the trigger/action prefixes because the grouping inside a clause is already unambiguous:
+    The objects in <code>clauses</code>. Each one is a trigger and the action it fires.
     <code>count</code>, <code>reps_min</code> and <code>reps_max</code> belong to the trigger;
     <code>target</code>, <code>amount</code>, <code>amount_unit</code> and <code>percent</code>
-    belong to the action.
+    belong to the action. The terms missed session, failure counter, stage and remembered weight are
+    defined under <a href="#clause-terms">Terms used below</a>, at the start of the specification.
   </p>
-
-  <h4 id="clause-terms">Terms the triggers and actions use</h4>
-  <ul>
-    <li>
-      <strong>A missed session</strong> (a failure): a session of this slot in which at least one
-      logged working set was left incomplete or came in under its planned minimum. A skipped set
-      counts neither way. A session where every logged working set met its minimum is a success. A session with no completed set of
-      the exercise at all is neither, and the rule ignores it.
-    </li>
-    <li>
-      <strong>The failure counter</strong>: the run of missed sessions in a row. A success resets it
-      to 0, and so does a <code>consecutive_failures_at_least</code> or <code>stage_is_last</code>
-      clause firing. <code>hold</code> lets it move; <code>none</code> undoes this session's change
-      to it.
-    </li>
-    <li>
-      <strong>Stage</strong>: on a stage-based day, which of the day's set variants
-      (<code>week_index</code> values, see <a href="#waves">Waves</a>) the slot is on, counting from
-      0. Only <code>next_stage</code> and <code>reset_stage</code> move it.
-    </li>
-    <li>
-      <strong>Remembered weight</strong>: the slot's weight as it stood while the slot was on its
-      first stage, recorded each time the rule reads a session there. <code>set_from_remembered</code>
-      restarts from it.
-    </li>
-  </ul>
 
   <div class="table-wrap">
     <table>
@@ -582,17 +761,17 @@ const description =
           <td>
             What makes the clause fire. One of:
             <ul>
-              <li><code>all_sets_met</code> - every planned working set reached its rep target (at or above the minimum, for a range).</li>
-              <li><code>all_sets_top_of_range</code> - every ranged working set hit the top of its range. Open (<code>N+</code>) sets are skipped.</li>
-              <li><code>any_set_missed</code> - at least one planned working set came in under its minimum.</li>
-              <li><code>driver_reps_at_least</code> - the <a href="#predefined-set">driver</a> set's logged reps are at least <code>reps_min</code>.</li>
-              <li><code>driver_reps_between</code> - the driver set's reps fall in <code>[reps_min, reps_max]</code>, inclusive at both ends.</li>
-              <li><code>driver_reps_below_plan</code> - the driver set did not reach the minimum <em>its own plan row</em> asked for. States no number, because the number is the plan's - on a waved day that is this week's own minimum. Cannot fire when the session has no driver set, or when the driver's plan states no minimum.</li>
-              <li><code>cycle_missed_minimum</code> - <code>driver_reps_below_plan</code> with a memory: a driver set has come up short at some point in the cycle now running, this session included. Clears when the cycle ends. A rule on a day with no <a href="#waves"><code>cycle_length</code></a> can never fire it.</li>
-              <li><code>consecutive_failures_at_least</code> - the run of missed sessions has reached <code>count</code>, counting this one.</li>
-              <li><code>stage_is_last</code> - the slot is on its final stage and the session failed.</li>
-              <li><code>cycle_complete</code> - the routine's cycle has come round since this slot last acted.</li>
-              <li><code>always</code> - unconditionally. The terminal "otherwise" clause every rule ends with.</li>
+              <li><code>all_sets_met</code>: every planned working set reached its rep target (at or above the minimum, for a range).</li>
+              <li><code>all_sets_top_of_range</code>: every ranged working set hit the top of its range. Open (<code>N+</code>) sets are skipped.</li>
+              <li><code>any_set_missed</code>: at least one planned working set came in under its minimum.</li>
+              <li><code>driver_reps_at_least</code>: the driver set's logged reps are at least <code>reps_min</code>.</li>
+              <li><code>driver_reps_between</code>: the driver set's reps fall in <code>[reps_min, reps_max]</code>, inclusive at both ends.</li>
+              <li><code>driver_reps_below_plan</code>: the driver set did not reach the minimum <em>its own plan row</em> asked for. It states no number: the minimum comes from the plan, and on a waved day that is this week's own minimum. Cannot fire when the session has no driver set, or when the driver's plan states no minimum.</li>
+              <li><code>cycle_missed_minimum</code>: <code>driver_reps_below_plan</code> with a memory. A driver set has come up short at some point in the cycle now running, this session included. Clears when the cycle ends. A rule on a day with no <a href="#waves"><code>cycle_length</code></a> can never fire it.</li>
+              <li><code>consecutive_failures_at_least</code>: the failure counter has reached <code>count</code>, counting this session.</li>
+              <li><code>stage_is_last</code>: the slot is on its final stage and the session failed.</li>
+              <li><code>cycle_complete</code>: the routine's cycle has come round since this slot last acted.</li>
+              <li><code>always</code>: unconditionally. The terminal "otherwise" clause every rule ends with.</li>
             </ul>
             Any other value drops the whole rule.
           </td>
@@ -601,21 +780,20 @@ const description =
           <td><code>count</code></td>
           <td>integer</td>
           <td>
-            How many qualifying sessions in a row the trigger needs. Leave it out for
-            <strong>no repetition requirement</strong> - the trigger fires on a single occurrence.
-            A written <code>1</code> and an absent key behave the same, but the written one is a
-            choice and Badger prints it as "for 1 session".
+            How many qualifying sessions in a row the trigger needs. Leave it out and the trigger
+            fires on a single occurrence. A written <code>1</code> behaves the same as an absent key,
+            but Badger prints the written one as "for 1 session".
           </td>
         </tr>
         <tr>
           <td><code>reps_min</code> / <code>reps_max</code></td>
           <td>integer</td>
           <td>
-            Inclusive rep bounds for the two <code>driver_reps_*</code> triggers. Leaving both out
-            means <strong>this trigger does not look at reps at all</strong> - they are never
-            defaulted to zero or to the plan's own numbers. A <code>driver_reps_*</code> trigger with
-            no <code>reps_min</code>, or a <code>reps_max</code> below the <code>reps_min</code>,
-            drops the whole rule.
+            Inclusive rep bounds for <code>driver_reps_at_least</code> and
+            <code>driver_reps_between</code>. With both left out, the trigger does not look at reps
+            at all; they are never defaulted to zero or to the plan's own numbers. Either of those
+            two triggers with no <code>reps_min</code>, or a <code>reps_max</code> below the
+            <code>reps_min</code>, drops the whole rule.
           </td>
         </tr>
         <tr>
@@ -624,14 +802,14 @@ const description =
           <td>
             What happens when it fires. One of:
             <ul>
-              <li><code>add_absolute</code> - add <code>amount</code>.</li>
-              <li><code>add_percent</code> - change the weight by <code>percent</code> percent: <code>5</code> adds 5%, <code>-10</code> takes 10% off. The sign is carried, never inferred from the name.</li>
-              <li><code>hold</code> - the weight stays; counters still move.</li>
-              <li><code>none</code> - nothing changes at all, counters included.</li>
-              <li><code>next_stage</code> - move up a stage, weight unchanged.</li>
-              <li><code>reset_stage</code> - back to the first stage (stage 0), with the weight unchanged. To reset and change the weight on the same outcome, follow it with a second clause carrying the same <code>trigger</code> and a weight action, as GZCLP does: <code>reset_stage</code> on <code>stage</code>, then <code>add_percent</code> <code>-10</code> on <code>working_weight</code>.</li>
-              <li><code>set_from_remembered</code> - the remembered weight plus <code>amount</code>. With nothing remembered, the clause does nothing and says so, rather than inventing a base.</li>
-              <li><code>halve_increment</code> - halve the increment this rule adds from here on.</li>
+              <li><code>add_absolute</code>: add <code>amount</code>.</li>
+              <li><code>add_percent</code>: change the weight by <code>percent</code> percent. <code>5</code> adds 5%, <code>-10</code> takes 10% off.</li>
+              <li><code>hold</code>: the weight stays; counters still move.</li>
+              <li><code>none</code>: nothing changes at all, counters included.</li>
+              <li><code>next_stage</code>: move up a stage, weight unchanged.</li>
+              <li><code>reset_stage</code>: back to the first stage (stage 0), weight unchanged. To reset and change the weight on the same outcome, follow it with a second clause carrying the same <code>trigger</code> and a weight action, as GZCLP does: <code>reset_stage</code> on <code>stage</code>, then <code>add_percent</code> <code>-10</code> on <code>working_weight</code>.</li>
+              <li><code>set_from_remembered</code>: the remembered weight plus <code>amount</code>. With nothing remembered, the clause does nothing and says so.</li>
+              <li><code>halve_increment</code>: halve the increment this rule adds from here on.</li>
             </ul>
             Any other value drops the whole rule.
           </td>
@@ -656,11 +834,10 @@ const description =
           <td><code>amount</code></td>
           <td>number</td>
           <td>
-            The absolute amount, in the unit named beside it. Required for
+            The absolute amount, in the unit named by <code>amount_unit</code>. Required for
             <code>add_absolute</code> and <code>set_from_remembered</code>; leaving it out on either
-            drops the whole rule. It <strong>never</strong> falls back to the exercise's own
-            increment - a rule that means "plus the usual step" writes the number, because the
-            sentence has to be able to print it.
+            drops the whole rule. It never falls back to the exercise's own increment, so write the
+            number.
           </td>
         </tr>
         <tr>
@@ -672,9 +849,8 @@ const description =
           <td><code>percent</code></td>
           <td>number</td>
           <td>
-            The percentage for <code>add_percent</code>, where <code>-10</code> means "drop 10%".
-            Required for that action and meaningless for any other. Absent means
-            <strong>this is not a percentage action</strong>.
+            The percentage for <code>add_percent</code>: <code>-10</code> means drop 10%. Required
+            for that action and meaningless for any other.
           </td>
         </tr>
       </tbody>
@@ -682,88 +858,58 @@ const description =
   </div>
 
   <div class="callout">
-    <span class="caps">A rule is dropped, not repaired</span>
+    <span class="caps">What drops a rule</span>
     <p>
-      Anything Badger cannot read exactly as written means the <em>whole</em> rule is skipped and
-      counted in the import preview's warning - the rest of the file imports normally. A clause
-      quietly reinterpreted as some other clause would make the sentence on screen say one thing
-      while the app did another, which is the failure the whole design exists to prevent.
+      If a rule breaks any of these, import skips the <em>whole</em> rule and counts it in the
+      import preview's warning. The rest of the file imports normally.
     </p>
-    <p>
-      The seven things that drop a rule: an unrecognized <code>trigger</code>, <code>action</code>,
-      <code>target</code>, <code>cadence</code> or <code>reference_kind</code>; a
-      <code>driver_reps_*</code> trigger with no <code>reps_min</code> (except
-      <code>driver_reps_below_plan</code>, which takes its minimum from the plan); a
-      <code>driver_reps_between</code> whose <code>reps_max</code> is below its <code>reps_min</code>;
-      a missing <code>amount</code> or <code>percent</code> the action requires; a clause targeting
-      <code>reference</code> under <code>reference_kind: "working_weight"</code>; and no clauses at
-      all, or a <code>clauses</code> array that does not <em>end</em> with an <code>always</code>
-      (an <code>always</code> in the middle makes everything after it dead, which is the same lie).
-    </p>
-    <p>
-      The seventh: a clause that can never fire because an earlier one already covers it, such as
-      <code>consecutive_failures_at_least</code> 2 before the same trigger at 3, or a run of
-      same-trigger clauses that moves one target twice.
-    </p>
+    <ol>
+      <li>An unrecognized <code>trigger</code>, <code>action</code>, <code>target</code>, <code>cadence</code> or <code>reference_kind</code>.</li>
+      <li>A <code>driver_reps_at_least</code> or <code>driver_reps_between</code> trigger with no <code>reps_min</code>. (<code>driver_reps_below_plan</code> takes its minimum from the plan.)</li>
+      <li>A <code>driver_reps_between</code> whose <code>reps_max</code> is below its <code>reps_min</code>.</li>
+      <li>A missing <code>amount</code> or <code>percent</code> that the action requires.</li>
+      <li>A clause targeting <code>reference</code> under <code>reference_kind: "working_weight"</code>.</li>
+      <li>No clauses at all, or a <code>clauses</code> array that does not <em>end</em> with an <code>always</code>. An <code>always</code> in the middle leaves every clause after it unable to fire.</li>
+      <li>A clause that can never fire because an earlier one already covers it, such as <code>consecutive_failures_at_least</code> 2 before the same trigger at 3, or a run of same-trigger clauses that moves one target twice.</li>
+    </ol>
   </div>
 
-  <h3 id="waves">Waves: cycle_length and week_index</h3>
+  <h3 id="progression-example">Example: a linear rule</h3>
 
   <p>
-    A day that runs a cycle of weeks - 5/3/1's four is the standard case - is written once rather
-    than four times. Two keys do it, and they only make sense together. Both need Badger 1.1.12 or
-    later.
+    Add 2.5 kg after every session in which all working sets hit their target, take 10% off after
+    three missed sessions in a row, and otherwise keep the weight. This is one slot, with three sets
+    of 5:
   </p>
 
-  <ul>
-    <li>
-      <a href="#day"><code>Day</code></a>'s <code>cycle_length</code> says how many weeks the cycle
-      runs for. Absent means not waved, which is the normal case.
-    </li>
-    <li>
-      each <a href="#predefined-set"><code>PredefinedSet</code></a>'s <code>week_index</code> says
-      which week that set belongs to, counting from 0. Absent means <strong>every week</strong> -
-      which is how the accessory work you do all cycle long is written once.
-    </li>
-  </ul>
+  <pre><code>{ruleExamplePretty}</code></pre>
 
   <p>
-    A <code>week_index</code> that matches no week - negative, or at or above the day's
-    <code>cycle_length</code> - is read as "every week" rather than kept, because keeping it would
-    make the set silently never appear in any week at all. Which week a reader is <em>on</em> does
-    not travel: a recipient starts the program at its beginning.
+    Badger reads the clauses in order and fires the first that matches. After a third missed session
+    in a row, the first clause takes 10% off and resets the failure counter to 0. After a session
+    where every planned working set reached 5 reps, the second clause adds 2.5 kg. Any other session
+    reaches the <code>always</code> clause, and the weight holds while the failure counter still
+    moves.
   </p>
 
   <p>
-    <strong>The week counter belongs to the routine, not the day.</strong> It is one number that
-    every waved day in the routine reads. It moves on once every day waved to the same length has
-    been trained since the last move. Stage-based days (below) do not move it.
+    The rule ends with <code>always</code>, every clause names a <code>target</code>, and
+    <code>add_absolute</code> and <code>add_percent</code> carry the <code>amount</code> and
+    <code>percent</code> they need, so none of the conditions above drops it.
+  </p>
+
+  <h2 id="gym">Gym and machines payloads</h2>
+
+  <p>
+    <code>type: "gym"</code> shares a whole gym: the gym itself, its machines, attachments, bars and
+    accessories, which of each belong to it, its dumbbell and kettlebell racks, and its plates.
+    <code>type: "machines"</code> is the smaller version: one key, <code>machines</code>, an array
+    of <a href="#machine"><code>Machine</code></a>, with no gym, bars, accessories, or inventory.
   </p>
 
   <p>
-    Each day reads the counter against its own <code>cycle_length</code>, so give every waved day
-    in a routine the same length. <code>cycle_complete</code> fires when the counter wraps back to
-    the first week. If lengths differ, each length moves the shared counter on its own schedule,
-    and <code>cycle_complete</code> wraps at each day's own length.
-  </p>
-
-  <p>
-    <strong>For a stage-based program</strong> (GZCLP, StrongLifts), use the same two keys, with
-    each <code>week_index</code> a stage and <code>cycle_length</code> the number of stages. A slot whose rule has a <code>next_stage</code> or <code>reset_stage</code> clause, or any
-    clause targeting <code>stage</code>, shows the variant for its current <a href="#clause">stage</a>.
-    The stage changes only when one of those clauses fires. In GZCLP and StrongLifts that happens
-    when you stall.
-    Every other slot shows the variant for the routine's current week.
-  </p>
-
-  <h3 id="exercise">Exercise</h3>
-
-  <p>The objects in the payload's top-level <code>exercises</code>: the definitions the day slots reference.</p>
-
-  <p>
-    The definitions the days point at. Keep it to the exercises the routine actually uses; a
-    recipient's existing library is matched first, so most of this list usually resolves to exercises
-    they already have.
+    A gym file carries what describes the gym. Notes about a machine travel. Your photo of it, and
+    the setup cues you saved against one exercise on it, stay on your phone.
   </p>
 
   <div class="table-wrap">
@@ -772,48 +918,39 @@ const description =
         <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td><code>name</code></td>
-          <td>string, required</td>
-          <td>
-            Matching is by name, so ordinary names travel best. "Barbell Back Squat" lands on the
-            recipient's existing squat; "BB Squat (heavy day)" creates a new exercise.
-          </td>
-        </tr>
-        <tr>
-          <td><code>type</code></td>
-          <td>string</td>
-          <td>
-            One of <code>weight_reps</code> (the default), <code>reps_only</code>,
-            <code>time_only</code>, <code>distance_only</code>, <code>weight_only</code>,
-            <code>weight_time</code>, <code>weight_distance</code>, <code>reps_time</code>,
-            <code>reps_distance</code>, <code>distance_time</code>. An unrecognized value falls back to
-            <code>weight_reps</code>.
-          </td>
-        </tr>
-        <tr>
-          <td><code>category_name</code></td>
-          <td>string</td>
-          <td>
-            Category for an exercise that has to be created. Any name is valid: an existing category
-            is reused by name, a new name creates one, and absent reads as "Other". A fresh install
-            ships Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, and Cardio - not an enum,
-            since categories can be renamed or deleted, but using these lands new exercises where
-            most libraries already sort them.
-          </td>
-        </tr>
+        <tr><td><code>gym</code></td><td><code>Gym</code>, required</td><td>A <code>Gym</code> is just <code>&#123; "name": "..." &#125;</code>.</td></tr>
+        <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>The same <code>Machine</code> objects a routine payload carries.</td></tr>
+        <tr><td><code>attachments</code></td><td>array of <code>Attachment</code></td><td>An <code>Attachment</code> is a <code>name</code> and optional <code>notes</code>.</td></tr>
+        <tr><td><code>bars</code></td><td>array of <a href="#bar"><code>Bar</code></a></td><td>Named bars. Omitted when the gym has none.</td></tr>
+        <tr><td><code>accessories</code></td><td>array of <a href="#accessory"><code>Accessory</code></a></td><td>Bands, chains, and straps. Omitted when the gym has none.</td></tr>
+        <tr><td><code>gym_machines</code></td><td>array of strings</td><td>Names of the machines that belong to this gym.</td></tr>
+        <tr><td><code>gym_attachments</code></td><td>array of strings</td><td>Names of the attachments that belong to this gym.</td></tr>
+        <tr><td><code>gym_bars</code></td><td>array of strings</td><td>Names of the bars that belong to this gym.</td></tr>
+        <tr><td><code>gym_accessories</code></td><td>array of strings</td><td>Names of the accessories that belong to this gym.</td></tr>
+        <tr><td><code>racks</code></td><td>array of <a href="#rack"><code>Rack</code></a></td><td>The gym's dumbbell and kettlebell racks. Omitted when the gym has none set up.</td></tr>
+        <tr><td><code>plate_inventory</code></td><td>array of <a href="#plate-inventory"><code>PlateInventory</code></a></td><td>The plates the gym actually has. Omitted when nobody has set them up.</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3 id="machine">Machine</h3>
-
-  <p>The objects in <code>machines</code>, here and in a gym payload alike.</p>
+  <p>
+    Equipment is defined in its own arrays, and the four <code>gym_*</code> lists name which of it
+    belongs to this gym, so one machine can belong to several gyms. Files Badger writes list exactly
+    the objects defined beside them.
+  </p>
 
   <p>
-    Equipment settings. In a routine payload this list is reference data: importing the machines is a
-    toggle the recipient controls. In a <code>gym</code> or <code>machines</code> payload the same
-    object is the point of the file, and machines are always created.
+    <strong>Leave a membership list out to include everything
+    defined in the file.</strong> Writing it as <code>[]</code> means none of them, which leaves the
+    gym with nothing of that kind and is almost never what you want.
+  </p>
+
+  <h3 id="machine">Machine</h3>
+
+  <p>
+    The objects in <code>machines</code>, in a routine payload and a gym or machines payload alike.
+    In a routine payload, importing the machines is a toggle the recipient controls. In a gym or
+    machines payload, machines are always created.
   </p>
 
   <div class="table-wrap">
@@ -823,23 +960,21 @@ const description =
       </thead>
       <tbody>
         <tr><td><code>name</code></td><td>string, required</td><td>Machine name.</td></tr>
-        <tr><td><code>notes</code></td><td>string</td><td>Free text about the machine - "third from the left, seat pin sticks". Notes about the machine itself travel; the private setup cues you attach to one exercise on it do not.</td></tr>
+        <tr><td><code>notes</code></td><td>string</td><td>Free text about the machine, such as "third from the left, seat pin sticks".</td></tr>
         <tr><td><code>uses_attachments</code></td><td>boolean, defaults to false</td><td>Whether the machine takes attachments (bars, handles, ropes).</td></tr>
         <tr><td><code>uses_grip_types</code></td><td>boolean, defaults to false</td><td>Whether grip is worth recording on this machine.</td></tr>
         <tr>
           <td><code>supports_bands</code></td>
           <td>boolean, defaults to false</td>
           <td>
-            Whether bands can be attached here. It is what decides that a machine exercise offers
-            <a href="#accessory">accessories</a> at all, and only band-kind ones. Omitted when false,
-            which is every machine that has not been marked.
+            Whether bands can be attached here. It decides whether a machine exercise offers
+            <a href="#accessory">accessories</a> at all, and then only band-kind ones.
           </td>
         </tr>
         <tr>
           <td><code>machine_type</code></td>
           <td>string</td>
-          <td><code>"selectorized"</code> (a stack with a pin) or <code>"plate_loaded"</code>. Older files
-          with <code>"plateLoaded"</code> still read.</td>
+          <td><code>"selectorized"</code> (a stack with a pin) or <code>"plate_loaded"</code>.</td>
         </tr>
         <tr>
           <td><code>weight_increment</code></td>
@@ -861,24 +996,21 @@ const description =
           <td>string</td>
           <td>
             <code>"dual_loaded"</code> (plates on both sides) or <code>"single_loaded"</code> (one
-            lever arm). Older files with the camelCase values still read.
+            lever arm).
           </td>
         </tr>
         <tr>
           <td><code>bar_weight</code></td>
           <td>number</td>
           <td>
-            Weight of the bar or empty carriage, in the unit named beside it - the same
-            value-plus-unit pattern set weights use, so a 45 lb bar travels as <code>45</code>.
+            Weight of the bar or empty carriage, in the unit named by <code>bar_weight_unit</code>,
+            so a 45 lb bar travels as <code>45</code>.
           </td>
         </tr>
         <tr>
           <td><code>bar_weight_unit</code></td>
           <td>string</td>
-          <td>
-            <code>"kg"</code> or <code>"lbs"</code>, for <code>bar_weight</code>. Older files carry
-            <code>bar_weight_kg</code> instead, always in kg; it is still read.
-          </td>
+          <td><code>"kg"</code> or <code>"lbs"</code>, for <code>bar_weight</code>.</td>
         </tr>
         <tr>
           <td><code>weight_unit</code></td>
@@ -890,67 +1022,15 @@ const description =
           <td>boolean</td>
           <td>
             What a weight logged on this machine means: <code>true</code> for one side (iso-lateral
-            machines), <code>false</code> for the total. Leave the key out entirely if the machine
-            has no opinion - the reader then falls back to the exercise's own setting, which is not
-            the same as writing <code>false</code>. Only meaningful on a plate-loaded machine; a
-            value on any other kind is ignored. Older readers ignore the key and lose nothing else.
+            machines), <code>false</code> for the total. Leave the key out if the machine has no
+            preference; Badger then uses the exercise's own setting, which is not the same as
+            writing <code>false</code>. Only meaningful on a plate-loaded machine; a value on any
+            other kind is ignored.
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-
-  <h2 id="gym">Gym and machines payloads</h2>
-
-  <p>
-    <code>type: "gym"</code> shares a whole gym: the gym itself, its machines, its attachments, its
-    bars and accessories, which of each belongs to it, and the equipment that is a list rather than
-    an object - the dumbbell and kettlebell racks, and the plates.
-  </p>
-
-  <p>
-    The line it draws is worth stating plainly, because it decides every field below.
-    <strong>What describes the gym travels; what describes you does not.</strong> Notes about a
-    machine describe the machine, so they go. Your photo of it, and the setup cues you saved against
-    one exercise on it, describe you, so they stay.
-  </p>
-
-  <p>
-    Definitions and membership are separate on purpose, mirroring the app: machines and attachments
-    are global there, and a gym holds links to them, so one machine can belong to several gyms. In a
-    file Badger writes, the membership lists always name exactly the objects defined beside them -
-    the split is structure, not extra information to fill in.
-  </p>
-
-  <div class="table-wrap">
-  <table>
-      <thead>
-        <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><code>gym</code></td><td><code>Gym</code>, required</td><td>A <code>Gym</code> is just <code>&#123; "name": "..." &#125;</code>.</td></tr>
-        <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>The same <code>Machine</code> objects a routine payload carries.</td></tr>
-        <tr><td><code>attachments</code></td><td>array of <code>Attachment</code></td><td>An <code>Attachment</code> is a <code>name</code> and optional <code>notes</code>.</td></tr>
-        <tr><td><code>bars</code></td><td>array of <a href="#bar"><code>Bar</code></a></td><td>Named bars. Omitted entirely when the gym has none, so a bar-free file looks exactly like one written before bars existed.</td></tr>
-        <tr><td><code>accessories</code></td><td>array of <a href="#accessory"><code>Accessory</code></a></td><td>Bands, chains, and straps. Omitted entirely when the gym has none.</td></tr>
-        <tr><td><code>gym_machines</code></td><td>array of strings</td><td>Names of the machines that belong to this gym.</td></tr>
-        <tr><td><code>gym_attachments</code></td><td>array of strings</td><td>Names of the attachments that belong to this gym.</td></tr>
-        <tr><td><code>gym_bars</code></td><td>array of strings</td><td>Names of the bars that belong to this gym.</td></tr>
-        <tr><td><code>gym_accessories</code></td><td>array of strings</td><td>Names of the accessories that belong to this gym.</td></tr>
-        <tr><td><code>racks</code></td><td>array of <a href="#rack"><code>Rack</code></a></td><td>The gym's dumbbell and kettlebell racks. Omitted entirely when the gym has none set up.</td></tr>
-        <tr><td><code>plate_inventory</code></td><td>array of <a href="#plate-inventory"><code>PlateInventory</code></a></td><td>The plates the gym actually has. Omitted entirely when nobody has said.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <p>
-    All four membership lists follow the same rule, which matters if you are writing a file by hand:
-    <strong>leaving one out means "all of them"</strong>, and writing it as <code>[]</code> means
-    "none of them". Those are different, and the second one is almost never what you meant - a gym
-    whose machines belong to no gym is a gym with nothing in it. Say nothing and everything you
-    defined lands at the gym, which is the obvious reading of a gym file and therefore the one the
-    reader takes.
-  </p>
 
   <h3 id="bar">Bar</h3>
 
@@ -968,10 +1048,9 @@ const description =
           <td><code>bar_weight</code></td>
           <td>number</td>
           <td>
-            What the bar weighs empty, in the unit named beside it - the same value-plus-unit pattern
-            set weights and machine bar weights use, so a 45 lb bar travels as <code>45</code>. Leave
-            it out for a bar nobody has weighed: the reader then falls back to the machine's or the
-            exercise's own bar weight rather than blanking it.
+            What the bar weighs empty, in the unit named by <code>bar_weight_unit</code>, so a 45 lb
+            bar travels as <code>45</code>. Leave it out for a bar nobody has weighed; Badger then
+            falls back to the machine's or the exercise's own bar weight.
           </td>
         </tr>
         <tr>
@@ -983,14 +1062,9 @@ const description =
     </table>
   </div>
 
-  <p>
-    A routine payload deliberately carries no default bar on a slot, the same as default attachment
-    and default grip: which bar somebody reaches for is their setup, not your program.
-  </p>
-
   <h3 id="accessory">Accessory</h3>
 
-  <p>The objects in <code>accessories</code>: a band, a chain, a set of suspension straps, or an add-on that is none of those.</p>
+  <p>The objects in <code>accessories</code>: a band, a chain, a set of suspension straps, or another add-on.</p>
 
   <div class="table-wrap">
   <table>
@@ -1004,8 +1078,7 @@ const description =
           <td>string</td>
           <td>
             One of <code>band</code>, <code>chain</code>, <code>suspension</code>, <code>other</code>.
-            A missing or unrecognized value reads as <code>other</code>, which is exactly what it means: an
-            add-on whose kind this build has no word for.
+            A missing or unrecognized value reads as <code>other</code>.
           </td>
         </tr>
         <tr>
@@ -1013,19 +1086,16 @@ const description =
           <td>integer</td>
           <td>
             Packed ARGB, for example <code>4283215696</code>. Omitted when the accessory has no color
-            set. Color travels here because it is not decoration: people name a band by its color,
-            so importing "Green band" as a gray swatch would throw away something the file plainly
-            said. (Superset colors, by contrast, stay
-            behind - the recipient's palette assigns those.)
+            set. It travels because people name a band by its color.
           </td>
         </tr>
         <tr>
           <td><code>label</code></td>
           <td>string</td>
           <td>
-            Free text shown beside the name, for example <code>"rated 25 lbs"</code>. Carried word for
-            word and never parsed at either end. Accessories never feed any calculation in Badger, so
-            a number in here stays a piece of text.
+            Free text shown beside the name, for example <code>"rated 25 lbs"</code>. Carried word
+            for word and never parsed. Accessories never feed any calculation in Badger, so a number
+            in here stays text.
           </td>
         </tr>
         <tr><td><code>notes</code></td><td>string</td><td>Free text about the accessory.</td></tr>
@@ -1036,10 +1106,9 @@ const description =
   <h3 id="rack">Rack</h3>
 
   <p>
-    The objects in <code>racks</code>: the dumbbells or kettlebells a gym physically owns. Badger
-    keeps these as a list rather than a step size because a real rack is not a grid - it runs
-    5-10-15 up to 50 and then jumps, and a kettlebell ladder is not a multiple of anything useful.
-    The list is what the plus and minus buttons walk when you are logging.
+    The objects in <code>racks</code>: the dumbbells or kettlebells a gym owns. List every weight on
+    the rack, since racks do not step evenly (5, 10, 15 up to 50, then a jump). The plus and minus
+    buttons step through this list when you log.
   </p>
 
   <div class="table-wrap">
@@ -1048,16 +1117,15 @@ const description =
         <tr><th>Field</th><th>Type</th><th>Meaning</th></tr>
       </thead>
       <tbody>
-        <tr><td><code>equipment</code></td><td>string, required</td><td><code>"dumbbell"</code> or <code>"kettlebell"</code>. A value the reader does not know is skipped rather than guessed at.</td></tr>
+        <tr><td><code>equipment</code></td><td>string, required</td><td><code>"dumbbell"</code> or <code>"kettlebell"</code>. Any other value is skipped.</td></tr>
         <tr><td><code>unit</code></td><td>string, required</td><td><code>"kg"</code> or <code>"lbs"</code>, for every weight in this rack.</td></tr>
         <tr>
           <td><code>weights</code></td>
           <td>array of objects, required</td>
           <td>
             Each one is a <code>weight</code> (number, required) and an optional <code>color</code>
-            (packed ARGB integer). The color is there for competition kettlebells, which are
-            identified by it - the same reasoning as an <a href="#accessory">accessory's</a>. Leave
-            it out for an unpainted weight; nothing invents one.
+            (packed ARGB integer), for competition kettlebells, which are identified by color. Leave
+            the color out for an unpainted weight.
           </td>
         </tr>
       </tbody>
@@ -1066,8 +1134,8 @@ const description =
 
   <p>
     One entry per equipment-and-unit pair, so a gym with kilogram kettlebells and pound dumbbells
-    carries two. <strong>They are separate lists and nothing is converted between them</strong>: 45
-    in a pound rack is a 45 lb dumbbell, not a 99 lb one.
+    carries two. <strong>Nothing is converted between them</strong>: 45 in a pound rack is a 45 lb
+    dumbbell.
   </p>
 
   <h3 id="plate-inventory">PlateInventory</h3>
@@ -1081,7 +1149,7 @@ const description =
       </thead>
       <tbody>
         <tr><td><code>unit</code></td><td>string, required</td><td><code>"kg"</code> or <code>"lbs"</code>, for every number in this entry.</td></tr>
-        <tr><td><code>bar_weight</code></td><td>number</td><td>The bar the calculator starts from, in the unit above - so <code>45</code> in a pound entry is a 45 lb bar. Absent falls back to the ordinary bar for that unit.</td></tr>
+        <tr><td><code>bar_weight</code></td><td>number</td><td>The bar the calculator starts from, in the unit above, so <code>45</code> in a pound entry is a 45 lb bar. Absent falls back to the ordinary bar for that unit.</td></tr>
         <tr>
           <td><code>plates</code></td>
           <td>array of objects, required</td>
@@ -1089,7 +1157,7 @@ const description =
             Each one is a <code>weight</code> (number, required), a <code>color</code> (packed ARGB
             integer), a <code>quantity</code> (how many are available <em>per side</em>, defaults to
             2) and <code>enabled</code> (defaults to true). A plate that exists but is switched off
-            is a real state, so both flags are written out.
+            has <code>enabled: false</code>.
           </td>
         </tr>
       </tbody>
@@ -1097,42 +1165,21 @@ const description =
   </div>
 
   <p>
-    One entry per unit, and again nothing converts. A file only carries a plate list somebody
-    actually set up - a gym running on Badger's built-in defaults writes no <code>plate_inventory</code>
-    at all, because those defaults are already in the app opening the file.
+    One entry per unit, and nothing converts between them. A gym still on Badger's built-in default
+    plates writes no <code>plate_inventory</code> at all.
   </p>
-
-  <p>
-    <code>type: "machines"</code> is the smaller version: one key, <code>machines</code>, an array of
-    <a href="#machine"><code>Machine</code></a> and no gym, bars, accessories, or inventory.
-  </p>
-
-  <h2 id="example">A worked example</h2>
-
-  <p>
-    One routine, one day scheduled Monday and Thursday, two exercises. The bench press has a warmup
-    set and three working sets of 8-10; the plank is timed. This is the real
-    <a href="/programs/example-routine.badger" download>example-routine.badger</a>, printed with
-    indentation added: files the app writes are minified, and whitespace makes no difference either
-    way.
-  </p>
-
-  <pre><code>{examplePretty}</code></pre>
 
   <h2 id="import-rules">What import does</h2>
 
-  <p>Reading the file is the easy half. These are the rules that decide what it turns into.</p>
-
   <ul>
     <li>
-      <strong>Nothing is ever overwritten.</strong> Import only adds. An existing exercise, machine,
-      gym, or routine is never edited by a file you open.
+      <strong>Nothing is overwritten.</strong> Import only adds. An existing exercise, machine, gym,
+      or routine is never edited by a file you open.
     </li>
     <li>
-      <strong>Exercises match on name and type</strong>, ignoring case and surrounding spaces. Same
-      name, different type, means a different exercise, so a routine can never wire itself to the
-      wrong one. No match, and the exercise is created, in the named category, which is itself created
-      if it is new.
+      <strong>Exercises match on name and type</strong>, ignoring case and surrounding spaces. The
+      same name with a different type is a different exercise. With no match, the exercise is
+      created in the named category, which is created too if it is new.
     </li>
     <li>
       <strong>Machines, attachments, bars, accessories, gyms, and categories match on name alone</strong>,
@@ -1140,83 +1187,97 @@ const description =
     </li>
     <li>
       <strong>A routine name collision does not merge.</strong> Importing a routine whose name you
-      already use gives you "Name (imported)", then "Name (imported) 2", and so on. You keep both and
-      decide.
+      already use gives you "Name (imported)", then "Name (imported) 2", and so on. You keep both.
     </li>
     <li>
       <strong>It is one transaction.</strong> A file that fails partway through leaves your database
       exactly as it was.
     </li>
+    <li><strong>Days, slots, and sets import in array order.</strong></li>
     <li>
-      <strong>Order is array order.</strong> Days, slots, and sets import in the order they appear
-      in their arrays - JSON arrays are ordered, and that order is the order. (Older files carrying
-      the retired <code>sort_order</code> field still read; the field is ignored.)
+      <strong>A warmup never carries a rep range or an open target.</strong> Import drops
+      <code>reps_max</code> and <code>is_amrap</code> from a warmup set. A working set carrying both
+      keeps the open target and loses the range.
     </li>
     <li>
-      <strong>A warmup never carries a rep range or an open target.</strong> If a file puts
-      <code>reps_max</code> or <code>is_amrap</code> on a warmup set, import drops it rather than
-      storing a plan the app cannot show you. A working set carrying both has its range dropped:
-      open wins.
+      <strong>An unreadable progression rule is skipped whole</strong> and counted in the import
+      preview's warning; the rest of the file imports normally. <a href="#clause">What drops a
+      rule</a> is listed with the clause fields. Per-set flags are repaired instead: extra driver
+      sets are cleared as described under
+      <a href="#predefined-set"><code>is_progression_driver</code></a>, a driver on a warmup is
+      cleared, and a <code>week_index</code> or <code>percent_of_reference</code> that cannot mean
+      anything is read as absent.
     </li>
-    <li>
-      <strong>An unreadable progression rule is dropped, not guessed at.</strong> A rule Badger
-      cannot read exactly as written is skipped whole and counted in the import preview's warning;
-      the rest of the file imports normally. The <a href="#clause">six things that drop one</a> are
-      listed above. Per-set flags are repaired rather than dropped: two driver sets in one slot
-      become the first one, a driver on a warmup is cleared, and a
-      <code>week_index</code> or <code>percent_of_reference</code> that cannot mean anything is read
-      as absent.
-    </li>
-    <li>
-      <strong>Files over 10 MB are refused</strong> without being read. A real export is a few
-      kilobytes, so this only ever catches something that has gone wrong.
-    </li>
+    <li><strong>Files over 10 MB are refused</strong> without being read.</li>
   </ul>
 
   <h2 id="not-carried">What a file does not carry</h2>
 
-  <p>
-    Worth knowing before you assume a share is a clone. A routine file is the plan, and only the parts
-    of the plan that travel usefully between two different lifters in two different gyms.
-  </p>
+  <p>A routine file is the plan, and only the parts of it that work for a different lifter in a different gym.</p>
 
   <ul>
-    <li><strong>No history.</strong> No workouts, no logged sets, no PRs. Those are yours and they stay on your phone. To move your own history to a new phone, use a backup instead: see <a href="/help/phone-migration/">moving to a new phone</a>.</li>
-    <li><strong>No notes below the routine level.</strong> Routine notes travel; per-day and per-exercise notes do not. A gym file is the exception that proves the rule: notes on a machine, attachment, bar or accessory travel, because they describe the equipment. The setup cues you save against one exercise on one machine never do - those describe you.</li>
-    <li><strong>No default attachment, default bar, or default grip</strong> on a slot - those stay personal setup. Superset group <strong>color</strong> also stays behind; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel, because that one is the thing's name rather than decoration.)</li>
+    <li><strong>No history.</strong> No workouts, no logged sets, no PRs. To move your own history to a new phone, use a backup instead: see <a href="/help/phone-migration/">moving to a new phone</a>.</li>
+    <li><strong>No notes below the routine level.</strong> Routine notes travel; per-day and per-exercise notes do not. In a gym file, notes on a machine, attachment, bar or accessory do travel. The setup cues you save against one exercise on one machine never do.</li>
+    <li><strong>No default attachment, default bar, or default grip</strong> on a slot, and no superset group <strong>color</strong>; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel.)</li>
     <li>
       <strong>No training max, and no progress against a rule.</strong> A slot's
-      <a href="#progression">progression rule</a> travels, because it is the program. The training
-      max it multiplies does not, and neither does any counter behind it: a run of missed sessions,
-      a stage, a cycle position, which session was last evaluated. A training max is a claim about
-      the sender's body, and importing one would prescribe their weights to your bar. The recipient
-      sets their own, from their own history, the first time they run the program.
+      <a href="#progression">progression rule</a> travels. The training max it multiplies does not,
+      and neither does any counter behind it: a run of missed sessions, a stage, a cycle position,
+      which session was last evaluated. The recipient sets their own training max, from their own
+      history, the first time they run the program.
     </li>
     <li><strong>No per-exercise detail beyond name, type, and category.</strong> An exercise that gets created on import starts blank: no instructions, no muscles, no rest default, no increment. Anything you already had keeps everything it already has.</li>
-    <li><strong>No photos</strong> of machines, attachments, or bars. A <code>.badger</code> file is a small text document, and your photo of a leg press is yours.</li>
+    <li><strong>No photos</strong> of machines, attachments, or bars.</li>
     <li><strong>Nothing about you.</strong> No account, no device identifier, no settings, no training notes.</li>
   </ul>
 
-  <h2 id="versioning">The versioning promise</h2>
+  <h2 id="versioning">Versions and compatibility</h2>
 
   <p>
-    The version string exists so that files stay readable. Two commitments go with it. Unknown fields
-    are ignored, so a file written by a newer Badger still opens in an older one, minus whatever that
-    older version has no concept of. And if the shape ever has to change in a way that breaks,
-    <code>badger</code> gets a new value and <code>share/v1</code> keeps being read: a file you
-    exported today should still import years from now.
+    Unknown fields are ignored, so a file written by a newer Badger still opens in an older one,
+    minus whatever that older version has no concept of. If the shape ever has to change in a way
+    that breaks, <code>badger</code> gets a new value and <code>share/v1</code> keeps being read.
   </p>
 
   <p>
-    That is the same commitment as the rest of <a href="/promise/">the promise</a>. Data you can get
-    out is only worth something if it still opens later.
+    A file you exported today should still import years from now. See also
+    <a href="/promise/">the promise</a>.
   </p>
+
+  <ul>
+    <li>
+      <strong>Optional keys are left out when unused.</strong> A file that uses none of the newer
+      keys is byte-identical to one written before they existed, and an older copy of Badger reads
+      it unchanged.
+    </li>
+    <li>
+      <strong>1.1.12 keys.</strong> <code>progression</code>, <code>percent_of_reference</code>,
+      <code>is_progression_driver</code>, <code>cycle_length</code> and <code>week_index</code> need
+      Badger 1.1.12 or later. An older version ignores <code>progression</code> and imports the slot
+      without a rule. When a percentage set also carries a <code>weight</code>, an older version
+      that has never heard of <code>percent_of_reference</code> still finds the weight as the target.
+    </li>
+    <li>
+      <strong><code>is_amrap</code></strong> is omitted when false. Because <code>reps</code> still
+      holds the minimum, an older version reads an open target as an exact one.
+    </li>
+    <li>
+      <strong><code>logs_weight_per_side</code></strong>: older versions ignore the key and lose
+      nothing else.
+    </li>
+    <li>
+      <strong>Older values still read.</strong> <code>machine_type: "plateLoaded"</code>; the
+      camelCase <code>plate_calculator_mode</code> values; a machine's <code>bar_weight_kg</code>
+      (always kg) in place of <code>bar_weight</code> and <code>bar_weight_unit</code>; and the
+      retired <code>sort_order</code> field, which is ignored.
+    </li>
+  </ul>
 
   <div class="callout">
     <span class="caps">Verified</span>
     <p>
       Last checked against Badger <strong>{appVersion}</strong>, schema <code>share/v1</code>. The
-      example above and the files in the <a href="/programs/">program gallery</a> were exported by that
+      example above and the files on the <a href="/programs/">Programs</a> page were exported by that
       build and imported back into it before publishing. The <a href="#progression">progression</a>,
       percentage, driver and wave keys were checked against Badger <strong>1.1.12</strong>'s own
       import and export code. The published files are regenerated whenever the seeded programs

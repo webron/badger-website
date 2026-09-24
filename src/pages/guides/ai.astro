@@ -52,7 +52,7 @@ Ask me about my goals, my schedule, and any injuries before assuming them.`,
     id: 'review',
     title: 'Review my program',
     intro:
-      'For a routine you exported from Badger, or one from the program gallery. Paste the prompt, then the contents of the .badger file.',
+      'For a routine you exported from Badger, or one from the Programs page. Paste the prompt, then the contents of the .badger file.',
     body: `Below is a training program as a .badger file: the plain JSON format used by the Badger workout tracker. It is documented at https://badger.fit/badger-format/
 
 Read it and tell me:
@@ -69,7 +69,7 @@ Do not rewrite the file yet. Tell me what you would change first, then I will as
     id: 'write',
     title: 'Write me a program as a .badger file',
     intro:
-      'The round trip: your AI writes a routine, you save it with a .badger extension, tap it, and Badger imports it. Fill in the bracketed parts before sending. Optionally paste your gym\'s .badger file underneath, and the program gets planned around the machines you actually have.',
+      'Your AI writes a routine, you save it as a .badger file and open it, and Badger imports it (the steps are under Importing what the AI writes, below). Fill in the bracketed parts before sending. Optionally paste your gym\'s .badger file underneath, and the program gets planned around the machines you actually have.',
     body: `Write me a training program as a .badger file for the Badger workout tracker, so I can import it directly.
 
 The format is documented at https://badger.fit/badger-format/ and there is a small worked example at https://badger.fit/programs/example-routine.badger
@@ -139,61 +139,53 @@ Give me the complete JSON in one code block, then explain the program in a few s
   <h1>Use your own AI</h1>
 
   <p>
-    Badger has no AI in it and no opinion about which one you use. What it has is your data in
-    formats you can hand to something else: a CSV of every set you have logged, and routines as plain
-    <code>.badger</code> files. Point whichever assistant you already pay for at those, and you have a
-    coach that knows your training, without Badger running a service, holding a key, or seeing any of
-    it.
-  </p>
-
-  <p>
-    Your data, your AI, your subscription. Nothing on this page asks you to sign in anywhere, and
-    Badger never sends your training to anyone: every step below is you exporting a file and choosing
-    where to put it.
+    Badger works with whichever AI you already use. Export your training as a file, give it to the
+    AI, and it can answer questions about your actual training or write you a program that Badger
+    imports.
   </p>
 
   <h2 id="what-to-hand-it">What you can hand it</h2>
 
   <ul>
     <li>
-      <strong>Your training context, as text. The easiest one to start with.</strong> Settings, then
-      Your data, then Copy context for AI. Badger assembles a short briefing on your device: your
+      <strong>Your training context, as text.</strong> The easiest place to start. Settings, then
+      Your data, then Copy context for AI. Badger builds a short briefing on your phone: your
       training notes, your active program with its current targets, your last ten sessions, your
-      records, the equipment at your gym, and anything you have marked as avoided. You see the whole
-      thing before you copy it, and it closes with instructions telling the AI how to read it and how
-      to write a routine back. It is trimmed to fit a chat window, so unlike the CSV you can paste it
-      straight in. The same action sits at the bottom of your
+      records, the equipment at your gym, and anything you have marked as avoided. You see all of it
+      before you copy it. It is short enough to paste into a chat, and it ends with instructions
+      telling the AI how to read it and how to write a routine back, so you can paste it on its own
+      and ask your question. The same action is at the bottom of your
       <a href="/help/settings/#training-notes">training notes</a> page. See
       <a href="/help/settings/#ai-context">copying your context</a>.
     </li>
     <li>
       <strong>Your training history, as CSV.</strong> Settings, then Your data, then Export. One row
       per set, every set the app holds, with dates, weights, reps, RPE, RIR, your notes, and an
-      <code>is_complete</code> column saying whether you actually performed the set. See
-      <a href="/help/settings/#export">exporting data</a>.
+      <code>is_complete</code> column saying whether you actually performed the set. A long history
+      is easier to attach as a file than to paste. See <a href="/help/settings/#export">exporting
+      data</a>.
     </li>
     <li>
       <strong>A routine, as a <code>.badger</code> file.</strong> Open a routine and pick Send
       routine file from its menu. It carries the plan and nothing about your history. The
-      <a href="/programs/">program gallery</a> has every built-in program ready to read.
+      <a href="/programs/">Programs</a> page has every built-in program as a file.
     </li>
     <li>
       <strong>Your gym, as a <code>.badger</code> file.</strong> Open a gym and pick Share gym from
       its menu. It lists the machines, bars, and accessories you actually have, so a program can be
-      planned around your equipment instead of a generic gym - the write-me-a-program prompt below
-      knows what to do with it.
+      planned around your equipment. The "Write me a program" prompt below uses it.
     </li>
     <li>
-      <strong>The format itself.</strong> <a href="/badger-format/">The <code>.badger</code> format</a>
-      is documented in public so an AI can write a file Badger will import.
+      <strong>The format itself.</strong> <a href="/badger-format/">The <code>.badger</code> file
+      format</a> page documents every key, so an AI can write a file Badger will import.
     </li>
   </ul>
 
   <h2 id="prompts">Prompts worth starting from</h2>
 
   <p>
-    These are starting points, not incantations. Edit the bracketed parts, cut what does not apply,
-    and argue with the answers.
+    Treat these as starting points: edit the bracketed parts, cut what does not apply, and question
+    the answers.
   </p>
 
   {
@@ -208,64 +200,61 @@ Give me the complete JSON in one code block, then explain the program in a few s
     ))
   }
 
-  <h2 id="before-you-import">Before you import what it writes back</h2>
+  <h2 id="before-you-import">Importing what the AI writes</h2>
+
+  <ol>
+    <li>
+      <strong>Save the reply as a <code>.badger</code> file.</strong> Copy the JSON from the chat,
+      paste it into any app that can save plain text as a file, and save it with a name ending in
+      <code>.badger</code>, such as <code>my-program.badger</code>. Some chat apps can also give you
+      the JSON as a downloadable file if you ask for one with that name. On a computer, any text
+      editor works; then move the file to your phone however you usually move files.
+    </li>
+    <li>
+      <strong>Open the file with Badger.</strong> Tap it, or open it from your file manager (Files on
+      an iPhone). Badger shows a preview before anything is saved.
+    </li>
+    <li>
+      <strong>Check the preview before you import.</strong>
+      <ul>
+        <li>
+          <strong>New exercises.</strong> A program of familiar lifts should create few or none. A
+          long list means the AI invented names: fix the names in the file so the program lands on
+          the exercises you already have, with their history and PRs.
+        </li>
+        <li>
+          <strong>A warning that exercises could not be matched.</strong> A day uses a name with no
+          matching definition in <code>exercises</code>, or gave it the wrong type. Those slots are
+          skipped. Fix the names in the file and the full program comes in.
+        </li>
+        <li>
+          <strong>New machines, if you gave it your gym file.</strong> There should be none. A new
+          machine means the AI misspelled one; fix the name so the exercise lands on the machine you
+          already track.
+        </li>
+      </ul>
+    </li>
+  </ol>
 
   <p>
-    An AI will hand you confident, well-formatted nonsense if you let it. The import preview is your
-    check, and so are you.
+    <strong>If the file will not open</strong>, it is malformed, or <code>badger</code> is not
+    <code>share/v1</code>, or <code>type</code> is not <code>routine</code>. Paste the error back to
+    the AI and ask for a corrected file.
   </p>
 
-  <ul>
-    <li>
-      <strong>Turn the reply into a file.</strong> Copy the JSON from the chat into a plain-text file
-      named something like <code>my-program.badger</code>. On a computer any text editor will do;
-      then move the file to your phone however you usually move files. On a phone, ask the AI to give
-      you the JSON as a downloadable <code>.badger</code> file, if your chat app can do that.
-    </li>
-    <li>
-      <strong>Open the file on your phone.</strong> Tap it, or open it from your file manager (Files
-      on an iPhone). Badger opens with a preview before anything is written.
-    </li>
-    <li>
-      <strong>Read the new-exercise count in that preview.</strong> A program of familiar lifts should
-      create few or no new exercises. A long list of new ones means the AI invented names: fix the
-      names in the file, and it will land on the exercises you already have, with the history and PRs
-      attached to them.
-    </li>
-    <li>
-      <strong>If the preview warns that exercises could not be matched</strong>, the AI used a name
-      in a day that has no matching definition in <code>exercises</code> (or gave it the wrong
-      type). Nothing breaks - those slots are skipped - but fix the names in the file and the full
-      program comes in.
-    </li>
-    <li>
-      <strong>If you gave it your gym file, the preview should create zero new machines.</strong> A
-      new machine in the preview means the AI misspelled one. Fix the name in the file so the
-      exercise lands on the machine you already track.
-    </li>
-    <li>
-      <strong>If it will not open</strong>, the file is malformed, or <code>badger</code> is not
-      <code>share/v1</code>, or <code>type</code> is not <code>routine</code>. Paste the error back
-      and ask for a corrected file.
-    </li>
-    <li>
-      <strong>Nothing is overwritten either way.</strong> An import that turns out to be rubbish is a
-      routine you delete. Your history is not involved.
-    </li>
-    <li>
-      <strong>Judge the program yourself.</strong> Nothing here validates whether the training is any
-      good, and neither does the app.
-    </li>
-  </ul>
+  <p>
+    Import only adds, so a program you do not like is a routine you delete; your history is not
+    touched. Judge the training yourself: neither the preview nor the app checks whether the program
+    is any good.
+  </p>
 
   <h2 id="privacy">What this costs you in privacy</h2>
 
   <p>
-    Worth being plain about, since the rest of Badger works hard to keep your training on your phone.
-    Badger sends nothing: the export lands on your device and stops there. The moment you paste it
-    into a chat, though, it goes to whoever runs that chat, under their terms, and some of them use
-    what you send to train on unless you turn that off. That is a trade you make deliberately, not one
-    the app makes for you.
+    When you paste your data into a chat, it goes to the company running that chat, under their
+    terms, and some of them train on what you send unless you turn that off. Badger itself sends
+    nothing and needs no account for any of this: every step on this page is you exporting a file
+    and choosing where it goes.
   </p>
 
   <ul>
@@ -274,21 +263,14 @@ Give me the complete JSON in one code block, then explain the program in a few s
       history, no dates, nothing about you.
     </li>
     <li>
-      <strong>The CSV is your training history.</strong> Dates, weights, reps, and any per-set notes
-      you wrote. No name, no email, no device identifier, no location, because Badger does not hold
-      any of those. Have a look before you paste it if you write personal things in set comments.
+      <strong>The CSV is your training history:</strong> dates, weights, reps, and any per-set notes
+      you wrote. It holds no name, email, device identifier or location. If you write personal things
+      in set comments, read them before you share the file.
     </li>
     <li>
-      <strong>A local model keeps it local</strong>, if the point of all this for you is that it never
-      leaves the house.
+      <strong>A model you run yourself keeps your data on your own device.</strong>
     </li>
   </ul>
-
-  <p>
-    Everything on this page works with the app exactly as it ships today: export, paste, import. No
-    account, no key stored in Badger, nothing to switch on. See
-    <a href="/promise/">the promise</a> for why it is built that way.
-  </p>
 </HelpLayout>
 
 <script is:inline>
