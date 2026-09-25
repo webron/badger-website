@@ -169,7 +169,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Warmup sets use a separate, shorter rest, set per exercise or in Settings.</p>
 
   <h2 id="set-timer">Set timer (timed exercises)</h2>
-  <p>A timed exercise (a plank, a carry) gets a countdown for the set itself, started from the training screen. It keeps running when you lock the phone or switch apps. If it ends while the phone is locked, the set is marked done with its planned duration filled in.</p>
+  <p>A timed exercise (a plank, a carry) gets a countdown for the set itself, started from the training screen. It keeps running when you lock the phone or switch apps.</p>
+
+  <h3 id="timer-end">When the timer ends</h3>
+  <p>When the countdown reaches zero, Badger fills in the set's duration and starts your rest timer. The set stays open until you tap its check, and that tap doesn't restart the rest.</p>
+  <p>To have Badger log the set for you as well, turn on <strong>Settings → Set timer → Log the set when the timer ends</strong>. To start rest yourself, turn off <strong>Start rest when the timer ends</strong>. In a superset, rest follows the superset's own rule. If you stop the timer early, neither happens.</p>
 
   <h3>What Badger says while the set runs</h3>
   <p>With the app open, Badger counts you in with "3, 2, 1, Go", warns you at 30 and 10 seconds left, and says "Time" at the end. On a long set it also calls out the minutes left: every minute under ten, every five minutes up to thirty, every ten above that.</p>
