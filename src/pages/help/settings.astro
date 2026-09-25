@@ -83,18 +83,28 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="data">Your data</h2>
   <p>All the rows below live in the <strong>Your data</strong> section at the bottom of Settings. Tap <strong>More → Data &amp; backup</strong> to jump straight to it.</p>
 
-  <h3 id="backup">Backup &amp; restore</h3>
-  <p>Your workout data is stored locally in a SQLite database. You should back it up regularly.</p>
+  <h3 id="backup">Backup</h3>
+  <p>Your workout data is stored locally in a SQLite database, and Badger keeps it backed up in three places:</p>
   <ul>
-    <li><strong>Manual backup</strong> - Exports a snapshot of your database as a <code>.workout_backup</code> file and opens the system share sheet so you can save it to Google Drive, your files app, or send it elsewhere.</li>
-    <li><strong>Restore from backup</strong> - Select a <code>.workout_backup</code> file. This replaces your current database with the backup. <strong>All current data will be overwritten</strong> - make sure you back up first if needed. Badger checks the backup is intact before replacing anything, so a corrupted or incomplete file is rejected and your current data is left untouched.</li>
-    <li><strong>Restore previous data</strong> - Just before any restore overwrites your data, Badger automatically saves a one-off snapshot of what was there. If a restore turns out to be a mistake, a <strong>Restore previous data</strong> option appears under Restore so you can roll back to that snapshot. Restart the app afterwards.</li>
+    <li><strong>iPhone: iCloud, on by default.</strong> Your own private iCloud database - Badger's developer cannot read it. Turn it off on the Backup screen or in iOS Settings.</li>
+    <li><strong>Android: on-phone copies, carried by Android's own backup.</strong> Badger keeps five dated copies on your phone. If your phone's own backup is turned on, Android carries those copies to your Google account for you - see <a href={`#android-backup-setting`}>where to check that setting</a> below.</li>
+    <li><strong>Google Drive, an optional extra on either platform.</strong> Backs up after every workout and is the way to move a log between an iPhone and an Android phone, since the other two are locked to their own platform.</li>
   </ul>
 
-  <h3 id="cloud-backup">Cloud backup</h3>
-  <p><strong>Cloud backup</strong> opens its own screen where you can turn on automatic backup to your own Google Drive. It is off unless you enable it. <a href={`/help/phone-migration/#cloud-backup`}>Moving to a new phone</a> has the steps to set it up and to restore from it.</p>
-  <p><strong>Back up equipment photos</strong>, on the same screen, is a second opt-in - off by default. Leave it off and backups hold your training data only.</p>
-  <p>Turn it on and photos of your machines, attachments and bars ride along in every backup, so they come back when you restore. The cost is considerably larger files that use more of your Drive storage. Photos already on your equipment are included starting with the next backup.</p>
+  <h4 id="cloud-backup">The Backup screen</h4>
+  <p>Open it from <strong>More → Settings → Your data → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
+  <ul>
+    <li><strong>Automatic</strong> - the iCloud switch and its status on iPhone, or the count of on-phone copies on Android, plus a manual <strong>Back up now</strong> for iCloud.</li>
+    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Undo last restore</strong> appears when a pre-restore snapshot exists, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself.</li>
+    <li><strong>Extra</strong> - the Google Drive switch, <strong>Back up equipment photos</strong> (off by default, iCloud and Drive only), a manual Drive backup, and <strong>Save a backup file</strong> for a one-off export you send yourself.</li>
+  </ul>
+  <p><strong>Restore from backup</strong> replaces your current database with the copy you picked. <strong>All current data will be overwritten</strong> - back up first if you need to keep it. Badger checks a copy is intact before replacing anything, so a corrupted or incomplete one is rejected and your current data is left untouched.</p>
+
+  <h4 id="android-backup-setting">Android's automatic restore needs Android backup turned on</h4>
+  <p>The on-phone copies only reach your Google account, and so only come back on a new or reinstalled phone, if your phone's own backup was on beforehand. Check it under your phone's <strong>Settings → System → Backup</strong> (the exact path varies by phone maker).</p>
+  <p>If it was off, restore instead from a Google Drive backup or a saved file - see <a href={`/help/phone-migration/`}>Moving to a new phone</a>.</p>
+  <p><strong>Back up equipment photos</strong> is a second opt-in on the Backup screen's Extra section, off by default. Leave it off and iCloud and Drive backups hold your training data only; turn it on and photos of your machines, attachments and bars ride along too.</p>
+  <p>The cost is larger files. Photos already on your equipment are included starting with the next backup. The on-phone copies Android keeps never include photos, to keep them small.</p>
 
   <h3 id="export">Exporting data</h3>
   <p><strong>Export workout data</strong> generates a CSV file with one row per logged set, including date, exercise name, weight, reps, duration, warmup flag, RPE, RIR, and more. The file is shared via the system share sheet.</p>
