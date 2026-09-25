@@ -206,7 +206,8 @@ Give me the complete JSON in one code block, then explain the program in a few s
     <li>
       <strong>Save the reply as a <code>.badger</code> file.</strong> Copy the JSON from the chat,
       paste it into any app that can save plain text as a file, and save it with a name ending in
-      <code>.badger</code>, such as <code>my-program.badger</code>. Some chat apps can also give you
+      <code>.badger</code>, such as <code>my-program.badger</code>. Check that the app did not add
+      <code>.txt</code> to the end; Badger will not open <code>my-program.badger.txt</code>. Some chat apps can also give you
       the JSON as a downloadable file if you ask for one with that name. On a computer, any text
       editor works; then move the file to your phone however you usually move files.
     </li>
@@ -237,7 +238,8 @@ Give me the complete JSON in one code block, then explain the program in a few s
   </ol>
 
   <p>
-    <strong>If the file will not open</strong>, it is malformed, or <code>badger</code> is not
+    <strong>If the file will not open</strong>, check first that its name ends in exactly
+    <code>.badger</code>. Otherwise it is malformed, or <code>badger</code> is not
     <code>share/v1</code>, or <code>type</code> is not <code>routine</code>. Paste the error back to
     the AI and ask for a corrected file.
   </p>
