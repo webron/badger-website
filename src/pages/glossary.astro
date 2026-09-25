@@ -2,134 +2,150 @@
 import HelpLayout from '../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Glossary" description="Plain-English definitions of fitness and app-specific terms used in Badger: RPE, RIR, 1RM, deload, warmup sets, and more.">
+<HelpLayout title="Glossary" description="Plain-English definitions of the training terms and Badger's own words: RPE, RIR, 1RM, AMRAP, training max, deload, driver set, waved days, stages and more.">
   <div class="glossary">
   <h1>Glossary</h1>
 
-  <p>Definitions of fitness terms and app-specific concepts used throughout Badger. If you're new to structured training, start here.</p>
+  <p>The training terms and Badger's own words you meet on this site and in the app. New to structured training? Start here.</p>
 
   <hr />
 
   <h2>Fitness terms</h2>
 
-  <h3>1RM (One-Rep Max)</h3>
-  <p>The maximum weight you can lift for exactly one rep with good form. Your true 1RM is rarely tested directly - it's usually <em>estimated</em> from submaximal sets using a formula. Badger uses the <strong>Epley formula</strong>: <code>weight × (1 + reps / 30)</code>. The result is an approximation; it's most accurate between 2-10 reps.</p>
+  <h3>1RM (one-rep max)</h3>
+  <p>The most weight you can lift for one rep with good form. It's rarely tested directly; it's usually <em>estimated</em> from a set of several reps. Badger uses the <strong>Epley formula</strong>: <code>weight × (1 + reps / 30)</code>. The estimate is most accurate between 2 and 10 reps.</p>
+  <p>Estimated 1RM is what Badger records as your best for most weight-and-reps exercises (assisted exercises, where lighter is better, are the exception). See <a href="/help/progress/#prs">personal records</a> for the other exercise types.</p>
 
-  <h3>RPE (Rate of Perceived Exertion)</h3>
-  <p>A 1-10 scale describing how hard a set felt relative to your maximum effort.</p>
+  <h3>Compound lift</h3>
+  <p>An exercise that works several joints and large muscle groups: squat, deadlift, bench press, overhead press, row. The opposite is an <em>isolation exercise</em> (curls, extensions), which focuses on one muscle.</p>
+
+  <h3>Failure</h3>
+  <p>The point where you can't complete another rep with good form. Training to failure (RIR 0) is a strong stimulus but adds fatigue and injury risk, so most programs stop 1 to 3 reps short. In Badger, the <strong>To failure</strong> chip records it in one tap. See <a href="/help/logging/#to-failure">to failure</a>.</p>
+
+  <h3>Hypertrophy</h3>
+  <p>Muscle growth. Usually trained in the 6 to 20 rep range at moderate intensity (RPE 7 to 9, RIR 1 to 3). Pure strength training tends toward lower reps at higher intensity.</p>
+
+  <h3>PR (personal record)</h3>
+  <p>Your best-ever performance on an exercise. Badger marks a new one as you log it, and what counts as a record depends on the exercise type. See <a href="/help/progress/#prs">personal records</a>.</p>
+
+  <h3>RIR (reps in reserve)</h3>
+  <p>How many more reps you could have done before failure. RIR counts reps left, where RPE counts effort: RIR 2 is roughly RPE 8, and RIR 0 is RPE 10.</p>
+  <ul>
+    <li><strong>RIR 0</strong> - You hit failure, or very close to it.</li>
+    <li><strong>RIR 1</strong> - One more rep possible.</li>
+    <li><strong>RIR 2-3</strong> - A common target for working sets in hypertrophy programs.</li>
+    <li><strong>RIR 4-5</strong> - Easy. Typical of early warmup sets or a deload.</li>
+  </ul>
+  <p>Badger records RIR as an optional field on every set (0 to 5). See <a href="/help/logging/#rpe-rir">RPE and RIR</a>.</p>
+
+  <h3>RPE (rate of perceived exertion)</h3>
+  <p>A 1 to 10 scale for how hard a set felt compared with your maximum effort.</p>
   <ul>
     <li><strong>6</strong> - Light. You could keep going for a long time.</li>
     <li><strong>7</strong> - Moderate. Challenging but comfortable.</li>
     <li><strong>8</strong> - Hard. A few reps left in the tank.</li>
     <li><strong>9</strong> - Very hard. One rep left.</li>
-    <li><strong>10</strong> - Max effort. Could not do another rep with good form.</li>
+    <li><strong>10</strong> - Max effort. You could not do another rep with good form.</li>
   </ul>
-  <p>RPE is subjective and takes time to calibrate. It's useful for tracking fatigue trends over time and for autoregulating training intensity. Badger stores RPE per set as an optional field (1-10 range).</p>
+  <p>RPE is subjective and takes time to calibrate. It's useful for tracking fatigue over time and for adjusting how hard you train on the day. Badger records it as an optional field on every set (1 to 10).</p>
 
-  <h3>RIR (Reps in Reserve)</h3>
-  <p>The estimated number of additional reps you could have performed before reaching failure. The inverse of RPE: a set at RIR 2 means you stopped with 2 reps left in the tank.</p>
+  <h3>Superset</h3>
+  <p>Two or more exercises done back to back with little or no rest between them, resting after each full round. Common uses: opposing muscle groups (biceps curls with triceps pushdowns), circuits, or saving time.</p>
+  <p>In Badger, exercises in the same group move you to the next exercise without starting the rest timer. The rest timer starts after the last exercise in the group.</p>
+
+  <h3>Tempo</h3>
+  <p>How fast you move through each phase of a rep, written as four numbers: <strong>lowering-pause-lifting-pause</strong>, each in seconds.</p>
   <ul>
-    <li><strong>RIR 0</strong> - You hit failure (or very close to it).</li>
-    <li><strong>RIR 1</strong> - One more rep possible.</li>
-    <li><strong>RIR 2-3</strong> - Common target for working sets in hypertrophy programs.</li>
-    <li><strong>RIR 4-5</strong> - Easy. Typical of early warm-up sets or deload.</li>
+    <li><strong>3-1-2-0</strong> - 3 seconds lowering, a 1-second pause at the bottom, 2 seconds lifting, no pause at the top.</li>
+    <li><strong>X</strong> (sometimes used) - Explosive. Move as fast as you can.</li>
   </ul>
-  <p>RIR 0 is equivalent to RPE 10. Badger stores RIR per set as an optional field (0-5 range).</p>
+  <p>You can set a tempo on an exercise or on an exercise in a routine, and it shows under the exercise name while you train.</p>
+
+  <h3>Volume</h3>
+  <p>Total work done, usually <strong>sets × reps × weight</strong>. Badger shows volume in your chosen unit (kg or lbs) in the progress graphs, the activity heatmap and the weekly muscle balance.</p>
+
+  <h3>Warmup set</h3>
+  <p>A lighter set before your working sets, to prepare your joints and muscles for the heavier loads without tiring you. Badger leaves warmup sets out of volume and PRs.</p>
+
+  <h3>Working set</h3>
+  <p>A set at or near your training weight: the sets you track for progress. Badger counts working sets in volume and uses them for PRs.</p>
+
+  <hr />
+
+  <h2>Program terms</h2>
+
+  <h3>AMRAP (as many reps as possible)</h3>
+  <p>A set with a minimum and no upper limit: do at least the prescribed number, then keep going as far as you can that day. Written <strong>8+</strong>. A set written <strong>1+</strong> means at least one rep, then as many as you can.</p>
+  <p>5/3/1-style programs put one on the last set of a lift, so a strong day counts in full. In Badger it's a routine set option; see <a href="/help/routines/#amrap-targets">open-topped targets</a>.</p>
 
   <h3>Deload</h3>
-  <p>A planned period (typically one week) of reduced training volume and/or intensity. The goal is to allow accumulated fatigue to dissipate while maintaining the fitness you've built. A proper deload is not rest - you still train, just with lighter weights or fewer sets.</p>
-  <p>Common deload approaches:</p>
+  <p>A planned stretch, usually a week, of lighter training so built-up fatigue can clear while you keep your fitness. You still train, just with lighter weights or fewer sets. Common approaches:</p>
   <ul>
     <li>Reduce weights by 40-50%</li>
     <li>Keep the same weights but do fewer sets</li>
     <li>Reduce both</li>
   </ul>
-  <p>Badger can detect when a deload is likely needed and schedule one automatically. See <a href={`/help/tools/#deload`}>Deload</a>.</p>
-  <p>Some programs also write a lighter week into the plan, like 5/3/1's fourth week. That week is part of the program and counts as a normal week.</p>
+  <p>In Badger, a deload week means one of two things:</p>
+  <ul>
+    <li><strong>A deload Badger schedules</strong> - An opt-in feature that watches for fatigue and schedules a lighter week. It pauses a progression rule's count without resetting it, and your next normal week starts from your real weights. See <a href="/help/tools/#deload">Deload</a>.</li>
+    <li><strong>A deload week written into a program</strong> - Such as 5/3/1's fourth week. It's an ordinary week of the plan and counts toward the cycle. See <a href="/help/progression/#holds-and-deloads">holds, misses and deload weeks</a>.</li>
+  </ul>
+
+  <h3>Double progression</h3>
+  <p>Working up a rep range before adding weight. Add reps until every set reaches the top of the range (10 in an 8 to 10 range), then add weight and drop back to the bottom. See <a href="/help/progression/#double-progression">double progression</a>.</p>
 
   <h3>Progressive overload</h3>
-  <p>The principle of gradually increasing the demands on your body over time - typically by adding weight, reps, or sets. Without progressive overload, training adaptations stall. It's the fundamental driver of long-term strength and muscle gains.</p>
-  <p>Badger tracks this automatically and can suggest weight increases when you've completed all working sets in your recent sessions.</p>
+  <p>Gradually asking more of your body over time, usually by adding weight, reps or sets. Without it, progress stalls. On an exercise without a progression rule, Badger suggests a weight increase once you've completed all your working sets in each of your last few sessions. See <a href="/help/progression/#progressive-overload">progressive overload suggestion</a>.</p>
 
-  <h3>Working set</h3>
-  <p>A set performed at or near your training weight - the "real" sets you're tracking for progress. Distinct from warmup sets. Badger counts working sets in your volume calculations and uses them for PR tracking.</p>
-
-  <h3>Warmup set</h3>
-  <p>A set performed at a lighter weight before your working sets. The purpose is to prepare your joints, muscles, and nervous system for the heavier loads to come - not to fatigue you. Warmup sets are excluded from volume calculations and PR tracking in Badger.</p>
-
-  <h3>Volume</h3>
-  <p>Total work done. Usually calculated as <strong>sets × reps × weight</strong>. In Badger, volume is shown in your chosen unit (kg or lbs) and is used in the progress graphs, activity heatmap, and weekly muscle balance tracking.</p>
-
-  <h3>Estimated 1RM</h3>
-  <p>See <strong>1RM</strong> above. Badger uses estimated 1RM as the record benchmark for most weight and reps exercises (an assisted exercise, where lighter is better, is the exception), since testing your true 1RM directly isn't practical in everyday training. See <a href="/help/progress/#prs">personal records</a> for the other exercise types.</p>
-
-  <h3>Superset</h3>
-  <p>Two or more exercises performed back-to-back with little or no rest between them. Rest is taken after completing one full round of the group. Common uses: opposing muscle groups (e.g. biceps curls + triceps pushdowns), circuit training, or time-efficient training.</p>
-  <p>In Badger, exercises in the same group auto-advance to the next exercise without starting the rest timer. The rest timer fires after the last exercise in the group.</p>
-
-  <h3>Tempo</h3>
-  <p>The speed at which you perform each phase of a rep, written as a 4-digit sequence: <strong>eccentric-pause-concentric-pause</strong> (e.g. "3-1-2-0"). Each number is seconds.</p>
-  <ul>
-    <li><strong>3-1-2-0</strong> - 3 seconds lowering, 1 second pause at bottom, 2 seconds lifting, no pause at top.</li>
-    <li><strong>X</strong> (sometimes used) - Explosive. Move as fast as possible.</li>
-  </ul>
-  <p>Badger stores tempo as a text string per exercise/routine exercise and displays it passively below the exercise name in the training screen.</p>
+  <h3>Tiers (T1, T2, T3)</h3>
+  <p>GZCLP splits each session into tiers: T1 is the heavy main lift, T2 a lighter second movement, and T3 accessory volume. T1 and T2 each have their own <a href="#stage">stage</a> ladder.</p>
 
   <h3>Training max (TM)</h3>
-  <p>A number set below your 1RM that percentage-based programs calculate working weights from (e.g. 5/3/1 uses 90% of 1RM as the training max). Using a submaximal training max gives you margin for variation and reduces injury risk.</p>
-  <p>Badger keeps one per lift and never shows it as a set weight. See <a href="/help/progression/#training-max">training max</a>.</p>
-
-  <h3>Compound lift</h3>
-  <p>An exercise that involves multiple joints and large muscle groups - squat, deadlift, bench press, overhead press, row. Contrasted with <em>isolation exercises</em> (curls, extensions) that focus on a single muscle.</p>
-
-  <h3>PR (Personal Record)</h3>
-  <p>Your best-ever performance on an exercise. Badger marks a new one as you log it, and what counts as a record depends on the exercise type. See <a href="/help/progress/#prs">personal records</a>.</p>
-
-  <h3>Hypertrophy</h3>
-  <p>Muscle growth. Typically trained in the 6-20 rep range at moderate intensity (RPE 7-9, RIR 1-3). Distinct from pure strength training, which tends toward lower reps at higher intensity.</p>
-
-  <h3>Failure</h3>
-  <p>The point at which you can no longer complete a rep with good form. Training to failure (RIR 0) is a high-stimulus technique but also increases fatigue and injury risk. Most training programs stay 1-3 reps short of failure. In Badger, the <strong>To failure</strong> chip records it in one tap - see <a href="/help/logging/#to-failure">to failure</a>.</p>
-
-  <h3>AMRAP (As Many Reps As Possible)</h3>
-  <p>A set with a minimum and no upper limit: do at least the prescribed number, then keep going as far as you can that day. Written <strong>8+</strong>. 5/3/1-style programs use it on the last set of a lift so a strong day counts for what it was instead of being capped. In Badger it is a routine set option - see <a href="/help/routines/#amrap-targets">open-topped targets</a>. A set written <strong>1+</strong> means at least one rep, then as many as you can.</p>
+  <p>A number set a little below your 1RM that percentage-based programs take their working weights from (5/3/1 uses 90% of your 1RM). The margin leaves room for off days and lowers injury risk.</p>
+  <p>Badger keeps one per lift and never loads it on the bar. See <a href="/help/progression/#training-max">training max</a>.</p>
 
   <hr />
 
-  <h2>App-specific terms</h2>
-
-  <h3>Workout</h3>
-  <p>In Badger, a workout is a single training session - one day's collection of exercises and sets. Workouts are keyed to a date.</p>
-
-  <h3>Workout exercise</h3>
-  <p>An exercise within a specific workout - the combination of an exercise definition and a session. Sets are attached to workout exercises, not directly to exercises.</p>
-
-  <h3>Routine</h3>
-  <p>A saved program template: a named collection of training days, each with exercises and optionally predefined sets. Starting a workout from a routine pre-fills your exercises and weights.</p>
-
-  <h3>Predefined set</h3>
-  <p>A set defined within a routine exercise, specifying target weight and reps. When you start a routine workout, predefined sets become the starting point for that session's sets. Where a session's starting weights come from is set by the routine's weight source, below.</p>
-
-  <h3>Progression rule</h3>
-  <p>A sentence on a routine slot that says what happens to its weight next session, based on how the last one went, for example "When all working sets hit the plan, add 2.5 kg." Badger proposes the weight when you start the session, and you can override it. See <a href="/help/progression/#rules">progression rules</a>.</p>
+  <h2>Badger terms</h2>
 
   <h3>Driver set</h3>
-  <p>The one set in a slot whose reps a progression rule reads, usually an open-topped set like <strong>5+</strong>. You mark it in the routine. See <a href="/help/progression/#driver-set">the set that drives the rule</a>.</p>
-
-  <h3>Waved day (cycle)</h3>
-  <p>A training day that runs as a cycle of weeks instead of the same session every time, like 5/3/1's four-week wave. Each set belongs to one week, or to every week. See <a href="/help/progression/#waves">waved days</a>.</p>
-
-  <h3>Stage</h3>
-  <p>One rung of a program's stall ladder, such as GZCLP's 5×3+, 6×2+ and 10×1+. A stall moves you to the next stage. See <a href="/help/progression/#waves">waved days</a>.</p>
+  <p>The one set of an exercise whose reps a progression rule reads, usually an open-topped set like <strong>5+</strong>. You mark it in the routine with <strong>Drives progression</strong>. See <a href="/help/progression/#driver-set">the driver set</a>.</p>
 
   <h3>History scope</h3>
-  <p>A routine setting that controls where Badger looks when copying previous weights. "Any workout" considers all past workouts; "This routine" only considers workouts started from the same routine.</p>
+  <p>A routine setting for which past workouts count when Badger fills in weights: <strong>Any workout</strong>, or <strong>This routine</strong> (only workouts started from this routine). See <a href="/help/routines/#history-scope">history scope</a>.</p>
+
+  <h3>Percentage set</h3>
+  <p>A planned set written as a percentage of the training max (85%) instead of a weight (100 kg). The routine log preview works out the weight and rounds it to something you can load. See <a href="/help/progression/#percent-sets">percentage sets</a>.</p>
+
+  <h3>Per-machine records</h3>
+  <p>Progress and PRs kept separately for each machine. If you do cable rows on two different machines, Badger tracks them independently. Selecting <strong>All</strong> in the machine filter shows them combined.</p>
+
+  <h3>Predefined set</h3>
+  <p>A set planned in a routine, with a target weight and reps. When you start the routine, these become the starting point for that session's sets. Where the starting weights come from is set by the routine's <strong>weight source</strong>.</p>
+
+  <h3>Progresses together</h3>
+  <p>Lifts on different days of a routine that share one number and one miss count. In Madcow, Friday's heavy triple sets the weight Monday ramps to. The built-in programs come set up this way. See <a href="/help/progression/#progressing-together">lifts that progress together</a>.</p>
+
+  <h3>Progression rule</h3>
+  <p>A sentence on an exercise in a routine that says what happens to its weight next session, based on how the last one went, for example "When all working sets hit the plan, add 2.5 kg." Badger proposes the weight when you start the session, and you can change it. See <a href="/help/progression/#rules">progression rules</a>.</p>
+
+  <h3>Routine</h3>
+  <p>A saved program: a named set of training days, each with exercises and, optionally, predefined sets. Starting a workout from a routine fills in your exercises and weights.</p>
+
+  <h3>Routine log preview</h3>
+  <p>The screen between picking a routine day and starting it. It shows the day's exercises and the weights Badger proposes. You can leave out or swap an exercise, or change a weight, before you tap Start. See <a href="/help/routines/#starting">starting a routine</a>.</p>
+
+  <h3 id="stage">Stage</h3>
+  <p>One step of a program's stall ladder: the lighter set scheme you move to when you stall. StrongLifts goes 5×5, then 3×5, then 1×5. See <a href="/help/progression/#stages">stage ladders</a>.</p>
+
+  <h3>Waved day (cycle)</h3>
+  <p>A training day that runs a different session each week of a cycle, like 5/3/1's four-week wave. Each set belongs to one week, or to every week. The routine moves to the next week once you've trained every day of the cycle. See <a href="/help/progression/#waves">waved days</a>.</p>
 
   <h3>Weight source</h3>
-  <p>A routine setting that controls how Badger determines the starting weights for a routine workout. Options: last performance, routine defaults, or routine defaults with fallback to last performance.</p>
+  <p>A routine setting for where starting weights come from: <strong>Last perf.</strong> (your most recent workout of each exercise), <strong>Routine</strong> (the planned weights), or <strong>Both</strong> (planned weights first, then your last performance where none is set). See <a href="/help/routines/#weight-source">weight source</a>.</p>
 
-  <h3>Machine-scoped</h3>
-  <p>Progress data or PRs filtered to a specific machine. If you do cable rows on two different machines, Badger can track them independently. Selecting "All" in the machine filter shows combined data.</p>
+  <h3>Workout</h3>
+  <p>A single training session: one day's exercises and sets.</p>
   </div>
 </HelpLayout>
 

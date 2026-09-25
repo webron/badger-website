@@ -6,49 +6,14 @@ interface Props {
 }
 const { currentPath } = Astro.props;
 
+// Help groups first, in the order a new user meets them, with "Getting
+// started" on top: a reader with a problem should not scroll past the guides
+// to reach it. The guides collapse into one group of hub links near the
+// bottom; each hub links on to its own pages. Every anchor below must exist
+// as an id on its target page.
 const nav = [
-  // 'Starting Guides' had grown into a bin of ten items holding three unrelated
-  // things: the four persona guides, the migration pages, and a run of
-  // standalone topic pages. Split into the three groups it already was, so the
-  // group label tells you what the items under it have in common.
   {
-    label: 'Starting Guides',
-    items: [
-      { href: `/guides/`, label: 'Pick your guide' },
-      { href: `/guides/just-lifting/`, label: 'Just lifting' },
-      { href: `/guides/program-runner/`, label: 'Running a program' },
-      { href: `/guides/optimizer/`, label: 'Show me the data' },
-    ],
-  },
-  // The hub first, then one entry per app someone arrives from, in the order
-  // the hub itself lists them: the three with pages of their own, then
-  // StrongLifts, whose import section lives on its 5x5 program page rather than
-  // on a page of its own (see the hub for why).
-  {
-    label: 'Switching to Badger',
-    items: [
-      { href: `/guides/switching/`, label: 'How importing works' },
-      { href: `/guides/fitnotes-alternative/`, label: 'From FitNotes' },
-      { href: `/guides/strong-alternative/`, label: 'From Strong' },
-      { href: `/guides/hevy-alternative/`, label: 'From Hevy' },
-      { href: `/guides/stronglifts-5x5-tracker/#import`, label: 'From StrongLifts' },
-    ],
-  },
-  // Pages that answer a question someone arrives with rather than describing
-  // how they train. 'Everything Badger does' is last because it is the index
-  // you reach for when the specific pages did not cover it.
-  {
-    label: 'More Guides',
-    items: [
-      { href: `/guides/stronglifts-5x5-tracker/`, label: 'StrongLifts 5x5' },
-      { href: `/guides/fitnotes-on-iphone/`, label: 'FitNotes on iPhone' },
-      { href: `/guides/workout-tracker-no-subscription/`, label: 'No subscription' },
-      { href: `/guides/ai/`, label: 'Use your own AI' },
-      { href: `/guides/overview/`, label: 'Everything Badger does' },
-    ],
-  },
-  {
-    label: 'Getting Started',
+    label: 'Getting started',
     items: [
       { href: `/help/getting-started/`, label: 'Quick start' },
       { href: `/help/getting-started/#first-workout`, label: 'Your first workout' },
@@ -59,9 +24,11 @@ const nav = [
     label: 'Logging workouts',
     items: [
       { href: `/help/logging/`, label: 'Logging sets' },
-      { href: `/help/logging/#set-types`, label: 'Warmup & working sets' },
-      { href: `/help/logging/#amrap`, label: 'AMRAP & to failure' },
+      { href: `/help/logging/#set-types`, label: 'Warmup sets' },
+      { href: `/help/logging/#rpe-rir`, label: 'RPE and RIR' },
+      { href: `/help/logging/#amrap`, label: 'AMRAP and to failure' },
       { href: `/help/logging/#rest-timer`, label: 'Rest timer' },
+      { href: `/help/logging/#set-timer`, label: 'Set timer' },
       { href: `/help/logging/#supersets`, label: 'Supersets' },
     ],
   },
@@ -69,7 +36,7 @@ const nav = [
     label: 'Exercises',
     items: [
       { href: `/help/exercises/`, label: 'Exercise library' },
-      { href: `/help/exercises/#search-filter`, label: 'Search & filters' },
+      { href: `/help/exercises/#search-filter`, label: 'Search and filters' },
       { href: `/help/exercises/#categories`, label: 'Categories' },
       { href: `/help/exercises/#creating`, label: 'Creating exercises' },
       { href: `/help/exercises/#types`, label: 'Exercise types' },
@@ -79,10 +46,11 @@ const nav = [
     label: 'Routines',
     items: [
       { href: `/help/routines/`, label: 'Overview' },
-      { href: `/help/routines/#creating`, label: 'Creating routines' },
-      { href: `/help/routines/#starting`, label: 'Starting a routine workout' },
-      { href: `/help/routines/#predefined-sets`, label: 'Planning sets' },
-      { href: `/help/routines/#sharing`, label: 'Sharing a routine' },
+      { href: `/help/routines/#creating`, label: 'Create a routine' },
+      { href: `/help/routines/#starting`, label: 'Start a routine workout' },
+      { href: `/help/routines/#predefined-sets`, label: 'Plan the sets' },
+      { href: `/help/routines/#alternatives`, label: 'Alternative exercises' },
+      { href: `/help/routines/#sharing`, label: 'Share a routine' },
       { href: `/help/routines/#programs`, label: 'Built-in programs' },
     ],
   },
@@ -100,13 +68,12 @@ const nav = [
   {
     label: 'Gyms and equipment',
     items: [
-      { href: `/help/gyms/`, label: 'Managing gyms' },
-      { href: `/help/gyms/#machines`, label: 'Machines & attachments' },
+      { href: `/help/gyms/`, label: 'Picking equipment in a workout' },
+      { href: `/help/gyms/#machines`, label: 'Machines and attachments' },
       { href: `/help/gyms/#bars`, label: 'Bars' },
-      { href: `/help/gyms/#accessories`, label: 'Bands, chains & straps' },
-      { href: `/help/gyms/#racks`, label: 'Dumbbell & kettlebell racks' },
+      { href: `/help/gyms/#accessories`, label: 'Bands, chains and straps' },
+      { href: `/help/gyms/#racks`, label: 'Dumbbell and kettlebell racks' },
       { href: `/help/gyms/#grip-types`, label: 'Grip types' },
-      { href: `/help/gyms/#workout-context`, label: 'Gym context in workouts' },
       { href: `/help/gyms/#sharing`, label: 'Sharing a gym' },
     ],
   },
@@ -114,7 +81,7 @@ const nav = [
     label: 'History',
     items: [
       { href: `/help/history/`, label: 'Viewing history' },
-      { href: `/help/history/#views`, label: 'List & calendar views' },
+      { href: `/help/history/#views`, label: 'List and calendar views' },
       { href: `/help/history/#filtering`, label: 'Filtering workouts' },
       { href: `/help/history/#search`, label: 'Searching your journal' },
       { href: `/help/history/#share`, label: 'Sharing a workout' },
@@ -126,7 +93,8 @@ const nav = [
     items: [
       { href: `/help/progress/`, label: 'Exercise progress' },
       { href: `/help/progress/#prs`, label: 'Personal records' },
-      { href: `/help/progress/#graphs`, label: 'Graphs & charts' },
+      { href: `/help/progress/#graphs`, label: 'Graphs' },
+      { href: `/help/progress/#strength-standards`, label: 'Strength standards' },
       { href: `/help/progress/#muscle-balance`, label: 'Muscle balance' },
       { href: `/help/progress/#plateau-detection`, label: 'Plateau detection' },
     ],
@@ -137,7 +105,7 @@ const nav = [
       { href: `/help/body/`, label: 'Body tracking' },
       { href: `/help/body/#what-you-track`, label: 'Choosing what you track' },
       { href: `/help/body/#trend`, label: 'Reading the trend' },
-      { href: `/help/body/#health`, label: 'Apple Health & Health Connect' },
+      { href: `/help/body/#health`, label: 'Apple Health and Health Connect' },
       { href: `/help/body/#heart-rate`, label: 'Heart rate on your sets' },
     ],
   },
@@ -145,29 +113,38 @@ const nav = [
     label: 'Tools',
     items: [
       { href: `/help/tools/`, label: 'Plate calculator' },
-      { href: `/help/tools/#warmup-calc`, label: 'Warmup calculator' },
+      { href: `/help/tools/#warmup-calc`, label: 'Warm-up calculator' },
       { href: `/help/tools/#deload`, label: 'Deload' },
     ],
   },
   {
-    label: 'Settings & Data',
+    label: 'Settings and data',
     items: [
       { href: `/help/settings/`, label: 'Settings overview' },
       { href: `/help/settings/#logging`, label: 'Logging settings' },
       { href: `/help/settings/#coaching`, label: 'Coaching settings' },
       { href: `/help/settings/#app`, label: 'App settings' },
       { href: `/help/settings/#data`, label: 'Your data' },
+      { href: `/help/settings/#backup`, label: 'Backup and restore' },
       { href: `/help/settings/#export`, label: 'Exporting data' },
-      { href: `/help/settings/#importing`, label: 'Importing history' },
       { href: `/help/phone-migration/`, label: 'Moving to a new phone' },
+    ],
+  },
+  {
+    label: 'Guides',
+    items: [
+      { href: `/guides/`, label: 'Pick your guide' },
+      { href: `/guides/switching/`, label: 'Switching from another app' },
+      { href: `/guides/ai/`, label: 'Use your own AI' },
+      { href: `/guides/overview/`, label: 'Everything Badger does' },
     ],
   },
   {
     label: 'Reference',
     items: [
       { href: `/glossary/`, label: 'Glossary' },
-      { href: `/programs/`, label: 'Program files' },
-      { href: `/badger-format/`, label: 'The .badger format' },
+      { href: `/programs/`, label: 'Programs' },
+      { href: `/badger-format/`, label: 'The .badger file format' },
     ],
   },
 ];

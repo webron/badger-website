@@ -2,139 +2,124 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="History" description="How to view your past workouts, use the calendar view, filter by category, and browse per-exercise history in Badger.">
+<HelpLayout title="History" description="How to browse past workouts, log a workout for an earlier day, search your notes, share a workout as an image and see one exercise's history in Badger.">
   <h1>History</h1>
 
-  <p>The <strong>History</strong> tab (the calendar icon in the bottom nav) shows every workout you've logged. You can browse by list or calendar, filter by exercise category, and dive into full workout details.</p>
+  <p>The <strong>History</strong> tab shows every workout you've logged. From here you can open any workout's details, log a workout for an earlier day, search your notes and share a session as an image.</p>
 
   <hr />
 
-  <h2 id="views">List view and calendar view</h2>
-  <p>Two tabs at the top of the History screen switch between views.</p>
+  <h2 id="views">Browse your workouts</h2>
+  <p>Two tabs at the top switch between a list and a calendar. To choose which one History opens on, see <a href={`/help/settings/#app`}>Default history view</a>.</p>
 
   <h3>List view</h3>
-  <p>All your workouts in reverse-chronological order, newest first. Each entry shows:</p>
+  <p>Workouts are listed newest first, loading in pages as you keep scrolling. Each entry shows:</p>
   <ul>
-    <li><strong>Date</strong> - day of week and date (today's entry says "Today").</li>
-    <li><strong>Exercise count and set count</strong> - e.g. "3 exercises · 12 sets".</li>
-    <li><strong>Exercise rows</strong> - up to three exercises, each on its own line with an equipment glyph, a colored category dot, and its set count plus top set (e.g. "4 sets · 100 kg × 5"). If the workout has more than three exercises, a "+ N more exercises" line closes the preview. Exercises in a superset show a colored left border, and a PR flag appears next to any exercise that set an all-time record that day.</li>
+    <li><strong>Date</strong> - day of the week and date ("Today" for today).</li>
+    <li><strong>Exercise and set count</strong> - for example "3 exercises · 12 sets".</li>
+    <li><strong>Exercise rows</strong> - up to three exercises, each with an equipment glyph, a colored category dot, its set count and its top set (for example "4 sets · 100 kg × 5"). A "+ N more exercises" line covers the rest. Supersets have a colored left border, and a PR flag marks any exercise that set an all-time record that day.</li>
   </ul>
-  <p><strong>Tap an entry to open its full details</strong> - the <a href={`/help/logging/`}>workout summary screen</a> with every set, weight, rep count, comment, and duration.</p>
-
-  <p>The trailing <strong>⋮ menu</strong> on each entry holds two shortcuts:</p>
+  <p>Tap an entry to open its <a href={`#workout-details`}>details</a>. The <strong>⋮ menu</strong> on each entry has two shortcuts:</p>
   <ul>
-    <li><strong>Copy to today</strong> - opens a sheet to copy this workout's exercises to a new workout today. You can deselect exercises you don't want to copy. (Not shown for today's own entry.)</li>
-    <li><strong>Save as routine</strong> - saves this workout as a new routine day, pre-filled with all the exercises and their set/rep counts.</li>
+    <li><strong>Copy to today</strong> - copies this workout's exercises to a new workout today. Deselect any you don't want. (Not shown on today's entry.)</li>
+    <li><strong>Save as routine</strong> - saves the workout as a new routine day, with its exercises and set and rep counts filled in.</li>
   </ul>
-
-  <div class="callout">
-    <strong>Infinite scroll:</strong> The list loads in pages. Keep scrolling and older workouts load automatically.
-  </div>
 
   <h3>Calendar view</h3>
-  <p>Days with logged workouts show small colored dots on the month calendar - one dot per exercise category trained that day. Tap any day for a summary below the calendar (the same exercise preview as the list, up to three rows plus a "+ N more" line); tap the card for full details.</p>
-  <p>A <strong>Copy to today</strong> button (past days only) and <strong>Save as routine day</strong> button sit below the summary.</p>
+  <p>Each day you trained shows one colored dot per exercise category. Tap a day to see a summary below the calendar (the same preview as the list), and tap the summary for the full details. Below it are <strong>Copy to today</strong> (past days only) and <strong>Save as routine day</strong>.</p>
   <ul>
-    <li>Today is outlined with the accent color.</li>
-    <li>Use the left and right arrows to move between months.</li>
-    <li>Tap <strong>Today</strong> in the top-right to jump back to the current month and select today.</li>
-    <li>Days with scheduled routine days (but no workout yet logged) show a faint dot as a reminder.</li>
-    <li><strong>Logging a past workout.</strong> Tap any past (or today's) day with no workout, then tap <strong>Log a workout</strong> in the summary below the calendar. Choose <strong>From a routine</strong> (pick a routine and day, then confirm the prefilled session), <strong>Manual entry</strong> (start an empty workout and add exercises by hand), or <strong>Copy from another day</strong> (duplicate a previous session's exercises and sets onto this date). Future dates can't be logged.</li>
-    <li>Backdated workouts run no timers: the duration stays blank instead of recording how long you spent entering it, and no rest-timer countdown fires while you log.</li>
-    <li><strong>Adding to a past workout later.</strong> Open any past workout's summary and tap <strong>Add exercises</strong> to reopen it and log more movements - a backdated entry isn't one-shot. Leaving a backdated log returns you to that workout's summary rather than the Today screen.</li>
+    <li>Today is outlined in your accent color.</li>
+    <li>The arrows move between months. <strong>Today</strong> in the top right jumps back to today.</li>
+    <li>A faint dot marks a day with a scheduled routine day and no workout yet.</li>
   </ul>
 
-  <h2 id="filtering">Filtering workouts</h2>
-  <p>Tap the filter icon in the top-right to open the filter sheet. You can filter by one or more exercise categories:</p>
+  <h2 id="log-past">Log a workout for an earlier day</h2>
+  <ol>
+    <li>In calendar view, tap the day: any past day, or today, that has no workout yet.</li>
+    <li>Tap <strong>Log a workout</strong> in the summary below the calendar.</li>
+    <li>Choose how to fill it:
+      <ul>
+        <li><strong>From a routine</strong> - pick a routine and day, then confirm the prefilled session.</li>
+        <li><strong>Manual entry</strong> - start an empty workout and add exercises yourself.</li>
+        <li><strong>Copy from another day</strong> - copy an earlier session's exercises and sets onto this date.</li>
+      </ul>
+    </li>
+  </ol>
+  <p>Future dates can't be logged. A backdated workout runs no timers, so its duration stays blank and no rest countdown fires while you enter sets. When you leave, you're back on that workout's summary.</p>
+  <p>To add to a past workout later, open its summary and tap <strong>Add exercises</strong>.</p>
+
+  <h2 id="filtering">Filter by category</h2>
+  <p>Tap the filter icon in the top right, then tap category chips to turn them on or off. The list updates as you tap, and a dot on the filter icon shows a filter is active.</p>
   <ul>
-    <li>Tap any category chip to toggle it on or off. Active filters are highlighted in the category's color.</li>
-    <li>When two or more categories are selected, a <strong>Match any / Match all</strong> toggle appears. "Match any" shows workouts that include at least one of the selected categories. "Match all" shows only workouts that include all of them.</li>
-    <li>Tap <strong>Clear all</strong> to remove all filters at once.</li>
+    <li>With two or more categories on, choose <strong>Match any</strong> (workouts with at least one of them) or <strong>Match all</strong> (workouts with every one).</li>
+    <li><strong>Clear all</strong> removes every filter.</li>
+    <li>Under <strong>Display options</strong>, a toggle shows or hides the category dots on the calendar.</li>
   </ul>
-  <p>An active filter is signaled by a small dot on the filter icon. The list updates in real time as you toggle chips.</p>
 
-  <p>The filter sheet also has a <strong>Display Options</strong> section with a toggle to show or hide the category dots on the calendar view.</p>
-
-  <h2 id="search">Searching your journal</h2>
-  <p>Tap the <strong>search icon</strong> in the top-right of the History screen to search everything you have ever written down. It looks across:</p>
+  <h2 id="search">Search your notes</h2>
+  <p>Tap the <strong>search icon</strong> in the top right to search everything you've written:</p>
   <ul>
     <li><strong>Workout notes</strong> - the comment on a session.</li>
-    <li><strong>Set comments</strong> - the note you left on an individual set.</li>
+    <li><strong>Set comments</strong> - notes on individual sets.</li>
     <li><strong>Exercise notes</strong> - your personal notes on an exercise.</li>
-    <li><strong>Machine notes</strong> - setup cues you saved for an exercise on a specific machine.</li>
-    <li><strong>Routine and routine day notes</strong> - program context and per-day instructions.</li>
-    <li><strong>Training notes</strong> - the app-level notes on your You screen.</li>
+    <li><strong>Machine notes</strong> - setup cues saved for an exercise on a specific machine.</li>
+    <li><strong>Routine and routine day notes</strong>.</li>
+    <li><strong>Training notes</strong> - see <a href={`/help/settings/#training-notes`}>Training notes</a>.</li>
   </ul>
-  <p>Results appear as soon as you've typed two characters, in two groups: <strong>Notes</strong> first (everything undated), then <strong>Entries</strong> (results tied to a workout, newest first). Each result shows where it came from, its date if it has one, and the matched line with the matching words highlighted.</p>
-  <p>Tap any result to jump to the screen that owns it - the workout summary, the exercise's notes, the machine, the routine, or your training notes.</p>
-  <div class="callout">
-    <strong>It searches your writing, not the app's.</strong> The built-in technique instructions that ship with each exercise are not included - only notes you wrote yourself. Everything stays on your device; nothing is sent anywhere to search it.
-  </div>
+  <p>Results appear after two characters, in two groups: <strong>Notes</strong> (undated) first, then <strong>Entries</strong> (tied to a workout, newest first). Each result shows where it came from, its date if it has one, and the matching line with your words highlighted. Tap a result to open the screen it belongs to.</p>
+  <p>Search covers only notes you wrote. The built-in exercise instructions aren't included.</p>
 
-  <h2 id="workout-details">Workout details</h2>
-  <p>Tapping any list entry (or the day summary card in the calendar view) opens the workout summary screen. This shows the complete record of the session:</p>
+  <h2 id="workout-details">What a workout's details show</h2>
+  <p>Tap any list entry, or the day summary in calendar view, to open the workout summary:</p>
   <ul>
-    <li>Workout date, start time, end time, and total duration.</li>
-    <li>Every exercise in order, with each set listed - weight, reps, warmup/working badge, and any RPE or RIR notes.</li>
-    <li>Per-set comments, if you added any during the workout. A comment icon appears next to each set; tap it to expand and read the full comment text.</li>
-    <li>Gym and machine recorded for the session, if any.</li>
-    <li>Any workout-level comment you added when ending the session.</li>
+    <li>Date, start time, end time and total duration.</li>
+    <li>Every exercise in order, with each set's weight, reps, warmup or working badge, and any <a href={`/help/logging/#rpe-rir`}>RPE or RIR</a> you logged.</li>
+    <li>Set comments. Tap the comment icon beside a set to read it in full.</li>
+    <li>The gym and machine, if you recorded them.</li>
+    <li>The workout comment you added when you finished.</li>
   </ul>
 
   <h3 id="pace">Pace</h3>
-  <p>Below the stats row, a <strong>Pace</strong> section shows how the session was spent: how long each exercise took, your average rest between its sets, and the total for the session. It is worked out from the times your sets were recorded, so nothing extra is asked of you while you train.</p>
+  <p>Below the stats row, <strong>Pace</strong> shows how the session was spent: how long each exercise took, your average rest between its sets, and the session total. It's worked out from when you logged each set, so there's nothing extra to do while you train.</p>
   <ul>
-    <li>A gap longer than ten minutes counts as a <strong>break</strong> rather than rest - a phone call or a wait for a rack does not get averaged into your rest times. Breaks are listed on their own line.</li>
-    <li>An exercise only reports average rest for gaps between its own sets, so a superset shows how long it took without pretending the partner exercise was rest.</li>
-    <li>These are your actual times. They aren't a comparison against the rest timer you configured.</li>
+    <li>A gap longer than ten minutes counts as a <strong>break</strong>, listed on its own line, and isn't averaged into your rest.</li>
+    <li>In a superset, time spent on the partner exercise doesn't count as rest.</li>
   </ul>
-  <p>Pace appears once a session has at least four completed sets and a running clock. Backdated logs never show it - there is no real timing to report - and neither do sessions logged before the feature existed.</p>
+  <p>Pace appears once a session has at least four completed sets and a running clock. Backdated logs and some older sessions don't show it.</p>
 
-  <h3>Planned vs. actual (routine workouts only)</h3>
-  <p>When a workout was started from a routine day, each logged working set can show two reference lines beneath it. They answer two different questions:</p>
+  <h3>Planned vs. actual (routine workouts)</h3>
+  <p>When a workout came from a routine day, each working set can show two lines beneath it:</p>
   <ul>
-    <li><code>plan: 8-10 reps</code> - what the routine asked for. If you came in under the lower number, a small caret marks it as under plan.</li>
-    <li><code>last session: 80 kg × 8</code> - what you did last time, with a caret showing whether you beat it, matched it, or came in under.</li>
+    <li><code>plan: 8-10 reps</code> - what the routine asked for. A small caret marks a set that came in under the lower number.</li>
+    <li><code>last session: 80 kg × 8</code> - what you did last time, with a caret showing whether you beat it, matched it or came in under.</li>
   </ul>
-  <p>Any set you performed beyond the routine's prescription is marked <strong>extra set</strong> instead.</p>
-  <p>If you met the plan or beat your last session anywhere in the session, a compact wins card appears above the stats row - for example:</p>
+  <p>A set beyond what the routine prescribed is marked <strong>extra set</strong>.</p>
+  <p>If you met the plan or beat your last session anywhere in the workout, a wins card appears above the stats row, for example:</p>
   <ul>
     <li>"2 of 5 exercises: every set met the plan"</li>
     <li>"3 sets exceeded last session"</li>
     <li>"2 of 5 exercises: all sets met or exceeded last session"</li>
   </ul>
-  <p>Meeting the plan means hitting the rep target, or anywhere at or above the lower number when the target is a range. A <a href="/help/routines/#rep-ranges">rep range</a> only ever widens what counts as met - it never turns a set that used to count into one that doesn't.</p>
-  <p>The wins card only shows positive outcomes - there is no overall adherence percentage. The last-session comparison uses an estimated 1RM for weight + reps sets, so more weight, more reps, or both count as a win, and the relevant scalar for reps-only, time-only, and distance exercises.</p>
-  <p>Free workouts (not started from a routine) show the summary unchanged.</p>
+  <p>Meeting the plan means hitting the rep target, or at least the lower number of a <a href="/help/routines/#rep-ranges">rep range</a>. For weight and reps, beating last session means a higher estimated 1RM, so more weight or more reps both count. For reps-only, timed and distance exercises, it means more reps, more time or more distance.</p>
 
-  <h2 id="share">Sharing a workout as an image</h2>
-  <p>The workout summary has a <strong>Share</strong> action that builds a card from the session and hands it to your phone's share sheet as an image. You see the finished card before anything is shared, and nothing is sent anywhere unless you pick a destination yourself.</p>
-  <p>It is <strong>not a screenshot</strong>. Badger draws a card for the purpose, so what you post is the same size and shape whatever phone you are on, whatever your font size is set to, and wherever you had the screen scrolled to.</p>
-  <p>The card is a page from your own journal: your theme and your accent color, the date, your entry number, and the program and day name if the workout came from a routine. What it leads with depends on the session:</p>
+  <h2 id="share">Share a workout as an image</h2>
+  <p>Tap <strong>Share</strong> on the workout summary. Badger builds a card from the session, shows it to you, and then opens your phone's share sheet.</p>
+  <p>The card uses your theme and accent color, and shows the date, your entry number, and the routine and day name if the workout came from one. It leads with:</p>
   <ul>
-    <li><strong>An ordinary day</strong> leads with the standout set: the lift, the set, and a plain line saying why it is there - "Heaviest set of the day", "Most reps of the day", "Longest hold of the day", "Farthest of the day". Which one it says follows the exercise, so an assisted movement reads "Lightest set of the day" and a timed sprint reads "Fastest of the day".</li>
-    <li><strong>A day you set a personal best</strong> leads with the record instead, and names what it beat: "New personal best · was 57.5 kg × 5".</li>
+    <li><strong>On an ordinary day, your standout set</strong>, with a line saying why: "Heaviest set of the day", "Most reps of the day", "Longest hold of the day" or "Farthest of the day". The wording follows the exercise, so an assisted movement reads "Lightest set of the day" and a timed sprint reads "Fastest of the day".</li>
+    <li><strong>On a day you set a personal best, the record</strong>, and what it beat: "New personal best · was 57.5 kg × 5".</li>
   </ul>
-  <p>Under that: a summary line (sets, exercises, time, volume), then one line per exercise showing its set count as tally marks and its best set. The card lists as many exercises as fit its fixed height, up to eight, and counts the rest as "+N more" - so a session of eight long exercise names shows fewer rows than one of eight short ones.</p>
-  <p>Exercise names wrap instead of getting cut off, and warmups never appear on the card.</p>
-  <p>Two things are deliberately off by default. The <strong>gym name</strong> is a per-share toggle on the share sheet, because a gym is a location; it is off every time and the choice is not remembered. And the card never carries a link, a referral code, or an app banner.</p>
+  <p>Below that come a summary line (sets, exercises, time, volume) and one line per exercise with its set count as tally marks and its best set. The card fits up to eight exercises in a fixed height, so long exercise names can mean fewer rows; the rest are counted as "+N more". Warmups are left off.</p>
+  <p>The gym name appears only if you turn on <strong>Include gym name</strong> on the share sheet. It starts off every time.</p>
 
-  <h2 id="per-exercise">Per-exercise history</h2>
-  <p>To view history for a single exercise, open the <a href={`/help/progress/`}>Progress tab</a>, select the exercise, and open its detail screen's <strong>History</strong> tab - every session where it was logged, newest first. The same tab appears in the <strong>training screen</strong> mid-workout: swipe to History to see past sessions for the exercise you're currently logging.</p>
-  <p>Each entry in the per-exercise history shows:</p>
+  <h2 id="per-exercise">One exercise's history</h2>
+  <p>Every session of a single exercise, newest first, is in two places:</p>
   <ul>
-    <li>The workout date and gym/machine used, if any.</li>
-    <li>Each set logged for that exercise, with warmup sets and working sets distinguished by badge (W for warmup, numbered for working sets).</li>
-    <li>Weight, reps, duration, or distance - whatever fields apply to the exercise type.</li>
-    <li>RPE and RIR values, if recorded.</li>
+    <li>On the <a href={`/help/progress/`}>Progress tab</a>: pick the exercise, then open its <strong>History</strong> tab.</li>
+    <li>Mid-workout, on the training screen: tap <strong>History</strong>, or swipe left from <strong>Track</strong>.</li>
   </ul>
-  <p>Skipped sets are excluded from the history display.</p>
-  <p>Tap any entry to jump to that workout's full summary.</p>
-
-  <h3>Editing sets from history</h3>
-  <p>In the per-exercise History tab (both in the training screen and on the Exercise Progress screen), <strong>tap any set row</strong> to open an edit sheet. You can correct weight, reps, duration, distance, RPE, RIR, the warmup flag, and the set comment. Changes save immediately and update the progress graphs.</p>
-
-  <div class="callout">
-    <strong>Equipment filters:</strong> If you've tracked the same exercise on more than one machine or bar, or with and without accessories, chip rows appear at the top of the history list so you can narrow it to one. This keeps cable and machine progress separate when you train the same movement on different equipment. See <a href="/help/progress/#chart-filters">Chart filters</a>.
-  </div>
+  <p>Each session shows the date, the gym and machine if any, and every set with its badge (W for a warmup, a number for a working set), its weight, reps, time or distance, and any RPE and RIR. Skipped sets aren't shown.</p>
+  <p>Tap a session's header to open that workout's summary.</p>
+  <p><strong>To fix a set, tap its row.</strong> An edit sheet opens where you can change the weight, reps, time, distance, RPE, RIR, warmup flag and comment. Changes save straight away and update your graphs.</p>
+  <p>If you've trained the exercise on more than one machine or bar, or with and without accessories, filter rows appear at the top of the list so you can narrow it to one. They work like the <a href="/help/progress/#chart-filters">chart filters</a>.</p>
 </HelpLayout>

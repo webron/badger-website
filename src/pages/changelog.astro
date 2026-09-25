@@ -11,24 +11,25 @@ import Footer from '../components/Footer.astro';
 // 2026-08-12): the in-app card is terse on purpose and this page explains. Do
 // not "fix" that drift by copying one into the other.
 //
-// 1.1.10 is a further exception, and deliberately so. It has no kChangelog entry,
-// because the in-app changelog is for users and nothing about using the app
-// changed in it. That makes this page the only written account of the release,
-// so the entry below explains the milestone rather than listing features, and
-// is longer than the store notes rather than a copy of them.
+// 1.1.10 is a further exception. It has no kChangelog entry, because the
+// in-app changelog is for users and nothing about using the app changed in it.
+// That makes this page the only written account of the release.
+//
+// 2026-09-24 voice pass: 1.1.7 to 1.1.12 were trimmed to one change per short
+// sentence, in the style of 1.1.0. Keep new entries in that register.
 const releases = [
   {
     version: '1.1.12',
     date: 'September 2026',
     headline: 'Your program can now run itself',
     highlights: [
-      'A routine slot can carry a progression rule, written as a sentence you read: all sets met, add 2.5 kg; three misses in a row, drop 10%.',
+      'An exercise in a routine can carry a progression rule, written as a sentence: all sets met, add 2.5 kg; three misses in a row, drop 10%.',
       'Every number in a rule is a chip you tap to change.',
       'The rule proposes a weight when you start the session and names the line that fired. Type your own weight and the rule stays on.',
-      'Badger keeps a training max per lift, and a set can be a percentage of it, worked out to a load your plates and bar can make.',
+      'Badger keeps a training max per lift. A set can be a percentage of it, worked out to a load your plates and bar can make.',
       'Mark the one set whose reps drive the rule.',
       'A day can run as a cycle of weeks, so 5/3/1 is written once.',
-      'A plan set can state an RPE or RIR target, and take its percentage from a different lift.',
+      'A planned set can state an RPE or RIR target. Percentage sets can take their percentage from a different lift.',
       'A week can swap an exercise out for another.',
       'StrongLifts 5x5, Starting Strength, GZCLP and 5/3/1 BBB come with their rules written in, and nSuns 531LP and Madcow 5x5 are new.',
       'Set up progression writes rules onto a routine you already have, and shows you every sentence first.',
@@ -52,9 +53,9 @@ const releases = [
     version: '1.1.11',
     date: 'September 2026',
     highlights: [
-      'An under-the-hood change to how Badger stores your data. Every row in the database now carries an identifier that is unique across devices rather than only within your phone. Nothing about using the app changed: no screen moved, no setting was renamed, and your workouts, routines, exercises, gyms and settings are all exactly where you left them.',
-      'It exists so that a future version can tell two phones\' records apart without guessing. That work is not here yet, and this release does not add an account, does not switch on any sync, and does not send anything anywhere. It only gets the change onto real phones ahead of the features that will need it.',
-      'The update runs once, the first time you open the new version, and is normally over before you notice. If anything about your data looks wrong afterwards, get in touch through Settings, Feedback.',
+      'Behind-the-scenes groundwork: every record in the database now carries an ID that is unique across devices.',
+      'Nothing about using the app changes. It adds no account and no sync, and sends nothing anywhere; it prepares for features that will need the new IDs.',
+      'The update runs once, the first time you open the new version. If your data looks wrong afterward, get in touch through Settings → Feedback.',
     ],
   },
   {
@@ -62,19 +63,20 @@ const releases = [
     date: 'August 2026',
     headline: 'Badger is out of testing, on both stores',
     highlights: [
-      'Badger is on the App Store, and on Google Play it has moved from open testing to a normal public release. Until now the Android app was something you had to opt into a test track to get, and the iPhone app was a TestFlight beta with an invite link. Both of those are over. Anyone can search for Badger on either store and install it, and the app has stopped describing itself as a beta anywhere in its own screens.',
-      'Nothing changed in how you log a workout. If you have been testing Badger, this release moves no buttons and renames no settings, and your history, routines and gyms are exactly where you left them. There is no migration to do and nothing to re-import. Testers on either platform can carry on with the copy they already have, or switch to the store version whenever it suits.',
-      'On iPhone, Badger is an iPhone app only. There was a version that would install on an iPad, but it had never been designed or tested for that screen, so it is gone rather than shipped as something it is not. If iPad support arrives later it will be because the layouts were built for it, not because the build allowed it.',
-      'After a session that sets an all-time personal record, Badger may ask once whether you would like to rate it. This is the standard rating sheet your phone provides, so it appears inside the app, takes a tap to dismiss, and your phone limits how often any app is allowed to ask. Badger will not ask again on the same version, and will not ask at all until you have logged at least five workouts. There is no version of it that sends unhappy people somewhere else, which some apps do and both stores forbid.',
-      'The "Enjoying the beta?" card on the home screen is now "How\'s Badger working out?" and does the same job it always did, which is to give you somewhere to say something is wrong other than a one-star review. It still goes to a person, and it is still the fastest way to get a bug looked at.',
+      'Badger is on the App Store, and on Google Play it is now a normal public release instead of open testing.',
+      'Anyone can install it from either store, and the app no longer calls itself a beta.',
+      'Nothing changes in how you log. Testers can keep the copy they have or switch to the store version.',
+      'Badger is iPhone only; the iPad build is gone.',
+      'After a session with an all-time PR, Badger may ask once for a rating, using your phone\'s standard rating sheet. It asks at most once per version, and only after you have logged five workouts.',
+      'The "Enjoying the beta?" card on Today is now "How\'s Badger working out?", and it still reaches a person.',
     ],
   },
   {
     version: '1.1.9',
     date: 'August 2026',
     highlights: [
-      'On iPhone, a spoken cue or a timer beep no longer leaves your music quiet for the rest of the run. Ducking now hands the volume back the moment the cue ends, the way it was meant to since the set timer voice shipped in 1.1.8.',
-      'Timer settings are split into three sections - Rest timer, Set timer and Workout timer - so it is clear which timer each setting belongs to, instead of nine settings sharing one Logging list.',
+      'On iPhone, your music returns to full volume as soon as a spoken cue or timer beep ends.',
+      'Timer settings are split into three sections: Rest timer, Set timer and Workout timer.',
     ],
   },
   {
@@ -82,13 +84,17 @@ const releases = [
     date: 'August 2026',
     headline: 'Your set timer talks you through the set',
     highlights: [
-      'A timed set now counts you in and talks you down. You get "3, 2, 1, Go" going in, a warning at 30 seconds and again at 10, a spoken mark as the minutes tick past, and "Time" at the end. The marks are graduated rather than on a fixed interval: every minute under ten, every five minutes up to thirty, every ten minutes above that, so a long hold stops being chatty instead of reciting itself at you for an hour.',
-      'The voice is a real recorded one, bundled with the app rather than read out by your phone, so it sounds the same on every handset and works with no signal at all. Pick Female, Male or Off under Settings, Logging, and tapping an option plays it so you can hear the difference before you commit. It ducks your music for the length of each cue and lets it come straight back, rather than pausing it for the whole set.',
-      'On an iPhone, a running set now appears on the lock screen and in the Dynamic Island the way rest already did, and the cues keep being spoken with the screen off. Putting the phone down mid-plank used to mean the countdown simply stopped talking, because iOS suspends an app the moment you lock it. Badger now holds itself up for the length of the set and hands that back the instant the set is over.',
-      'If the set runs out while you are in another app, Badger tells you, at the moment it actually ended rather than whenever you next look. On Android those alerts also fire on time now instead of drifting late, which is what the system does to an app that has not asked for precise timing.',
-      'Progress charts gained a bar filter beside the machine one, and a control for what to do with sets you logged with a band or a chain: show everything, hide them, or look only at them. A set with something attached draws as a hollow ring on the chart, so you can see it is there without it being counted as a record.',
-      'A routine slot can carry its accessories. If you always do the last set of face pulls with the green band, program it into the routine and it comes with the exercise instead of being something you re-pick every week.',
-      'Fixes: auto-progress now writes each weight into its own planned set rather than shifting them when you skip one, the calendar day panel keeps up with the day you are looking at, the workout clock passes an hour without rolling over, your very first workout seals as Entry № 1 instead of Entry № 0, and the built-in exercise instructions lost some stray dashes.',
+      'A timed set counts you in with "3, 2, 1, Go", warns you at 30 and 10 seconds, marks the minutes, and says "Time" at the end.',
+      'The minute marks thin out on long holds: every minute under ten, every five minutes up to thirty, every ten above that.',
+      'The voice is a recording bundled with the app, so it sounds the same on every phone and works offline.',
+      'Pick Female, Male or Off under Settings → Logging. Tapping an option plays a sample.',
+      'Each cue ducks your music briefly instead of pausing it for the whole set.',
+      'On iPhone, a running set shows on the lock screen and in the Dynamic Island, and the cues keep playing with the screen locked.',
+      'If a set ends while you are in another app, Badger alerts you as it ends. On Android, those alerts now fire on time.',
+      'Progress charts add a bar filter next to the machine filter.',
+      'Charts can show sets logged with a band or chain, hide them, or show only them. Those sets draw as hollow rings and never count as records.',
+      'A routine can carry an exercise\'s accessories, so the band you always use comes with it.',
+      'Fixes: auto-progress writes each weight to its own planned set when you skip one, the calendar day panel follows the day you are viewing, the workout clock passes an hour correctly, your first workout is Entry № 1 instead of Entry № 0, and stray dashes are gone from the exercise instructions.',
     ],
   },
   {
@@ -96,13 +102,17 @@ const releases = [
     date: 'August 2026',
     headline: 'Badger knows what your gym actually holds',
     highlights: [
-      'Tell Badger which dumbbells and kettlebells your gym has, and the plus and minus buttons walk that rack instead of ticking an increment. A real rack runs 5, 10, 15 and then jumps, which no step size can describe. Kettlebells carry the competition colors, kg and lbs are separate lists because a 16 kg bell is not a 35 lb one, and typing any weight you like still works: the rack moves the buttons, it never restricts what you log.',
-      'Bars are things you name now. Add your Olympic bar, the trap bar, or the specific worn 45 that really weighs 44, give each its own weight, and pick one while you train. The plate calculator and the warm-up generator use the bar you picked, and records are kept per bar, because a trap bar deadlift is not a straight bar deadlift.',
-      'Bands, chains and suspension straps can be recorded too, several at once, since two bands stack and chains ride on a bar that may also carry a band. Each one is named by its color, the way you already say it out loud. A set logged with anything attached is left out of personal records entirely, in both directions, so a banded press neither claims a record nor blocks a bare one.',
-      'A rep target can be open-topped. Write 8+ and the plan means at least eight, as many as you can, and 1+ is how you program a set to failure. It reads as 8+ everywhere a target is shown, and Badger stops suggesting more weight for a slot whose top you can never reach.',
-      'The plan is now on the set rows themselves. A set you have not done yet shows what the routine asked for rather than last week\'s numbers, and the reps field carries a quiet + or a range beside it, which disappears the moment you type your own number over it.',
-      'Sharing a gym hands over the whole gym. A .badger file now carries the racks, the plate inventory, the bars and the accessories along with the machines, so a friend who imports your gym gets the place as it stands. What describes the gym travels; what describes you, your photos and your own setup notes, stays on your phone.',
-      'Fixes: editing a past workout\'s equipment no longer wipes the attachment and grip you had stored, deleting a workout updates the calendar right away, assisted and counterweight lifts now show their best set the right way round in History, the grip is one picker instead of a row of six chips, and the equipment label wraps instead of cutting a name in half.',
+      'Tell Badger which dumbbells and kettlebells your gym has, and the plus and minus buttons step through that rack.',
+      'Kettlebells carry the competition colors, and kg and lbs racks are separate lists.',
+      'You can still type any weight; the rack only moves the buttons.',
+      'Name your bars (the Olympic bar, the trap bar, the worn 45 that weighs 44), give each its own weight, and pick one while you train.',
+      'The plate calculator and warm-up generator use the bar you picked, and records are kept per bar.',
+      'Record bands, chains and suspension straps, several at once, each named by its color.',
+      'A set with an accessory attached never claims a record and never blocks one.',
+      'A rep target can be open-topped: 8+ means at least eight, and 1+ is a set to failure. Badger stops suggesting more weight for an open-topped target.',
+      'Sets you have not done yet show what the routine asked for, with a + or a range beside the reps until you type your own.',
+      'Sharing a gym includes its racks, plates, bars and accessories. Your photos and setup notes stay on your phone.',
+      'Fixes: editing a past workout\'s equipment keeps its attachment and grip, deleting a workout updates the calendar right away, assisted and counterweight lifts show their best set correctly in History, the grip is one picker instead of six chips, and a long equipment label wraps instead of being cut off.',
     ],
   },
   {
@@ -245,8 +255,7 @@ const releases = [
     <span class="kicker">Release log</span>
     <h1>What's new</h1>
     <p class="lede">
-      Every release of Badger, newest first. Badger is in active development on Android and iOS,
-      and both are public store releases.
+      Every release of Badger, newest first. Badger is on Google Play and the App Store.
     </p>
 
     {

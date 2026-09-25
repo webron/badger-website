@@ -3,7 +3,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 
 const description =
-  'Import your history from FitNotes, Strong, Hevy, or Stronglifts, then pick the guide that fits how you train.';
+  'Import your history from FitNotes, Strong, Hevy, or StrongLifts, then pick the guide that fits how you train.';
 
 // One entry per app someone arrives from. FitNotes, Strong and Hevy each have
 // a page, because each import genuinely differs: a FitNotes backup is a
@@ -23,7 +23,7 @@ const fromApps = [
   {
     app: 'Strong',
     href: '/guides/strong-alternative/',
-    note: 'A CSV, and a fuller one than most: your RPE and your per-set notes come with it.',
+    note: 'A CSV that brings your RPE and your per-set notes with it.',
     full: true,
   },
   {
@@ -46,40 +46,40 @@ const fromApps = [
     slot="head"
     headline="Switching to Badger from another workout tracker"
     description={description}
-    dateModified="2026-09-05"
+    dateModified="2026-09-24"
     about={['FitNotes', 'Strong', 'Hevy', 'StrongLifts']}
     breadcrumb={[{ name: 'Guides', url: '/guides/' }]}
   />
 
   <h1>Switching to Badger</h1>
-  <p>Coming from another tracker? Bring your history over first so your PRs and graphs start out full, then settle into how you like to train.</p>
+  <p>Coming from another tracker? Bring your history over first so your PRs and graphs start out full, then pick the guide that fits how you train.</p>
 
   <h2>Your first 5 minutes</h2>
   <ol>
-    <li>During first-launch onboarding, tap <strong>Import</strong>. You can also do this any time later from <strong>Settings → Your data → Import</strong>.</li>
-    <li>Choose your old app: FitNotes, Strong, Hevy, or Stronglifts.</li>
-    <li>Select the export file you saved from that app.</li>
-    <li>Review the preview: exercises, workout days, sets, and the weight unit (detected from Strong, Hevy and Stronglifts files; for a FitNotes backup, check it yourself).</li>
-    <li>Tap <strong>Import</strong> to bring it all in.</li>
+    <li>Save an export from your old app. <a href="/help/getting-started/#importing">Importing from another app</a> says where each app keeps it.</li>
+    <li>In Badger, tap <strong>Import</strong> during first-launch onboarding, or later go to <strong>Settings → Your data</strong>.</li>
+    <li>Choose your old app: FitNotes, Strong, Hevy, or Stronglifts, and pick the file.</li>
+    <li>Check the preview: exercises, workout days, sets, and the weight unit. Strong, Hevy and StrongLifts files set the unit; for a FitNotes backup, check it yourself.</li>
+    <li>Tap <strong>Import</strong>.</li>
   </ol>
 
   <h2>What carries over</h2>
   <ul>
-    <li>Your exercises, your workouts, and every set within them.</li>
-    <li>Weights come in their original unit, so nothing gets rounded or converted on the way in.</li>
-    <li>New exercises land in an "Imported" category, so you can find and re-sort them later. Coming from FitNotes is the exception: its backup carries your own categories, so your exercises land where you already had them.</li>
-    <li>If a session already exists on the same date, the imported sets are added to it. Nothing already logged is overwritten.</li>
+    <li>Your exercises, your workouts, and every set in them.</li>
+    <li>Weights in their original unit, with no rounding or conversion.</li>
+    <li>New exercises land in an "Imported" category for you to sort. A FitNotes backup is the exception: it brings your own categories.</li>
+    <li>Sets on a date where you already have a session are added to it. Nothing you logged is overwritten.</li>
   </ul>
 
   <h2>The 3 things to know</h2>
   <ul>
-    <li>PRs are recalculated from your imported history, so your records show up on their own without any extra step.</li>
-    <li>Nothing leaves your device. The import runs locally, straight from the file you selected.</li>
-    <li>Import each file once. Importing a file again adds its sets a second time on any day you already have, and the preview warns you when that would happen. See <a href="/help/settings/#importing">importing workout history</a>.</li>
+    <li>Your PRs are worked out from the imported history, with no extra step.</li>
+    <li>Import each file once. A second import adds its sets again on any day you already have, and the preview warns you before that happens.</li>
+    <li>Routines do not come across from any app. Start from a <a href="/help/routines/#programs">built-in program</a> or build your own.</li>
   </ul>
 
   <h2 id="your-old-app">Your old app</h2>
-  <p>The steps above are the same everywhere. What differs is how much survives the move, and that depends on what your old app exports.</p>
+  <p>How much comes across depends on what your old app exports.</p>
 
   <ul class="from-rows">
     {fromApps.map((a) => (
@@ -93,7 +93,7 @@ const fromApps = [
   </ul>
 
   <h2>Now pick your path</h2>
-  <p>With your history in place, choose the guide that fits how you train: <a href="/guides/just-lifting/">just lifting</a>, <a href="/guides/program-runner/">running a program</a>, or <a href="/guides/optimizer/">tracking the data</a>. Or browse <a href="/guides/overview/">everything Badger does</a> for the full list.</p>
+  <p>With your history in place, choose the guide that fits how you train: <a href="/guides/just-lifting/">just lifting</a>, <a href="/guides/program-runner/">running a program</a>, or <a href="/guides/optimizer/">tracking the data</a>. Or browse <a href="/guides/overview/">everything Badger does</a>.</p>
 </HelpLayout>
 
 <style>

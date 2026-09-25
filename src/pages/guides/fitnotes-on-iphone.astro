@@ -58,7 +58,7 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
 const description =
   'FitNotes is an Android app and has no iPhone version. Here is what to do with the log you already have: Badger is on the App Store and reads the .fitnotes backup file directly.';
 
-const modified = '2026-09-23';
+const modified = '2026-09-24';
 ---
 
 <HelpLayout title="FitNotes on iPhone" description={description}>
@@ -79,133 +79,109 @@ const modified = '2026-09-23';
   <h1>FitNotes on iPhone</h1>
 
   <p>
-    The short answer is that there is no iPhone version. FitNotes is an Android app and always has
-    been, so switching phones means picking something else to log in. That is an annoying answer, and
-    the useful part is what happens next, because the years of training in it do not have to stay on
-    the old phone.
+    There is no iPhone version of FitNotes; it is an Android app. Your log does not have to stay on
+    the old phone, though. Badger is on the App Store and reads the FitNotes backup file directly.
   </p>
 
   <h2 id="your-log">Your log can come with you</h2>
 
   <p>
-    FitNotes backs up to a <code>.fitnotes</code> file, and that file is a real database rather than
-    a flattened export. Badger reads it directly, on the phone, with nothing uploaded anywhere, and
-    Badger is on the App Store. So the move is three steps: back up while you still have the Android
-    phone, get the file onto the iPhone, import it.
-  </p>
-
-  <p>
-    It is the same import code on both platforms, not an Android-only feature with an iPhone excuse
-    attached. Nothing in it branches on which phone you are holding.
+    FitNotes backs up to a <code>.fitnotes</code> file, and Badger imports it on the iPhone exactly
+    as it does on Android. The move is three steps: back up while you still have the Android phone,
+    get the file onto the iPhone, and import it.
   </p>
 
   <h2 id="how">Doing it</h2>
 
   <ol>
     <li>
-      <strong>On the Android phone, before you let go of it.</strong> In FitNotes, go to
-      <strong>Settings &rarr; Backup</strong> and write a <code>.fitnotes</code> file. Do this before
-      you wipe or trade in the phone. Apple's switch-to-iPhone tools move photos, contacts, messages
-      and the like, but not a third-party Android app's saved data, and there is no iPhone FitNotes
-      for it to land in even if they did.
+      <strong>Back up before you let go of the Android phone.</strong> In FitNotes, go to
+      <strong>Settings &rarr; Backup</strong> and write a <code>.fitnotes</code> file. Do it before
+      you wipe or trade in the phone: Apple's switch-to-iPhone tools do not move a third-party Android
+      app's data.
     </li>
     <li>
-      <strong>Move the file to the iPhone.</strong> Email it to yourself, or drop it in iCloud Drive,
-      Google Drive, Dropbox or OneDrive, or move it with a computer and a cable. AirDrop is not an
-      option here, since it only talks to other Apple devices. Anything that ends with the file
-      reachable in the iPhone's Files app will do.
+      <strong>Move the file to the iPhone.</strong> Email it to yourself, drop it in iCloud Drive,
+      Google Drive, Dropbox or OneDrive, or copy it over with a computer. AirDrop will not work from
+      Android. Anywhere the iPhone's Files app can reach is fine.
     </li>
-    <li>
-      <strong>Install Badger</strong> from the App Store.
-    </li>
+    <li><strong>Install Badger</strong> from the App Store.</li>
     <li>
       <strong>Import.</strong> Go to <strong>Settings &rarr; Your data &rarr; Import from
-      FitNotes</strong> and pick the file. It is the standard iOS file picker, so browse to wherever
-      the file landed. The same import is offered during first-launch onboarding if you would rather
-      do it straight away.
+      FitNotes</strong>, or pick Import during first-launch onboarding, and browse to the file in the
+      Files picker.
     </li>
     <li>
-      <strong>Check the preview</strong> before you commit: exercises, workout days and sets. This is
-      also where you tell Badger which unit the backup holds. It assumes kilograms, which is what
-      FitNotes normally stores, so switch it to pounds only if yours does not. An older backup, from
-      before FitNotes changed its database layout around 2018, carries the unit per set and needs no
-      answer from you. Then import.
+      <strong>Check the preview, then import.</strong> Set the weight unit the backup holds: Badger
+      assumes kilograms, which is what FitNotes normally stores. A backup from before 2018 carries its
+      own unit on each set.
     </li>
   </ol>
 
   <p>
-    Import it once. Sets on a date you already have are added to that day's workout, so importing
-    the same backup again, or an older one covering the same days, duplicates them, and
-    the preview warns you when a file overlaps days you already logged. Step-by-step detail is in
-    <a href="/help/getting-started/#importing-fitnotes">importing from FitNotes</a>.
+    Import each backup once. The full steps, including what happens when a file overlaps days you
+    already logged, are in <a href="/help/getting-started/#importing">importing from another app</a>.
   </p>
 
   <h2 id="what-comes">What comes across</h2>
 
-  <p>
-    Because the backup is a database, considerably more survives the move than the sets alone:
-  </p>
-
   <ul>
-    <li>Your categories, keeping the colors you gave them.</li>
-    <li>Your exercise library, landing back in those categories rather than in an "Imported" bucket.</li>
+    <li>Your categories, with their colors, and your exercise library inside them.</li>
     <li>Every set, with its date, weight, reps, distance, time and any comment on it.</li>
     <li>Your body weight history, and your custom measurements with their units.</li>
-    <li>Your records, worked out again from the history once it lands, so the graphs start out full.</li>
+    <li>Your records, worked out again from the history, so the graphs start out full.</li>
   </ul>
 
   <p>
-    What does not: warmups as warmups, because FitNotes does not mark them and nothing can guess
-    retroactively, and routines, which are a separate thing you set up in Badger. The full account,
-    including the older pre-2018 backup layout and how pounds stay pounds, is on
-    <a href="/guides/fitnotes-alternative/">moving to Badger from FitNotes</a>.
+    Two things do not: warmups arrive as working sets, because FitNotes does not mark them, and you
+    set up your routines again in Badger. <a href="/guides/fitnotes-alternative/">Moving to Badger from FitNotes</a> has the full
+    list.
   </p>
 
   <h2 id="what-youre-getting">What you are switching to</h2>
 
   <p>
-    Worth saying plainly, because a page that only talks about the import is selling you the door
-    rather than the room. Badger is a training log with tools attached. Six of its built-in programs propose
-    each session's weight from their own rules, and the final say stays with you. If you liked FitNotes for being fast, free, offline and uninterested in your
-    email address, that is the same list Badger was built against: no account, no sign-in, no
-    subscription, no ads, and no sync you did not ask for.
+    Badger is a training log with no account, no subscription and no ads. On top of logging, you get:
   </p>
 
+  <ul>
+    <li>
+      Routines that pre-fill each session with your last weights, and
+      <a href="/programs/">built-in programs</a>. Six of them propose each session's weight from their
+      own rules, and you have the final say.
+    </li>
+    <li>Records per machine and per gym.</li>
+    <li>A plate calculator and a warmup generator that work from the plates your gym owns.</li>
+    <li>A rest timer that starts itself.</li>
+    <li><a href="/help/progress/">Graphs</a> for every exercise, including estimated 1RM.</li>
+  </ul>
+
   <p>
-    On top of that you get routines that pre-fill each session with your last weights,
-    <a href="/programs/">programs that ship built in</a>, per-machine and per-gym records, a plate
-    calculator and a warmup generator that work from the plates your gym actually owns, a rest timer
-    that starts itself, and <a href="/help/progress/">graphs worth opening</a>. And you can leave
-    again whenever you like: every set exports to CSV, and the whole database backs up to a file you
-    keep. Routines, exercises and equipment share as <code>.badger</code> files, a
-    <a href="/badger-format/">documented format</a> you can read in any text editor. None of it is a
-    paid feature. <a href="/promise/">The promise</a> is that written down where you can hold us to
-    it.
+    Every set exports to CSV, and the whole database backs up to a file you keep. Routines, exercises
+    and equipment share as <code>.badger</code> files, a <a href="/badger-format/">documented
+    format</a> you can read in any text editor.
   </p>
 
   <h2 id="requirements">What it needs</h2>
 
   <p>
-    An iPhone running iOS 15 or later. Badger is an iPhone app only: there is no iPad build, because
-    it has never been designed or tested for that screen and shipping it untested would be worse than
-    leaving it out. It is free, with no paid tier to graduate to, which
-    <a href="/guides/workout-tracker-no-subscription/">the no-subscription guide</a> spells out
-    against the trackers people usually weigh up.
+    An iPhone running iOS 15 or later. Badger is an iPhone app only; there is no iPad version. It is
+    free, with no paid tier; <a href="/guides/workout-tracker-no-subscription/">the no-subscription
+    guide</a> compares it with the trackers people usually weigh up.
   </p>
 
   <p>
-    If you end up with a phone on each platform, or move back later, Badger is on Google Play too and
-    its own backup file carries the whole database between them.
-    <a href="/help/phone-migration/">Moving to a new phone</a> covers that.
+    Badger is on Google Play too, and its own backup file moves your whole log between the two
+    platforms if you switch again. <a href="/help/phone-migration/">Moving to a new phone</a> covers
+    that.
   </p>
 
   <h2 id="trademark">About the name</h2>
 
   <p class="fineprint">
     FitNotes is the work of its own developer, and Badger is not affiliated with, endorsed by,
-    sponsored by, or connected to it in any way. This page describes compatibility and nothing else:
-    Badger reads the backup file that their app writes. FitNotes is a good app, and the only thing
-    wrong with it here is that it does not run on the phone you are holding.
+    sponsored by, or connected to it in any way. This page describes compatibility only: Badger reads
+    the backup file that FitNotes writes.
   </p>
 </HelpLayout>
 

@@ -37,37 +37,34 @@ const description =
     slot="head"
     headline="StrongLifts 5x5 in Badger"
     description={description}
-    dateModified="2026-09-23"
+    dateModified="2026-09-24"
     about={['StrongLifts 5x5', '5x5 strength training']}
   />
 
   <h1>StrongLifts 5x5 in Badger</h1>
 
   <p>
-    Two things usually bring people to this page: they want to keep running 5x5 without paying a
-    subscription for the privilege, and they do not want to abandon the history they already have.
-    Badger does both. It proposes each session's weight from the program's own rules and leaves the
-    final say with you, and that difference is worth understanding before you switch.
+    Badger runs StrongLifts 5x5 for free and imports your StrongLifts history. It proposes each
+    session's weight from the program's own rules, and you have the final say. This page covers the
+    built-in template, what you still decide, and what the import brings across.
   </p>
 
   <h2 id="whats-in-the-box">What Badger brings to a 5x5</h2>
 
   <ul>
     <li>
-      <strong>The template ships with the app.</strong> Under More &rarr; Routines, in the Beginner Programs
-      folder, there is a StrongLifts 5x5 routine with two alternating days. Workout A is squat, bench
-      press, and barbell row, five sets of five each. Workout B is squat and overhead press, five
-      sets of five, plus one set of five deadlifts. Set it active and it is ready.
+      <strong>The template ships with the app.</strong> Under More &rarr; Routines, in the Beginner
+      Programs folder, the StrongLifts 5x5 routine has two alternating days. Workout A is squat, bench
+      press and barbell row, five sets of five each. Workout B is squat and overhead press, five sets
+      of five, plus one set of five deadlifts. Set it active and it is ready.
     </li>
     <li>
-      <strong>It alternates for you.</strong> The two days are deliberately not pinned to weekdays,
-      so the Today screen leads with whichever comes next based on what you last did. You never have
-      to remember whether today is an A or a B.
+      <strong>It alternates for you.</strong> The days are not pinned to weekdays, so the Today screen
+      leads with whichever comes next.
     </li>
     <li>
-      <strong>Your weights, not ours.</strong> The template carries the rep scheme and no weights at
-      all. The first session is you entering what you actually lift; after that the program's rules
-      propose each session's weight from the last one.
+      <strong>You supply the weights.</strong> The template carries the rep scheme only. In your first
+      session you enter what you lift; after that the rules propose each weight from the last session.
     </li>
     <li>
       <strong>The program's rules come with it.</strong> Each lift carries the StrongLifts rule as a
@@ -79,193 +76,148 @@ const description =
       5x5 to 3x5, then to 1x5. The deadlift is already 1x5 and stays there.
     </li>
     <li>
-      <strong>A rest timer that starts itself.</strong> It runs when you complete a working set, two
-      minutes by default, and every exercise can carry its own. Squats and rows want different rests,
-      and 5x5 is mostly an argument about resting long enough.
+      <strong>A rest timer that starts itself</strong> when you complete a working set: two minutes by
+      default, and each exercise can have its own.
     </li>
     <li>
-      <strong>A plate calculator</strong> that works from the plates your gym actually owns, in
-      barbell, machine, or single-lever modes, and tells you what goes on each side.
+      <strong>A plate calculator</strong> that works from the plates your gym owns, in barbell,
+      machine or single-lever mode, and shows what goes on each side.
     </li>
     <li>
-      <strong>A warmup generator</strong> that builds the ramp up to your work weight and rounds every
-      rung down to a load you can really make with your plates.
+      <strong>A warmup generator</strong> that builds the ramp to your work weight, rounding every rung
+      down to a load your plates can make.
     </li>
     <li>
-      <strong>PRs and graphs on every lift</strong>, with no cap on how many routines you keep or how
-      far back your history goes.
+      <strong>PRs and graphs on every lift</strong>, with no cap on routines or history.
     </li>
   </ul>
 
   <h2 id="what-you-decide">What you still decide yourself</h2>
 
-  <p>
-    If you are coming from an app whose whole job was to run the program, this is the part that
-    decides whether Badger suits you.
-  </p>
-
   <ul>
     <li>
       <strong>Every weight is a proposal.</strong> When you start a session, the preview shows the
-      weight the rule chose and the line of the rule that fired, for example <em>Rule met: all sets
-      hit the plan last session</em>. Type your own weight and the rule stays on. The rule never edits
-      the routine itself. See <a href="/help/progression/#rules">progression rules</a>.
+      weight the rule chose and the line that fired, for example <em>Rule met: all sets hit the plan
+      last session</em>. Type your own weight and the rule stays on. The rule never edits the routine
+      itself. See <a href="/help/progression/#rules">progression rules</a>.
     </li>
     <li>
-      <strong>Every number in the rule is yours to change.</strong> Tap the increment, the percentage
-      or the number of misses and type a new value.
+      <strong>Every number in the rule.</strong> Tap the increment, the percentage or the number of
+      misses and type a new value.
     </li>
     <li>
       <strong>Installed Badger before 1.1.12?</strong> Your copy of the template has no rules. Import
       <a href="/programs/">stronglifts-5x5.badger</a> to get the rules and the stall ladder, or use
-      <a href="/help/progression/#set-up-progression">Set up progression</a> on the routine you have,
-      which adds the rules without the ladder.
+      <a href="/help/progression/#set-up-progression">Set up progression</a> on your routine, which
+      adds the rules without the ladder.
     </li>
     <li>
-      <strong>The app-wide deload week is a separate feature.</strong> It is off by default and
-      schedules a whole light week, at half the weight with two fewer working sets (the defaults; both
-      are adjustable), which you confirm or decline when you start that session.
-    </li>
-    <li>
-      <strong>No watch app</strong> on either platform, and no logging from your wrist.
-    </li>
-    <li>
-      <strong>No sync between devices.</strong> Your training lives on the phone you log it on. There
-      is an optional backup to a private folder in your own Google Drive, and a plain database file
-      you can move yourself, but two phones do not stay in step. See
-      <a href="/help/phone-migration/">moving to a new phone</a>.
+      <strong>Whether to take a deload week.</strong> The app-wide deload is a separate feature, off by
+      default. It schedules a light week at half the weight with two fewer working sets, and you
+      confirm or decline it when you start that session. Both defaults are adjustable.
     </li>
   </ul>
+
+  <p>
+    Two things Badger does not have: a watch app on either platform, and sync between devices. Your
+    log lives on the phone you train with; an optional backup to your own Google Drive, or a database
+    file you move yourself, carries it to a new one. See
+    <a href="/help/phone-migration/">moving to a new phone</a>.
+  </p>
 
   <div class="callout">
     <span class="caps">The short version</span>
     <p>
-      The honest summary: Badger will hold the program, propose each weight from its rules, time your
-      rests, and show you the graph. It proposes and you decide: every proposal says why, and you can
-      type over any of them.
+      Badger holds the program, proposes each weight from its rules, times your rests and shows you the
+      graph. Every proposal says why, and you can type over any of them.
     </p>
   </div>
 
   <h2 id="import">Bringing your StrongLifts history over</h2>
 
   <p>
-    Badger reads the CSV that StrongLifts exports, so the years you already logged come with you and
-    your PRs and graphs start out full rather than empty.
+    In StrongLifts, go to <strong>Settings &rarr; Export workout data</strong> to get a CSV, move it
+    to the phone you train with, then open <strong>Settings &rarr; Your data &rarr; Import from
+    Stronglifts</strong> in Badger. Import each file once. The full steps are in
+    <a href="/help/getting-started/#importing">importing from another app</a>.
   </p>
 
-  <ol>
-    <li>In StrongLifts, go to <strong>Settings &rarr; Export workout data</strong> to produce a CSV.</li>
-    <li>
-      Get the file onto the phone you train with, however you normally move a file: email it to
-      yourself, drop it in cloud storage, use a cable.
-    </li>
-    <li>
-      In Badger, go to <strong>Settings &rarr; Your data &rarr; Import from Stronglifts</strong> and
-      pick the file. This is also offered during first-launch onboarding.
-    </li>
-    <li>Check the preview: exercises, workout days, sets, and the detected weight unit.</li>
-    <li>Import.</li>
-  </ol>
-
-  <p><strong>What carries across:</strong></p>
+  <p><strong>What comes across:</strong></p>
 
   <ul>
-    <li>Every set, with its date, exercise, weight, and reps, read straight from the per-set columns.</li>
+    <li>Every set, with its date, exercise, weight and reps.</li>
+    <li>Kilograms or pounds, read from the file's headers and kept in the unit you logged, with no rounding.</li>
+    <li>The workout name, as a note on that session, and each row's note, on its first set.</li>
+    <li>When each session started and how long it ran.</li>
     <li>
-      Kilograms or pounds, detected from the file's own headers, and stored in the unit you logged
-      them in. Nothing is converted or rounded on the way in.
-    </li>
-    <li>The workout name becomes a note on that session, and a row's note attaches to its first set.</li>
-    <li>
-      PRs are recalculated from the imported history on their own, and new exercises land in an
-      "Imported" category so you can find and re-sort them.
-    </li>
-    <li>
-      When each session started and how long it ran, read from the export's own time columns, so
-      imported history shows real durations.
+      Your PRs, worked out from the imported history. New exercises land in an "Imported" category
+      for you to sort.
     </li>
   </ul>
 
-  <p><strong>What does not, so nothing surprises you later:</strong></p>
+  <p><strong>What does not come across:</strong></p>
 
   <ul>
     <li>
-      <strong>Warmups.</strong> The StrongLifts export does not mark them, so every logged set arrives
-      as a working set. There is no way for the importer to guess.
+      <strong>Warmups.</strong> The StrongLifts export does not mark them, so every set arrives as a
+      working set.
     </li>
     <li>
-      <strong>Failed sets, as failures.</strong> A missed set of five comes in as what you actually
-      did. Three reps is three reps; nothing labels it a miss.
+      <strong>Failed sets, as failures.</strong> A missed set of five comes in as the reps you did.
     </li>
     <li>
-      <strong>Which program a session belonged to.</strong> The import brings history, not the
-      program. The 5x5 template is a separate thing you set active.
+      <strong>Which program a session belonged to.</strong> The import brings history; you set the
+      5x5 template active separately.
     </li>
   </ul>
-
-  <p>
-    The import runs entirely on your phone. Import each file once: sets on a date you already have
-    are added to that day's workout, so importing the same export again duplicates them. The preview
-    warns you when a file overlaps days you already logged.
-    Full detail in
-    <a href="/help/getting-started/#importing-stronglifts">importing from Stronglifts</a> and
-    <a href="/guides/switching/">switching from another app</a>.
-  </p>
 
   <h2 id="the-file">The template as a file you can read</h2>
 
   <p>
-    The same 5x5 routine is also published as a download:
-    <a href="/programs/">stronglifts-5x5.badger</a> on the program gallery, exported from the app
-    itself. Open it on your phone and Badger imports it. Open it in a text editor and it is ordinary
-    readable text, so you can see exactly what you are agreeing to before you import it, or edit it first. The
-    <a href="/badger-format/">file format</a> is documented for the same reason.
+    The same 5x5 routine is a download on the <a href="/programs/">programs page</a>:
+    <code>stronglifts-5x5.badger</code>, exported from the app. Open it on your phone and Badger
+    imports it. Open it in a text editor to read or edit it first; the
+    <a href="/badger-format/">file format</a> is documented.
   </p>
 
   <h2 id="after-5x5">When 5x5 runs out</h2>
 
   <p>
-    Linear progression ends for everybody, usually within months, and that moment is when most people
-    reconsider their whole app. Worth knowing where Badger stands before you get there rather than
-    after.
+    Linear progression stalls for everyone, usually within months. Here is where to go next in Badger.
   </p>
 
   <ul>
     <li>
-      <strong>Stretch it first.</strong> The stall ladder does part of this for you, and smaller
-      jumps, a light week, and rests long enough to be boring will all buy more time.
+      <strong>Stretch it first.</strong> The stall ladder does part of this for you. Smaller jumps, a
+      light week and longer rests buy more time.
     </li>
     <li>
-      <strong>Madcow 5x5</strong> is StrongLifts' own answer once 1x5 stalls, and it ships in the
-      Intermediate Programs folder with weekly progression written in.
+      <strong>Madcow 5x5</strong> is the usual next step once 1x5 stalls. It ships in the Intermediate
+      Programs folder with weekly progression written in.
     </li>
     <li>
       <strong>GZCLP, 5/3/1 BBB and nSuns 531LP</strong> ship too, with their rules. 5/3/1 and nSuns
       work from a <a href="/help/progression/#training-max">training max</a> that Badger keeps per lift
-      and turns into loads your plates can make. All of them download as files from the
-      <a href="/programs/">program gallery</a>.
+      and turns into loads your plates can make. All of them download from the
+      <a href="/programs/">programs page</a>.
     </li>
   </ul>
 
   <h2 id="cost">What it costs</h2>
 
   <p>
-    Nothing. No account, no subscription, no ads, no cap on routines or history, and exporting your
-    own numbers is not a paid feature. Badger is free on Google Play and the App Store. If the reason you are shopping is that a tracker you already paid for changed the
-    deal, read <a href="/promise/">the promise</a>, which is the version of that written down where you
-    can hold us to it, and
-    <a href="/guides/workout-tracker-no-subscription/">the no-subscription guide</a>, which compares
-    what free actually means across the trackers people usually weigh up.
+    Nothing. Badger is free on Google Play and the App Store, with no account, no subscription, no ads
+    and no cap on routines or history. <a href="/guides/workout-tracker-no-subscription/">The
+    no-subscription guide</a> compares what free means across the trackers people usually weigh up.
   </p>
 
   <h2 id="trademark">About the name</h2>
 
   <p class="fineprint">
     StrongLifts is a trademark of its owner. Badger is not affiliated with, endorsed by, sponsored by,
-    or connected to StrongLifts in any way. This page describes compatibility and nothing else: Badger
-    reads the CSV file that their app exports, and the 5x5 routine that ships inside Badger was
-    written for Badger by us, from the publicly known shape of the program. If you want their app,
-    they are easy to find.
+    or connected to StrongLifts in any way. This page describes compatibility only: Badger reads the
+    CSV file that the StrongLifts app exports, and the 5x5 routine inside Badger was written for
+    Badger from the publicly known shape of the program.
   </p>
 </HelpLayout>
 

@@ -2,93 +2,86 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Tools & Calculators" description="Plate calculator, warm-up calculator, and deload settings in Badger.">
-  <h1>Tools & Calculators</h1>
+<HelpLayout title="Tools and calculators" description="Plate calculator, warm-up calculator, and deload settings in Badger.">
+  <h1>Tools and calculators</h1>
+
+  <p>Three helpers: the plate calculator and the warm-up calculator on the training screen, and deload in Settings.</p>
 
   <hr />
 
   <h2>Plate calculator</h2>
-  <p>The plate calculator figures out which plates to load for a given target weight. Access it from the training screen via <strong>⋮ → Plate calculator</strong> - it opens pre-filled with your current working weight.</p>
+  <p>The plate calculator tells you which plates to load for a target weight. On the training screen, tap <strong>⋮ → Plate calculator</strong>. It opens with your current working weight filled in.</p>
 
   <h3>Modes</h3>
   <ul>
-    <li><strong>Dual-loaded</strong> (barbell, leg press) - Splits the weight evenly across both sides. The bar weight is subtracted first, then the remaining weight is divided by two. The default bar weight is 20 kg (45 lb); set your own per exercise, per machine, or by picking a <a href="/help/gyms/#bars">bar</a>.</li>
-    <li><strong>Single-loaded</strong> (T-bar, landmine) - The full target weight goes on one side, with no bar weight subtracted.</li>
+    <li><strong>Dual-loaded</strong> (barbell, leg press) - Subtracts the bar weight, then splits the rest evenly across both sides. The default bar is 20 kg (45 lb); set your own per exercise, per machine, or by picking a <a href="/help/gyms/#bars">bar</a>.</li>
+    <li><strong>Single-loaded</strong> (T-bar, landmine) - Puts the full target weight on one side, with no bar weight subtracted.</li>
   </ul>
-  <p>A machine can also be set to <em>None</em>, which turns the calculator off for it. See <a href="#plate-calc-gate">When the calculator isn't offered</a>.</p>
+  <p>A machine can also be set to <em>None</em>, which turns the calculator off for it.</p>
 
   <h3>Plate configuration</h3>
-  <p>Tap the settings icon to configure your available plates - weight, color, and quantity limit per plate type. Plates can be enabled or disabled. The calculator uses a greedy algorithm: it always picks the largest available plate that fits, within your quantity limits.</p>
-  <p>Plates are tracked <strong>per gym</strong>: when you open the calculator during a workout it uses the assortment for that workout's gym (and the unit you're logging in). Edit a gym's plates from <strong>More → Gyms → (gym) → Plate assortment</strong>. A gym with no custom plates falls back to your global default set.</p>
+  <p>Tap the settings icon to set up your plates: weight, color and how many you have of each. You can turn a plate size on or off. The calculator loads the heaviest plate that fits first, within the quantities you set.</p>
+  <p>Plates are kept <strong>per gym</strong>. During a workout the calculator uses that workout's gym's plates, in the unit you're logging in. Edit them in <strong>More → Gyms → (gym) → Plate assortment</strong>. A gym with no plates of its own uses your default set.</p>
 
   <h3>Remaining weight</h3>
-  <p>If the target weight can't be matched exactly with your available plates, the calculator shows the remaining weight and the closest achievable load.</p>
-
-  <h3 id="plate-calc-gate">When the calculator isn't offered</h3>
-  <p>Badger hides the plate calculator when there's no plate math to do: on a <strong>selectorized</strong> machine, on a machine whose <strong>Plate calculator</strong> setting is <em>None</em>, and on any exercise with no weight field (a plank, a set of pull-ups).</p>
-  <p><em>None</em> is available only on a machine whose resistance type is unspecified - a selectorized machine skips the plate section entirely, and a plate-loaded one always shows plate math. See <a href="/help/gyms/#machines">Gyms &amp; Equipment</a> for the machine settings.</p>
+  <p>If your plates can't make the target exactly, the calculator shows the closest load you can make and how far off it is.</p>
 
   <h3>Use this load</h3>
-  <p>Tap <strong>Use this load</strong> to drop the calculator's achievable total back into the weight field, so you log the real loaded weight rather than your original target.</p>
+  <p>Tap <strong>Use this load</strong> to put the calculator's total into the weight field, so you log what's actually on the bar.</p>
+
+  <h3 id="plate-calc-gate">When the calculator isn't offered</h3>
+  <p>The plate calculator is hidden on a <strong>selectorized</strong> machine, on a machine whose <strong>Plate calculator</strong> setting is <em>None</em>, and on any exercise with no weight field (a plank, a set of pull-ups). Machine settings are on <a href="/help/gyms/#machines">Gyms and equipment</a>.</p>
 
   <h2 id="warmup-calc">Warm-up calculator</h2>
-  <p>Tap the <strong>Warm-up calc</strong> chip beside the warm-up toggle in the training screen. It builds a warm-up ramp from your working weight and, once you confirm, inserts the sets you keep at the start of your set list - there is no separate view-only version.</p>
-  <p>Pick <strong>Percent</strong> or <strong>Plates</strong>, set how many warm-up sets you want, and uncheck any rung you don't want. At three sets on Percent you get the classic 40% × 8, 60% × 5, 80% × 3.</p>
-  <p>Every rung is rounded to a load your equipment can actually reach - the gym's plates for a barbell or plate-loaded machine, the stack increment for a selectorized one - and never above your working weight. Two rungs that round to the same weight merge into one. If warm-up sets already exist, the button reads <strong>Replace warmup sets</strong>.</p>
+  <p>On the training screen, tap the <strong>Warm-up calc</strong> chip beside the warmup toggle. It builds a warm-up ramp from your working weight and, when you confirm, adds the sets you keep to the start of your set list.</p>
+  <p>Pick <strong>Percent</strong> or <strong>Plates</strong>, set how many warm-up sets you want, and uncheck any you don't want. Three sets on Percent gives the classic 40% × 8, 60% × 5, 80% × 3.</p>
+  <p>Each set is rounded to a load your equipment can make (the gym's plates for a barbell or plate-loaded machine, the stack increment for a selectorized one) and never goes above your working weight. Two sets that round to the same weight merge into one. If the exercise already has warmup sets, the button reads <strong>Replace warmup sets</strong>.</p>
+  <p>Set your usual style and number of warm-up sets in <strong>Settings → Logging</strong>. If a routine already plans warmup sets, Badger uses those.</p>
 
   <h2 id="deload">Deload</h2>
-  <p>Deload is an opt-in feature that detects when you may be accumulating too much fatigue and schedules a lighter training week. Go to <strong>Settings → Coaching → Deload</strong> to configure it.</p>
+  <p>Deload watches for signs of built-up fatigue and schedules a lighter week. It's off until you turn it on in <strong>Settings → Coaching → Deload</strong>.</p>
 
-  <h3>Enabling deload</h3>
-  <p>Toggle <strong>Enable deload detection</strong> on. All sub-settings are greyed out until this is enabled. Turning the switch on activates all three detection methods at their defaults, so you can fine-tune or disable any of them below.</p>
+  <h3>Turn it on</h3>
+  <p>Turn on <strong>Enable deload detection</strong>. All three detection methods start on, at their defaults, and you can adjust or turn off any of them.</p>
 
-  <h3>Detection methods</h3>
-  <p>Any one of the following can trigger a deload. Each method can be enabled or disabled independently:</p>
+  <h3>What triggers a deload</h3>
+  <p>Any one of these can trigger a deload, and each can be turned on or off:</p>
   <ul>
-    <li>
-      <strong>Time-based</strong> - Triggers after a set number of weeks since your last deload. Default: every 4 weeks. Range: 4-8 weeks.
-    </li>
-    <li>
-      <strong>RPE/RIR-based</strong> - Triggers when your average RIR for every week in a rolling window is at or below a threshold (default: ≤ 1 RIR over 2-4 weeks). Requires that you log RIR on your sets.
-    </li>
-    <li>
-      <strong>Performance-based</strong> - Triggers when no exercise has improved over your last N sessions (default: 3 sessions). Detects a stall across the board.
-    </li>
+    <li><strong>Time-based</strong> - After a set number of training weeks since your last deload. Default 4 weeks, adjustable from 4 to 8.</li>
+    <li><strong>RPE / RIR</strong> - When your weekly average RIR stays at or below a threshold for every week in a window. Defaults: RIR 1 or lower over the last 2 weeks; you can set the threshold from 0 to 2 and the window from 2 to 4 weeks. It reads the RIR you log, so log RIR on your sets for this one to work.</li>
+    <li><strong>Performance-based</strong> - When no exercise has improved over your last few sessions (default 3). It catches a stall across the board.</li>
   </ul>
 
-  <h3>Deload schedule</h3>
-  <p>When a trigger fires, the next Monday is set as the start of your deload week (if today is Monday, it uses the following Monday). A banner appears on the Today screen:</p>
+  <h3>When the deload week starts</h3>
+  <p>When a trigger fires, your deload week starts at the beginning of next week (by your Week start setting). A banner on the Today screen shows where you are:</p>
   <ul>
-    <li><strong>Scheduled</strong> (before the week starts) - "Deload week next week." This banner is dismissible.</li>
-    <li><strong>Active</strong> (during the deload week) - shows why the deload was suggested (for example, "It has been several weeks since your last deload") and when the week ends. This banner stays visible all week so the signal isn't lost.</li>
+    <li><strong>Scheduled</strong> (before the week starts) - "Deload week next week." You can dismiss it.</li>
+    <li><strong>Active</strong> (during the week) - Why the deload was suggested (for example, "It has been several weeks since your last deload") and when the week ends. This banner stays up all week.</li>
   </ul>
 
   <h3>Automatic reductions</h3>
-  <p>When a deload week is active and you start a routine workout, Badger automatically applies reductions to the predefined sets:</p>
+  <p>During an active deload week, starting a routine workout lightens its planned sets:</p>
   <ul>
-    <li><strong>Weight reduction</strong> - Sets weights to a percentage of your normal load (configurable, e.g. 50%).</li>
-    <li><strong>Set reduction</strong> - Removes a number of sets per exercise (configurable). Warmup sets are never removed.</li>
-    <li><strong>Minimum sets</strong> - A floor below which sets won't be removed.</li>
+    <li><strong>Weight reduction</strong> - Weights drop to a percentage of your normal load (you choose, for example 50%).</li>
+    <li><strong>Set reduction</strong> - A number of sets is removed from each exercise (you choose). Warmup sets are kept.</li>
+    <li><strong>Minimum sets</strong> - Sets are never removed below this number.</li>
   </ul>
-  <p>The routine log preview shows a summary of the applied reductions. You can edit any value before tapping Start. Reduced weights are rounded to a weight you can actually load in your unit - a clean 230 lb instead of an odd 231.5 lb.</p>
+  <p>The routine log preview lists the reductions, and you can edit any value before tapping <strong>Start</strong>. Reduced weights are rounded to a load you can make, such as 230 lb in place of 231.5 lb.</p>
+  <p>The lighter weights don't carry forward. Your next normal week starts from your real working weights.</p>
+  <p>Reductions are applied when the preview opens, so an exercise you swap in afterwards isn't reduced.</p>
 
-  <h3>Confirming or skipping a deload</h3>
-  <p>The first time you start a workout during a deload week, Badger asks whether you want to go ahead:</p>
+  <h3>Go ahead or skip</h3>
+  <p>The first time you start a workout during a deload week, Badger asks what you want to do:</p>
   <ul>
-    <li><strong>Start deload</strong> - log the workout with the reduced weights and sets.</li>
-    <li><strong>Skip, full weights</strong> - use your normal weights for that workout. The deload week continues for your other workouts.</li>
+    <li><strong>Start deload</strong> - Log the workout with the reduced weights and sets.</li>
+    <li><strong>Skip, full weights</strong> - Use your normal weights this time. The deload week carries on for your other workouts.</li>
   </ul>
-  <p>This prompt only appears once per deload week. On any workout that week you can still switch using the <strong>Use full weights</strong> / <strong>Use deload</strong> toggle on the deload bar in the routine log preview.</p>
+  <p>You're asked once per deload week. After that, switch any workout with the <strong>Use full weights</strong> / <strong>Use deload</strong> toggle on the deload bar in the routine log preview.</p>
 
-  <h3>Starting or ending a deload yourself</h3>
-  <p>You don't have to wait for a trigger. In <strong>Settings → Coaching → Deload</strong>:</p>
+  <h3>Start or end a deload yourself</h3>
+  <p>In <strong>Settings → Coaching → Deload</strong>:</p>
   <ul>
-    <li><strong>Start a deload week</strong> - choose <strong>Start now</strong> (lighter for the rest of this week) or <strong>Next week</strong>.</li>
-    <li><strong>End deload</strong> - ends an active or scheduled deload early and returns to normal weights.</li>
+    <li><strong>Start a deload week</strong> - Choose <strong>Start now</strong> (lighter for the rest of this week) or <strong>Next week</strong>.</li>
+    <li><strong>End deload</strong> - End an active or scheduled deload early and go back to normal weights.</li>
   </ul>
-
-  <div class="callout">
-    <strong>Note:</strong> Deload reductions are applied once per routine log preview. Swapping an exercise after the preview opens doesn't retroactively reduce the replacement. A deload week's reduced weights don't carry forward - your next normal week starts from your real working weights, not the deloaded ones.
-  </div>
-
 </HelpLayout>

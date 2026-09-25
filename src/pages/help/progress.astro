@@ -2,164 +2,141 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Progress Tracking" description="How to view exercise progress, personal records, graphs, and muscle balance in Badger.">
+<HelpLayout title="Progress tracking" description="How personal records work in Badger, and how to read exercise graphs, strength standards, plateau detection, weekly volume and muscle balance.">
   <h1>Progress tracking</h1>
 
-  <p>The Progress screen has two tabs: <strong>Exercises</strong> (per-exercise data and history) and <strong>Overview</strong> (analytics across all your training).</p>
+  <p>The Progress tab has two tabs: <strong>Exercises</strong>, for one exercise's records and graphs, and <strong>Overview</strong>, for your training as a whole. This page is also where personal records are explained.</p>
 
   <hr />
 
-  <h2>Exercises tab</h2>
-  <p>The Exercises tab lists all exercises. Tap any exercise to open its detailed progress screen. The list includes a sticky search bar and filter chips - same search and filter behavior as the exercise library.</p>
-  <p>Exercises sort by recency by default (most recently trained first). Tap the sort icon to switch to alphabetical order.</p>
+  <h2>Find an exercise</h2>
+  <p>The Exercises tab lists every exercise, most recently trained first. Tap the sort icon to switch to A to Z. The search bar and filter chips work the same way as in the exercise library. Tap an exercise to open its progress screen.</p>
 
-  <h2 id="prs">Personal records</h2>
-  <p>Every exercise type earns personal records - not just weight &times; reps lifts. When you log a working set that beats your previous best, the set is marked with a trophy badge and a brief notification appears at the bottom of the training screen.</p>
-  <p>What counts as a record depends on the exercise type:</p>
+  <h2 id="prs">What counts as a personal record</h2>
+  <p>A working set that beats your previous best is a personal record (PR). Badger marks the set with a trophy badge and shows a brief notice at the bottom of the training screen. Every exercise type has records, and what counts depends on the type:</p>
   <ul>
-    <li><strong>Weight + reps</strong> - benchmarked on <strong>estimated 1RM</strong> (Epley formula: <code>weight × (1 + reps / 30)</code>). A heavier weight or more reps at a given weight is a PR.</li>
+    <li><strong>Weight + reps</strong> - the highest <strong>estimated 1RM</strong>, using the Epley formula: <code>weight × (1 + reps / 30)</code>. More weight, or more reps at the same weight, is a PR.</li>
     <li><strong>Weight only</strong> - heaviest weight.</li>
     <li><strong>Reps only</strong> - most reps.</li>
     <li><strong>Distance</strong> - farthest distance.</li>
-    <li><strong>Time</strong> - by default the <strong>longest</strong> hold (planks, dead hangs, carries). For timed efforts where you want to be quicker, switch it to shortest.</li>
-    <li><strong>Combined types</strong> (e.g. distance + time) track both together - going farther, or covering the same distance faster, each counts.</li>
+    <li><strong>Time</strong> - the longest time, unless you set <a href={`#record-time`}>Record time</a> to Shorter.</li>
+    <li><strong>Combined types</strong> (for example distance + time) - going farther, or covering the same distance faster, each counts.</li>
   </ul>
-  <p id="record-weight"><strong>Assisted (counterweight) exercises.</strong> On an assisted pull-up or dip machine, the weight you select is a <em>counterweight</em> that takes weight off you, so a lower number is the harder set. Set <strong>Record weight</strong> to <em>Lighter</em> on the exercise's edit screen so less assistance counts as the record; <em>Assisted Pull-Up</em> is already set up this way.</p>
-  <p>Two things change for these exercises: their records show a <strong>Lightest</strong> best instead of an estimated 1RM (which doesn't mean anything on a counterweight), and Badger stops offering progressive-overload and warm-up weight suggestions, since those would tell you to add assistance instead of remove it.</p>
+  <p>Warmup sets never count, and neither do <a href="/help/gyms/#accessories-and-records">sets logged with an accessory</a> such as a band or chains.</p>
+  <p><strong>Records are kept per machine and per bar.</strong> With a machine or a <a href="/help/gyms/#bar-prs">bar</a> set on the exercise, a set is compared only with sets on that same machine and bar. With neither set, it's compared with all your history.</p>
+  <p><strong>Linked exercises share records.</strong> If you've <a href="/help/exercises/#linking">linked two exercises</a>, a new best on either counts as a PR on both, and their graphs combine.</p>
 
-  <p id="record-time"><strong>Which time is the record?</strong> For timed exercises, open the exercise's edit screen and use the <strong>Record time</strong> setting: <em>Longer</em> (a longer time is better, the default for most holds), <em>Shorter</em> (a shorter time is better, for timed runs and for-time efforts), or <em>Default</em> to use the sensible default for that type. Distance + time exercises default to faster-is-better.</p>
-  <p>PRs are <strong>scoped to your equipment</strong>: with a machine or a <a href="/help/gyms/#bar-prs">bar</a> set on the exercise, a set competes only with sets logged on that same machine and bar. With neither set, it competes with all your history.</p>
-  <p>Warmup sets never count toward a record, and neither do <a href="/help/gyms/#accessories-and-records">sets logged with an accessory</a> such as a band or chains.</p>
-  <p>PRs and progress graphs are also <strong>shared across linked exercises</strong>. If you've linked two exercises (see <a href="/help/exercises/#linking">Linked exercises</a>), a new best on either one counts as a PR on both, and the progress graphs combine their history.</p>
+  <h3>Timed and assisted exercises</h3>
+  <p id="record-time"><strong>Choose whether a longer or shorter time wins.</strong> On a timed exercise's edit screen, set <strong>Record time</strong> to <em>Longer</em> (holds, carries, dead hangs), <em>Shorter</em> (timed runs and for-time efforts) or <em>Default</em>. Default means longer, except for distance + time exercises, where faster wins.</p>
 
-  <h2>Exercise progress screen</h2>
-  <p>Tap any exercise from the Progress tab to see its detailed history. The screen has two tabs: <strong>Graph</strong> (charts and stats) and <strong>History</strong> (a chronological list of every logged session, with editable set rows).</p>
+  <p id="record-weight"><strong>Assisted exercises: set Record weight to Lighter.</strong> On an assisted pull-up or dip machine, the weight you select takes weight off you, so a lower number is the harder set. On the exercise's edit screen, set <strong>Record weight</strong> to <em>Lighter</em> so less assistance counts as the record. <em>Assisted Pull-Up</em> comes set up this way.</p>
+  <p>These exercises show a <strong>Lightest</strong> best instead of an estimated 1RM, and they get no weight-increase or warmup suggestions.</p>
 
-  <h3>Stats row</h3>
+  <h2>An exercise's progress screen</h2>
+  <p>The screen has two tabs: <strong>Overview</strong> (stats, graph and records) and <strong>History</strong> (every session, with sets you can edit). History is covered on the History page under <a href={`/help/history/#per-exercise`}>One exercise's history</a>.</p>
+  <p>The stats row at the top shows:</p>
   <ul>
-    <li><strong>Estimated 1RM</strong> - Your current best estimated 1RM.</li>
-    <li><strong>30-day change</strong> - Percentage change in estimated 1RM over the last 30 days.</li>
-    <li><strong>Last session</strong> - Date and brief summary of your most recent workout for this exercise.</li>
+    <li><strong>Estimated 1RM</strong> - your current best.</li>
+    <li><strong>30-day change</strong> - how much your estimated 1RM has moved over the last 30 days, as a percentage.</li>
+    <li><strong>Last session</strong> - the date and a short summary of the last time you did it.</li>
   </ul>
 
   <h2 id="graphs">Graphs</h2>
-  <p>A line chart below the stats row shows your progress over time. Tap the graph type chips to switch between metrics:</p>
+  <p>Tap the chips above the chart to switch what it plots:</p>
   <ul>
-    <li><strong>Estimated 1RM</strong> - Calculated best 1RM per session.</li>
-    <li><strong>Max weight</strong> - Heaviest weight logged in each session.</li>
-    <li><strong>Workout volume</strong> - Total volume (weight × reps) per session.</li>
-    <li><strong>Total reps</strong> - Total reps across all working sets per session.</li>
-    <li><strong>Max reps</strong> - Most reps in a single set per session.</li>
-    <li><strong>Weight at N reps</strong> - Heaviest weight logged at a specific rep count.</li>
-    <li><strong>Rep maxes</strong> - Best weight for each rep count over time.</li>
-    <li><strong>Max distance / Total distance / Max time / Total time / Max speed / Max pace</strong> - For distance and time-based exercises.</li>
+    <li><strong>Estimated 1RM</strong> - best estimated 1RM per session.</li>
+    <li><strong>Max weight</strong> - heaviest weight per session.</li>
+    <li><strong>Workout volume</strong> - total weight × reps per session.</li>
+    <li><strong>Total reps</strong> - reps across all working sets per session.</li>
+    <li><strong>Max reps</strong> - most reps in one set per session.</li>
+    <li><strong>Weight at N reps</strong> - heaviest weight at a chosen rep count.</li>
+    <li><strong>Rep maxes</strong> - best weight for each rep count over time.</li>
+    <li><strong>Max distance / Total distance / Max time / Total time / Max speed / Max pace</strong> - for distance and timed exercises.</li>
   </ul>
 
   <h3>Graph controls</h3>
   <ul>
-    <li><strong>Data points</strong> - Toggle markers on/off.</li>
-    <li><strong>Trend line</strong> - Overlay a linear trend line.</li>
-    <li><strong>Y from 0</strong> - Force the Y axis to start at zero.</li>
-    <li><strong>Share</strong> - Export the chart as an image via the system share sheet.</li>
+    <li><strong>Data points</strong> - show or hide the markers.</li>
+    <li><strong>Trend line</strong> - add a straight trend line.</li>
+    <li><strong>Y from 0</strong> - start the vertical axis at zero.</li>
+    <li><strong>Share</strong> - send the chart as an image through the share sheet.</li>
   </ul>
-  <p>Tap a data point to see its exact values below the chart. Use the left/right arrows to step through individual points. Tap the detail area to open the full workout summary for that session.</p>
+  <p>Tap a point to see its values below the chart, and use the arrows to step from point to point. Tap the values to open that session's workout summary.</p>
 
   <h3 id="chart-filters">Chart filters</h3>
-  <p>Rows of filter chips appear above the chart, each earned by your history rather than always present:</p>
+  <p>Filter rows appear above the chart once your history has something to filter:</p>
   <ul>
-    <li><strong>Machine</strong> - if you've used the exercise on multiple machines, filter by a specific one or select <strong>All</strong> for combined data. The most recently used machine is selected by default.</li>
-    <li><strong>Bar</strong> - if the exercise has history on two or more named bars, a bar row appears the same way. It never narrows the chart on its own; <strong>All bars</strong> is always the default.</li>
-    <li><strong>Accessories</strong> - if the history mixes bare work and sets logged with accessories (bands, chains, straps), a three-way view appears: <strong>All work</strong>, <strong>No accessories</strong>, <strong>Accessories only</strong>. In the mixed view, a point from an accessorized session is drawn as a hollow ring: on the chart as history, but never a record - which is why the BEST line (and any strength-standard floors) can sit below a ringed peak. In the Accessories-only view there are no record marks at all, because <a href="/help/gyms/#accessories-and-records">nothing done with an accessory claims a record</a>.</li>
+    <li><strong>Machine</strong> - if you've done the exercise on more than one machine. Pick one, or <strong>All</strong> to combine them. The machine you used last is selected to start with.</li>
+    <li><strong>Bar</strong> - if you've used two or more named bars. It starts on <strong>All bars</strong>.</li>
+    <li><strong>Accessories</strong> - if your history mixes plain sets with sets using bands, chains or straps: <strong>All work</strong>, <strong>No accessories</strong> or <strong>Accessories only</strong>. In All work, sessions with accessories appear as hollow rings. They never count as <a href="/help/gyms/#accessories-and-records">records</a>, so the BEST line can sit below a ring, and Accessories only shows no record marks at all.</li>
   </ul>
 
   <h2 id="strength-standards">Strength standards</h2>
-  <p>Badger can draw reference lines on the estimated 1RM graph showing where a lift sits for your bodyweight: untrained, novice, intermediate, advanced, elite. They are marks in the margin, not a score. Nothing pops up when you cross one; the line is simply behind your data from then on.</p>
-  <p>Standards are available for five barbell lifts - <strong>bench press, squat, deadlift, overhead press and barbell row</strong> - and only for exercises whose name matches one of them. A dumbbell or machine version of the same movement is deliberately left out, because barbell standards would misdescribe it.</p>
+  <p>Badger can draw reference lines on the estimated 1RM graph showing where a lift sits for your bodyweight, from untrained through novice, intermediate and advanced to elite. They cover five barbell lifts: <strong>bench press, squat, deadlift, overhead press and barbell row</strong>. Only exercises whose name matches one of those get them; dumbbell and machine versions aren't covered.</p>
 
-  <h3>Turning them on</h3>
-  <ul>
-    <li>Open a covered lift's progress screen and tap the <strong>Standards</strong> chip below the graph. The chip only appears on those lifts, and only on the estimated 1RM graph.</li>
-    <li>The first time, Badger asks two things: your <strong>sex</strong>, and your <strong>current body weight</strong> if you have never logged one.</li>
-    <li>It is per exercise. Turn the lines on for the lifts you are chasing a number on and leave them off elsewhere.</li>
-  </ul>
+  <h3>Turn them on</h3>
+  <ol>
+    <li>Open one of those lifts' progress screen, on the estimated 1RM graph.</li>
+    <li>Tap the <strong>Standards</strong> chip below the graph.</li>
+    <li>The first time, answer the setup questions (below).</li>
+  </ol>
+  <p>Standards are set per exercise, so you can turn them on only for the lifts you're chasing a number on.</p>
 
-  <h3>The two questions, and why</h3>
-  <p>Strength standards differ by sex, so Badger needs one answer to read the right table. That single question is the only thing the app ever asks about you - there is no age, no name, no profile - and like everything else it stays on your phone.</p>
-  <p>Change your answer or withdraw it any time in <strong>Settings &rarr; Coaching &rarr; Strength standards</strong>. Choose <strong>Prefer not to say</strong> and the standards stay off, since there's no honest table to read without an answer.</p>
-  <p>Body weight comes from your <a href="/help/body/">body tracker</a>, since the levels are multiples of it. If you have never logged a weigh-in, the setup asks for one and saves it as an ordinary body tracker entry - there is no separate copy of your weight anywhere. Log new weigh-ins as usual and the lines follow along.</p>
+  <h3>What it asks you</h3>
+  <p>Standards differ by sex, so Badger asks for yours. Change or remove it in <strong>Settings &rarr; Coaching &rarr; Strength standards</strong>; choosing <strong>Prefer not to say</strong> turns the standards off.</p>
+  <p>The levels are multiples of your bodyweight, taken from your <a href="/help/body/">body tracker</a>. If you've never logged a weigh-in, setup asks for your weight and saves it there as an ordinary entry. Log new weigh-ins as usual and the lines follow.</p>
 
   <h3>Reading the lines</h3>
-  <p>Only the levels near your data are drawn, so the chart stays readable: the next level up appears once you are within reach of it, and levels far above or below are left off. Your all-time best keeps its own darker line.</p>
-  <p>The records list below the graph gains one quiet line showing your current level and your best estimated 1RM as a multiple of bodyweight, for example <em>Intermediate &middot; est 1RM 1.4x BW</em>.</p>
-  <p>Two honest caveats. The table is Badger's own, put together by reading across several public strength references and rounding to defensible numbers - treat the lines as a rough map, not a verdict. And the levels are flat multiples of bodyweight, where real standards drift somewhat with how heavy and how old you are.</p>
+  <p>Only the levels near your data are drawn: the next level up appears once it's within reach. Your all-time best keeps its own darker line. The records list below the graph adds a line with your current level and your best estimated 1RM as a multiple of bodyweight, for example <em>Intermediate &middot; est 1RM 1.4x BW</em>.</p>
+  <p>Treat the lines as a rough guide. Badger's table combines several public strength references, and it uses flat multiples of bodyweight, while real standards shift with body weight and age.</p>
 
   <h2 id="plateau-detection">Plateau detection</h2>
-  <p>When plateau detection is enabled, Badger monitors your estimated 1RM trend and surfaces a banner on the exercise progress screen when progress has stalled.</p>
-  <p>A plateau is flagged when <strong>both</strong> conditions are met:</p>
+  <p>Plateau detection is <strong>off by default</strong>. Turn it on in <strong>Settings → Coaching → Plateau detection</strong>. Once it's on, Badger shows a banner on an exercise's progress screen when its estimated 1RM has stalled.</p>
+  <p>A plateau is flagged when <strong>both</strong> are true:</p>
   <ul>
-    <li>Your estimated 1RM trend has been flat or declining (slope below +0.5% per session)</li>
-    <li>At least 3 weeks have elapsed across the detection window</li>
+    <li>Your estimated 1RM trend is flat or falling (rising less than 0.5% per session).</li>
+    <li>The sessions it looks at span at least 3 weeks.</li>
   </ul>
-  <p>When a plateau is detected, the banner shows how long the stall has been running and offers three suggestions:</p>
+  <p>The banner says how long the stall has lasted and suggests three things:</p>
   <ul>
-    <li>Try a deload week - with a shortcut to your deload settings</li>
-    <li>Switch your rep range (e.g. if you've been doing 8-10 reps, try 4-6 for a few weeks)</li>
-    <li>Swap for a variation that targets the same muscles from a different angle</li>
+    <li>A deload week, with a shortcut to your deload settings.</li>
+    <li>A different rep range (for example 4-6 for a few weeks if you've been doing 8-10).</li>
+    <li>A variation that works the same muscles from a different angle.</li>
   </ul>
-  <p>The <strong>Today screen</strong> also shows a compact card listing up to two plateauing exercises. Tap an exercise name to jump to its progress screen.</p>
-  <p>Plateau detection is <strong>off by default</strong>. Enable it in <strong>Settings → Coaching → Plateau detection</strong>. You can also adjust the <strong>sensitivity</strong> - how many sessions are included in the detection window:</p>
+  <p>The Today screen also shows a card with up to two plateauing exercises. Tap a name to open its progress screen.</p>
+  <p><strong>Sensitivity</strong>, on the same settings screen, sets how many sessions it looks at:</p>
   <ul>
-    <li><strong>Conservative</strong> - requires ~10 sessions of flat progress</li>
-    <li><strong>Balanced</strong> (default) - requires ~8 sessions</li>
-    <li><strong>Sensitive</strong> - triggers after ~6 sessions</li>
+    <li><strong>Conservative</strong> - about 10 sessions of flat progress.</li>
+    <li><strong>Balanced</strong> (default) - about 8.</li>
+    <li><strong>Sensitive</strong> - about 6.</li>
   </ul>
-  <p>Plateau detection only applies to weighted exercises (barbell, dumbbell, etc.) since it relies on estimated 1RM data.</p>
+  <p>It works only on weighted exercises (barbell, dumbbell and so on), because it reads estimated 1RM.</p>
 
   <h2>Overview tab</h2>
-  <p>The Overview tab shows analytics across all your training.</p>
+  <p>The Overview tab covers all your training at once.</p>
 
   <h3 id="weekly-volume">Weekly volume</h3>
-  <p>A <strong>Volume</strong> card at the top of the Overview tab shows how many sets you've logged per muscle group in the current training window (7 days by default, or your routine's cycle length if you have an active routine). Each muscle group appears as a horizontal bar colored by category, with the set count color-coded by training zone.</p>
+  <p>The <strong>Volume</strong> card shows how many sets you've done per muscle group in the current window: 7 days, or your active routine's cycle length if it has one. Each group is a bar in its category color, with the set count colored by zone. Groups with no sets are hidden.</p>
 
-  <h4>Volume zones (MEV/MRV)</h4>
-  <p>Each bar background shows research-based volume zones:</p>
+  <h4>Volume zones</h4>
+  <p>Each bar's background shows three zones, explained in a small legend on the card:</p>
   <ul>
-    <li><strong>Amber zone</strong> - below MEV (Minimum Effective Volume): not enough stimulus for meaningful adaptation.</li>
-    <li><strong>Green zone</strong> - MEV to MRV: the productive training range.</li>
-    <li><strong>Red zone</strong> - above MRV (Maximum Recoverable Volume): more than you can recover from before the next session.</li>
+    <li><strong>Amber</strong> - below MEV (minimum effective volume): too little to drive progress.</li>
+    <li><strong>Green</strong> - between MEV and MRV: the productive range.</li>
+    <li><strong>Red</strong> - above MRV (maximum recoverable volume): more than you can recover from before the next session.</li>
   </ul>
-  <p>A small legend at the bottom of the card explains the zones. Categories with no sets in the window are hidden.</p>
 
   <h4>Weekly targets</h4>
-  <p>Tap the <strong>⚙</strong> icon in the card header to set optional personal targets per muscle group. Each target appears as a vertical tick on the bar and a <code>/target</code> suffix next to the set count. Leave a category blank to rely on MEV/MRV zones only.</p>
+  <p>Tap <strong>⚙</strong> in the card header to set a target for any muscle group. It shows as a tick on the bar and a <code>/target</code> after the set count. Leave a group blank to use the zones alone.</p>
 
   <h3>Activity card</h3>
   <ul>
-    <li><strong>Training frequency chart</strong> - Workouts per week as a bar chart.</li>
-    <li><strong>Activity heatmap</strong> - 26 weeks of daily activity in a GitHub-style grid. Switch between three metrics using the chips: <strong>Sets</strong> (number of non-skipped sets), <strong>Volume</strong> (total weight × reps, kg-normalized), and <strong>Duration</strong> (session length in minutes).</li>
+    <li><strong>Training frequency</strong> - workouts per week, as a bar chart.</li>
+    <li><strong>Activity heatmap</strong> - 26 weeks as a grid of squares, one per day, shaded by how much you did. Switch between <strong>Sets</strong> (sets not skipped), <strong>Volume</strong> (weight × reps, converted to kg) and <strong>Duration</strong> (session minutes).</li>
   </ul>
 
   <h3 id="muscle-balance">Muscle balance</h3>
-  <p>Badger tracks how often you train each muscle group and flags imbalances. You'll see colored dots on the weekly volume chips on the Today screen when a muscle group needs attention.</p>
-  <p>On the Overview tab, a <strong>Muscle balance card</strong> appears when any muscle group is flagged. It shows:</p>
-  <ul>
-    <li>Each muscle group's status (OK, warning, or neglected)</li>
-    <li>When it was last trained</li>
-    <li>Set count within the rolling window</li>
-  </ul>
-  <p>Tap <strong>+ Log exercise</strong> on a flagged muscle group to jump directly to the exercise picker filtered to that category.</p>
-  <p>Muscle balance warnings can be turned off in <strong>Settings → Coaching → Muscle balance warnings</strong>.</p>
-
-  <h2>Exercise progress History tab</h2>
-  <p>On the Exercise Progress screen, a <strong>History tab</strong> sits alongside the graph view. It shows every session where that exercise was logged, newest first, with the same set-level detail as the History tab in the training screen.</p>
-  <p><strong>Tap any set row</strong> in the history list to open an edit sheet. You can correct weight, reps, RPE, RIR, the warmup flag, and more. Changes persist immediately and update the graphs.</p>
-  <p>The same filter chip rows as the chart appear at the top of the history list when your history earns them - machine, bar, and the accessories view - and scope the sessions shown the same way.</p>
-
-  <h2>History in the training screen</h2>
-  <p>The <strong>History tab</strong> in the training screen (tap it, or swipe left from the Track tab) shows all previous sessions for the current exercise, newest first. Skipped sets are excluded from the display. From there you can:</p>
-  <ul>
-    <li>View the full workout summary by tapping the session header.</li>
-    <li>Copy that session's sets to your current workout.</li>
-    <li><strong>Tap any set row</strong> to edit that set inline - correct weight, reps, or any other field.</li>
-  </ul>
+  <p>Badger tracks how often you train each muscle group and flags the ones falling behind. On the Today screen, a colored dot on a weekly volume chip marks a group that needs attention.</p>
+  <p>When any group is flagged, a <strong>Muscle balance</strong> card appears on the Overview tab. For each group it shows the status (OK, warning or neglected), when you last trained it, and its set count in the rolling window. Tap <strong>+ Log exercise</strong> on a flagged group to open the exercise picker filtered to that category.</p>
+  <p>To turn the warnings off, or mute single categories, go to <strong>Settings → Coaching → Muscle balance warnings</strong>.</p>
 </HelpLayout>

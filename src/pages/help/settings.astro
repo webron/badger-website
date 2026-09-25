@@ -2,125 +2,117 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Settings & Data" description="Settings overview, backup, restore, and data export in Badger.">
-  <h1>Settings & Data</h1>
+<HelpLayout title="Settings and data" description="What each setting in Badger does, and how to back up, restore, export and import your data.">
+  <h1>Settings and data</h1>
 
-  <p>Go to <strong>More → Settings</strong> to access all preferences. The <strong>More → Data &amp; backup</strong> shortcut opens the same screen and scrolls straight to the Your data section.</p>
+  <p>Open <strong>More → Settings</strong>. <strong>More → Data &amp; backup</strong> opens the same screen scrolled to <a href={`#data`}>Your data</a>.</p>
 
-  <p>Settings is grouped by what you are trying to do: <a href={`#logging`}>Logging</a>, the three timer families (<a href={`#rest-timer`}>Rest timer</a>, <a href={`#set-timer`}>Set timer</a>, and <a href={`#workout-timer`}>Workout timer</a>), <a href={`#coaching`}>Coaching</a>, <a href={`#app`}>App</a>, and <a href={`#data`}>Your data</a>.</p>
+  <p>Settings are grouped by what you're doing: <a href={`#logging`}>Logging</a>, the three timers (<a href={`#rest-timer`}>Rest timer</a>, <a href={`#set-timer`}>Set timer</a> and <a href={`#workout-timer`}>Workout timer</a>), <a href={`#coaching`}>Coaching</a>, <a href={`#app`}>App</a> and <a href={`#data`}>Your data</a>. <a href={`#training-notes`}>Training notes</a>, under More, are covered at the end.</p>
 
   <hr />
 
   <h2 id="logging">Logging</h2>
-  <p>General preferences for recording sets.</p>
   <ul>
-    <li><strong>Unit system</strong> - Kilograms or pounds. This is the default for all exercises; individual exercises can override it.</li>
-    <li><strong>Default weight increment</strong> - Used by the progressive overload suggestion and stepper buttons when no per-exercise increment is set.</li>
-    <li><strong>Track personal records</strong> - Toggle PR detection and badges. Disable if you prefer not to see PR notifications.</li>
-    <li><strong>Auto-select next set</strong> - When opening an exercise, automatically highlight the next incomplete set.</li>
-    <li><strong>Auto-advance to next exercise</strong> - After completing or skipping the last set of an exercise, automatically navigate to the next one.</li>
-    <li><strong>Warm-up style</strong> - The default style for the warm-up generator: <strong>Percent</strong> (a ramp as a share of your working weight) or <strong>Plates</strong> (evenly spaced, easy-to-load weights). See <a href={`/help/logging/#set-types`}>Warmup sets</a>.</li>
-    <li><strong>Default warm-up sets</strong> - How many warm-up sets to generate (1-6). Fewer sets means bigger jumps to your working weight. Both warm-up settings can be overridden per exercise on the exercise edit screen.</li>
+    <li><strong>Unit system</strong> - Kilograms or pounds, for every exercise that doesn't set its own.</li>
+    <li><strong>Default weight increment</strong> - The step for the stepper buttons and the progressive overload suggestion, when an exercise has no increment of its own.</li>
+    <li><strong>Track personal records</strong> - Turns PR badges and notices on or off.</li>
+    <li><strong>Auto-select next set</strong> - Highlights the next unfinished set when you open an exercise.</li>
+    <li><strong>Auto-advance to next exercise</strong> - Moves you to the next exercise after you complete or skip the last set.</li>
+    <li><strong>Warm-up style</strong> - How the warm-up generator builds sets: <strong>Percent</strong> (a ramp based on your working weight) or <strong>Plates</strong> (evenly spaced, easy-to-load weights). See <a href={`/help/logging/#set-types`}>Warmup sets</a>.</li>
+    <li><strong>Default warm-up sets</strong> - How many warmup sets to generate (1-6). Fewer sets means bigger jumps. An exercise can override both warm-up settings on its edit screen.</li>
   </ul>
 
   <h2 id="rest-timer">Rest timer</h2>
-  <p>Preferences for the rest countdown between sets.</p>
   <ul>
-    <li><strong>Default rest time</strong> - Duration used when no exercise-specific or session override is set (30s-300s).</li>
-    <li><strong>Default warmup rest</strong> - Duration for warmup sets (15s-120s).</li>
-    <li><strong>Rest timer auto-start</strong> - Automatically starts the rest timer when you log a working set.</li>
-    <li><strong>Rest timer sound</strong> - Play a sound when the timer ends. When enabled, choose from several preset sounds (with preview).</li>
-    <li><strong>Rest timer vibration</strong> - Vibrate when the timer ends.</li>
+    <li><strong>Default rest time</strong> - Rest after a working set when the exercise and the session don't set their own (30s-300s).</li>
+    <li><strong>Default warm-up rest</strong> - Rest after a warmup set (15s-120s).</li>
+    <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set.</li>
+    <li><strong>Rest timer sound</strong> - Plays a sound when rest ends. Pick from several sounds, with a preview.</li>
+    <li><strong>Rest timer vibration</strong> - Vibrates when rest ends.</li>
   </ul>
 
   <h2 id="set-timer">Set timer</h2>
-  <p>Preferences for the timed set countdown.</p>
+  <p>These cover the countdown on <a href={`/help/logging/#set-timer`}>timed sets</a>.</p>
   <ul>
-    <li><strong>Set timer sound</strong> - Play a sound with the notification that fires when a timed set's <a href={`/help/logging/#set-timer`}>countdown</a> ends and Badger could not announce it aloud. A countdown that ends with the app in front is spoken, and on iPhone so is one that ends with the screen locked, as long as the voice below is on. So this toggle governs the notification only and the spoken cues are not affected by turning it off.</li>
-    <li><strong>Set timer voice</strong> - The voice that speaks during a timed set: <strong>Female</strong>, <strong>Male</strong>, or <strong>Off</strong>. Tap a choice to hear it before you commit. This is the switch for everything spoken during the countdown, and it is separate from the notification sound above. <strong>Off</strong> stops the talking, not the alert: a set that ends with your phone locked still gets the "Set complete" notification, with its sound if you left the toggle above on.</li>
+    <li><strong>Set timer sound</strong> - Plays a sound with the "Set complete" notification. You get that notification when a timed set ends without being announced aloud, for example with the phone locked on Android. It doesn't affect the voice.</li>
+    <li><strong>Set timer voice</strong> - <strong>Female</strong>, <strong>Male</strong> or <strong>Off</strong>. Tap one to hear it. Off silences the spoken cues; you still get the "Set complete" notification when the phone is locked.</li>
   </ul>
 
   <h2 id="workout-timer">Workout timer</h2>
-  <p>Preferences for the overall workout clock.</p>
   <ul>
-    <li><strong>Workout timer auto-start</strong> - Automatically starts the elapsed workout timer when you complete your first set.</li>
-    <li><strong>Workout timer auto-stop</strong> - Stops the elapsed timer when you complete the last set of the session.</li>
+    <li><strong>Workout timer auto-start</strong> - Starts the workout clock when you complete your first set.</li>
+    <li><strong>Workout timer auto-stop</strong> - Stops it when you complete the last set of the session.</li>
   </ul>
 
   <h2 id="coaching">Coaching</h2>
-  <p>The features that look at your training and suggest something. All of them are optional, and several stay off until you turn them on.</p>
+  <p>Features that look at your training and suggest something. All are optional, and several are off until you turn them on.</p>
   <ul>
-    <li><strong>Progressive overload trigger</strong> - How many consecutive sessions with all sets complete before a weight increase is suggested (1-10).</li>
-    <li><strong>Auto-progress routine weights</strong> - Offer to write heavier loads you hit back into the routine plan. See <a href={`/help/progression/#auto-progress`}>Auto-progress routine weights</a>.</li>
-    <li><strong>Muscle balance warnings</strong> - Toggle the muscle balance warning system on or off. When it's on, a chip row below it lets you mute individual categories you don't want flagged.</li>
-    <li><strong>Strength standards</strong> - Turn the untrained-to-elite reference lines on the big barbell lifts on or off. When on, the row below it holds your answer to the one question the standards need (sex), which you can change or withdraw here at any time. See <a href={`/help/progress/#strength-standards`}>Strength standards</a>.</li>
-    <li><strong>Plateau detection</strong> - Opens the plateau detection screen. See <a href={`/help/progress/#plateau-detection`}>Plateau detection</a>.</li>
-    <li><strong>Deload</strong> - Opens the deload configuration screen. See <a href={`/help/tools/#deload`}>Deload</a>.</li>
+    <li><strong>Progressive overload trigger</strong> - How many sessions in a row with every set complete before Badger suggests more weight (1-10).</li>
+    <li><strong>Auto-progress routine weights</strong> - Offers to write heavier weights you hit back into the routine. See <a href={`/help/progression/#auto-progress`}>Auto-progress routine weights</a>.</li>
+    <li><strong>Muscle balance warnings</strong> - Turns the warnings on or off. While they're on, the chips below let you mute categories you don't want flagged. See <a href={`/help/progress/#muscle-balance`}>Muscle balance</a>.</li>
+    <li><strong>Strength standards</strong> - Turns the untrained-to-elite lines on the big barbell lifts on or off. The row below holds your answer to the one question they need (sex); change or remove it here. See <a href={`/help/progress/#strength-standards`}>Strength standards</a>.</li>
+    <li><strong>Plateau detection</strong> - Opens its settings. See <a href={`/help/progress/#plateau-detection`}>Plateau detection</a>.</li>
+    <li><strong>Deload</strong> - Opens the deload settings. See <a href={`/help/tools/#deload`}>Deload</a>.</li>
   </ul>
-  <p>Plateau detection and deload show their current state on the right of the row, for example "On - Balanced" or "Off", so you can see how they are set without opening them.</p>
+  <p>Plateau detection and Deload show their current state at the right of the row, for example "On · Balanced" or "Off".</p>
 
   <h2 id="app">App</h2>
-  <p>How Badger looks, what it notifies you about, and what it does to your phone while you train.</p>
   <ul>
-    <li><strong>Theme</strong> - Light, Dark, or System (follows your device setting).</li>
-    <li><strong>Accent color</strong> - Choose from a preset palette or pick a custom color. The accent applies globally throughout the app.</li>
-    <li><strong>Calendar week start</strong> - Monday, Sunday, or Saturday.</li>
+    <li><strong>Theme</strong> - Light, Dark or System (follows your phone).</li>
+    <li><strong>Accent color</strong> - A preset or a custom color, used throughout the app.</li>
+    <li><strong>Calendar week start</strong> - Monday, Sunday or Saturday.</li>
     <li><strong>Default history view</strong> - Whether the History tab opens on the list or the calendar.</li>
-    <li><strong>Keep screen on</strong> - Prevents your device from sleeping during a workout.</li>
-    <li><strong>Haptic feedback</strong> - Vibration on interactions and timer events.</li>
-    <li><strong>Workout notification</strong> - Android only. Shows the current exercise and your next set target in the notification bar while a workout is running, so you can check it from the lock screen. See <a href={`/help/logging/#workout-notification`}>Workout notification</a>.</li>
+    <li><strong>Keep screen on</strong> - Stops your phone sleeping during a workout.</li>
+    <li><strong>Haptic feedback</strong> - Vibration on taps and timer events.</li>
+    <li><strong>Workout notification</strong> - Android only. Shows the current exercise and your next set target in the notification bar during a workout, so you can check it from the lock screen. See <a href={`/help/logging/#workout-notification`}>Workout notification</a>.</li>
     <li><strong>Workout reminders</strong> - A notification on each weekday a routine day is <a href={`/help/routines/#creating`}>scheduled for</a>. <strong>Remind me</strong> sets how long before 8:00 AM that day it arrives.</li>
-    <li><strong>End of workout summary</strong> - Choose what the completion sheet shows when you finish a session.</li>
+    <li><strong>End of workout summary</strong> - What the completion sheet shows when you finish a session.</li>
   </ul>
 
-  <h2 id="training-notes">Training notes</h2>
-  <p>Under <strong>More → Training notes</strong> is a private page for your own context - goals, injuries, training history, and anything else worth remembering. It's one free-text page; your notes save automatically as you type, so there's no save button. The text stays on your device and is never required.</p>
-  <p>Training notes are included in your <a href={`#backup`}>backup</a>, so they carry across to a new device when you restore. They are <strong>not</strong> shared when you export data or share individual routines. (Program-specific notes belong on the routine itself - see <a href={`/help/routines/#routine-notes`}>Routine notes</a>.)</p>
-  <p>At the bottom of the page is <strong>Copy for AI</strong>, which bundles these notes together with your program, recent training, records and equipment into one block of text you can paste into any AI - see <a href={`#ai-context`}>Copying your context for an AI</a>.</p>
-
   <h2 id="data">Your data</h2>
-  <p>All the rows below live in the <strong>Your data</strong> section at the bottom of Settings. Tap <strong>More → Data &amp; backup</strong> to jump straight to it.</p>
+  <p>Everything below is in the <strong>Your data</strong> section at the bottom of Settings. <strong>More → Data &amp; backup</strong> jumps straight to it.</p>
 
-  <h3 id="backup">Backup &amp; restore</h3>
-  <p>Your workout data is stored locally in a SQLite database. You should back it up regularly.</p>
+  <h3 id="backup">Backup and restore</h3>
+  <p>Your data lives only on this phone. Back it up regularly, or turn on <a href={`#cloud-backup`}>Cloud backup</a>.</p>
   <ul>
-    <li><strong>Manual backup</strong> - Exports a snapshot of your database as a <code>.workout_backup</code> file and opens the system share sheet so you can save it to Google Drive, your files app, or send it elsewhere.</li>
-    <li><strong>Restore from backup</strong> - Select a <code>.workout_backup</code> file. This replaces your current database with the backup. <strong>All current data will be overwritten</strong> - make sure you back up first if needed. Badger checks the backup is intact before replacing anything, so a corrupted or incomplete file is rejected and your current data is left untouched.</li>
-    <li><strong>Restore previous data</strong> - Just before any restore overwrites your data, Badger automatically saves a one-off snapshot of what was there. If a restore turns out to be a mistake, a <strong>Restore previous data</strong> option appears under Restore so you can roll back to that snapshot. Restart the app afterwards.</li>
+    <li><strong>Manual backup</strong> - Saves everything as a <code>.workout_backup</code> file and opens the share sheet, so you can put it in Google Drive, your files app or anywhere else.</li>
+    <li><strong>Restore from backup</strong> - Pick a <code>.workout_backup</code> file. <strong>It replaces all your current data</strong>, so back up first if you need to. Badger checks the file is intact first and rejects a damaged one, leaving your data as it was.</li>
+    <li><strong>Restore previous data</strong> - Badger saves a copy of your data just before any restore replaces it. If the restore was a mistake, tap <strong>Restore previous data</strong> (under Restore) to go back, then restart the app.</li>
   </ul>
 
   <h3 id="cloud-backup">Cloud backup</h3>
-  <p><strong>Cloud backup</strong> opens its own screen where you can turn on automatic backup to your own Google Drive. It is off unless you enable it. <a href={`/help/phone-migration/#cloud-backup`}>Moving to a new phone</a> has the steps to set it up and to restore from it.</p>
-  <p><strong>Back up equipment photos</strong>, on the same screen, is a second opt-in - off by default. Leave it off and backups hold your training data only.</p>
-  <p>Turn it on and photos of your machines, attachments and bars ride along in every backup, so they come back when you restore. The cost is considerably larger files that use more of your Drive storage. Photos already on your equipment are included starting with the next backup.</p>
+  <p>Cloud backup saves Badger automatically to your own Google Drive. It's off until you turn it on:</p>
+  <ol>
+    <li>Go to <strong>More → Settings → Cloud backup</strong>.</li>
+    <li>Turn on <strong>Auto backup to your Drive</strong> and sign in with your Google account. Badger takes the first backup straight away.</li>
+  </ol>
+  <p>After that, Badger backs up when you finish a workout (at most once an hour) and once a day, whenever something has changed. It keeps the five most recent backups in a hidden app folder on your Drive. Tap <strong>Back up now</strong> to take one yourself. To restore on a new phone, see <a href={`/help/phone-migration/#cloud-backup`}>Moving to a new phone</a>.</p>
+  <p><strong>Back up equipment photos</strong>, on the same screen, is off by default. Turn it on and photos of your machines, attachments and bars go into every backup and come back when you restore, at the cost of much larger files on your Drive. Photos you already have are included from the next backup.</p>
 
   <h3 id="export">Exporting data</h3>
-  <p><strong>Export workout data</strong> generates a CSV file with one row per logged set, including date, exercise name, weight, reps, duration, warmup flag, RPE, RIR, and more. The file is shared via the system share sheet.</p>
-  <p>Every set in the database is exported, including ones you never performed. A workout started from a routine creates all of its sets up front, so a session you began and walked out of still has rows.</p>
-  <p>Use the <code>is_complete</code> and <code>is_skipped</code> columns to tell them apart: filter on <code>is_complete</code> for anything that should count as training. If you are handing the file to an AI, <a href={`/guides/ai/`}>Use your own AI</a> has a prompt that already explains this.</p>
+  <p><strong>Export workout data</strong> makes a CSV file with one row per set (date, exercise, weight, reps, duration, warmup flag, RPE, RIR and more) and opens the share sheet.</p>
+  <p>The file includes sets you never completed, such as the rest of a routine workout you started and left. To count only real training, filter on <code>is_complete</code>; <code>is_skipped</code> marks skipped sets. If you're giving the file to an AI, <a href={`/guides/ai/`}>Use your own AI</a> has a prompt that already explains this.</p>
 
   <h3 id="ai-context">Copying your context for an AI</h3>
-  <p><strong>Copy context for AI</strong> assembles a short plain-text briefing on what you are training. It gathers your <a href={`#training-notes`}>training notes</a>, your active program with its current targets, your last ten sessions, your records, the equipment at your resolved gym, and anything you have marked as avoided.</p>
-  <p>It then adds instructions telling the AI how to read the briefing, including how to write a routine back as a <a href={`/badger-format/`}><code>.badger</code> file</a>.</p>
-  <p>Badger shows you the whole thing before anything leaves. Read it, then tap <strong>Copy</strong> to put it on your clipboard or <strong>Share</strong> to send it through the system share sheet. <strong>Badger transmits nothing.</strong> The text is assembled on your device, there is no account and no server involved, and where it goes next is entirely your choice.</p>
-  <p>The briefing is trimmed to fit a chat window: if you train a lot, older sessions drop first, then equipment, then records. Your notes are the last thing cut, and your constraints and the closing instructions are never dropped. An empty section is left out instead of shown blank.</p>
-  <p>Your <strong>body measurements and any health data are deliberately not included</strong>, and nothing from your workout comments, per-set comments or exercise notes travels either. The same action is available at the bottom of your Training notes page, labeled <strong>Copy for AI</strong>. See <a href={`/guides/ai/`}>Use your own AI</a> for what to do with it.</p>
+  <p><strong>Copy context for AI</strong> puts together a short plain-text briefing on your training: your <a href={`#training-notes`}>training notes</a>, your active program and its current targets, your last ten sessions, your records, the equipment at your current gym, and anything you've marked as avoided.</p>
+  <p>It ends with instructions telling the AI how to read it, including how to write a routine back as a <a href={`/badger-format/`}><code>.badger</code> file</a>.</p>
+  <p>Read it, then tap <strong>Copy</strong> or <strong>Share</strong>. Body measurements, health data, workout and set comments, and exercise notes aren't included.</p>
+  <p>The briefing is trimmed to fit a chat window. If you train a lot, older sessions go first, then equipment, then records, and your notes last. Anything you've marked as avoided and the closing instructions always stay. Empty sections are left out.</p>
+  <p>The same action is at the bottom of your Training notes page, labeled <strong>Copy for AI</strong>. See <a href={`/guides/ai/`}>Use your own AI</a> for what to do with it.</p>
 
   <h3 id="importing">Importing workout history</h3>
-  <p>Badger can import your full history from FitNotes, Strong, Hevy, and Stronglifts. Each option appears in the same Your data section:</p>
-  <ul>
-    <li><strong>Import from FitNotes</strong> - Select a <code>.fitnotes</code> backup file.</li>
-    <li><strong>Import from Strong</strong> - Select a Strong CSV export. Weight unit is detected automatically from the column header.</li>
-    <li><strong>Import from Hevy</strong> - Select a Hevy CSV export. Warmup sets are imported correctly.</li>
-    <li><strong>Import from Stronglifts</strong> - Select a Stronglifts CSV export. Weight unit (kg or lbs) is detected automatically. Every logged set is imported as a working set, since the Stronglifts export does not distinguish warmups.</li>
-  </ul>
-  <p>Imported files are capped at 10&nbsp;MB - comfortably larger than any real export, even for many years of training. If you see a "file is too large" message, the file is almost certainly corrupted; try re-exporting it from the source app.</p>
-  <p><strong>Avoid importing the same file twice.</strong> The preview warns you when some of the import's dates already have workouts - importing again adds those sets a second time (duplicating them on those days) rather than replacing them.</p>
-  <p>See <a href={`/help/getting-started/#importing`}>Getting started → Importing from another app</a> for the full walkthrough.</p>
+  <p>The Your data section has an import option for each app Badger can read: <strong>Import from FitNotes</strong> (a <code>.fitnotes</code> backup), and <strong>Import from Strong</strong>, <strong>Import from Hevy</strong> and <strong>Import from Stronglifts</strong> (each a CSV export). For how to export from each app and what carries over, see <a href={`/help/getting-started/#importing`}>Import from another app</a>.</p>
+  <p>If you see "file is too large" (the limit is 10&nbsp;MB), the file is probably damaged. Export it again from the other app.</p>
+  <p><strong>Don't import the same file twice.</strong> A second import adds the sets again on the same days instead of replacing them. The preview warns you when some of the dates already have workouts.</p>
 
   <h3>Debug logs</h3>
-  <p><strong>Export debug logs</strong> shares a plain-text file containing the app's recent activity log. The log captures the last ~500 lines written during the current session - useful for diagnosing unexpected behavior or reporting bugs to support. It does not contain personal health or workout data.</p>
+  <p><strong>Export debug logs</strong> shares a text file of the app's recent activity (about the last 500 lines from this session) for reporting a bug. It holds no health or workout data.</p>
 
   <h3>Deleting data</h3>
-  <p><strong>Delete all workout history</strong> sits at the very bottom of Settings. It permanently deletes all workouts and sets, and a confirmation dialog is required. This does not delete exercises or routines.</p>
+  <p><strong>Delete all workout history</strong>, at the very bottom of Settings, permanently deletes every workout and set but keeps your exercises and routines. Badger asks you to confirm first.</p>
+
+  <h2 id="training-notes">Training notes</h2>
+  <p><strong>More → Training notes</strong> is one free-text page for your own context: goals, injuries, training history, anything worth remembering. It saves as you type.</p>
+  <p>Training notes are in your <a href={`#backup`}>backup</a>, so they come back when you restore on a new phone. They aren't included when you export data or share a routine. Notes about one program belong on the routine instead; see <a href={`/help/routines/#routine-notes`}>Routine notes</a>.</p>
+  <p><strong>Copy for AI</strong>, at the bottom of the page, bundles these notes with your program, recent training, records and equipment. See <a href={`#ai-context`}>Copying your context for an AI</a>.</p>
 </HelpLayout>

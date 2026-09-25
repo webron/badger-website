@@ -1,0 +1,42 @@
+# Badger
+
+> Badger is a workout and strength tracker for Android and iPhone. It logs sets, runs strength programs whose progression rules move the weights, tracks records and body measurements, and shares routines and gyms as plain-text .badger files.
+
+A .badger file is a single JSON text file you can read in any text editor. It holds a routine, a gym or a set of machines, never workout history. Opening one on a phone with Badger shows a preview, and importing only adds. Logged workouts leave Badger as a CSV export or in a full backup.
+
+## File format
+
+- [The .badger file format](https://badger.fit/badger-format/): The specification for routine and gym files: the envelope, every field, progression rules, waves, what import does and how versions stay compatible.
+- [Example routine file](https://badger.fit/programs/example-routine.badger): A small, complete routine file to copy from.
+
+## Programs
+
+- [Programs](https://badger.fit/programs/): Ten ready-made programs, what each one is and who it suits, with a .badger download for each.
+- [StrongLifts 5x5](https://badger.fit/programs/stronglifts-5x5.badger): Beginner.
+- [Starting Strength](https://badger.fit/programs/starting-strength.badger): Beginner.
+- [Full Body, 3 days](https://badger.fit/programs/full-body-3-day.badger): Beginner.
+- [GZCLP](https://badger.fit/programs/gzclp.badger): Late beginner.
+- [5/3/1 Boring But Big](https://badger.fit/programs/531-bbb.badger): Intermediate.
+- [nSuns 531LP](https://badger.fit/programs/nsuns-531lp.badger): Intermediate.
+- [Madcow 5x5](https://badger.fit/programs/madcow-5x5.badger): Intermediate.
+- [Upper / Lower, 4 days](https://badger.fit/programs/upper-lower-4-day.badger): Intermediate.
+- [Push / Pull / Legs + Upper / Lower, 5 days](https://badger.fit/programs/ppl-ul-5-day.badger): Intermediate.
+- [Push / Pull / Legs, 6 days](https://badger.fit/programs/ppl-6-day.badger): Intermediate.
+
+## Using an AI with Badger
+
+- [Use your own AI](https://badger.fit/guides/ai/): How to hand an AI your CSV export or a routine file, prompts to start from, and how to import the routine it writes back.
+- [Exporting data](https://badger.fit/help/settings/#export): What the CSV export contains and how to read its columns.
+
+## Help
+
+- [Help](https://badger.fit/help/): The help index, organized by what you came to do, with common questions.
+- [Getting started](https://badger.fit/help/getting-started/): Install, log a first workout, and import history from FitNotes, Strong, Hevy or StrongLifts.
+- [Routines](https://badger.fit/help/routines/): Build a routine, plan its sets, start workouts from it and share it.
+- [Progression](https://badger.fit/help/progression/): Why a weight went up or held: progression rules, training max, percentage sets and waved days.
+
+## Optional
+
+- [Glossary](https://badger.fit/glossary/): Plain definitions of RPE, RIR, 1RM, deload, training max and the app's own terms.
+- [Everything Badger does](https://badger.fit/guides/overview/): Every feature, one line each, linked to its help.
+- [Changelog](https://badger.fit/changelog/): What changed in each release.

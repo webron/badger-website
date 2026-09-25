@@ -10,7 +10,7 @@ const personas = [
   {
     href: '/guides/program-runner/',
     title: "I'm running a program",
-    blurb: "You follow a set program. Build it once, have your weights waiting each session, and progress on autopilot.",
+    blurb: "You follow a set program. Build it once, find your weights waiting each session, and let the program move them.",
   },
   {
     href: '/guides/optimizer/',
@@ -20,19 +20,17 @@ const personas = [
   {
     href: '/guides/switching/',
     title: "I'm switching from another app",
-    blurb: "You have history in FitNotes, Strong, Hevy, or Stronglifts. Bring it over, and see what survives the move from yours.",
+    blurb: "You have history in FitNotes, Strong, Hevy, or StrongLifts. Bring it over, and see what carries across from yours.",
   },
 ];
 
-// Not personas: these two answer a question someone arrives with rather than
-// describing how they train, so they sit in their own group instead of being
-// mixed into the picker above.
-const more = [
+// Not personas: each answers one question someone arrives with.
+const questions = [
   {
     href: '/guides/stronglifts-5x5-tracker/',
     title: 'StrongLifts 5x5 in Badger',
     blurb:
-      'The built-in 5x5 template, what you still decide yourself, and exactly what the CSV import carries across.',
+      'The built-in 5x5 program, what you still decide yourself, and what the CSV import carries across.',
   },
   {
     href: '/guides/fitnotes-on-iphone/',
@@ -44,47 +42,50 @@ const more = [
     href: '/guides/workout-tracker-no-subscription/',
     title: 'A tracker with no subscription',
     blurb:
-      'What free means here, where Badger falls short, and how the other trackers charge. Competitors included.',
+      'What free means here, where Badger falls short, and how the other trackers charge.',
   },
+  {
+    href: '/guides/ai/',
+    title: 'Use your own AI',
+    blurb:
+      'Hand an AI your export or a routine file, with prompts to start from, and import the routine it writes.',
+  },
+  {
+    href: '/guides/overview/',
+    title: 'Everything Badger does',
+    blurb: 'Every feature, one line each, with a link to its help.',
+  },
+];
+
+const groups = [
+  { label: 'Start here', rows: personas },
+  { label: 'Common questions', rows: questions },
 ];
 ---
 
-<HelpLayout title="Starting guides" description="Pick the guide that matches how you train and get going with Badger in a few minutes.">
-  <h1>Starting guides</h1>
-  <p>Badger does a lot, but you do not need all of it on day one. Pick the description that sounds most like you and we will walk you through the parts that matter for how you train.</p>
+<HelpLayout title="Guides" description="Pick the guide that matches how you train and get going with Badger in a few minutes.">
+  <h1>Guides</h1>
+  <p>You do not need all of Badger on day one. Pick the description that sounds most like you, and the guide covers the parts that matter for how you train.</p>
 
   <div class="rule-ink guides-rule"></div>
-  <ul class="guide-rows">
-    {personas.map(p => (
-      <li>
-        <a class="guide-row" href={p.href}>
-          <span class="guide-row__head">
-            <span class="guide-row__title">{p.title}</span>
-            <span class="guide-row__go">Read this guide &rarr;</span>
-          </span>
-          <span class="guide-row__blurb">{p.blurb}</span>
-        </a>
-      </li>
-    ))}
-  </ul>
-
-  <p class="caps more-label">More guides</p>
-  <ul class="guide-rows">
-    {more.map(g => (
-      <li>
-        <a class="guide-row" href={g.href}>
-          <span class="guide-row__head">
-            <span class="guide-row__title">{g.title}</span>
-            <span class="guide-row__go">Read this guide &rarr;</span>
-          </span>
-          <span class="guide-row__blurb">{g.blurb}</span>
-        </a>
-      </li>
-    ))}
-  </ul>
-
-  <p class="guide-overview-link">Curious what else is in there? Browse <a href="/guides/overview/">everything Badger does</a>, one line per feature.</p>
-  <p class="guide-overview-link">Already paying for an AI? <a href="/guides/ai/">Use your own AI</a> covers handing it your export or a routine file, with prompts to start from.</p>
+  {groups.map(g => (
+    <>
+      <p class="caps group-label">{g.label}</p>
+      <ul class="guide-rows">
+        {g.rows.map(r => (
+          <li>
+            <a class="guide-row" href={r.href}>
+              <span class="guide-row__head">
+                <span class="guide-row__title">{r.title}</span>
+                <span class="guide-row__go">Read this guide &rarr;</span>
+              </span>
+              <span class="guide-row__blurb">{r.blurb}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </>
+  ))}
 </HelpLayout>
 
 <style>
@@ -103,9 +104,9 @@ const more = [
 
   /* A caps label over a hairline: the same group heading the help sidebar index
      uses, rather than a second 2px ink rule. The ink rule marks the page's one
-     ledger top; this is a subgroup inside it. */
-  .more-label {
-    margin: 0 0 2px;
+     ledger top; each group is a subgroup inside it. */
+  .group-label {
+    margin: 10px 0 2px;
     padding-bottom: 6px;
     border-bottom: 1px solid var(--hair);
     color: var(--text-muted);
