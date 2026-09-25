@@ -43,11 +43,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="import-weight">Importing body weight</h3>
   <p>Weigh-ins in your health store (from a smart scale, another app, or typed into Health) appear in your body tracker as ordinary entries. Badger asks for body weight only.</p>
   <p>On Android, Health Connect also asks whether Badger may see data older than 30 days. Allow it and your first import reaches back a year; decline and you get the last 30 days. You can change this anytime in Health Connect.</p>
-  <p>Badger checks for new weigh-ins when you open the Body screen. If your health store filled in missing days later, tap <strong>Bring in weigh-ins now</strong> to search the whole past year. The same reading is never imported twice, but a genuine second weigh-in on the same morning is kept.</p>
+  <p>Badger checks for new weigh-ins only when you open the Body screen, never in the background. If your health store filled in missing days later, tap <strong>Bring in weigh-ins now</strong> to search the whole past year. The same reading is never imported twice, but a genuine second weigh-in on the same morning is kept.</p>
   <p>Imported weigh-ins are saved in Badger like the ones you type, so they're in your backups: the backup file and, if you use it, the cloud backup to your own Google Drive. See the <a href="/legal/privacy/">Privacy Policy</a>.</p>
 
   <h3 id="heart-rate">Heart rate on your sets</h3>
-  <p>Badger saves <strong>one heart rate per set</strong>, taken at the end of the set from the samples your watch has written to your health store. Wear your watch while you train and the numbers turn up with nothing to start or press.</p>
+  <p>Badger saves <strong>one heart rate per set</strong>, taken at the end of the set from the samples your watch has written to your health store. Wear your watch while you train and the numbers turn up with nothing to start or press. Badger reads heart rate; it never writes it back to your health store.</p>
   <p>Two charts show it:</p>
   <ul>
     <li>The <strong>Exertion</strong> chart on a workout summary, under Pace, plots your heart rate set by set across the session, so you can see it drift up as you tire.</li>

@@ -499,8 +499,10 @@ const description =
             The key can be anything (<code>"sl-squat"</code>, <code>"1"</code>); it only has to match
             between the members, case included. Surrounding spaces are ignored, and an empty key
             reads as absent. Import gives each group a new key of its own and keeps who is in it.
-            Leave the key out and the slot's progress is its own; a key held by a single slot works
-            the same way. Needs Badger 1.1.12 or later.
+            Leave the key out and the slot's progress is its own. A key no other slot shares also keeps
+            progress separate, but it stops a percentage set on that slot from borrowing a reference
+            weight (see <code>percent_reference</code>), so leave the key out rather than giving a slot
+            one of its own. Needs Badger 1.1.12 or later.
           </td>
         </tr>
         <tr>
@@ -517,8 +519,8 @@ const description =
             It applies while the slot has no reference weight of its own. The slot then takes the
             reference weight of a slot in this routine that programs the named lift and carries a
             rule, and looks nowhere else. Leave the key out and the reference weight comes from the
-            slot's progression group, then from a ruled slot in the routine programming the same
-            exercise.
+            slot's progression group if the slot has a <code>progression_group_key</code>, and
+            otherwise from a ruled slot in the routine programming the same exercise.
             <br /><br />
             A name that matches no definition, or that names the slot's own exercise, reads as
             absent. A lift the routine does not program is kept: the log preview says those sets

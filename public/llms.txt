@@ -2,7 +2,7 @@
 
 > Badger is a workout and strength tracker for Android and iPhone. It logs sets, runs strength programs whose progression rules move the weights, tracks records and body measurements, and shares routines and gyms as plain-text .badger files.
 
-A .badger file is a single JSON text file you can read in any text editor. It holds a routine, a gym or a set of machines, never workout history. Opening one on a phone with Badger shows a preview, and importing only adds. Logged workouts leave Badger as a CSV export.
+A .badger file is a single JSON text file you can read in any text editor. It holds a routine, a gym or a set of machines, never workout history. Opening one on a phone with Badger shows a preview, and importing only adds. Logged workouts leave Badger as a CSV export or in a full backup.
 
 ## File format
 

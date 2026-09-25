@@ -13,7 +13,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Two tabs at the top switch between a list and a calendar. To choose which one History opens on, see <a href={`/help/settings/#app`}>Default history view</a>.</p>
 
   <h3>List view</h3>
-  <p>Workouts are listed newest first. Each entry shows:</p>
+  <p>Workouts are listed newest first, loading in pages as you keep scrolling. Each entry shows:</p>
   <ul>
     <li><strong>Date</strong> - day of the week and date ("Today" for today).</li>
     <li><strong>Exercise and set count</strong> - for example "3 exercises · 12 sets".</li>
@@ -109,7 +109,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>On an ordinary day, your standout set</strong>, with a line saying why: "Heaviest set of the day", "Most reps of the day", "Longest hold of the day" or "Farthest of the day". The wording follows the exercise, so an assisted movement reads "Lightest set of the day" and a timed sprint reads "Fastest of the day".</li>
     <li><strong>On a day you set a personal best, the record</strong>, and what it beat: "New personal best · was 57.5 kg × 5".</li>
   </ul>
-  <p>Below that come a summary line (sets, exercises, time, volume) and one line per exercise with its set count as tally marks and its best set. The card lists up to eight exercises and counts the rest as "+N more". Long names wrap, and warmups are left off.</p>
+  <p>Below that come a summary line (sets, exercises, time, volume) and one line per exercise with its set count as tally marks and its best set. The card fits up to eight exercises in a fixed height, so long exercise names can mean fewer rows; the rest are counted as "+N more". Warmups are left off.</p>
   <p>The gym name appears only if you turn on <strong>Include gym name</strong> on the share sheet. It starts off every time.</p>
 
   <h2 id="per-exercise">One exercise's history</h2>
@@ -119,7 +119,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Mid-workout, on the training screen: tap <strong>History</strong>, or swipe left from <strong>Track</strong>.</li>
   </ul>
   <p>Each session shows the date, the gym and machine if any, and every set with its badge (W for a warmup, a number for a working set), its weight, reps, time or distance, and any RPE and RIR. Skipped sets aren't shown.</p>
-  <p>Tap a session's header to open that workout's summary. On the training screen you can also copy a past session's sets into your current workout.</p>
+  <p>Tap a session's header to open that workout's summary.</p>
   <p><strong>To fix a set, tap its row.</strong> An edit sheet opens where you can change the weight, reps, time, distance, RPE, RIR, warmup flag and comment. Changes save straight away and update your graphs.</p>
   <p>If you've trained the exercise on more than one machine or bar, or with and without accessories, filter rows appear at the top of the list so you can narrow it to one. They work like the <a href="/help/progress/#chart-filters">chart filters</a>.</p>
 </HelpLayout>

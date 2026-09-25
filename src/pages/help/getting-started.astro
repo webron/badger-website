@@ -58,7 +58,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <p>In Strong, go to <strong>Profile → Settings → Export Data</strong> to produce a <code>strong.csv</code> file. Your RPE, per-set notes and session times come with it, in kg or lbs, from any region's export. Strong doesn't mark warmups, so every set arrives as a working set.</p>
 
   <h3 id="importing-hevy">Hevy</h3>
-  <p>In Hevy, go to <strong>Profile → Settings → Export Data → Export as CSV</strong>. Warmups come across as warmups, along with your RPE, exercise notes and session times.</p>
+  <p>In Hevy, go to <strong>Profile → Settings → Export Data → Export as CSV</strong>. Warmups come across as warmups, along with your RPE and session times.</p>
 
   <h3 id="importing-stronglifts">StrongLifts</h3>
   <p>In StrongLifts, go to <strong>Settings → Export workout data</strong> to produce a CSV. Badger reads the weight unit and each session's start time and length from the file. StrongLifts doesn't mark warmups, so every set arrives as a working set.</p>
@@ -75,13 +75,13 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
 
   <h2 id="home-screen-widget">Home-screen widget (Android)</h2>
   <p>Long-press an empty spot on your home screen, tap <strong>Widgets</strong>, find Badger, and drag the <strong>Journal</strong> widget into place. It starts at about 4×2 and resizes freely.</p>
-  <p>It shows this week's attendance strip (a dot for each day you trained), your last entry and, if you follow a routine, the next day to train. Tap it to open the app.</p>
+  <p>It shows this week's attendance strip (a dot for each day you trained), your last entry and, if you follow a routine, the next day to train. On a fresh install with nothing logged, it invites you to start a workout. Tap it to open the app.</p>
   <p>It refreshes when you open Badger and after you finish a workout, and follows your light or dark theme and accent color. There is no iOS home-screen widget yet.</p>
 
   <h2>Key terms</h2>
   <ul>
     <li><strong>Working set</strong> - A regular set at your training weight.</li>
-    <li><strong>Warmup set</strong> - A lighter set before your working sets. Turn on the warmup toggle before you log it.</li>
+    <li><strong>Warmup set</strong> - A lighter set before your working sets. Tap the Warm-up chip before you log it.</li>
     <li><strong>RPE</strong> - Rate of Perceived Exertion (1-10), an optional rating of how hard a set felt.</li>
     <li><strong>RIR</strong> - Reps in Reserve (0-5), an optional count of how many more reps you could have done.</li>
     <li><strong>1RM</strong> - One-rep max. Badger estimates it from your sets with the Epley formula.</li>
