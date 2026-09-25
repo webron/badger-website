@@ -5,75 +5,78 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Exercises" description="How to use the A-Z exercise library, search and filter exercises, and create custom exercises in Badger.">
   <h1>Exercises</h1>
 
-  <p>Badger ships with around 370 exercises across 8 categories. You can use them as-is, customize them, create your own exercises, or add custom categories to organize niche movements.</p>
+  <p>Badger comes with around 370 exercises in 8 categories. Use them as they are, edit them, add your own exercises, or add categories of your own.</p>
 
   <hr />
 
   <h2 id="library">Exercise library</h2>
-  <p>The <strong>Exercises</strong> tab opens straight onto every exercise you have, in one alphabetical list. There is no category screen to tap through first.</p>
-  <p>Each row shows an equipment glyph on the left and the exercise name, with its type and category on a second line underneath. A star on the row means it is a favorite. Tap a row to open the exercise detail screen.</p>
-  <p>Letter headings (A, B, C and so on) divide the list. Down the right edge is a letter strip: tap a letter to jump to it, or drag your thumb along the strip to scrub through the list.</p>
+  <p>Open <strong>More → Exercise library</strong> to see every exercise you have in one alphabetical list.</p>
+  <p>Each row shows an equipment glyph, the exercise name, and its type and category underneath. A star means it's a favorite. Tap a row to open the exercise's page.</p>
+  <p>Letter headings divide the list. Tap a letter in the strip down the right edge to jump to it, or drag your thumb along the strip to scrub through.</p>
 
-  <h2 id="search-filter">Search & filtering</h2>
-  <p>The search box sits at the top of the library and searches across all exercise names. Typing narrows the list in real time.</p>
+  <h2 id="search-filter">Search and filter</h2>
+  <p>Type in the search box at the top to narrow the list by name as you type.</p>
 
   <h3>Filter chips</h3>
-  <p>Under the search box is a row of chips: <strong>All</strong>, <strong>Favorites</strong>, then one chip per category. Tap <strong>Favorites</strong> to see only the exercises you've starred, or a category chip to see only that category. The chips combine with whatever you've typed in the search box.</p>
+  <p>Under the search box are the chips <strong>All</strong>, <strong>Favorites</strong>, and one per category. Tap <strong>Favorites</strong> for only your starred exercises, or a category chip for only that category.</p>
 
   <h3>Muscle filter</h3>
-  <p>Tap the <strong>muscle icon</strong> in the top bar to open the muscle filter. You'll see an interactive body diagram at the top with a scrollable list below it.</p>
+  <p>Tap the <strong>muscle icon</strong> in the top bar. A body diagram sits above a scrollable list:</p>
   <ul>
-    <li>Tap a region on the body diagram to filter by that muscle group.</li>
-    <li>Tap a muscle group header in the list to select the whole group.</li>
-    <li>Tap a specific muscle to narrow to just that muscle.</li>
-    <li>An active filter shows as a pill below the search bar. Tap it to clear.</li>
+    <li>Tap a region on the diagram to filter by that muscle group.</li>
+    <li>Tap a group header in the list to select the whole group.</li>
+    <li>Tap a single muscle to narrow to just that muscle.</li>
+    <li>The active filter shows as a pill below the search box. Tap it to clear.</li>
   </ul>
 
   <h3>Equipment filter</h3>
-  <p>Tap the <strong>equipment icon</strong> in the top bar to filter by equipment type: barbell, dumbbell, cable, machine, bodyweight, kettlebell, band, or other. An active filter shows as a pill below the search bar.</p>
-  <p>An exercise with no equipment type set shows an empty-bracket glyph on its row. Open the exercise and set the type to change it.</p>
-  <p>Search, the chips, the muscle filter, and the equipment filter all stack. You can type "row", pick the Back chip, and filter to cable, and the list narrows to what matches all three.</p>
+  <p>Tap the <strong>equipment icon</strong> in the top bar to filter by barbell, dumbbell, cable, machine, bodyweight, kettlebell, band or other. The active filter shows as a pill below the search box.</p>
+  <p>An exercise with no equipment type shows an empty-bracket glyph on its row. Open the exercise and set the type to fix it.</p>
+  <p>Search, chips, muscle filter and equipment filter all combine. Type "row", pick the Back chip and filter to cable, and you see only what matches all three.</p>
 
-  <h2 id="categories">Categories</h2>
-  <p>Every exercise belongs to a category. Badger includes 8 built-in categories: Chest, Back, Shoulders, Biceps, Triceps, Legs, Core, and Cardio.</p>
-  <p>You no longer browse the library by category. Categories still do real work behind the scenes: they drive the chip row, the exercise picker filters, and the weekly volume card on the Today screen.</p>
+  <h2 id="favorites">Favorites</h2>
+  <p>Open the <strong>⋮</strong> menu on an exercise's row and tap <strong>Favorite</strong>. A star appears on the row, and the <strong>Favorites</strong> chip shows only your starred exercises. Tap <strong>Unfavorite</strong> in the same menu to remove it.</p>
 
-  <h3>Manage categories</h3>
-  <p>Open the <strong>⋮</strong> menu in the exercise library and tap <strong>Manage categories</strong> to create, rename, recolor, reorder, or delete categories.</p>
+  <h2>Avoided exercises</h2>
+  <p>Mark an exercise you want to stay away from (an injury, a preference, equipment you don't have): open the <strong>⋮</strong> menu on its row and tap <strong>Mark as avoided</strong>.</p>
+  <p>In the library it gets an "Avoided" tag and a dimmed name, and you can still log it. It's left out of <a href="/help/routines/#plan-b">Plan B</a> suggestions, and <a href="/help/settings/#ai-context">Copy context for AI</a> lists it so an AI knows to leave it out. Tap <strong>Remove from avoided</strong> in the same menu to clear it.</p>
+
+  <h2 id="detail">The exercise page</h2>
+  <p>An exercise's page leads with your history for it: every session you've logged, newest first.</p>
   <ul>
-    <li>Tap <strong>New category</strong> to name it and pick a color. Custom categories work everywhere a built-in one does. They don't appear in the muscle heatmap, since they have no muscle-group mapping, but everything else works normally.</li>
-    <li>Tap the <strong>pencil icon</strong> to rename a category or change its color. This works for built-in categories too.</li>
-    <li>Drag the handle on a row to reorder the list.</li>
-    <li>Tap the <strong>trash icon</strong> to delete. A category can only be deleted when it's <strong>empty</strong> - if it still contains exercises, Badger tells you how many and asks you to move or delete them first, so nothing is removed by accident.</li>
+    <li><strong>The record key</strong> at the top, beside the illustration, shows your best set and the estimated one-rep max it works out to. Tap it for the full progress screen, with the graph and the rest of your records.</li>
+    <li><strong>Muscles worked</strong> opens to an anatomy diagram of the primary and secondary muscles.</li>
+    <li><strong>Notes &amp; instructions</strong> shows your notes for the exercise and the built-in technique cues. Tap it once it's open to edit your notes. It appears only when there's something to show.</li>
+    <li>The <strong>pencil</strong> in the top bar opens the edit screen.</li>
   </ul>
 
-  <h2 id="creating">Creating exercises</h2>
-  <p>Tap the <strong>+</strong> button in the exercise library or via <strong>Add exercise → Create new</strong> in the workout flow.</p>
+  <h2 id="creating">Create an exercise</h2>
+  <p>Tap <strong>+</strong> in the exercise library, or <strong>Add exercise → Create new</strong> during a workout.</p>
 
   <h3>Required fields</h3>
   <ul>
-    <li><strong>Name</strong> - Exercise name.</li>
-    <li><strong>Category</strong> - One of the built-in categories, or a custom one you've created.</li>
-    <li><strong>Exercise type</strong> - Determines which fields appear when logging (see below).</li>
+    <li><strong>Name</strong></li>
+    <li><strong>Category</strong> - A built-in category or one of your own.</li>
+    <li><strong>Exercise type</strong> - Decides which fields you fill in when logging (see below).</li>
   </ul>
 
   <h3>Optional fields</h3>
   <ul>
-    <li><strong>Weight unit</strong> - kg or lbs. Defaults to your global setting but can be overridden per exercise.</li>
-    <li><strong>Default increment</strong> - How much weight to add when using the progressive overload suggestion.</li>
-    <li><strong>Default rest (working sets)</strong> - Rest timer duration for working sets of this exercise.</li>
-    <li><strong>Default rest (warmup sets)</strong> - Rest timer duration after warmup sets.</li>
-    <li><strong>Primary & secondary muscles</strong> - Assign muscles using the body diagram. Used for muscle balance tracking and filtering.</li>
-    <li><strong>Plate calculator mode</strong> - Barbell (dual-loaded), Machine (symmetric), or Single lever. Sets how the plate calculator splits the weight.</li>
-    <li><strong>Bar weight</strong> - Override the default bar weight for the plate calculator.</li>
-    <li><strong>Compatible machines</strong> - Link this exercise to machines available at your gyms. Used to filter machine options in the training screen.</li>
-    <li><strong>Default graph</strong> - Which progress graph to show first on the Progress screen.</li>
-    <li><strong>Notes</strong> - Personal reminders for this exercise (form cues, machine settings, links, etc.). Shown automatically at the top of the training screen when you log this exercise.</li>
-    <li><strong>Instructions</strong> - Technique reference (pre-filled for all built-in exercises). Tap the card in the training screen to view or edit.</li>
+    <li><strong>Weight unit</strong> - kg or lbs. Starts on your global setting.</li>
+    <li><strong>Default increment</strong> - How much weight the progressive overload suggestion adds.</li>
+    <li><strong>Default rest (working sets)</strong> - Rest timer length after a working set.</li>
+    <li><strong>Default rest (warmup sets)</strong> - Rest timer length after a warmup set.</li>
+    <li><strong>Primary &amp; secondary muscles</strong> - Picked on the body diagram. Used for muscle balance and filtering.</li>
+    <li><strong>Plate calculator mode</strong> - Dual-loaded (barbell, leg press) or Single-loaded (T-bar, landmine). Sets how the <a href="/help/tools/">plate calculator</a> splits the weight.</li>
+    <li><strong>Bar weight</strong> - Replaces the default bar weight in the plate calculator.</li>
+    <li><strong>Compatible machines</strong> - Machines at your gyms that this exercise uses. The training screen offers these when you pick a machine.</li>
+    <li><strong>Default graph</strong> - Which progress graph shows first.</li>
+    <li><strong>Notes</strong> - Your reminders (form cues, machine settings, links). They show at the top of the training screen when you log this exercise.</li>
+    <li><strong>Instructions</strong> - Technique cues, filled in for every built-in exercise. Tap the card on the training screen to view or edit them.</li>
   </ul>
 
   <h2 id="types">Exercise types</h2>
-  <p>The exercise type determines which fields appear when you're logging a set.</p>
+  <p>The type decides which fields you fill in for each set.</p>
 
   <!-- Styling comes from .prose table: caps head over a 2px ink rule, hairline
        rows. The hand-rolled inline version predated it and fought it. -->
@@ -107,51 +110,43 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     </tbody>
   </table>
 
-  <h2 id="detail">The exercise page</h2>
-  <p>Tapping an exercise opens its own page, which leads with your history for that movement: every session you have logged it, newest first.</p>
+  <h2 id="categories">Categories</h2>
+  <p>Every exercise belongs to a category. The 8 built-in ones are Chest, Back, Shoulders, Biceps, Triceps, Legs, Core and Cardio. Categories drive the library's chip row, the exercise picker's filters, and the weekly volume chips on the Today screen.</p>
+
+  <h3>Manage categories</h3>
+  <p>In the exercise library, open the <strong>⋮</strong> menu and tap <strong>Manage categories</strong>.</p>
   <ul>
-    <li><strong>The record key</strong> sits at the top, next to the illustration: your best set for this exercise, and the estimated one-rep max it works out to. Tap it to open the full progress screen with the graph and the rest of your records.</li>
-    <li><strong>Muscles worked</strong> is a collapsed section. Tap it to open the anatomy diagram showing the primary and secondary muscles.</li>
-    <li><strong>Notes &amp; instructions</strong> is a second collapsed section, showing your own notes for the exercise along with the built-in technique cues. Tap the opened section to edit your notes. It only appears when there is something to show.</li>
-    <li>The <strong>pencil</strong> in the top bar opens the edit screen.</li>
+    <li>Tap <strong>New category</strong> to name it and pick a color. A custom category works everywhere a built-in one does, except the muscle heatmap, since it has no muscle group.</li>
+    <li>Tap the <strong>pencil icon</strong> to rename a category or change its color, built-in ones included.</li>
+    <li>Drag a row's handle to reorder.</li>
+    <li>Tap the <strong>trash icon</strong> to delete. Only an empty category can be deleted; if it still holds exercises, Badger tells you how many so you can move or delete them first.</li>
   </ul>
 
   <h2 id="linking">Linked exercises</h2>
-  <p>If two exercises are really the same movement under different names (e.g. <em>Flat Bench Press</em> and <em>Barbell Bench Press</em>, or a free-weight lift and its machine variant), you can link them so they share progress history and personal records.</p>
-  <p>To link exercises:</p>
-  <ul>
-    <li>Open an exercise in the library and tap <strong>Edit</strong>.</li>
-    <li>Scroll to the <strong>Linked Exercises</strong> section (below Compatible Machines).</li>
-    <li>Tap <strong>Link exercise</strong> and pick the exercise you want to link.</li>
-  </ul>
-  <p>Once linked, both exercises show the same progress graphs, PRs, stats, and history. The PR check while logging also considers sets from linked exercises - a new best on one counts as a PR on both.</p>
-  <p>To unlink, tap the linked-exercise chip (it carries an <strong>×</strong>). A confirmation dialog appears - after confirming, the two exercises no longer share history. Both remain in the library; linking never merges or deletes either exercise.</p>
-
-  <h2 id="merged-duplicates">Merged duplicate exercises</h2>
-  <p>The built-in library used to list two movements twice under slightly different names: <em>Lying Leg Curl</em> duplicated <em>Leg Curl (Lying)</em>, and <em>Good Morning (Legs)</em> duplicated <em>Good Morning</em>. Each pair is now merged into one entry, and if you logged sets against either name, that history moved onto the surviving exercise - your records and graphs are intact.</p>
-
-  <h2 id="favorites">Favorites</h2>
-  <p>Tap the star on any exercise row to make it a favorite. Starred exercises show the star in the library list, and the <strong>Favorites</strong> chip above the list filters down to just those. Tapping the star again removes it.</p>
-
-  <h2>Avoided exercises</h2>
-  <p>Open the <strong>⋮</strong> menu on any exercise row and choose <strong>Mark as avoided</strong> to flag an exercise you don't want in your program - an injury, a preference, or equipment you don't have. Avoided exercises show a small "Avoided" tag and a dimmed name so they're easy to spot.</p>
-  <p>The flag doesn't block the exercise: avoided exercises stay fully usable, so you can still log one if you change your mind.</p>
-  <p>In the library it only dims the name. It keeps the exercise out of <a href="/help/routines/#plan-b">Plan B</a> suggestions, and <a href="/help/settings/#ai-context">Copy context for AI</a> lists it so an AI knows to leave it out. Choose <strong>Remove from avoided</strong> from the same menu to clear it.</p>
+  <p>Link two exercises that are the same movement under different names (<em>Flat Bench Press</em> and <em>Barbell Bench Press</em>, or a free-weight lift and its machine version) and they share progress history and personal records.</p>
+  <ol>
+    <li>Open the exercise and tap the <strong>pencil</strong>.</li>
+    <li>Scroll to <strong>Linked exercises</strong>, below Compatible machines.</li>
+    <li>Tap <strong>Link exercise</strong> and pick the other exercise.</li>
+  </ol>
+  <p>Both exercises then show the same graphs, PRs, stats and history. A new best on either one counts as a PR on both.</p>
+  <p>To unlink, tap the linked exercise's chip (it has an <strong>×</strong>) and confirm. The two stop sharing history, and both stay in the library.</p>
+  <p id="merged-duplicates">Looking for <em>Lying Leg Curl</em> or <em>Good Morning (Legs)</em>? They're now <em>Leg Curl (Lying)</em> and <em>Good Morning</em>, and sets you logged under the old names are there, with your records and graphs.</p>
 
   <h2>Changing exercise settings mid-workout</h2>
-  <p>From the training screen, tap the info icon in the top bar (or the notes card, when it is showing) to open the exercise notes screen. Changes there apply to the exercise from now on, in every workout:</p>
+  <p>On the training screen, tap the info icon in the top bar (or the notes card, when it's showing) to open the exercise notes screen. Changes there apply to the exercise from now on, in every workout:</p>
   <ul>
-    <li>Freeform notes and instructions</li>
+    <li>Notes and instructions</li>
     <li>Default weight increment</li>
-    <li>Default rest durations (working + warmup)</li>
-    <li>Bar weight for plate calculator</li>
-    <li>Tempo (e.g. "3-1-2-0")</li>
+    <li>Default rest times (working and warmup)</li>
+    <li>Bar weight for the plate calculator</li>
+    <li>Tempo (for example "3-1-2-0")</li>
   </ul>
   <p>The screen also shows the exercise's muscles.</p>
 
-  <h2>Deleting exercises</h2>
-  <p>Open an exercise in the library → tap <strong>Edit</strong> → scroll to the bottom and tap <strong>Delete</strong>.</p>
-  <p>An exercise still logged in a workout or used in a routine can't be deleted until you clear it from there. You'll see a note counting how many of each, so you know what to remove first: delete the related workouts and take it out of those routines. An exercise with no history deletes immediately once you confirm.</p>
+  <h2>Delete an exercise</h2>
+  <p>In the exercise library, open the <strong>⋮</strong> menu on the exercise's row and tap <strong>Delete</strong>, then confirm.</p>
+  <p>An exercise that's logged in a workout or used in a routine can't be deleted yet. A note shows how many workouts and routines use it; remove it from those first.</p>
 </HelpLayout>
 
 <style>

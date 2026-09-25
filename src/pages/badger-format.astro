@@ -147,13 +147,22 @@ const description =
       a <a href="#day-exercise"><code>DayExercise</code></a>.
     </li>
     <li>
+      <strong>Progression group</strong>: the slots of one routine that share a
+      <a href="#day-exercise"><code>progression_group_key</code></a>, on any of its days. They
+      progress as one: a single reference weight, failure counter, stage and remembered weight
+      between them. A rule in the group reads sessions from its own day and from the days of the
+      other members that carry a rule. A slot with no key is a group of its own.
+    </li>
+    <li>
       <strong>Training max</strong>: the number a set's percentage is taken from. A progression
       rule moves it, and it never goes on the bar itself.
     </li>
     <li>
       <strong>Reference weight</strong>: the number a slot's percentage sets are a percentage of.
       Under a rule whose <code>reference_kind</code> is <code>training_max</code>, it is the training
-      max. Each lifter has their own, and a file never carries it.
+      max. Each lifter has their own, and a file never carries it. Slots in one progression group
+      share one. A slot with no reference weight of its own takes another slot's; see
+      <a href="#day-exercise"><code>percent_reference</code></a>.
     </li>
     <li>
       <strong>Waved day</strong>: a day whose sets change by week of a repeating cycle (5/3/1's four
@@ -476,6 +485,49 @@ const description =
           </td>
         </tr>
         <tr>
+          <td><code>progression_group_key</code></td>
+          <td>string</td>
+          <td>
+            Slots anywhere in the routine sharing a key form one
+            <a href="#clause-terms">progression group</a> and progress as one. StrongLifts groups
+            the squat on Workout A with the squat on Workout B, so three misses in a row count across
+            both days. Only the sessions of members that carry a <code>progression</code> rule move
+            the group; a member with no rule reads the group's number, as Madcow's Monday and
+            Wednesday squats do. Give different lifts, and two tiers of one lift (GZCLP's T1 and T2),
+            different keys.
+            <br /><br />
+            The key can be anything (<code>"sl-squat"</code>, <code>"1"</code>); it only has to match
+            between the members, case included. Surrounding spaces are ignored, and an empty key
+            reads as absent. Import gives each group a new key of its own and keeps who is in it.
+            Leave the key out and the slot's progress is its own; a key held by a single slot works
+            the same way. Needs Badger 1.1.12 or later.
+          </td>
+        </tr>
+        <tr>
+          <td><code>percent_reference</code></td>
+          <td>object</td>
+          <td>
+            The lift this slot's <a href="#predefined-set"><code>percent_of_reference</code></a>
+            sets are a percentage of, when it is a different lift: close-grip bench at 80% of the
+            bench press's training max. Written like an alternative,
+            <code>&#123; "exercise_name": "...", "exercise_type": "..." &#125;</code> with
+            <code>exercise_name</code> required, and matched against the payload's
+            <code>exercises</code> list by the same rules.
+            <br /><br />
+            It applies while the slot has no reference weight of its own. The slot then takes the
+            reference weight of a slot in this routine that programs the named lift and carries a
+            rule, and looks nowhere else. Leave the key out and the reference weight comes from the
+            slot's progression group, then from a ruled slot in the routine programming the same
+            exercise.
+            <br /><br />
+            A name that matches no definition, or that names the slot's own exercise, reads as
+            absent. A lift the routine does not program is kept: the log preview says those sets
+            need a reference weight, and their weight can be typed in. Do not put the two lifts in
+            one progression group to get this, since a group also shares one failure counter and
+            one stage. Needs Badger 1.1.12 or later.
+          </td>
+        </tr>
+        <tr>
           <td><code>predefined_sets</code></td>
           <td>array of <a href="#predefined-set"><code>PredefinedSet</code></a></td>
           <td>The planned sets. May be left out or empty.</td>
@@ -581,6 +633,30 @@ const description =
             every set on an unwaved day is written, and how a 5/3/1 file writes its accessory work
             once instead of four times. A value at or above the day's <code>cycle_length</code> is
             out of range, and the set applies to every week.
+          </td>
+        </tr>
+        <tr>
+          <td><code>target_rpe</code></td>
+          <td>integer</td>
+          <td>
+            How hard the set should feel, on the RPE scale: <code>8</code> is RPE 8, about two reps
+            left in reserve. Whole numbers from 6 to 10. Import rounds a half up (<code>8.5</code>
+            becomes 9) and moves a value outside 6 to 10 to the nearer end. Mutually exclusive with
+            <code>target_rir</code>: if a set carries both, import keeps <code>target_rpe</code> and
+            drops <code>target_rir</code>. Never valid on a warmup; import drops it there. It is shown
+            on the set as a target, and no progression trigger reads it. Needs Badger 1.1.12 or
+            later.
+          </td>
+        </tr>
+        <tr>
+          <td><code>target_rir</code></td>
+          <td>integer</td>
+          <td>
+            The same target in reps in reserve: <code>2</code> means stop with two reps left. Whole
+            numbers from 0 to 5. Import drops any fraction (<code>2.5</code> becomes 2) and moves a
+            value outside 0 to 5 to the nearer end. Write <code>target_rpe</code> or
+            <code>target_rir</code>, never both. Never valid on a warmup; import drops it there.
+            Needs Badger 1.1.12 or later.
           </td>
         </tr>
       </tbody>
@@ -1206,7 +1282,8 @@ const description =
       sets are cleared as described under
       <a href="#predefined-set"><code>is_progression_driver</code></a>, a driver on a warmup is
       cleared, and a <code>week_index</code> or <code>percent_of_reference</code> that cannot mean
-      anything is read as absent.
+      anything is read as absent. An intensity target is repaired as described under
+      <a href="#predefined-set"><code>target_rpe</code></a>.
     </li>
     <li><strong>Files over 10 MB are refused</strong> without being read.</li>
   </ul>
@@ -1251,11 +1328,14 @@ const description =
       it unchanged.
     </li>
     <li>
-      <strong>1.1.12 keys.</strong> <code>progression</code>, <code>percent_of_reference</code>,
-      <code>is_progression_driver</code>, <code>cycle_length</code> and <code>week_index</code> need
-      Badger 1.1.12 or later. An older version ignores <code>progression</code> and imports the slot
-      without a rule. When a percentage set also carries a <code>weight</code>, an older version
-      that has never heard of <code>percent_of_reference</code> still finds the weight as the target.
+      <strong>1.1.12 keys.</strong> <code>progression</code>, <code>progression_group_key</code>,
+      <code>percent_reference</code>, <code>percent_of_reference</code>,
+      <code>is_progression_driver</code>, <code>cycle_length</code>, <code>week_index</code>,
+      <code>target_rpe</code> and <code>target_rir</code> need Badger 1.1.12 or later. An older
+      version ignores <code>progression</code> and imports the slot without a rule. When a
+      percentage set also carries a <code>weight</code>, an older version that has never heard of
+      <code>percent_of_reference</code> still finds the weight as the target. It reads a set with an
+      intensity target as the same set with no target.
     </li>
     <li>
       <strong><code>is_amrap</code></strong> is omitted when false. Because <code>reps</code> still

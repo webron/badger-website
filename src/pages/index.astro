@@ -24,7 +24,7 @@ const switchingGuides = [
   {
     href: '/guides/fitnotes-alternative/',
     app: 'FitNotes',
-    blurb: 'Your .fitnotes backup brings the whole library, not just the sets.',
+    blurb: 'Your .fitnotes backup brings your whole exercise library as well as your sets.',
   },
   {
     href: '/guides/stronglifts-5x5-tracker/',
@@ -34,7 +34,7 @@ const switchingGuides = [
   {
     href: '/guides/strong-alternative/',
     app: 'Strong',
-    blurb: 'A CSV, and a fuller one than most: your RPE and per-set notes come too.',
+    blurb: 'Your RPE and per-set notes come across with your sets.',
   },
   {
     href: '/guides/hevy-alternative/',
@@ -108,9 +108,9 @@ const positioning = [
 // Grid fills row-first, so this order is left, right, left, right down the page.
 //
 // Four rows carry an inline link to the page that documents that exact feature.
-// The wording is untouched - the anchors wrap phrases that were already there,
-// so this is still the worklist copy word for word. Bodies are rendered as HTML
-// by FeatureRow; keep them free of bare & < > if you edit them.
+// The 2026-09 voice pass edited the gym and deload rows away from the worklist
+// wording. Bodies are rendered as HTML by FeatureRow; keep them free of bare
+// & < > if you edit them.
 const features = [
   {
     glyph: 'barbell',
@@ -135,7 +135,7 @@ const features = [
   {
     glyph: 'gym',
     title: 'Your gym, modeled',
-    body: '<a href="/help/gyms/">Track which gym and which machine every set was done on</a>. Machine-scoped PRs, real weight increments, attachments and grips.',
+    body: '<a href="/help/gyms/">Track which gym and which machine every set was done on</a>. Separate PRs per machine, the weight steps each machine really has, attachments and grips.',
   },
   {
     glyph: 'plate',
@@ -155,7 +155,7 @@ const features = [
   {
     glyph: 'wave',
     title: 'Deload, handled',
-    body: 'Optional deload detection by time, RPE, or stalled lifts. Reduces the load for a week and never lets it drag your next session down.',
+    body: 'Optional deload detection by time, RPE, or stalled lifts. Lightens the load for a week. Your next normal session starts from your real weights, not the deload ones.',
   },
   {
     glyph: 'shield',
@@ -168,16 +168,15 @@ const shouldDo = [
   { label: 'Unlimited routines, unlimited history', annotation: 'no free-tier caps' },
   { label: 'Full-depth set logging', annotation: 'RPE · RIR · tempo · warmups' },
   { label: 'PRs and graphs for every exercise type', annotation: 'est. 1RM included' },
-  { label: 'Per-gym equipment and machine tracking', annotation: 'machine-scoped PRs' },
+  { label: 'Per-gym equipment and machine tracking', annotation: 'PRs per machine' },
   { label: 'Plate calculator and warmup generator', annotation: 'your plates, your increments' },
   { label: 'Imports from four other trackers', annotation: 'FitNotes · Strong · Hevy · StrongLifts' },
 ];
 
+// Account, subscription and offline are said once, in the positioning strip at
+// the top. This column carries only what the strip does not.
 const shouldnt = [
-  { label: 'No account needed', annotation: 'no sign-up, no login, no email' },
-  { label: 'No subscription', annotation: 'free, nothing paywalled' },
-  { label: 'No ads, no data collection', annotation: "your training is nobody's product" },
-  { label: 'No connection needed', annotation: 'works offline, nothing needs a connection' },
+  { label: 'No ads', annotation: 'and no data collection' },
   { label: 'No lock-in', annotation: 'export everything, anytime' },
   { label: 'No streak guilt', annotation: 'no XP, no badges, no nagging' },
 ];
@@ -185,7 +184,7 @@ const shouldnt = [
 
 <BaseLayout
   title="Badger"
-  fullTitle="Badger - Workout & Strength Tracker for Android & iOS"
+  fullTitle="Badger - Workout & strength tracker for Android & iOS"
   description={description}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(structuredData)} />
@@ -202,8 +201,8 @@ const shouldnt = [
       <h1>As capable as the big trackers. <br />As private as a notebook.</h1>
 
       <p class="hero-sub">
-        Badger logs your sets, runs your programs, and tracks your PRs, and it keeps all of it on
-        your phone. No account needed, no subscription, no ads.
+        Log every set, run programs like 5/3/1 and StrongLifts, and watch your PRs and progress,
+        all on your phone.
       </p>
 
       <div class="hero-badges">
@@ -211,7 +210,7 @@ const shouldnt = [
       </div>
 
       <a class="docs-link" href="/help/getting-started/">
-        Read the docs <ArrowGlyph />
+        Read the help <ArrowGlyph />
       </a>
 
       <PositioningStrip items={positioning} />
@@ -265,7 +264,7 @@ const shouldnt = [
     </section>
 
     <section class="promise-teaser">
-      <p class="teaser-line">Your data is yours. That is the whole business model.</p>
+      <p class="teaser-line">Five commitments about your data and your money, written down.</p>
       <a class="teaser-link" href="/promise/">
         Read the Badger promise <ArrowGlyph />
       </a>

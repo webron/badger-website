@@ -18,13 +18,11 @@ import { join } from 'node:path';
  * The counts and the app version below are read from the files at build time,
  * so this page cannot drift from what it is handing out.
  *
- * The closing section used to be a "not yet" list, and it existed to measure
- * demand for percentage-based programming on a site whose analytics count page
- * views and nothing else. Progression rules, training max, percent sets and
- * waves answered both entries on it, so the section now states what the APP
- * runs and keeps the one email link - a view is still not a want. What the
- * downloadable FILES carry is a separate question, answered by `ruleBearing`
- * below rather than by prose.
+ * The closing section explains how the rule-bearing programs progress and
+ * keeps one email link for program requests (the site counts page views and
+ * nothing else, so an email is the only demand signal). What the downloadable
+ * FILES carry is a separate question, answered by `ruleBearing` below rather
+ * than by prose.
  */
 
 // From the project root: at build time this module lives in dist/, so a
@@ -94,7 +92,7 @@ const programCopy: ProgramCopy[] = [
     level: 'Intermediate',
     cadence: '3 days a week',
     blurb:
-      'The usual step after StrongLifts stops working: a heavy day, a light day and a medium day each week, with the lighter days written as percentages of the heavy one so the whole week moves together when the top set does. Progress is weekly instead of per session, which is the point.',
+      'The usual step after StrongLifts stops working: a heavy day, a light day and a medium day each week, with the lighter days written as percentages of the heavy one so the whole week moves together when the top set does. Progress is weekly instead of per session.',
   },
   {
     slug: 'upper-lower-4-day',
@@ -118,7 +116,7 @@ const programCopy: ProgramCopy[] = [
     level: 'Intermediate',
     cadence: '6 days a week',
     blurb:
-      'Push, pull and legs, run through twice, with one rest day. It only pays off if six sessions a week is genuinely realistic for you; at four or five, upper/lower does more with your time.',
+      'Push, pull and legs, run through twice, with one rest day. It only pays off if six sessions a week is realistic for you; at four or five, upper/lower does more with your time.',
   },
 ];
 
@@ -177,27 +175,28 @@ if (!filesCarryRules) {
 
 const fmtSize = (bytes: number) => `${(bytes / 1024).toFixed(1)} KB`;
 
-// The percentage-wave "not yet" entries came out when Badger learned to carry a
-// training max and run a rule (schema v69). What replaced them is a plain
-// statement of what the app now runs, and one open invitation - the email is
-// still the only real demand signal this site has, because it counts page views
-// and nothing else.
-const nowRuns = [
+// How the rule-bearing programs progress, in four short cards. The detail
+// lives on /help/progression/; each card links to its section there.
+const progressCards = [
   {
     title: 'A rule you can read',
-    body: 'Every slot in a program can carry one progression rule, written as a sentence rather than a formula. StrongLifts reads: "After 3 misses, drop 10%. When all working sets hit the plan, add 2.5 kg." Every number in it is a chip you can tap and change, and Badger names the clause that fired each time it proposes a weight.',
+    href: '/help/progression/#rules',
+    body: 'Each exercise in a program can carry one progression rule, written as a sentence. StrongLifts reads: "After 3 misses, drop 10%. When all working sets hit the plan, add 2.5 kg." Tap any number to change it. When Badger proposes a weight, it names the part of the rule that fired.',
   },
   {
-    title: 'A training max, and percentages off it',
-    body: "Badger now holds a training max per lift - a number that never appears on the bar - and prescribes sets as a percentage of it. The load is worked out from your own plates, bar and machine, so what you read is a weight you can actually load. A shared file carries the percentages; it never carries the sender's training max.",
+    title: 'A training max, and percentages of it',
+    href: '/help/progression/#training-max',
+    body: "Badger keeps a training max for each lift: a number set a little below your one-rep max that never goes on the bar. Percentage sets are worked out from it and rounded to your own plates, bar and machine, so you can load what you read. A shared file carries the percentages, and whoever imports it sets their own training max.",
   },
   {
     title: 'AMRAP sets that drive the rule',
-    body: 'One set in a slot can be marked as the one that drives progression. Get 12 on your 5+ and the clause that reads "If the 5+ set reaches 8" fires; get 6 and the one below it does. That is how nSuns and 5/3/1 decide what next week looks like.',
+    href: '/help/progression/#driver-set',
+    body: 'You can mark one set as the one that drives progression, usually an open-topped set like 5+. The reps you get on it decide what comes next. For example, a rule can add more weight when you get 8 or more reps on your 5+ set, and less when you get 6. nSuns and 5/3/1 both work this way.',
   },
   {
     title: 'Waved days',
-    body: "A day can run as a cycle of weeks - 5/3/1's four is the obvious case - with each week's sets written once and the right week shown when you train. Accessory work you do every week is written once and rides through all of them.",
+    href: '/help/progression/#waves',
+    body: "A day can run as a cycle of weeks, like 5/3/1's four. Each week's sets are written once, and the preview shows the right week when you train. Accessory work you do every week is written once and shows up in all of them.",
   },
 ];
 
@@ -212,23 +211,31 @@ const description =
     <span class="kicker">Programs</span>
     <h1>Programs you can import</h1>
     <p class="lede">
-      Each of these is a <code>.badger</code> file: a plain routine you download, open on your phone,
-      and import into Badger in one step. They are exported from the app itself, so nothing here is a
-      description of a program you then have to type in.
+      Each of these is a <code>.badger</code> file: a routine you download, open on your phone, and
+      import into Badger in one step.
     </p>
     <p class="sub">
-      All ten also ship inside the app, under More &rarr; Routines, on a new install. Badger does not add
-      routines to a list you have already built, so if you have been using it a while, the file is how
-      you pick one up.{' '}
+      All ten are also built into the app, under More &rarr; Routines, on a new install. Already
+      using Badger? Programs added in an update don't appear in a routine list you already have, so
+      import the file to get one.
+    </p>
+    <p class="sub">
       {
         filesCarryRules
-          ? 'Where a program has a rule for what happens next session - drop 10% after three misses, add 2.5 kg when every set lands - the rule travels in the file too, so what you import is the program rather than a table of numbers you keep up by hand.'
-          : 'The files below carry sets, reps and structure. The progression rules that go with these programs are written into the copies that ship inside the app; the downloads here have not been regenerated to carry them yet.'
-      } The files are here for other
-      reasons: read one before you commit to it, edit it, hand it to someone else, or give it to an AI
-      as a worked example of the <a href="/badger-format/">file format</a>. If that last one is why
-      you are here, the <a href="/guides/ai/">Use your own AI</a> guide has the prompts.
+          ? 'Where a program has a rule for what happens next session (drop 10% after three misses, add 2.5 kg when every set lands), the rule comes with the file.'
+          : 'The files below carry sets, reps and structure. The progression rules that go with these programs are in the copies built into the app; the downloads here do not carry them yet.'
+      }
     </p>
+    <p class="sub">You can also use a file to:</p>
+    <ul class="uses">
+      <li>read a program before you commit to it</li>
+      <li>edit it before you import it</li>
+      <li>send it to a training partner</li>
+      <li>
+        give it to an AI as a worked example of the <a href="/badger-format/">file format</a> (the
+        <a href="/guides/ai/">Use your own AI</a> guide has the prompts)
+      </li>
+    </ul>
 
     <div class="rule-ink section-rule"></div>
     <p class="caps section-label">Ten programs, ready to import</p>
@@ -261,8 +268,7 @@ const description =
 
     <p class="note">
       Exported from Badger <span class="tnum">{appVersion}</span>, schema{' '}
-      <code>share/v1</code>. Every file was imported back into a clean copy of the app and checked
-      field by field before it was published here.
+      <code>share/v1</code>.
     </p>
 
     <div class="rule-ink section-rule"></div>
@@ -270,58 +276,52 @@ const description =
     <ol class="steps">
       <li>Download the file on the phone you train with. It saves like any other download.</li>
       <li>
-        Tap it. Badger opens with a preview first: the routine name, how many days it has, and which
-        exercises it will add to your library. Opening it from your file manager, or from Files on an
-        iPhone, works just as well.
+        Tap the file. Badger opens a preview showing the routine name, how many days it has, and which
+        exercises it will add to your library. You can also open it from your file manager, or from
+        Files on an iPhone.
       </li>
       <li>
-        Import. The routine appears under Routines, ready to start. Nothing you already have is
-        overwritten: exercises you own are reused by name, and if you already have a routine with the
-        same name the new one arrives as "(imported)".
+        Tap Import. The routine appears under Routines, ready to start. Nothing you already have is
+        overwritten: exercises you own are reused by name, and a routine with the same name as one of
+        yours arrives as "(imported)".
       </li>
     </ol>
     <p class="note">
-      More detail in <a href="/help/routines/#creating">routines</a> and{' '}
-      <a href="/help/settings/#data">your data</a>. Nothing here needs an account, a login, or a
-      connection beyond the download itself.
+      More detail in <a href="/help/routines/#sharing">routines</a> and{' '}
+      <a href="/help/settings/#data">your data</a>.
     </p>
 
     <div class="rule-ink section-rule"></div>
-    <p class="caps section-label">What Badger now runs</p>
+    <p class="caps section-label">How the programs progress</p>
     <p class="notyet-lede">
-      This page used to list 5/3/1 and nSuns as programs Badger could not run honestly. It can now.
-      A program no longer stops at sets and reps: where it has a rule for what happens next session,
-      Badger carries the rule and runs it, and the <a href="/badger-format/#progression">file format</a>
-      has the keys to hand one over.
+      Where a program has a rule for what happens next session, Badger runs it for you. Six of these
+      programs come with their rules already set up in the app: <strong>StrongLifts 5x5</strong>,{' '}
+      <strong>Starting Strength</strong>, <strong>GZCLP</strong>, <strong>5/3/1 BBB</strong>,{' '}
+      <strong>nSuns 531LP</strong> and <strong>Madcow 5x5</strong>. The{' '}
+      <a href="/badger-format/#progression">file format</a> lists the keys a rule is written with.
     </p>
 
     <ul class="programs">
       {
-        nowRuns.map((n) => (
+        progressCards.map((n) => (
           <li class="program">
             <div class="program-head">
               <h2>{n.title}</h2>
             </div>
-            <p class="program-blurb">{n.body}</p>
+            <p class="program-blurb">
+              {n.body}{' '}
+              <a href={n.href} aria-label={`${n.title}: more on the Progression help page`}>More</a>
+            </p>
           </li>
         ))
       }
     </ul>
 
     <p class="note">
-      In the app, <strong>5/3/1 BBB</strong>, <strong>nSuns 531LP</strong> and{' '}
-      <strong>Madcow 5x5</strong> ship as built-in routines with all of that already written in, and
-      so do <strong>StrongLifts 5x5</strong>, <strong>Starting Strength</strong> and{' '}
-      <strong>GZCLP</strong> above - six programs that run their own arithmetic. Full detail in{' '}
-      <a href="/help/progression/#rules">progression rules</a>. A program still on nobody's list?{' '}
-      <a href="mailto:hello@badger.fit?subject=Program%20request">Say so</a> - the count is the
-      signal. This site counts page views and sets no cookies, so asking is the only way anyone here
-      knows.
+      Want a program that isn't here?{' '}
+      <a href="mailto:hello@badger.fit?subject=Program%20request">Email hello@badger.fit</a> and say
+      which one.
     </p>
-
-    <div class="close-line">
-      <p class="close-copy">A program is a plan, not a subscription. Take the file.</p>
-    </div>
 
     <div class="cta-min">
       <a class="btn-accent" href="/#download">Get the app</a>
@@ -473,6 +473,19 @@ const description =
     max-width: 62ch;
   }
 
+  .uses {
+    margin: 6px 0 0 20px;
+    padding: 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 62ch;
+  }
+
+  .uses li::marker {
+    color: var(--text-muted);
+  }
+
   .notyet-lede {
     margin: 14px 0 0;
     font-size: 14.5px;
@@ -503,23 +516,6 @@ const description =
     color: var(--text);
   }
 
-  .close-line {
-    margin-top: 44px;
-    padding: 30px 0 0;
-    border-top: 1px solid var(--hair);
-    text-align: center;
-  }
-
-  .close-copy {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 1.4;
-    color: var(--text);
-  }
-
   .cta-min {
     text-align: center;
     margin-top: 30px;
@@ -542,10 +538,6 @@ const description =
 
     .doc h1 {
       font-size: 30px;
-    }
-
-    .close-copy {
-      font-size: 18px;
     }
   }
 </style>

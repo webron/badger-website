@@ -34,7 +34,7 @@ const description =
     slot="head"
     headline="Moving to Badger from Strong"
     description={description}
-    dateModified="2026-09-05"
+    dateModified="2026-09-24"
     about={['Strong', 'Workout tracking']}
     breadcrumb={[
       { name: 'Guides', url: '/guides/' },
@@ -47,115 +47,89 @@ const description =
   <h1>Moving to Badger from Strong</h1>
 
   <p>
-    Strong is a good app, and if it suits you there is no reason to move. People usually land here
-    for one of two reasons: they would rather not rent their own training log, or they want it to
-    live on the phone rather than in an account. This page covers what survives the move and what you
-    trade.
+    If you would rather not rent your training log, or want it on your phone instead of in an
+    account, your Strong history can come with you. This page covers what the export brings across
+    and what you trade.
   </p>
 
   <h2 id="import">What the CSV carries across</h2>
 
-  <p>
-    Strong exports a CSV. Badger reads it on your phone, with nothing uploaded, and it takes more of
-    it than most importers bother with.
-  </p>
+  <p>Strong exports a CSV, and Badger keeps more of it than your sets.</p>
 
   <ul>
+    <li><strong>Every set</strong>, with its date, exercise, weight, reps, distance, and time.</li>
     <li>
-      <strong>Every set</strong>, with its date, exercise, weight, reps, distance, and time.
+      <strong>Your RPE</strong>, on each set, so years of "how hard was that" are still there.
     </li>
     <li>
-      <strong>Your RPE.</strong> If you logged effort, it comes across on the set rather than being
-      dropped, so a decade of "how hard was that" is still there.
+      <strong>Per-set notes, on their set.</strong> The note on one heavy triple stays with that
+      triple. Workout notes and the workout's name become notes on the session.
     </li>
     <li>
-      <strong>Per-set notes, kept on their set.</strong> The note you left on one heavy triple stays
-      attached to that triple. Workout notes and the workout's name become notes on the session.
+      <strong>Session times.</strong> Imported workouts show when they started and how long they ran.
     </li>
     <li>
-      <strong>Real session times.</strong> Strong's date column is a full timestamp, so imported
-      workouts show when they started and how long they ran instead of showing nothing.
+      <strong>Kilograms or pounds</strong>, read from the file's header and kept in the unit you
+      logged, with no rounding.
     </li>
     <li>
-      <strong>Kilograms or pounds</strong>, read from the file's own header rather than guessed, and
-      stored in the unit you logged in. Nothing is converted or rounded on the way in.
+      <strong>The semicolon-separated export</strong> Strong writes in some European locales. There is
+      nothing to convert.
     </li>
     <li>
-      <strong>The European export.</strong> Strong writes a semicolon-separated file in some locales.
-      Badger sniffs the delimiter from the header line, so that file works without you doing
-      anything to it.
-    </li>
-    <li>
-      <strong>PRs, recalculated</strong> from the imported history, so your records and graphs start
-      out full.
+      <strong>Your PRs</strong>, worked out from the imported history, so your records and graphs
+      start out full.
     </li>
   </ul>
 
-  <p><strong>What does not, so nothing surprises you later:</strong></p>
+  <p><strong>What does not come across:</strong></p>
 
   <ul>
     <li>
-      <strong>Warmups, as warmups.</strong> The Strong export does not mark them, so every logged set
-      arrives as a working set. Nothing can tell retroactively which ones were ramp-up.
+      <strong>Warmups, as warmups.</strong> Strong's export does not mark them, so every set arrives
+      as a working set.
     </li>
     <li>
-      <strong>Your routines.</strong> The export is history, not programs. Badger ships ten program
-      templates and you can build your own, but the routines themselves are set up again.
+      <strong>Your routines.</strong> The export holds history only. Start from one of Badger's ten
+      built-in programs or build your own.
     </li>
     <li>
-      <strong>Your exercise categories.</strong> A CSV carries none, so new exercises land in an
-      "Imported" category for you to re-sort. Anything already in your Badger library is matched by
-      name rather than duplicated.
+      <strong>Your exercise categories.</strong> New exercises land in an "Imported" category for you
+      to sort. An exercise already in your Badger library is matched by name.
     </li>
   </ul>
 
   <h2 id="how">Doing it</h2>
 
-  <ol>
-    <li>In Strong, go to <strong>Profile &rarr; Settings &rarr; Export Data</strong> to produce a <code>strong.csv</code>.</li>
-    <li>
-      Get the file onto the phone you train with, however you normally move a file: email it to
-      yourself, drop it in cloud storage, use a cable.
-    </li>
-    <li>In Badger, go to <strong>Settings &rarr; Your data &rarr; Import from Strong</strong> and pick the file.</li>
-    <li>Check the preview: exercises, workout days, sets, and the detected weight unit.</li>
-    <li>Import.</li>
-  </ol>
-
   <p>
-    Import it once. Sets on a date you already have are added to that day's workout, so importing
-    the same file again duplicates them, and the preview warns you when a file overlaps days you already logged. Full detail in
-    <a href="/help/getting-started/#importing-strong">importing from Strong</a>.
+    In Strong, go to <strong>Profile &rarr; Settings &rarr; Export Data</strong> to get a
+    <code>strong.csv</code>, move it to the phone you train with, then open <strong>Settings &rarr;
+    Your data &rarr; Import from Strong</strong> in Badger. Import each file once. The full steps are
+    in <a href="/help/getting-started/#importing">importing from another app</a>.
   </p>
 
   <h2 id="what-you-get">What you get, and what you give up</h2>
-
-  <p>
-    Worth being straight about both, because the honest version is more useful than a feature list.
-  </p>
 
   <p><strong>What you get:</strong></p>
 
   <ul>
     <li>
-      <strong>No account and no sync.</strong> Your log is on your phone. Nothing to sign into,
-      nothing to be locked out of, no server that can change the deal later.
-      <a href="/promise/">The promise</a> is that written down.
+      <strong>No account.</strong> Your log is on your phone, with nothing to sign in to or be locked
+      out of.
     </li>
     <li>
-      <strong>Nothing behind a paywall.</strong> No cap on routines, on history, or on graphs, and
-      exporting your own numbers is not a paid feature.
-      <a href="/guides/workout-tracker-no-subscription/">The no-subscription guide</a> goes through
-      what free actually means across the trackers people weigh up.
+      <strong>No paywall.</strong> No cap on routines, history or graphs, and exporting is free.
+      <a href="/guides/workout-tracker-no-subscription/">The no-subscription guide</a> compares the
+      trackers people usually weigh up.
     </li>
     <li>
-      <strong>Gym and machine tracking</strong>, with PRs scoped to the machine, because the leg
-      press at one gym is not the leg press at another. <a href="/help/gyms/">How it works</a>.
+      <strong>Gym and machine tracking</strong>, with PRs kept per machine.
+      <a href="/help/gyms/">How it works</a>.
     </li>
     <li>
       <strong>A plate calculator and warmup generator</strong> that work from the plates your gym
-      actually owns, and <a href="/help/progress/">graphs</a> with estimated 1RM, muscle balance and
-      plateau detection.
+      owns, and <a href="/help/progress/">graphs</a> with estimated 1RM, muscle balance and plateau
+      detection.
     </li>
   </ul>
 
@@ -163,31 +137,28 @@ const description =
 
   <ul>
     <li>
-      <strong>Cloud sync between devices.</strong> Badger is local-first by design. Moving to a new
-      phone is a backup file you carry over, which is
-      <a href="/help/phone-migration/">a documented path</a>, not a background service.
+      <strong>Sync between devices.</strong> Your log lives on one phone. Moving to a new one means
+      carrying a backup file over: <a href="/help/phone-migration/">moving to a new phone</a>.
     </li>
     <li>
-      <strong>A social feed.</strong> There is nobody to follow and nothing to post. If that was part
-      of what kept you training, it is a real loss and worth weighing.
+      <strong>Social features.</strong> There is nobody to follow and nothing to post.
     </li>
   </ul>
 
   <h2 id="getting-out">Getting back out again</h2>
 
   <p>
-    The reason to trust an import is knowing you can leave. Badger exports every set to CSV and backs
-    the whole database up to a file you keep. Routines, exercises and equipment share as
-    <code>.badger</code> files, a <a href="/badger-format/">documented format</a> you can read in any
-    text editor. None of it needs an account, and none of it is a paid feature.
+    Your numbers stay yours if you move on. Every set exports to CSV, and the whole database backs up
+    to a file you keep. Routines, exercises and equipment share as <code>.badger</code> files, a
+    <a href="/badger-format/">documented format</a> you can read in any text editor.
   </p>
 
   <h2 id="trademark">About the name</h2>
 
   <p class="fineprint">
     Strong is a trademark of its owner, and Badger is not affiliated with, endorsed by, sponsored by,
-    or connected to it in any way. This page describes compatibility and nothing else: Badger reads
-    the CSV file that their app exports.
+    or connected to it in any way. This page describes compatibility only: Badger reads the CSV file
+    that Strong exports.
   </p>
 </HelpLayout>
 

@@ -1,14 +1,15 @@
 ---
 import Stripe from './Stripe.astro';
 
-// "The promise" (/promise) is built in M-web-1 and 404s until then. The link is
-// wired now so the footer index is complete when that page lands.
+// "File format" is here so a reader (or an agent) starting from any page can
+// reach the .badger spec, which the header does not link.
 const links = [
   { href: '/', label: 'Home' },
   { href: '/help/', label: 'Help' },
   { href: '/guides/', label: 'Guides' },
   { href: '/programs/', label: 'Programs' },
   { href: '/glossary/', label: 'Glossary' },
+  { href: '/badger-format/', label: 'File format' },
   { href: '/changelog/', label: 'Changelog' },
   { href: '/promise/', label: 'The promise' },
   { href: '/about/', label: 'About' },

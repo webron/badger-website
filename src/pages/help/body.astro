@@ -2,68 +2,65 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Body Tracking" description="Track body weight and measurements in Badger, and connect Apple Health or Health Connect.">
+<HelpLayout title="Body tracking" description="Track body weight and measurements in Badger, and connect Apple Health or Health Connect.">
   <h1>Body tracking</h1>
 
-  <p>Badger can keep body weight and tape measurements alongside your training log. It stays out of the way: there is nothing about it on the Today screen, no banners, and no reminders. Open it from <strong>More &rarr; Body</strong>.</p>
-
-  <p>If you never log a measurement, you will never see it anywhere else in the app. If you do, a small <strong>Body</strong> section appears at the bottom of Progress &rarr; Overview with your latest reading and its trend.</p>
+  <p>Log body weight and tape measurements alongside your training. Open it from <strong>More &rarr; Body</strong>. Once you've logged a measurement, a small <strong>Body</strong> section appears at the bottom of Progress &rarr; Overview with your latest reading and its trend.</p>
 
   <hr />
 
-  <h2 id="what-you-track">Choosing what you track</h2>
-  <p>Only <strong>body weight</strong> is switched on to begin with. Everything else - body fat, waist, chest, arms, thighs, and the rest - is off until you ask for it.</p>
-  <p>Open <strong>What do you track?</strong> from the Body screen's <span aria-hidden="true">&#8942;</span> menu and switch on the ones you care about. A weight-loss plan might be weight plus waist; a bulk might be weight plus arms and chest; plenty of people leave it at weight alone.</p>
-  <p>Measurements you switch off disappear completely - they are not grayed-out rows taking up space. <strong>Switching one off never deletes anything.</strong> Turn waist back on next spring and last spring's numbers are still there.</p>
-  <p>If the list does not cover something you measure, <strong>Add a measurement</strong> at the bottom creates your own.</p>
+  <h2 id="what-you-track">Choose what you track</h2>
+  <p>Only <strong>body weight</strong> is on to begin with. Body fat, waist, chest, arms, thighs and the rest are off until you turn them on.</p>
+  <p>Open <strong>What do you track?</strong> from the Body screen's <span aria-hidden="true">&#8942;</span> menu and switch on the ones you want. A cut might be weight plus waist, a bulk weight plus arms and chest, and plenty of people keep it to weight alone.</p>
+  <p>Measurements you switch off are hidden. <strong>Switching one off never deletes anything</strong>: turn waist back on next spring and last spring's numbers are still there.</p>
+  <p>To track something the list doesn't have, tap <strong>Add a measurement</strong> at the bottom.</p>
 
-  <h2 id="logging">Logging a measurement</h2>
-  <p>Each row on the Body screen has a <strong>+</strong> button - tap it, type the number, and you are done. The date defaults to today; change it if you are catching up on a reading from the weekend.</p>
-  <p>Tap the row itself to open that measurement's own page: your latest reading, the trend, and every entry you have logged. Tap an entry to edit it, or the <span aria-hidden="true">&times;</span> to delete it.</p>
+  <h2 id="logging">Log a measurement</h2>
+  <p>Tap the <strong>+</strong> on a row of the Body screen and type the number. The date starts on today; change it if you're catching up on an earlier reading.</p>
+  <p>Tap the row itself to open that measurement's page, with your latest reading, the trend and every entry. Tap an entry to edit it, or its <span aria-hidden="true">&times;</span> to delete it.</p>
 
-  <h2 id="trend">Reading the trend</h2>
-  <p>The chart draws two things. The faint line with dots is <strong>exactly what you logged</strong>. The solid accent line is a <strong>7-day average</strong>.</p>
-  <p>The average is the one to pay attention to. Day-to-day body weight moves with water, food, and time of day, so a single morning's reading can be a kilo off in either direction and mean nothing. The average smooths that out and shows you which way you are actually going.</p>
-  <p>Use the <strong>30d</strong>, <strong>90d</strong>, and <strong>All</strong> chips to change the window.</p>
-  <p>The small caret next to a reading compares it to the one before it, and is colored only when the measurement has a direction you've said you want - waist going down, arms going up. With no goal set, the caret shows the change without color.</p>
+  <h2 id="trend">Read the trend</h2>
+  <p>Watch the solid accent line: it's a <strong>7-day average</strong>. The faint line with dots is exactly what you logged.</p>
+  <p>Body weight moves day to day with water, food and time of day, so one morning's reading can be a kilo off either way. The average smooths that out and shows which way you're really heading.</p>
+  <p>Use the <strong>30d</strong>, <strong>90d</strong> and <strong>All</strong> chips to change the time range.</p>
+  <p>The small caret next to a reading compares it to the one before. It's colored only when you've set a direction you want for that measurement (waist going down, arms going up); with no goal, it shows the change without color.</p>
 
   <h2 id="units">Units</h2>
-  <p>Measurements follow the weight unit you use for lifting: kilograms and centimeters, or pounds and inches. Change it and everything re-reads in the new unit immediately.</p>
-  <p><strong>Your numbers are never rewritten.</strong> Each entry remembers the unit you typed it in, so switching units converts the display and leaves the record alone. A weigh-in you logged as 81.4 kg is still 81.4 kg; an app set to pounds simply shows it as 179.5 lbs.</p>
+  <p>Measurements follow your lifting unit: kilograms and centimeters, or pounds and inches. Change it and everything switches to the new unit.</p>
+  <p>Each entry keeps the unit you typed it in, and switching only changes how it's shown. A weigh-in logged as 81.4 kg stays 81.4 kg, and shows as 179.5 lbs when the app is set to pounds.</p>
 
   <hr />
 
   <h2 id="health">Apple Health and Health Connect</h2>
-  <p>Badger can exchange three specific things with your phone's health store - <strong>Apple Health</strong> on iPhone, <strong>Health Connect</strong> on Android - each off until you turn it on. Find them in <strong>Settings &rarr; Your data</strong>, or from the Body screen's <span aria-hidden="true">&#8942;</span> menu.</p>
-  <p>Each one asks the health app for permission separately, for itself only, so switching on heart rate doesn't hand over your weight history too.</p>
-  <p>You can turn any of the three off whenever you like, and you can revoke Badger's access from Apple Health or Health Connect directly. Anything already saved in your body tracker stays until you delete it.</p>
+  <p>Badger can connect to <strong>Apple Health</strong> on iPhone or <strong>Health Connect</strong> on Android in three ways, each off until you turn it on: writing your workouts, importing body weight, and adding heart rate to your sets. Find the switches in <strong>Settings &rarr; Your data</strong> or the Body screen's <span aria-hidden="true">&#8942;</span> menu.</p>
+  <p>Each one asks the health app for its own permission, so turning on heart rate doesn't share your weight history too.</p>
 
   <h3 id="write-workouts">Writing workouts</h3>
-  <p>With this on, every finished workout is saved to your health store as a strength training session, so your rings, your daily summary, and any other app you have connected know you trained.</p>
-  <p>Badger writes <strong>when the session started and when it ended, and nothing else</strong> - no calorie estimate. A calorie figure for lifting can't see how long you rested, your body composition, or how hard a set was; your watch already measures what it can honestly count.</p>
-  <p>A workout you back-date isn't written to your health store: with no timer running, there's no duration to report.</p>
+  <p>Every workout you finish is saved to your health store as a strength training session, so your rings, daily summary and other connected apps know you trained.</p>
+  <p>Badger writes the start and end time only, with no calorie estimate. Use your watch's figure for calories.</p>
+  <p>A back-dated workout isn't written, because with no timer running there's no duration to report.</p>
 
   <h3 id="import-weight">Importing body weight</h3>
-  <p>With this on, weigh-ins from your health store - a smart scale, another app, or a number you typed into Health directly - appear in your body tracker as ordinary entries. Badger asks for body weight only.</p>
-  <p>On Android, Health Connect asks a second question: whether Badger may see data older than 30 days. Allow it and your first import reaches back a year, so your chart starts with real history instead of one lonely point; decline it and you get the last 30 days, the most any app can see without that permission. Change your mind anytime in Health Connect.</p>
-  <p>Imported readings are checked when you open the Body screen, and you can pull them in on demand with <strong>Bring in weigh-ins now</strong>. There is no background syncing. The same reading is never imported twice, and a genuine second weigh-in on the same morning is kept.</p>
-  <p>Opening the Body screen only looks for readings since the last check, which is quick. <strong>Bring in weigh-ins now</strong> goes back over the whole year instead, so if something stopped syncing to your health store for a while and later filled the missing days back in, that button is the one that finds them.</p>
-  <p>Imported weigh-ins are <strong>saved in Badger</strong> like ones you typed, which means they are part of your backups - both the manual backup file and, if you use it, the cloud backup to your own Google Drive. See the <a href="/legal/privacy/">Privacy Policy</a> for the full picture.</p>
+  <p>Weigh-ins in your health store (from a smart scale, another app, or typed into Health) appear in your body tracker as ordinary entries. Badger asks for body weight only.</p>
+  <p>On Android, Health Connect also asks whether Badger may see data older than 30 days. Allow it and your first import reaches back a year; decline and you get the last 30 days. You can change this anytime in Health Connect.</p>
+  <p>Badger checks for new weigh-ins when you open the Body screen. If your health store filled in missing days later, tap <strong>Bring in weigh-ins now</strong> to search the whole past year. The same reading is never imported twice, but a genuine second weigh-in on the same morning is kept.</p>
+  <p>Imported weigh-ins are saved in Badger like the ones you type, so they're in your backups: the backup file and, if you use it, the cloud backup to your own Google Drive. See the <a href="/legal/privacy/">Privacy Policy</a>.</p>
 
   <h3 id="heart-rate">Heart rate on your sets</h3>
-  <p>With this on, Badger saves <strong>one heart rate per set</strong> - what your heart was doing at the end of it - by reading the samples your watch has already written to your health store. You do not have to start anything or press anything; if you wore a watch while you trained, the numbers turn up on their own.</p>
-  <p>It is there for the <strong>trend</strong>, not the number. Two places show it:</p>
+  <p>Badger saves <strong>one heart rate per set</strong>, taken at the end of the set from the samples your watch has written to your health store. Wear your watch while you train and the numbers turn up with nothing to start or press.</p>
+  <p>Two charts show it:</p>
   <ul>
-    <li>The <strong>Exertion</strong> chart on a workout summary, under Pace. It plots your heart rate set by set across that session, so you can see it drifting up as you tire.</li>
-    <li>An <strong>Exertion</strong> chart on an exercise's progress page: your average for that exercise, session by session. If the same weight for the same reps is costing you less than it did a month ago, that is the chart that shows it.</li>
+    <li>The <strong>Exertion</strong> chart on a workout summary, under Pace, plots your heart rate set by set across the session, so you can see it drift up as you tire.</li>
+    <li>The <strong>Exertion</strong> chart on an exercise's progress page shows your average for that exercise, session by session. If the same weight for the same reps costs you less than it did a month ago, this chart shows it.</li>
   </ul>
-  <p>Individual sets carry their reading quietly in the set list too, in the same small text as the rest of the set's details.</p>
-  <p><strong>Missing numbers are normal.</strong> Watches hand their samples to the phone in batches, sometimes minutes later, so Badger checks once when you finish and once more when you open the workout summary, then a set keeps whatever it has. If nothing lined up by then, that set simply has no heart rate - no badge, banner, or nag about it anywhere.</p>
-  <p>You need enough data for a chart to be worth drawing: the session chart appears once four sets have a reading, and the per-exercise chart once three sessions do.</p>
-  <p>Badger reads heart rate but never writes it. There's <strong>no live heart rate while you train</strong>, and no recovery score, strain number, or readiness rating - those need more than a phone can honestly measure.</p>
-  <p>Readings are saved in Badger with the set, which means they are part of your backups, exactly like your weights and reps. They go nowhere else.</p>
+  <p>Each set also shows its reading in the set list, in small text with the rest of the set's details.</p>
+  <p>The session chart appears once four sets have a reading, and the per-exercise chart once three sessions do.</p>
+  <p><strong>Missing numbers are normal.</strong> Watches send samples to the phone in batches, sometimes minutes late, so Badger checks when you finish and again when you open the workout summary. If nothing arrives by then, that set has no heart rate.</p>
+  <p>There's no live heart rate while you train. Readings are saved with the set and are part of your backups, like your weights and reps.</p>
 
-  <h3 id="health-availability">If the switches are not there</h3>
-  <p>On Android below version 14, Health Connect is a separate app from the Play Store. Until it is installed there is nothing for Badger to connect to, and the screen says so rather than offering a connection that cannot work.</p>
+  <h3>Turning it off</h3>
+  <p>Turn any of the three off whenever you like, or revoke Badger's access in Apple Health or Health Connect. Anything already saved in your body tracker stays until you delete it.</p>
 
+  <h3 id="health-availability">If the switches aren't there</h3>
+  <p>On Android versions below 14, Health Connect is a separate app. Install it from the Play Store, then come back to this screen.</p>
 </HelpLayout>
