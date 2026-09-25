@@ -95,7 +95,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Weight settings</h3>
   <ul>
     <li><strong>Starting weight</strong> - what the machine weighs empty (the bar, sled or arms). Leave it blank if you don't know, and the plate calculator counts plates only. Tap <strong>(i)</strong> for the in-app explanation.</li>
-    <li><strong>How weight is logged</strong> - on a plate-loaded machine, choose <strong>Total</strong> or <strong>Per side</strong>. If you load 90 lbs a side on an iso-lateral press and type 90, choose Per side. The weight field then shows "/ side", and the plate calculator and every set you log on the machine read it that way. The numbers you type are stored as typed.</li>
+    <li><strong>How weight is logged</strong> - on a plate-loaded machine set to <strong>Dual-Loaded</strong>, choose <strong>Total</strong> or <strong>Per side</strong>. If you load 90 lbs a side on an iso-lateral press and type 90, choose Per side. The weight field then shows "/ side", and the plate calculator and every set you log on the machine read it that way. The numbers you type are stored as typed. A selectorized stack or a Single-Loaded machine doesn't ask.</li>
     <li><strong>Logging unit</strong> - kg or lbs for this machine, whatever your app setting. Useful for a kg stack with awkward lbs markings. <em>Default</em> follows the exercise, then the app. The weight field switches to this unit when you log on the machine, and routines that use it as a default plan in this unit too.</li>
     <li><strong>Weight increment</strong> - the step between settings, in the machine's own unit (for example 5 kg between stack pins). For a stack whose step changes partway up, fill in <strong>Then step</strong> and <strong>Above</strong> (for example 10 kg up to 100, then 20 kg). The <strong>+</strong> and <strong>−</strong> buttons and the progressive-overload suggestion follow these steps.</li>
   </ul>
@@ -118,7 +118,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Add each bar you lift with (the Olympic bar, the trap bar, the EZ curl, the worn 45 that actually weighs 44) and pick one per exercise. Go to <strong>More → Bars</strong>.</p>
   <ul>
     <li>Tap <strong>+</strong>, name it and pick its gyms, then finish on its page.</li>
-    <li>Give it a <strong>weight</strong> in kg or lbs, or leave it blank if you don't know it.</li>
+    <li>Give it a <strong>weight</strong> in kg or lbs, or leave it blank if you don't know it. It's stored exactly as typed and never converted - a 45 lb bar stays 45.</li>
     <li>Add <strong>notes</strong> and a <a href="#photos">photo</a> if you like.</li>
     <li>Link it to gyms from its <strong>Available at</strong> section, or from <strong>Bars at this gym</strong> on the gym's page.</li>
   </ul>
@@ -127,7 +127,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The <a href="/help/tools/">plate calculator</a> and the <a href="/help/logging/#set-types">warm-up calculator</a> take the starting weight from the bar you picked, then the machine, then the exercise. A bar with no weight skips to the next one.</p>
 
   <h3 id="bar-prs">Records are kept per bar</h3>
-  <p>Personal records are tracked per machine and per bar, so a trap-bar deadlift keeps its own records apart from your straight-bar deadlift. Sets with no bar recorded compete with your whole history. On the Progress screen, <a href="/help/progress/#chart-filters">chart filters</a> narrow an exercise's chart by machine, bar or accessories.</p>
+  <p>Personal records are tracked per machine and per bar, so a trap-bar deadlift keeps its own records apart from your straight-bar deadlift, whatever the Progress filter is showing (see <a href="/help/progress/#prs">Personal records</a>). Sets with no bar recorded compete with your whole history. Chart filters there narrow an exercise's chart and history list by machine, bar or accessories.</p>
 
   <h2 id="accessories">Accessories: bands, chains and straps</h2>
   <p>Accessories are what you add to a lift on top of the load: resistance bands, chains, suspension straps. Go to <strong>More → Accessories</strong>. Each one has:</p>
@@ -151,7 +151,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>The first time you open a rack, it fills in a starting list and saves it.</li>
     <li>Add weights one at a time, or tap <strong>Add range</strong> for a run of them (from, to, step). An adjustable dumbbell is a range.</li>
     <li>Edit or delete any weight, including the ones the preset added.</li>
-    <li>kg and lbs racks are separate lists. The <strong>kg / lbs</strong> switch at the top of the editor flips between them.</li>
+    <li>kg and lbs racks are separate lists, never converted into each other - entering one doesn't fill the other. The <strong>kg / lbs</strong> switch at the top of the editor flips between them.</li>
     <li>Until a rack has two weights, the stepper uses your normal increment.</li>
   </ul>
 
@@ -165,6 +165,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="photos">Photos</h2>
   <p>Add a photo to a machine, attachment or bar so you can recognize it on the floor. Open it and tap the photo panel at the top to <strong>take a photo</strong> or <strong>choose from your gallery</strong>. Tap again to replace or remove it. Accessories have no photo; their color identifies them.</p>
+  <p>Badger asks for camera or photo library access only the first time you add a photo.</p>
   <ul>
     <li>Attachment photos also show as thumbnails in the attachment picker during a workout.</li>
     <li>Cloud backup leaves photos out unless you turn on <strong>Back up equipment photos</strong> on the <a href={`/help/settings/#cloud-backup`}>Cloud backup</a> screen. Without it, a restore onto a new phone brings your machines, attachments and bars back without their pictures. Photos make backups much larger and use your own Drive storage.</li>

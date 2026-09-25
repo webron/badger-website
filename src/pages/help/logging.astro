@@ -43,7 +43,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h3>Exercise notes</h3>
-  <p>A notes card sits above the set input for an exercise that has notes or instructions. The info icon in the top bar shows or hides it, and tapping the card opens the exercise notes screen. It opens by itself when the exercise has notes of your own.</p>
+  <p>A notes card sits above the set input for an exercise that has notes or instructions. The info icon in the top bar shows or hides it, and tapping the card opens the exercise notes screen. It opens by itself when the exercise has notes of your own. With neither, the info icon opens it directly.</p>
   <ul>
     <li><strong>NOTES</strong> - Your own reminders: form cues, seat settings.</li>
     <li><strong>INSTRUCTIONS</strong> - Built-in technique cues.</li>
@@ -109,10 +109,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="records">Personal records</h3>
   <p>When a working set beats your best for that exercise, a trophy badge appears on the set row, a message pops up at the bottom of the screen, and the phone buzzes if haptics are on.</p>
-  <p>Records are kept separately per <a href="/help/gyms/#bar-prs">bar</a>. Sets logged with an <a href="/help/gyms/#accessories-and-records">accessory</a> attached never earn a record and never block one. What counts as a best is explained under <a href="/help/progress/#prs">Personal records</a>.</p>
+  <p>Records are kept separately per <a href="/help/gyms/#bar-prs">bar</a>. While an <a href="/help/gyms/#accessories-and-records">accessory</a> is attached to an exercise, every set of it stays out of records; clear the accessories and those sets count again. An accessory never changes a weight, the plate math or the stepper. What counts as a best is explained under <a href="/help/progress/#prs">Personal records</a>.</p>
 
   <h2 id="set-details">Warmups, RPE and to failure</h2>
-  <p>The <strong>Set details</strong> section under the main fields holds the warmup toggle, the RPE and RIR steppers and the <strong>To failure</strong> chip. Tap its header to open or close it; it stays that way for every exercise until you change it. When it's closed, the header lists anything that's on, for example "Warm-up" or "RPE 8".</p>
+  <p>The <strong>Set details</strong> section under the main fields holds the warmup toggle, the RPE and RIR steppers and the <strong>To failure</strong> chip. It starts closed. Tap its header to open or close it; it stays that way for every exercise until you change it. When it's closed, the header lists anything that's on, for example "Warm-up" or "RPE 8".</p>
 
   <h3 id="set-types">Warmup sets</h3>
   <p>Turn on the <strong>warmup</strong> toggle before you log a set to mark it as a warmup. Warmups show a "W" badge in place of a set number, and are left out of volume, records and progress graphs.</p>
@@ -177,12 +177,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>When the phone is locked</h3>
   <p>On iPhone, the spoken countdown keeps going through a locked screen. On Android, or on an iPhone where a call or another app took the audio, a <strong>Set complete</strong> notification arrives when the set ends instead.</p>
-  <p>Voice <strong>Off</strong> doesn't stop that notification. To make it silent, turn off <strong>Settings → Set timer → Set timer sound</strong>; the rest timer has its own sound setting.</p>
+  <p>Voice <strong>Off</strong> doesn't stop that notification. To make it silent, turn off <strong>Settings → Set timer → Set timer sound</strong>; the rest timer has its own sound setting. That toggle only covers the notification - the spoken countdown keeps talking with it off.</p>
 
   <h2 id="lock-screen">Timers on the lock screen</h2>
   <h3>iPhone: Live Activities</h3>
   <p>On iOS 16.2 and later, both timers appear as a Live Activity: a countdown card on the lock screen, and a compact countdown in the Dynamic Island on models that have one. Tap it to go back to your workout.</p>
-  <p>The rest card reads "Rest done" when it finishes; a timed set shows "SET" while it runs and "SET DONE" at the end.</p>
+  <p>Both cards name the exercise. The rest card reads "Rest done" when it finishes; a timed set shows "SET" while it runs and "SET DONE" at the end.</p>
   <p>The first time, iOS asks "Allow Live Activities from Badger?". Allow it to see the countdown outside the app; you can change it later in iOS Settings under Badger.</p>
   <p>On iOS 26.6 and later, a rest timer that finishes while the phone is locked plays the Badger sound you picked. On earlier versions, iOS plays its standard sound instead.</p>
 
@@ -217,7 +217,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>If you did the set but came up short, log what you did. If you didn't do it at all, skip it.</p>
   <ul>
     <li><strong>Skip one set:</strong> tap its row, then tap <strong>Skip</strong>. Tap <strong>Unskip</strong> to undo.</li>
-    <li><strong>Skip the rest of an exercise:</strong> open the <strong>⋮ menu</strong> and tap <strong>Skip exercise</strong>, or long-press the exercise in <strong>All exercises</strong> and tap <strong>Skip remaining sets</strong>.</li>
+    <li><strong>Skip the rest of an exercise:</strong> open the <strong>⋮ menu</strong> and tap <strong>Skip exercise</strong>, or long-press the exercise in <strong>All exercises</strong> and tap <strong>Skip remaining sets</strong>. The same menu item reads <strong>Unskip exercise</strong> once every set on it is skipped.</li>
   </ul>
   <p>A skipped set stays on the training screen, struck through, and is left out of your history, all calculations, and plateau and deload detection.</p>
   <p>A short set is a real set. Aiming for 8 and getting 6? Log the 6. It counts toward volume, shows in your history and feeds plateau and deload detection. On a routine workout, the summary marks it as under plan.</p>

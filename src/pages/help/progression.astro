@@ -10,7 +10,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <hr />
 
   <h2 id="why">Why did my weight go up, or not?</h2>
-  <p>Look at the line under the exercise on the routine log preview. If the exercise has a progression rule, that line names the part of the rule that fired, or says why the weight is holding. No line means no rule, and the weight came from one of the other sources in this table.</p>
+  <p>Look at the line under the exercise on the routine log preview. If the exercise has a progression rule, that line names the part of the rule that fired, or says why the weight is holding. No line means no rule, or a rule with nothing to do here; the weight comes from another source in this table.</p>
   <table>
     <thead>
       <tr><th>What sets the weight</th><th>Where you see it</th><th>Where it's set</th></tr>
@@ -58,7 +58,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Read the list of sentences it would write, day by day.</li>
     <li>Confirm to write them.</li>
   </ol>
-  <p>Exercises with a rep range get double progression, and fixed-rep exercises get linear. Exercises that already have a rule are skipped, and an exercise with no weight gets no weight arithmetic. A lift that appears on more than one day is marked <em>Progresses together on every day it appears</em> (see <a href="#progressing-together">Lifts that progress together</a>).</p>
+  <p>Exercises with a rep range get double progression, and fixed-rep exercises get linear. Exercises that already have a rule, or no weight, are skipped. When the same exercise, with the same preset, appears on two or more newly ruled days, those days are marked <em>Progresses together on every day it appears</em> (see <a href="#progressing-together">Lifts that progress together</a>).</p>
 
   <h3 id="reading-a-rule">Where a rule shows</h3>
   <p>On the routine detail screen, the rule's sentence sits under the exercise name, in the same words the editor used. On a day where some exercises have rules, the others read <strong>No rule &middot; progression hints active</strong>.</p>
@@ -160,8 +160,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="progressing-together">Lifts that progress together</h2>
   <p>When a lift appears on more than one day, those days can share one number and one miss count. In Madcow, Friday's heavy triple sets the weight Monday ramps to. In 5/3/1 BBB, the main lift and its Boring But Big work read one training max.</p>
   <ul>
-    <li>The built-in programs come set up this way. <a href="#set-up-progression">Set up progression</a> does the same for your own routine, and marks those exercises <em>Progresses together on every day it appears</em>.</li>
-    <li>In Madcow, one day moves each lift: Friday for the squat and bench, Wednesday for the press and deadlift. The other days take their percentages from that number.</li>
+    <li>The built-in programs come set up this way. <a href="#set-up-progression">Set up progression</a> can do this for your own routine too, when the same exercise and preset appear on two or more days it's newly writing a rule for; it can't reproduce Madcow's or GZCLP's shape by itself.</li>
+    <li>In Madcow, one day moves each lift: Friday for the squat, bench and row, Wednesday for the press and deadlift. The other days take their percentages from that number.</li>
   </ul>
 
   <h2 id="progressive-overload">Progressive overload suggestion</h2>

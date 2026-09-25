@@ -35,9 +35,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="weight-source">Where starting weights come from (weight source)</h3>
   <p>A segmented control on the routine detail screen sets this:</p>
   <ul>
-    <li><strong>Last performance</strong> (default) - The weight from your most recent workout of each exercise, wherever that workout came from.</li>
-    <li><strong>Routine defaults</strong> - The planned set weights only. A set marked "Copy from previous" uses its planned value.</li>
-    <li><strong>Routine defaults then last</strong> - Planned weights first, then your last performance where none is set.</li>
+    <li><strong>Last perf.</strong> (default) - The weight from your most recent workout of each exercise, wherever that workout came from.</li>
+    <li><strong>Routine</strong> - The planned set weights only. A set marked "Copy from previous" uses its planned value.</li>
+    <li><strong>Both</strong> - Planned weights first, then your last performance where none is set.</li>
   </ul>
 
   <h3 id="history-scope">Which past workouts count (history scope)</h3>
@@ -109,10 +109,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Organize days and routines</h2>
   <h3>Schedule a day</h3>
-  <p>Tap the <strong>calendar icon</strong> on a day row and pick weekdays. The day shows as scheduled on the Today screen on those days, and as short labels (Mon, Wed, Fri) on the row. A warning appears if two days share a weekday.</p>
+  <p>Open the day's <strong>Day options</strong> and set <strong>Scheduled days</strong> to pick weekdays. A <strong>calendar icon</strong> then appears on the day row - tap it to change them. The day shows as scheduled on the Today screen on those days, and as short labels (Mon, Wed, Fri) on the row. A warning appears if two days share a weekday.</p>
 
   <h3>Day options</h3>
-  <p>Open a day's <strong>⋮ menu</strong>:</p>
+  <p>Open a day's <strong>Day options</strong>:</p>
   <ul>
     <li><strong>Default gym</strong> - The gym this day is done at.</li>
     <li><strong>Notes</strong> - Shown as a banner at the top of the training screen when you start the day, such as "Focus on pause reps today". Dismissing it hides it for that workout only.</li>
@@ -150,6 +150,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>On the routine detail screen, open the exercise's <strong>⋮ menu</strong> and choose <strong>Manage alternatives…</strong>.</li>
     <li>Search for and add up to two alternatives. Changes save immediately.</li>
   </ol>
+  <p>Each alternative row's own <strong>⋮ menu</strong> can remove it (<strong>Remove alternative</strong>) or make it the default.</p>
   <p>To swap during the workout, open the training screen's <strong>⋮ menu</strong> and tap <strong>Switch to alternative…</strong>. The original is listed too, labeled <strong>(original)</strong>, so you can switch back. You can also pick an alternative before you start, from the swap icon on the routine log preview.</p>
   <p>A swap lasts for that workout only. The new exercise comes in with its own recent weights, your routine stays the same, and your history records what you actually did.</p>
 
@@ -200,7 +201,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Share as image</strong> makes a card of the plan in your theme and accent, sized for a post. You see a preview, then your phone's share sheet opens.</li>
   </ul>
   <p>From the routine's <strong>⋮</strong> menu, the image is an <strong>overview</strong>: the routine's name, days per week, and each day's exercises, sets and reps. From a day's <strong>⋮</strong> menu, it's that <strong>day</strong>: the program and day name, a "Day 1 of 4" mark, a summary line, and each exercise's set count and target.</p>
-  <p>On a day card, a lift with a progression rule has the rule printed under it. If every lift on the day has the same rule, it's printed once at the bottom. A lift whose sets change by week or stage (5/3/1's main lift, a GZCLP tier) shows all of them as a short ladder.</p>
+  <p>On a day card, a lift with a progression rule has the rule printed under it. If every lift on the day has the same rule, it's printed once at the bottom. A lift whose sets change by week or stage (5/3/1's main lift, a GZCLP tier) shows all of them as a short ladder with no current mark.</p>
 
   <h3 id="sharing-weights">Weights on a shared image</h3>
   <p>The image shows sets and reps without weights unless you turn on <strong>Include my weights</strong> on the share sheet. The switch starts off each time. Percentage sets always show their percentage (say 65% of your training max), with the switch on or off.</p>
@@ -221,7 +222,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Intermediate</h3>
   <ul>
-    <li><strong>GZCLP</strong> - Three tiers: heavy compounds (T1), medium compounds (T2) and accessory work (T3). Each tier has its own rule and its own <a href="/help/progression/#stages">stage ladder</a>.</li>
+    <li><strong>GZCLP</strong> - Three tiers: heavy compounds (T1), medium compounds (T2) and accessory work (T3). Each tier has its own rule; T1 and T2 also have their own <a href="/help/progression/#stages">stage ladder</a>, but T3's rule has none.</li>
     <li><strong>5/3/1 BBB</strong> - Wendler's 5/3/1 main sets, then Boring But Big 5×10, both as percentages of one <a href="/help/progression/#training-max">training max</a> on a four-week <a href="/help/progression/#waves">wave</a>. Set the training max once per lift; the rule raises it at the end of each cycle unless the plus set came up short.</li>
     <li><strong>nSuns 531LP</strong> - A long percentage ramp each session off a training max, with one <a href="/help/progression/#driver-set">driver set</a> whose reps decide the week's increment.</li>
     <li><strong>Madcow 5×5</strong> - Weekly progression. Every set is a percentage of the lift's top set, and all three days of a lift <a href="/help/progression/#progressing-together">share that number</a>. It deloads 10% after two missed weeks.</li>
