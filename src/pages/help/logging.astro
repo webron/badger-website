@@ -2,366 +2,244 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Logging Workouts" description="How to log sets, use the rest timer, manage warmups, and track intensity in Badger.">
+<HelpLayout title="Logging workouts" description="How to start a workout, log sets, use the rest and set timers, run supersets, skip sets and finish a workout in Badger.">
   <h1>Logging workouts</h1>
 
-  <p>The training screen is where you spend most of your time. It has three tabs: <strong>Log</strong> (set entry), <strong>Graph</strong> (progress chart), and <strong>History</strong> (past sessions for this exercise). Swipe left or right to switch between them.</p>
+  <p>This page follows a session from start to finish: starting a workout, logging sets on the training screen, timers and rest, supersets, skipping, and finishing.</p>
 
   <hr />
 
-  <h2 id="today-screen">Today screen</h2>
-  <p>The <strong>Today screen</strong> is your daily hub. It shows the current date, an optional workout timer in the app bar, and several cards depending on your state:</p>
+  <h2 id="today-screen">Start a workout</h2>
+  <p>Start from the <strong>Today</strong> screen:</p>
   <ul>
-    <li>If you have an active routine, your routine days appear at the top with a Start button for each. Tap a day to open the routine log preview before starting.</li>
-    <li><strong>This Week</strong> - A compact card showing how many days you've trained this week, plus muscle-balance warnings if any groups haven't been trained for a while. Shown whenever you're on the Today screen, mid-workout or not.</li>
-    <li><strong>Weekly volume chips</strong> - Colored chips showing sets logged per muscle category this week. Colored dots indicate groups that need attention. Tap any chip to open the muscle balance detail sheet.</li>
-    <li><strong>Monthly report</strong> - During the first two weeks of a new month, a dismissible card shows last month's highlights: workout count, total volume (with % change vs the month before), and how many exercises you tried for the first time. Tap × to dismiss it.</li>
-    <li><strong>Deload banner</strong> and <strong>Plateau card</strong> appear here when those features are active (see <a href={`/help/tools/#deload`}>Deload</a> and <a href={`/help/progress/#plateau-detection`}>Plateau detection</a>).</li>
-    <li><strong>One year ago</strong> - If you trained on this date a year back, a quiet line at the bottom of the screen says so: "One year ago &middot; Entry &#8470; 63 &middot; Push Day" - tap it to open that session, named by its routine day or its first logged exercise. Nothing a year ago, no line.</li>
+    <li><strong>Free workout</strong> - Tap <strong>New workout</strong> and pick your first exercise.</li>
+    <li><strong>From a routine</strong> - Tap a day of your active routine. The routine log preview opens; tap <strong>Start</strong>. See <a href="/help/routines/#starting">Start a workout from a routine</a>.</li>
+  </ul>
+  <p>The Today screen also shows:</p>
+  <ul>
+    <li><strong>This Week</strong> - How many days you've trained this week, plus a warning for any muscle group you haven't trained for a while.</li>
+    <li><strong>Weekly volume chips</strong> - Sets logged per muscle category this week. A colored dot marks a group that needs attention. Tap a chip for the muscle balance detail.</li>
+    <li><strong>Monthly report</strong> - In the first two weeks of a month: last month's workout count, total volume (with the change from the month before) and exercises you tried for the first time. Tap × to dismiss it.</li>
+    <li><strong>Deload banner</strong> and <strong>plateau card</strong> - When those features are on. See <a href="/help/tools/#deload">Deload</a> and <a href="/help/progress/#plateau-detection">Plateau detection</a>.</li>
+    <li><strong>One year ago</strong> - If you trained on this date a year back, a line at the bottom says so, for example "One year ago &middot; Entry &#8470; 63 &middot; Push Day". Tap it to open that session. If you didn't train that day, the line doesn't appear.</li>
   </ul>
 
-  <hr />
+  <h2 id="training-screen">The training screen</h2>
+  <p>Each exercise opens on the training screen, with three tabs: <strong>Track</strong> (logging sets), <strong>History</strong> (your past sessions of this exercise) and <strong>Graph</strong> (its progress chart). Swipe to switch between them.</p>
 
-  <h2>Logging a set</h2>
-  <p>The Track tab shows input fields at the top and your logged sets below. The fields shown depend on the exercise type - a barbell exercise shows weight and reps; a plank shows only time; a row machine might show weight and time.</p>
+  <h3>Move between exercises</h3>
+  <p>Tap the <strong>All exercises</strong> pill at the bottom of the screen. From the list you can tap an exercise to switch to it, drag to reorder, or tap <strong>Add exercise</strong>.</p>
+
+  <h3>More options (⋮ menu)</h3>
+  <ul>
+    <li><strong>Replace exercise</strong> - Swap in a different exercise. Sets already logged stay attached.</li>
+    <li><strong>Switch to alternative</strong> or <strong>Plan B - swap exercise</strong> - Swap for this workout only. See <a href="/help/routines/#alternatives">Alternative exercises</a>.</li>
+    <li><strong>Skip exercise</strong> - Skip every set left on this exercise. See <a href="#missed-vs-skipped">Skip a set</a>.</li>
+    <li><strong>Superset</strong> - Group exercises. See <a href="#supersets">Supersets</a>.</li>
+    <li><strong>Change gym</strong> - Switch which gym this workout is at.</li>
+    <li><strong>Set machine</strong> - Pick the machine and attachment. <strong>New machine…</strong> and <strong>New attachment…</strong> at the bottom of each picker add one on the spot.</li>
+    <li><strong>Set bar</strong> - Pick the <a href="/help/gyms/#bars">bar</a> on a barbell exercise, at a gym that has bars. <strong>New bar…</strong> adds one.</li>
+    <li><strong>1RM calculator</strong> and <strong>Plate calculator</strong> - The plate calculator opens with your current weight, and shows only when plate math applies. See <a href="/help/tools/">Tools</a>.</li>
+  </ul>
+
+  <h3>Exercise notes</h3>
+  <p>A notes card sits above the set input for an exercise that has notes or instructions. The info icon in the top bar shows or hides it, and tapping the card opens the exercise notes screen. It opens by itself when the exercise has notes of your own. With neither, the info icon opens it directly.</p>
+  <ul>
+    <li><strong>NOTES</strong> - Your own reminders: form cues, seat settings.</li>
+    <li><strong>INSTRUCTIONS</strong> - Built-in technique cues.</li>
+    <li><strong>GRIP</strong> - The grip you've selected, when the machine uses grips.</li>
+  </ul>
+  <p>With a machine set, the notes you write are for that machine, so two leg presses can carry different seat heights.</p>
+  <p>The notes screen's heading reads <strong>Notes &middot; MachineName</strong>. Notes you wrote for the exercise in general appear in their own block, and the attachment's notes ("use the thick end") appear in the same card. Increment, rest, instructions and muscles apply to the exercise on every machine.</p>
+
+  <h2 id="logging-a-set">Log a set</h2>
+  <p>The Track tab shows the input fields at the top and your logged sets below. The fields follow the exercise type: weight and reps for a barbell lift, time for a plank.</p>
   <ol>
-    <li>Enter your weight and reps (or duration, distance, etc.) using the <strong>+/−</strong> steppers or by tapping the field and typing.</li>
-    <li>Tap the <strong>✓ checkmark</strong> to save the set.</li>
+    <li>Enter the weight and reps (or time, distance) with the <strong>+/−</strong> buttons, or tap a field and type.</li>
+    <li>Tap the <strong>✓</strong> to save the set.</li>
   </ol>
-  <p>The set appears in the list below. The rest timer starts automatically if you have that setting enabled.</p>
+  <p>The set appears in the list, and the <a href="#rest-timer">rest timer</a> starts if auto-start is on.</p>
+  <ul>
+    <li><strong>Edit a set:</strong> tap its row to load it into the fields, change it, and tap ✓. Tap the row again to let go without saving.</li>
+    <li><strong>Delete a set:</strong> tap its row, tap <strong>Delete</strong> and confirm.</li>
+    <li><strong>Repeat a set:</strong> tap the <strong>Repeat last</strong> chip below your sets. It names the set it will copy, such as a weight and reps or a duration.</li>
+  </ul>
 
-  <h3 id="per-side">Weight per side</h3>
-  <p>Some machines are loaded one side at a time, and plenty of people write down what is on one side instead of the total. Badger can record which one you mean.</p>
-  <p>When an exercise or its machine is set to per side, the weight field's label says so - <strong>WEIGHT (LBS / SIDE)</strong> - and every set you log carries that answer with it.</p>
-  <p>In your history, on the workout summary, and in the exercise's own log, those sets read <strong>90 lbs &times; 8 /side</strong>. Sets logged as a total read the way they always have.</p>
-  <p>Nothing is doubled or converted: totals, volume, estimated 1RM and personal records all use exactly the number you wrote, so switching the setting never rewrites your history. Sets you logged before Badger started asking simply carry no mark - nothing is guessed on your behalf.</p>
-  <p>Where to set it: on a plate-loaded machine under <a href={`/help/gyms/#machines`}>How weight is logged</a> (it applies wherever that machine is used), or on the exercise itself under <strong>Weight is logged as</strong> for when you log it with no machine at all. The machine wins when both have an answer. Dumbbells and kettlebells are never asked: those are per hand by definition.</p>
-  <p>Your planned routines say the same thing: a slot's weight column reads <strong>WEIGHT (LBS / SIDE &middot; CYBEX LEG PRESS)</strong>, naming the machine the answer came from, so you plan in the same terms you lift in.</p>
+  <h3 id="plan-reference">See your target while you log</h3>
+  <p>On a workout started from a routine, a line above the input fields shows the plan and your last performance, for example <strong>Plan 8-10 &middot; Last 8 @ 80 kg</strong>. It follows you from set to set.</p>
+  <ul>
+    <li>A set you haven't done yet shows its target in the list, such as <strong>80 kg × 8+</strong>, until you complete it.</li>
+    <li>A dim <strong>+</strong> or <strong>-10</strong> in the reps box shows an open or ranged target. It disappears once you change the number.</li>
+  </ul>
+
+  <h3 id="rack-stepper">How the +/− buttons step</h3>
+  <p>The weight buttons move by the exercise's increment. With a machine set, they use the machine's step instead, and a line under the field says so: <em>Step: 10 lbs &middot; from Cybex Leg Press</em>.</p>
+  <p>On dumbbells and kettlebells at a gym whose <a href="/help/gyms/#racks">rack</a> you've set up, the buttons walk the rack's weights (5, 10, 15 up to 50, then whatever comes next), and the line reads <strong>Step: rack &middot; My Gym</strong>.</p>
+  <p>You can still type any weight. Past either end of the rack, the buttons go back to your usual increment. With no rack set up, a link under the field offers to add one.</p>
+
+  <p id="progressive-overload">A <strong>Suggested: 82.5 kg</strong> line above the fields means you're ready to add weight. See <a href="/help/progression/#progressive-overload">Progressive overload suggestion</a>.</p>
 
   <h3 id="duration-entry">Typing a duration</h3>
-  <p>Anywhere Badger asks for a duration - the Track tab, a routine's planned sets, quick edit, or editing a set after the fact - you can type it as a time instead of counting seconds:</p>
+  <p>Anywhere Badger asks for a duration (the Track tab, a routine's planned sets, quick edit, editing a past set), you can type a time:</p>
   <ul>
     <li><strong>15:00</strong> - fifteen minutes.</li>
-    <li><strong>900</strong> - a plain number is still seconds, so nothing you already do changes.</li>
-    <li><strong>90:00</strong> - minutes are not capped, so a long ride is fine without doing the hours math.</li>
+    <li><strong>900</strong> - a plain number is seconds.</li>
+    <li><strong>90:00</strong> - minutes aren't capped.</li>
     <li><strong>1:30:00</strong> - hours, minutes, seconds.</li>
   </ul>
-  <p>When you leave the field it tidies itself into the shorter form, so a typed <strong>15</strong> becomes <strong>0:15</strong> - a quick way to see whether Badger read you as seconds or minutes. The +/− steppers still move in seconds.</p>
+  <p>When you leave the field it switches to the short form, so a typed <strong>15</strong> shows as <strong>0:15</strong>. The +/− buttons move in seconds.</p>
 
-  <h3>Editing and deleting sets</h3>
-  <p>Tap a set row to load it into the input fields for editing. Tap the checkmark again to update it. To deselect without saving, tap the same row again.</p>
-  <p>Long-press a set row to delete it. A confirmation dialog appears before deletion.</p>
+  <h3 id="per-side">Weight per side</h3>
+  <p>When an exercise or its machine is set to per side, the weight label reads <strong>WEIGHT (LBS / SIDE)</strong>, and your sets read <strong>90 lbs &times; 8 /side</strong> in your history, on the workout summary and in the exercise's log.</p>
+  <p>Badger stores the number you typed. Totals, volume, estimated 1RM and records use it as-is. Older sets have no /side mark.</p>
+  <p>Set it on a plate-loaded machine under <a href="/help/gyms/#machines">How weight is logged</a>, or on the exercise under <strong>Weight is logged as</strong> for when you use no machine. The machine's setting wins when both have one. Dumbbells and kettlebells don't have this setting, since their weight is always per hand.</p>
+  <p>A routine's weight column shows the same label, naming the machine: <strong>WEIGHT (LBS / SIDE &middot; CYBEX LEG PRESS)</strong>.</p>
 
-  <h3>Repeat last set</h3>
-  <p>A <strong>Repeat last</strong> chip sits below your sets. It names the set it would copy, so you can see what you are about to add, and one tap adds it. The wording follows the exercise: a weight and reps for a bench press, a duration for a plank, a distance and a time for a carry.</p>
-
-  <h2 id="set-types">Warmup sets</h2>
-  <p>The <strong>warmup chip</strong> above the input fields toggles whether the current set is a warmup. Warmup sets are displayed with a "W" badge instead of a set number, and are excluded from volume calculations, PR checks, and progress graphs.</p>
-  <h3>Generating warmup sets automatically</h3>
-  <p>Badger can generate warmup sets for you:</p>
+  <h3 id="context-chips">Machine, bar, grip and accessories</h3>
+  <p>A row of chips under the input fields shows the <strong>machine</strong>, its <strong>attachment</strong>, the <strong>grip</strong>, the <strong>bar</strong>, any <strong>accessories</strong>, and the <strong>rest</strong> that starts when you finish the set. Tap a chip to change it. Long-press the machine chip to open that machine's screen.</p>
+  <p>Only the chips that apply to the exercise appear:</p>
   <ul>
-    <li>Tap the <strong>Warm-up calc</strong> chip beside the warmup toggle.</li>
-    <li>Pick a <strong>style</strong> and the <strong>number of sets</strong>. The sheet recalculates instantly and pre-checks every row - uncheck any you don't want.</li>
-    <li>Confirm to insert them at the start of your set list.</li>
+    <li><strong>Grip</strong> appears when the machine has grip types (set them in <strong>More → Machines</strong>). Pick <strong>No grip</strong> to clear it.</li>
+    <li><strong><a href="/help/gyms/#picking-a-bar">Bar</a></strong> appears on a barbell exercise at a gym with bars. The bar feeds the plate calculator and your warmups, and records are kept per bar.</li>
+    <li><strong><a href="/help/gyms/#picking-accessories">Accessories</a></strong> appear on barbell and bodyweight exercises at a gym with accessories, and on a machine marked as supporting bands. Pick several at once; the chip shows the count and colors, such as "2 bands". Sets with an accessory attached don't count toward records (see <a href="#records">Personal records</a>).</li>
   </ul>
-  <p>Two styles are available:</p>
-  <ul>
-    <li><strong>Percent</strong> - a classic ramp as a share of your working weight (3 sets gives the familiar 40% × 8, 60% × 5, 80% × 3).</li>
-    <li><strong>Plates</strong> - evenly spaced jumps from the empty bar up to a tight final warmup, with every weight rounded to something you can actually load.</li>
-  </ul>
-  <p>Either way, every suggested weight rounds to a load your equipment can reach - the gym's plates, or a selectorized machine's stack increment - and never above your working weight.</p>
-  <p>Fewer sets means bigger jumps; more sets means a gentler ramp. If two warmups land on the same convenient weight, Badger merges them.</p>
-  <p>Set your usual style and default number of warmup sets in <strong>Settings → Logging</strong>. You can override both for a specific exercise on its edit screen (handy for lifts like floor work that need fewer, heavier warmups).</p>
-  <p>The confirm button reads "Replace warmup sets" once warmup sets already exist for that exercise. If a routine already defines warmup sets, those are used as-is - the generator only fills the gap when none are defined.</p>
 
-  <h2 id="rpe-rir">RPE and RIR</h2>
-  <p>Two optional fields sit under <strong>Set details</strong>, below the main inputs. Both describe how hard a set was, and they're the only numbers in Badger you supply instead of measure.</p>
-  <p>Ignore them entirely and nothing else in the app stops working if you leave them blank.</p>
-  <p>Tap either label in the app to get a short version of this page without leaving the screen.</p>
+  <h3>Add a comment to a set</h3>
+  <p>Tap the comment icon on a set row, type your comment ("felt strong", "elbow twinge") and tap <strong>Save</strong>. A dot on the icon means the set has a comment. Comments show, read-only, on the workout summary and in History.</p>
 
-  <h3>Why track intensity at all</h3>
-  <p>Weight and reps say what you lifted. They don't say what it cost you. Two sets of 8 at 80 kg can be a comfortable working set one week and a grind the next, and only one of those is a sign to back off.</p>
-  <p>Recording the effort gives you the second half of that picture: same numbers with rising effort is a different story from same numbers with the same effort, which is what makes a stalled lift readable later.</p>
-  <p>It also feeds Badger's <a href={`/help/tools/#deload`}>deload detection</a> if you have the RPE/RIR trigger switched on.</p>
+  <h3 id="records">Personal records</h3>
+  <p>When a working set beats your best for that exercise, a trophy badge appears on the set row, a message pops up at the bottom of the screen, and the phone buzzes if haptics are on.</p>
+  <p>Records are kept separately per <a href="/help/gyms/#bar-prs">bar</a>. While an <a href="/help/gyms/#accessories-and-records">accessory</a> is attached to an exercise, every set of it stays out of records; clear the accessories and those sets count again. An accessory never changes a weight, the plate math or the stepper. What counts as a best is explained under <a href="/help/progress/#prs">Personal records</a>.</p>
 
-  <h3>RPE: how hard it felt</h3>
-  <p>A 10-point scale. In practice the useful range is 6 to 10.</p>
+  <h2 id="set-details">Warmups, RPE and to failure</h2>
+  <p>The <strong>Set details</strong> section under the main fields holds the warmup toggle, the RPE and RIR steppers and the <strong>To failure</strong> chip. It starts closed. Tap its header to open or close it; it stays that way for every exercise until you change it. When it's closed, the header lists anything that's on, for example "Warm-up" or "RPE 8".</p>
+
+  <h3 id="set-types">Warmup sets</h3>
+  <p>Turn on the <strong>warmup</strong> toggle before you log a set to mark it as a warmup. Warmups show a "W" badge in place of a set number, and are left out of volume, records and progress graphs.</p>
+  <p>To have Badger build the warmups for you, tap the <strong>Warm-up calc</strong> chip beside the toggle; see <a href="/help/tools/#warmup-calc">Warm-up calculator</a>. Set your usual style and number of warmup sets in <strong>Settings → Logging</strong>, and change them for one exercise on its edit screen. If a routine already plans warmup sets, those are used as they are.</p>
+
+  <h3 id="rpe-rir">RPE and RIR</h3>
+  <p>RPE and RIR record how hard a set felt. Both are optional: leave them blank and everything else works the same. Tap either label in the app for a short version of this section.</p>
+  <p><strong>RPE</strong> rates the effort out of 10. The useful range is 6 to 10:</p>
   <ul>
     <li><strong>10</strong> - Max effort. No more reps were possible.</li>
     <li><strong>9</strong> - Could have done 1 more rep.</li>
     <li><strong>8</strong> - Could have done 2 more reps.</li>
     <li><strong>7</strong> - Could have done 3 more. Bar speed still crisp.</li>
-    <li><strong>6 and below</strong> - Warm-up territory.</li>
+    <li><strong>6 and below</strong> - Warmup territory.</li>
   </ul>
-  <p>It is subjective on purpose. There is no way to be wrong about your own set, and your honest read of it is the data. Most people find their scale drifts for the first month or two and then settles.</p>
-
-  <h3>RIR: how many were left</h3>
-  <p>How many more reps you could have done before hitting failure.</p>
+  <p><strong>RIR</strong> counts the reps you had left before failure:</p>
   <ul>
     <li><strong>0</strong> - Nothing left. That was failure.</li>
     <li><strong>1</strong> - One rep left in the tank.</li>
     <li><strong>2</strong> - Two left. A common target for working sets.</li>
     <li><strong>3+</strong> - Comfortable, well short of failure.</li>
   </ul>
+  <p>The two describe the same thing from opposite ends: RPE 8 is RIR 2, RPE 9 is RIR 1, RPE 10 is RIR 0. Pick whichever is easier to answer and stick with it.</p>
+  <h4>Which one to use</h4>
+  <p>If you're newer to lifting, RIR is usually easier, since it's a question about reps you've just counted. RPE can tell a hard set from an all-out one, where RIR reads 0 for both. Go with your honest read; most people's scale settles after a month or two.</p>
+  <p>The fields are hidden while the warmup toggle is on. Logged values show as small badges on each set row, and you can add or change them later by tapping a past set in your history. Logged RIR also feeds the RPE/RIR trigger of <a href="/help/tools/#deload">deload detection</a>, when that trigger is on.</p>
 
-  <h3>They are the same thing from opposite ends</h3>
-  <p>RPE counts up toward failure and RIR counts down to it, so the two line up: RPE 8 and RIR 2 describe the same set, as do RPE 9 and RIR 1, and RPE 10 and RIR 0.</p>
-  <p>You do not need both. Pick the one you find easier to answer and use it consistently, because a habit you keep is worth more than the more precise field you skip.</p>
+  <h3 id="to-failure">Mark a set to failure</h3>
+  <p>Tap the <strong>To failure</strong> chip next to the steppers to record that a set went all the way. It sets RIR to 0, and tapping it again clears it. A set to failure is about effort: if you were aiming for 8 and got 6, log the 6 (see <a href="#missed-vs-skipped">Skip a set, or log a short one</a>).</p>
 
-  <h3>Which one to start with</h3>
-  <p>If you are newer to this, use <strong>RIR</strong>. "How many more could I have done?" is a question about reps, which you have just been counting, and you can usually answer it in the second after you rack the bar.</p>
-  <p>"How hard was that out of 10?" asks you to place a set against a maximum effort you may never have taken - a harder call to make honestly early on.</p>
-  <p>RPE tends to become more useful once you have a feel for your own ceiling, and it has more room at the top: it can tell a hard set apart from an absolutely everything set, where RIR bottoms out at 0 for both.</p>
-
-  <h3>The zero-thought option</h3>
-  <p>Next to the steppers there's a <strong>To failure</strong> chip. If the only thing you want to record is that a set went all the way, tap it and move on - it writes RIR 0 in one tap instead of three, and tapping it again clears it.</p>
-  <p>It is a shortcut for the RIR stepper, nothing more, so the two always agree.</p>
-  <p>Marking a set to failure is about effort, not about coming up short. If you were aiming for 8 and got 6, log the 6 - see <a href={`/help/logging/#missed-vs-skipped`}>coming up short vs skipping</a>.</p>
-
-  <h3>Where the fields show up</h3>
-  <p>Both are hidden while the warmup toggle is active, since a warmup has no effort worth grading. Logged values appear as small badges on each set row, and you can add or change them after the fact by tapping any past set in your history.</p>
-
-  <h2 id="missed-vs-skipped">Coming up short vs skipping a set</h2>
-  <p>These are two different things and Badger treats them differently.</p>
-  <p>If you were aiming for 8 and got 6, <strong>log the 6</strong>. It's a real set: it counts toward your volume, it shows in your history, and it feeds plateau and deload detection. On a routine workout the summary will show it as under plan, which is exactly the information you want later when you're wondering why progress stalled.</p>
-  <p><strong>Skip</strong> is for a set you didn't do at all - you ran out of time, the rack was taken, something hurt. A skipped set is left out of your history and out of the detection features, because nothing happened to measure.</p>
-  <p>The short version: if you lifted, log what you lifted. Only skip what you genuinely didn't do.</p>
-
-  <h2 id="plan-reference">Seeing your target while you log</h2>
-  <p>When a workout was started from a routine day, a line above the set recorder shows what the plan asks for and what you did last time - for example <strong>"Plan 8-10 · Last 8 @ 80 kg"</strong>. It follows along as you work through the sets, so you can always check the number you're typing against both.</p>
-  <p>Workouts that didn't come from a routine have no plan to show, so the line doesn't appear.</p>
-  <p>The plan turns up in two more places, so you don't have to keep glancing up at that one line:</p>
-  <ul>
-    <li><strong>In the set list.</strong> A set you haven't done yet shows the target where its numbers will go - <strong>80 kg × 8+</strong>, or <strong>× 8-10</strong> - and swaps to what you actually lifted the moment you complete it.</li>
-    <li><strong>On the reps field.</strong> A dim <strong>+</strong> or <strong>-10</strong> sits inside the reps box for an open or ranged target, flush against the number, so the field reads as "8+" instead of a bare 8. It is a marker, not part of the number: what gets saved is whatever digits you typed. It only appears while the field still holds the plan's own figure. Change the number, by typing or with the +/- steppers, and the marker steps out of the way for the rest of that set.</li>
-  </ul>
-  <p>An exact target needs no marker, so it doesn't get one.</p>
-
-  <h2 id="amrap">Open-ended sets: AMRAP and to failure</h2>
-  <p>Two related things go by names worth knowing, because programs use them constantly and they mean different halves of the same idea.</p>
-
-  <h3 id="amrap-target">AMRAP: "8+" in the plan</h3>
-  <p><strong>AMRAP</strong> stands for <em>as many reps as possible</em>. A routine set with an open-topped target is written <strong>8+</strong>: do at least 8, then keep going as far as you can that day.</p>
-  <p>The notation comes from 5/3/1-style programs, where the last set of a lift is left open on purpose, so a good day and a bad day both count for what they were.</p>
-  <p>It is not the same as a <a href="/help/routines/#rep-ranges">rep range</a>. An <strong>8-10</strong> target has a top you're meant to reach and then stop at; an <strong>8+</strong> target has a floor and no ceiling. A set can be one or the other, never both.</p>
-  <p><strong>1+ is how you program a set to failure.</strong> At least one rep, then as many as you can - which is the whole instruction. There is no version without a floor: every set carries a minimum, and the minimum is what "did I meet the plan?" is measured against.</p>
-  <p>To set one: open a routine's <a href="/help/routines/#predefined-sets">predefined sets</a>, and under a working set tap <strong>+ AMRAP</strong>. Warmups can't have one, and it replaces a rep range if the set had one.</p>
-
-  <h4>What an AMRAP set does while you log it</h4>
-  <p>Meeting the plan on an open target just means clearing the floor. Going well past it is the point of the set, not a second bar to clear - and an open set never triggers the "work toward N reps" progression prompt, because there's no top to work toward.</p>
-  <p>See <a href="/help/routines/#amrap-targets">open-topped targets</a> for how it behaves in a routine.</p>
-  <p>In a program that carries a <a href="/help/routines/#progression">progression rule</a>, an open set is often the <a href="#driver-sets">driver</a>: the one set whose reps decide what next session looks like. That is how 5/3/1 and nSuns work - the reps you got on the open set choose the increment.</p>
-
-  <h3 id="to-failure">To failure: what you record afterward</h3>
-  <p><strong>Training to failure</strong> means taking a set until you can't complete another rep. Where AMRAP is what the plan asked for, this is what you report back: the <a href="#rpe-rir">To failure</a> chip under Set details marks the set you just logged as having gone all the way, which is the same thing as recording <strong>RIR 0</strong>.</p>
-  <p>The two compose exactly as you'd expect. A <strong>1+</strong> set in your program is an instruction to go to failure; tapping <strong>To failure</strong> after it is you confirming that you did.</p>
-  <p>Neither one implies the other, and you can use either without the other: log a to-failure set on a plain 8-rep target if that's how it went, or take an 8+ set to 12 and stop with something left.</p>
-
-  <h2 id="set-details">The set details section</h2>
-  <p>The <strong>Set details</strong> section holds the controls you reach for less often: the warmup toggle, the RPE/RIR steppers and the To failure chip. It starts <strong>collapsed</strong>, so the recorder opens as weight, reps and the complete check and nothing else. Tap its header to open it.</p>
-  <p>Nothing is hidden silently. When the section is collapsed, its header spells out anything that's in effect behind it - for example "Warm-up", "RPE 8" or "To failure" - so a set never saves with something you can't see.</p>
-  <p>Open it or close it once and it stays that way everywhere, for every exercise, until you change it again. If you had already chosen one or the other in an earlier version, your choice is kept.</p>
-
-  <h3 id="context-chips">The context row</h3>
-  <p>Under the input fields, one wrapping row carries context for the set ahead: the <strong>machine</strong>, its <strong>attachment</strong>, the <strong>grip</strong> when the machine uses grips, the <strong>bar</strong> and <strong>accessories</strong> when those apply, and the <strong>rest</strong> that starts when you finish.</p>
-  <p>Tap any of them to change it, or long-press the machine chip to open that machine's own screen.</p>
-  <p>Only the chips relevant to the exercise in front of you show up:</p>
-  <ul>
-    <li>The <strong><a href="/help/gyms/#picking-a-bar">bar</a></strong> chip appears on a barbell exercise, at a gym that has bars set up. The bar you pick feeds the plate calculator and your warm-ups, and your records are kept per bar.</li>
-    <li>The <strong><a href="/help/gyms/#picking-accessories">accessories</a></strong> chip appears on barbell and bodyweight exercises at a gym with accessories, and on a machine only when that machine is marked as supporting bands. You can attach several at once, and the chip reads back as a count with the colors beside it - "2 bands".</li>
-  </ul>
-  <p><strong>One thing to know before you attach an accessory:</strong> while an exercise has any accessory on it, every set of that exercise stays out of your personal records - it can't earn a PR badge and it can't block one either, so a banded 100 kg bench never stops a bare 95 kg bench from counting.</p>
-  <p>Clear the accessories and those sets go back into the running. Badger records what you added but never guesses what it was worth: nothing about an accessory changes a weight, the plate math, or the stepper.</p>
-
-  <h3 id="rack-stepper">The stepper on dumbbells and kettlebells</h3>
-  <p>If you've told a gym what's on its <a href="/help/gyms/#racks">dumbbell or kettlebell rack</a>, the <strong>+</strong> and <strong>−</strong> buttons walk that list instead of ticking by a fixed increment - so a rack that runs 5, 10, 15 up to 50 and then jumps moves the way it actually does.</p>
-  <p>A line under the field says so: <strong>"Step: rack · My Gym"</strong>.</p>
-  <p>Typing is untouched. You can still enter any weight at all, nothing is snapped or rejected, and a weight above or below the rack goes back to stepping by your ordinary increment. If a rack isn't set up yet, a quiet link under the field offers to do it.</p>
+  <h3 id="amrap">AMRAP sets (8+)</h3>
+  <p id="amrap-target">An <strong>8+</strong> in your plan is an AMRAP set: do at least 8, then <em>as many reps as possible</em>. A <strong>1+</strong> set means go to failure. Log the reps you actually got; the set meets the plan once you pass the floor. How to write one into a routine is under <a href="/help/routines/#amrap-targets">Open-topped targets</a>.</p>
+  <p>AMRAP is what the plan asks for, and <strong>To failure</strong> is what you record afterward. They're independent.</p>
+  <p>Tap To failure on a plain 8-rep set if that's how it went, or stop an 8+ set at 12 with reps left. In a program with a <a href="/help/progression/#rules">progression rule</a>, the open set is often the <a href="/help/progression/#driver-set">driver</a>, so the reps you log on it decide next session.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
-  <p>The rest timer shows as a chip near the top of the training screen. While running, the chip counts down to zero, then plays a sound and/or vibration (configurable in Settings). Tap the chip to open the rest timer sheet.</p>
-
-  <h3>Timer controls</h3>
-  <p>Tap the rest chip to open the sheet. While the timer is running it shows three buttons:</p>
+  <p>The rest timer shows as a chip near the top of the training screen. It counts down after you save a set, then plays a sound, vibrates, or both (set this in Settings). It doesn't start after the last working set of your last exercise.</p>
+  <p>Tap the chip to open the rest timer sheet:</p>
   <ul>
-    <li><strong>Stop</strong> - Stop and dismiss the running timer.</li>
-    <li><strong>+30s</strong> - Add 30 seconds to the running countdown.</li>
-    <li><strong>Restart</strong> - Restart the countdown from the selected duration.</li>
+    <li><strong>While a timer runs:</strong> <strong>Stop</strong>, <strong>+30s</strong>, or <strong>Restart</strong> from the full duration.</li>
+    <li><strong>When none is running:</strong> pick a preset or type a number of seconds, then tap <strong>Start</strong> for a one-off timer.</li>
   </ul>
-  <p>Pick one of the preset durations or type a custom number of seconds, then tap Start to begin a one-session timer at that length.</p>
 
-  <h3>How rest duration is determined</h3>
-  <p>Badger uses the following priority order:</p>
+  <h3>How long the rest is</h3>
+  <p>Badger uses the first of these that's set:</p>
   <ol>
-    <li>One-session override (set via the rest chip dialog)</li>
-    <li>Exercise default rest (set on the exercise notes screen)</li>
-    <li>The routine's rest for that exercise, used only when the exercise has no default of its own</li>
-    <li>Global default (set in Settings → Rest timer)</li>
-    <li>Last used duration</li>
-    <li>90-second fallback</li>
+    <li>A one-off duration you set in the rest timer sheet</li>
+    <li>The exercise's own rest (on the exercise notes screen)</li>
+    <li>The routine's rest for that exercise</li>
+    <li>The default in <a href="/help/settings/#rest-timer">Settings → Rest timer</a></li>
+    <li>The last duration you used</li>
+    <li>90 seconds</li>
   </ol>
-  <p>Warmup sets use a separate, shorter rest duration - configurable per exercise or globally in Settings.</p>
-  <p>The rest timer does <em>not</em> start after the last working set of your last exercise.</p>
+  <p>Warmup sets use a separate, shorter rest, set per exercise or in Settings.</p>
 
   <h2 id="set-timer">Set timer (timed exercises)</h2>
-  <p>A timed exercise (a plank, a carry, anything measured in seconds) gets a countdown for the set itself, started from the training screen. It keeps honest wall-clock time: locking your phone or switching apps does not pause it, and when you come back it shows exactly where a stopwatch would be.</p>
-  <p>If it runs out while your phone is locked, the set is marked done with its planned duration filled in, so you are not left holding a plank for a timer that quietly stopped.</p>
-  <p>On iPhone the spoken countdown carries on through a locked screen, so you hear the 30-second and 10-second warnings and "Time" at the end without touching the phone.</p>
-  <p>A "Set complete" notification is the fallback, and it fires at the moment the set actually ended whenever Badger could not speak for itself: on Android, and on an iPhone where a call or another app took the audio mid-set.</p>
-  <p>If you would rather that notification arrived quietly, turn off <strong>Settings &rarr; Set timer &rarr; Set timer sound</strong>. The notification still appears, it just makes no sound. The spoken countdown cues are separate and keep working either way, and the rest timer keeps its own sound setting.</p>
+  <p>A timed exercise (a plank, a carry) gets a countdown for the set itself, started from the training screen. It keeps running when you lock the phone or switch apps. If it ends while the phone is locked, the set is marked done with its planned duration filled in.</p>
 
   <h3>What Badger says while the set runs</h3>
-  <p>With the app in front, a timed set is spoken instead of watched: a "3, 2, 1, Go" count into the start, a warning at 30 seconds and again at 10 seconds left, and "Time" at the end.</p>
-  <p>On a long set you also get the minutes remaining - every minute under ten, every five minutes up to thirty, every ten minutes above that - so a 40-minute carry gets a handful of markers instead of a running commentary.</p>
-  <p>Pick the voice in <strong>Settings &rarr; Set timer &rarr; Set timer voice</strong>: <strong>Female</strong>, <strong>Male</strong>, or <strong>Off</strong> if you would rather train without the commentary. Off silences what Badger says during the set; it does not take away the notification that tells you the set is over.</p>
-  <p>Tap a choice in the picker to hear it. The voices are recorded and bundled into the app, so they work with no signal, in airplane mode, and with no delay before the first word.</p>
-  <p>If music is playing, Badger ducks it for the moment it speaks, instead of stopping it.</p>
+  <p>With the app open, Badger counts you in with "3, 2, 1, Go", warns you at 30 and 10 seconds left, and says "Time" at the end. On a long set it also calls out the minutes left: every minute under ten, every five minutes up to thirty, every ten above that.</p>
+  <p>Pick the voice in <strong>Settings → Set timer → Set timer voice</strong>: <strong>Female</strong>, <strong>Male</strong> or <strong>Off</strong>. Tap a choice to hear it. The voices are built into the app, so they work offline. If music is playing, it gets quieter while Badger speaks.</p>
 
-  <h3>On your lock screen (iPhone)</h3>
-  <p>On iPhone (iOS 16.2 and later), both timers appear as a Live Activity: a countdown card on the lock screen, and on models with the Dynamic Island, a compact countdown there while you're in another app. Tap it to jump back to your workout.</p>
-  <p>The rest timer's card flips to "Rest done" when it finishes; a timed set shows "SET" while it runs and "SET DONE" when it ends, with the exercise name on the card.</p>
-  <p>The first time this happens, iOS asks "Allow Live Activities from Badger?" - that prompt comes from iOS itself, and allowing it is what lets the countdown show outside the app. You can change it later in iOS Settings under Badger.</p>
-  <p>On iOS 26.6 and later, a rest timer that finishes while your phone is locked plays the Badger sound you picked. Below that, iOS substitutes its own standard sound in this one situation. That's an iOS restriction on custom notification sounds, not a setting you can change.</p>
+  <h3>When the phone is locked</h3>
+  <p>On iPhone, the spoken countdown keeps going through a locked screen. On Android, or on an iPhone where a call or another app took the audio, a <strong>Set complete</strong> notification arrives when the set ends instead.</p>
+  <p>Voice <strong>Off</strong> doesn't stop that notification. To make it silent, turn off <strong>Settings → Set timer → Set timer sound</strong>; the rest timer has its own sound setting. That toggle only covers the notification - the spoken countdown keeps talking with it off.</p>
 
-  <h2 id="workout-notification">Workout notification (Android)</h2>
-  <p>While a workout is running, Badger keeps a notification in your notification bar showing the exercise you are on and the target for your next set, for example "85 kg &times; 8". Check what is next from the lock screen or an always-on display without unlocking your phone.</p>
-  <p>The elapsed workout time counts up next to it once the workout timer is running, and tapping the notification takes you back to the exercise you were on.</p>
-  <p>The notification follows you through the workout: it updates when you switch exercises, when a superset moves you to the next movement, and as you complete sets. If the current exercise has no sets left to do, it reads "No target set".</p>
-  <p>While the rest timer counts down, the same notification shows the countdown instead of the target, then goes back to showing the target when rest is over. Badger keeps this to a single notification instead of stacking a separate one for rest.</p>
-  <p>To turn it off, use <strong>Settings &rarr; App &rarr; Workout notification</strong>. Workouts you log for a past date never get one, since they are not timed. On iPhone the rest timer appears on the lock screen and Dynamic Island instead.</p>
+  <h2 id="lock-screen">Timers on the lock screen</h2>
+  <h3>iPhone: Live Activities</h3>
+  <p>On iOS 16.2 and later, both timers appear as a Live Activity: a countdown card on the lock screen, and a compact countdown in the Dynamic Island on models that have one. Tap it to go back to your workout.</p>
+  <p>Both cards name the exercise. The rest card reads "Rest done" when it finishes; a timed set shows "SET" while it runs and "SET DONE" at the end.</p>
+  <p>The first time, iOS asks "Allow Live Activities from Badger?". Allow it to see the countdown outside the app; you can change it later in iOS Settings under Badger.</p>
+  <p>On iOS 26.6 and later, a rest timer that finishes while the phone is locked plays the Badger sound you picked. On earlier versions, iOS plays its standard sound instead.</p>
 
-  <h2>Skipping sets</h2>
-  <p>If you need to skip a set (injury, time constraint, etc.), long-press it and select <strong>Skip</strong>. Skipped sets stay on the training screen with strikethrough text, and are left out of your history and all calculations. You can also skip or unskip all sets for an exercise at once via the <strong>⋮ menu</strong>.</p>
-  <p>Skipping the last unresolved working set of an exercise auto-advances to the next exercise that still has work, exactly as completing it would. This respects the <strong>Auto-advance to next exercise</strong> setting (Settings → Logging) - turn it off to stay put. Skipping a set that isn't the last one to resolve leaves you where you are.</p>
+  <h3 id="workout-notification">Android: workout notification</h3>
+  <p>During a workout, a notification shows the exercise you're on and your next set's target, such as "85 kg &times; 8", so you can check it from the lock screen. It adds the elapsed time once the workout timer is running, and tapping it takes you back to that exercise.</p>
+  <p>It updates as you switch exercises, move through a superset and complete sets, and reads "No target set" when the exercise has no sets left. During rest it shows the countdown, then goes back to the target.</p>
+  <p>Turn it off in <strong>Settings → App → Workout notification</strong>. Workouts logged for a past date don't get one.</p>
 
-  <h2 id="supersets">Supersets & exercise groups</h2>
-  <p>A superset is a group of exercises you alternate between. When exercises are in the same superset:</p>
+  <h2 id="supersets">Supersets</h2>
+  <p>A superset is a group of exercises you alternate between. After you log a set of one, Badger switches to the next exercise in the group with no rest in between. After the last one in the round, the rest timer starts and you go back to the first exercise that still has sets left.</p>
+  <p>Grouped exercises show as a named, colored block in exercise lists, and the training screen shows the superset's name under the exercise name.</p>
+
+  <h3>Create a superset</h3>
+  <ol>
+    <li>Open the training screen's <strong>⋮ menu</strong> and tap <strong>Superset…</strong>, or open <strong>All exercises</strong> and tap <strong>Create superset</strong>.</li>
+    <li>Check two or more exercises and confirm.</li>
+  </ol>
+  <p>An exercise that's already in another superset moves to the new one (its row says so).</p>
+
+  <h3>Edit a superset</h3>
+  <p>Tap the superset's name in the app bar, or its block header in any exercise list. In the editor you can:</p>
   <ul>
-    <li>They appear together as a named, colored block in exercise lists, and the training screen shows the superset's name under the exercise name.</li>
-    <li>After logging a set for one exercise in the group, Badger automatically switches to the next exercise (no rest timer between them).</li>
-    <li>After the last exercise in the round, the rest timer starts and you cycle back to the first exercise that still has work left.</li>
+    <li>Rename it and pick its color.</li>
+    <li>Drag exercises into the order you alternate in.</li>
+    <li>Remove one exercise. A superset left with one exercise is removed.</li>
+    <li>Add exercises.</li>
+    <li>Dissolve it, with an Undo. Your logged sets aren't affected.</li>
   </ul>
-  <h3>Creating a superset</h3>
-  <p>During a workout, open the training screen's <strong>⋮ menu</strong> and tap <strong>Superset…</strong>, or open the <strong>All exercises</strong> list and tap <strong>Create superset</strong>. Check two or more exercises and confirm - the whole group is created in one step. Checking an exercise that already belongs to another superset moves it over (the row says so).</p>
-  <h3>Editing a superset</h3>
-  <p>Tap the superset's name - in the app bar during training, or on the block header in any exercise list - to open the superset editor. There you can:</p>
+  <p>The same editor works in a routine, and on a past workout from its summary: tap the superset header above an exercise card.</p>
+
+  <h2 id="missed-vs-skipped">Skip a set, or log a short one</h2>
+  <p>If you did the set but came up short, log what you did. If you didn't do it at all, skip it.</p>
   <ul>
-    <li><strong>Rename</strong> the superset and pick its <strong>color</strong>.</li>
-    <li><strong>Drag members</strong> to set the order you alternate in.</li>
-    <li><strong>Remove a single exercise</strong> without touching the rest of the group. If only one exercise would remain, the superset is removed automatically.</li>
-    <li><strong>Add more exercises</strong> to the group.</li>
-    <li><strong>Dissolve</strong> the superset entirely (with an Undo toast, and no logged data is affected).</li>
+    <li><strong>Skip one set:</strong> tap its row, then tap <strong>Skip</strong>. Tap <strong>Unskip</strong> to undo.</li>
+    <li><strong>Skip the rest of an exercise:</strong> open the <strong>⋮ menu</strong> and tap <strong>Skip exercise</strong>, or long-press the exercise in <strong>All exercises</strong> and tap <strong>Skip remaining sets</strong>. The same menu item reads <strong>Unskip exercise</strong> once every set on it is skipped.</li>
   </ul>
-  <p>The same flow works in the routine editor, and on past workouts from the workout summary screen - tap the superset header above an exercise card to fix up groupings after the fact.</p>
+  <p>A skipped set stays on the training screen, struck through, and is left out of your history, all calculations, and plateau and deload detection.</p>
+  <p>A short set is a real set. Aiming for 8 and getting 6? Log the 6. It counts toward volume, shows in your history and feeds plateau and deload detection. On a routine workout, the summary marks it as under plan.</p>
+  <p>Skipping the last set left on an exercise moves you to the next exercise that still has work, the same as completing it. Turn off <strong>Auto-advance to next exercise</strong> in <strong>Settings → Logging</strong> to stay put.</p>
 
-  <h2>Notes card</h2>
-  <p>A card appears above the set input for exercises that have notes or technique instructions. The info icon in the top bar shows or hides it, and tapping the card opens the exercise notes screen. For an exercise with no notes, the info icon opens that screen directly. The card shows:</p>
+  <h2 id="finishing">Finish a workout</h2>
+  <p>On the Today screen, tap <strong>End workout</strong>. The workout summary opens. On a routine workout, it can offer to update the routine with heavier weights you lifted; see <a href="/help/progression/#auto-progress">Auto-progress routine weights</a>.</p>
+
+  <h3 id="resuming">Resume a finished workout</h3>
+  <p>Forgot an exercise? Open <strong>today's</strong> workout summary and tap <strong>Resume workout</strong>. It's offered for today's workout only.</p>
+  <p>The workout timer picks up where it stopped when you log the first new set, so the time between finishing and resuming isn't counted. Editing or re-marking sets on a finished workout doesn't change its duration.</p>
+
+  <h3 id="exercise-order">Exercises done out of order</h3>
+  <p>Badger records the order you actually did your exercises. When you complete the first set of an exercise, it moves into place after the ones you've already done, and exercises you haven't started stay queued after it. Your routine's planned order stays the same. You can still drag to reorder, and a drag sticks.</p>
+
+  <h2 id="progression">Progression rules and suggestions</h2>
+  <p>How a routine's rules, training maxes and percentage sets set your weights, and how the progressive overload suggestion and auto-progress work, is on the <a href="/help/progression/">Progression</a> page.</p>
   <ul>
-    <li><strong>NOTES</strong> - your personal reminders for this exercise (form cues, machine settings, etc.).</li>
-    <li><strong>INSTRUCTIONS</strong> - built-in technique cues (pre-filled for all built-in exercises).</li>
-    <li><strong>GRIP</strong> - the currently selected grip type, when a machine with grip types is active. A quick reminder so you set up consistently every session.</li>
+    <li id="rules-in-preview"><a href="/help/progression/#when-a-rule-acts">What the routine log preview shows</a></li>
+    <li id="percent-sets-preview"><a href="/help/progression/#percent-sets">Percentage sets</a></li>
+    <li id="waved-day-preview"><a href="/help/progression/#waves">Waved days</a></li>
+    <li id="driver-sets"><a href="/help/progression/#driver-set">The driver set</a></li>
+    <li id="auto-progress"><a href="/help/progression/#auto-progress">Auto-progress routine weights</a></li>
   </ul>
-  <p>The card expands automatically when you log an exercise that has personal notes.</p>
-
-  <h3>Machine-scoped notes</h3>
-  <p>When a machine is set, your personal notes become machine-specific. This means you can save different setup cues for the same exercise on different machines - for example, different seat-height reminders for two leg-press machines at the same gym.</p>
-  <p>On the exercise notes screen, the notes heading changes to <strong>"Notes · MachineName"</strong> when machine-scoped, making it clear which machine the notes apply to. Machine notes are shown in the notes card in the training screen alongside global instructions; global exercise notes are shown separately when both exist.</p>
-  <p>The current attachment's notes appear in the same card, so a cue like "use the thick end" written on a rope reaches you at the cable station. Non-notes settings (increment, rest, instructions, muscle assignments) always apply globally to the exercise regardless of machine.</p>
-
-  <h2>Per-set comments</h2>
-  <p>Each set row has a comment icon on the right. Tap it to add or edit a comment for that set.</p>
-  <ul>
-    <li>The comment icon shows a <strong>dot indicator</strong> if a comment already exists for that set.</li>
-    <li>Tap the icon to expand an inline text input field with a <strong>Save</strong> button.</li>
-    <li>Type your comment (e.g., "felt strong", "pain in elbow", "form was off") and tap Save to persist it.</li>
-    <li>Tap the icon again or collapse the field to save and close.</li>
-    <li>Comments are visible in your Workout Summary and History views (read-only).</li>
-  </ul>
-
-  <h2>Grip type</h2>
-  <p>When a machine has grip types enabled (configured in the machine settings), a <strong>grip chip</strong> joins the <a href="#context-chips">context row</a> under the input fields. Tap it to open the picker and choose the grip you used, or pick <strong>No grip</strong> to clear it again.</p>
-  <p>The selected grip is also shown as a reminder in the notes card. Configure available grip types in <strong>More → Machines</strong>.</p>
-
-  <h2>Personal records</h2>
-  <p>When a working set beats your previous best for that exercise, a trophy badge appears on the set row, a SnackBar notification appears at the bottom of the screen, and a haptic pulse fires (if haptics are enabled in Settings). What counts as a best, and which sets compete, is explained under <a href="/help/progress/#prs">Personal records</a>.</p>
-  <p>Records are also kept separately per <a href="/help/gyms/#bar-prs">bar</a>, since a trap-bar deadlift and a straight-bar deadlift aren't the same lift. And sets logged with an <a href="/help/gyms/#accessories-and-records">accessory</a> attached are left out of records in both directions - they never badge, and they never stand in the way of a bare set's record.</p>
-
-  <h2 id="rules-in-preview">Starting a session from a program with rules</h2>
-  <p>If the routine slot carries a <a href="/help/routines/#progression">progression rule</a>, the work happens before you start, on the routine log preview. Badger reads your last session against the rule and <strong>proposes</strong> a weight - it never edits your routine and never changes anything silently.</p>
-  <ul>
-    <li>The proposed weight sits in the working sets, with a line under it naming the part of the rule that fired: <em>Rule met: all sets hit the plan last session &middot; tap edit to override</em>. The line gives the reason; the new weight is in the set rows above it.</li>
-    <li>A slot on a <a href="/help/routines/#waves">waved</a> day or a training max says where the number came from first: <em>Week 2 of 4 &middot; from TM 135 lbs &middot; Rule met: the cycle finished &middot; tap edit to override</em>.</li>
-    <li><strong>Tap the edit pencil and type your own weight.</strong> The reason stays and the line reads <em>overridden</em>. Your rule is not disabled or deleted by disagreeing with it once.</li>
-    <li>Only weight is proposed. Reps come from your <a href="/help/routines/#starting">rep target</a> setting as usual.</li>
-    <li>Nothing is recorded until you tap Start, so backing out and coming in again gives you the same number.</li>
-    <li>If the rule has nothing to propose, there is no line at all. A rule that holds on purpose is different, and says so: <em>Holding: a set missed the plan last session</em>.</li>
-  </ul>
-
-  <h3 id="percent-sets-preview">Percentage sets</h3>
-  <p>A set prescribed as a <a href="/help/routines/#percent-sets">percentage</a> of a <a href="/help/routines/#training-max">training max</a> shows you a real weight in the preview, not a percentage to work out at the rack. The number is snapped to what you can actually load - your gym's plates, the bar you have pinned, the machine's step - by the same arithmetic the <a href="/help/tools/">plate calculator</a> uses.</p>
-  <p>If the percentage comes out below the bar, Badger clamps to the bar and says so.</p>
-  <p>Until the slot has a training max, there is nothing to take a percentage of, and the preview says <strong>"Set a training max to use this rule"</strong> instead of inventing one. Tap it to set the number.</p>
-
-  <h3 id="waved-day-preview">How a waved day reads</h3>
-  <p>On a <a href="/help/routines/#waves">waved day</a> - a day that runs as a cycle of weeks - the preview shows <em>this</em> week's sets and nothing else. Sets belonging to other weeks are not listed and not there to skip past, so a 5/3/1 Monday looks like a normal Monday instead of a four-week table.</p>
-  <p>Sets that apply every week (your accessory work, usually) show every week.</p>
-  <p>The routine moves to the next week once you have trained every day in the cycle, in whatever order. Skip a day and you stay where you are; it doesn't cost you a week.</p>
-  <p>You can set the week yourself at any time from the <strong>WAVE</strong> section on the routine detail screen - it reads <em>Week 2 of 4</em>, and picking a different one moves every waved day in that routine.</p>
-  <p>The preview names the week too, at the head of the line under the sets: <em>Week 2 of 4 &middot; Rule met: the cycle finished</em>. A <a href="/help/routines/#waves">stage ladder</a> reads <em>Stage 2 of 3</em> there instead, because a stage is something you only move down by stalling.</p>
-
-  <h3 id="driver-sets">Driver sets and AMRAP</h3>
-  <p>Some rules read one specific set: the <a href="/help/routines/#driver-set">driver</a>. It is usually an <a href="#amrap">open-topped</a> set - <strong>5+</strong> - and the reps you actually log on it decide what the rule does.</p>
-  <p>Log it honestly: a 5+ you took to 12 and a 5+ you stopped at 5 are meant to lead to different weeks, and that only works if the number is real.</p>
-
-  <h2 id="progressive-overload">Progressive overload suggestions</h2>
-  <p>While you're logging an exercise, Badger shows a suggestion line ("Suggested: 82.5 kg") directly above the input fields when you're ready to progress. The suggestion appears when all your working sets were completed in each of your last <em>N</em> sessions (configurable in Settings → Coaching, default: 3).</p>
-  <p>The suggested weight is your previous session's max weight plus your exercise's configured increment, then rounded to the nearest achievable step. When a machine is set, the machine's weight increment (if configured) is used as the rounding grid - so the suggestion always lands on a weight the machine can actually produce.</p>
-  <p>The <strong>+</strong> and <strong>−</strong> buttons beside the weight field use the same grid, so a stack that steps by 10 moves by 10 - and a quiet line under the field says where that step came from: <em>Step: 10 lbs &middot; from Cybex Leg Press</em>.</p>
-  <p>On dumbbells and kettlebells a <a href="#rack-stepper">rack</a> takes over from the grid. Tap × to dismiss the suggestion for this session.</p>
-  <p>The suggestion is <strong>machine-scoped</strong>: it looks at history for the same machine you currently have set. Switching machines gives you a fresh suggestion based on that machine's history.</p>
-  <p><strong>An exercise with a <a href="/help/routines/#progression">progression rule</a> does not get this suggestion.</strong> Its program already says what happens next. Everything without a rule behaves exactly as before.</p>
-
-  <h2 id="auto-progress">Auto-progress routine weights</h2>
-  <p>By default this is off. Turn it on in <strong>Settings → Coaching → "Auto-progress routine weights"</strong>. When it's on and you finish a workout that you started from a routine, Badger checks each exercise where you completed all the planned sets, looking for weights heavier than the routine planned.</p>
-  <p>If it finds any, the <strong>workout summary</strong> shows an "Update [Routine] · [Day]?" section listing each exercise you progressed - for example <em>80 → 82.5 kg</em>.</p>
-  <p>Each progressed exercise has a checkbox (checked by default). Tap <strong>Update routine</strong> and the checked exercises' new weights are written back into the routine's predefined sets, so next time you run the routine it starts pre-filled with the heavier weight instead of suggesting the same bump again. Uncheck anything you don't want to carry over.</p>
-  <p>(If you have "Workout timer auto-stop" enabled, the same section also appears on the completion pop-up when you finish your last set.)</p>
-
-  <h3>How the comparison works</h3>
-  <ul>
-    <li>It only ever <strong>raises</strong> weights - never lowers them. A lighter or matched session changes nothing.</li>
-    <li>It matches set by set, so pyramid and back-off schemes keep their shape - only the sets you beat go up.</li>
-    <li>Warmups never count toward the comparison. And an exercise is only offered when every planned working set was completed - leave a planned set unfinished and that exercise sits out this time, so a half-done session can't raise your program.</li>
-    <li>Nothing is ever changed silently: the setting controls whether the offer appears, and the checkboxes are your confirmation.</li>
-    <li>If you swapped an exercise for an alternative mid-workout, that slot won't auto-progress (it's no longer the same exercise the routine planned).</li>
-    <li>A slot with a <a href="/help/routines/#progression">progression rule</a> sits this out too - its rule owns the weight, and it already proposed one at the start of the session.</li>
-  </ul>
-
-  <h2>Exercise navigation</h2>
-  <p>Tap the <strong>All exercises</strong> pill at the bottom of the screen to open the exercise list for your current workout. From there you can:</p>
-  <ul>
-    <li>Tap any exercise to switch to it.</li>
-    <li>Drag to reorder exercises.</li>
-    <li>Tap <strong>Add exercise</strong> to add another movement.</li>
-  </ul>
-
-  <h2>Training screen menu (⋮)</h2>
-  <p>The top-right menu offers additional actions for the current exercise:</p>
-  <ul>
-    <li><strong>Replace exercise</strong> - Swap the current exercise for a different one. Existing sets remain attached.</li>
-    <li><strong>Plate calculator</strong> - Opens the plate calculator pre-filled with your current weight. Shown only when plate math applies - see <a href="/help/tools/">Tools</a>.</li>
-    <li><strong>Change gym</strong> - Switch which gym is associated with this workout.</li>
-    <li><strong>Set machine</strong> - Assign a machine and attachment to the current exercise. At the bottom of the machine picker, tap <strong>New machine…</strong> to create one inline without navigating away. Similarly, at the bottom of the attachment picker, tap <strong>New attachment…</strong> to add a new attachment on the spot.</li>
-    <li><strong>Set bar</strong> - Pick which <a href="/help/gyms/#bars">bar</a> you're using, on a barbell exercise at a gym that has bars. <strong>New bar…</strong> at the bottom adds one on the spot.</li>
-    <li><strong>Set accessories</strong> - Attach <a href="/help/gyms/#accessories">bands, chains or straps</a> to this exercise. Several at once; tap Done when you're finished.</li>
-  </ul>
-
-  <h2 id="resuming">Resuming a workout</h2>
-  <p>Forgot an exercise after you'd already finished? Open <strong>today's</strong> workout summary and tap <strong>Resume workout</strong> to reopen it and add what you missed. (Resume is only offered for today's workout.)</p>
-  <p>The elapsed timer behaves like a stopwatch: it picks up where it left off when you log the first set of the new exercise, so the idle time between finishing and resuming is <em>not</em> counted - only the extra active time is added.</p>
-  <p>Adding a single set resumes and finishes almost instantly, so it adds essentially no time. Editing or re-marking sets on a finished workout never changes its recorded duration.</p>
-
-  <h2 id="exercise-order">Exercise order</h2>
-  <p>Did the exercises out of order - say a machine was free, so you jumped ahead? Badger records the order you <em>actually</em> performed them. As you complete the first set of each exercise, it slides into place in your done-so-far sequence; exercises you haven't started yet stay queued after.</p>
-  <p>Your workout and its history then show the real order you trained, while your routine's planned order is left untouched for next time. You can still drag-reorder, and a drag sticks afterward if you want to nudge something.</p>
 </HelpLayout>

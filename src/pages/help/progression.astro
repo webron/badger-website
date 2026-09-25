@@ -1,0 +1,190 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Progression" description="How Badger changes your weights: progression rules, training maxes, percentage sets, waves, stage ladders, the progressive overload suggestion and auto-progress.">
+  <h1>Progression</h1>
+
+  <p>This page covers every way Badger changes the weight you lift next: progression rules on a routine, the progressive overload suggestion, and auto-progress. Building the routine itself is on the <a href="/help/routines/">Routines</a> page.</p>
+
+  <hr />
+
+  <h2 id="why">Why did my weight go up, or not?</h2>
+  <p>Look at the line under the exercise on the routine log preview. If the exercise has a progression rule, that line names the part of the rule that fired, or says why the weight is holding. No line means no rule, or a rule with nothing to do here; the weight comes from another source in this table.</p>
+  <table>
+    <thead>
+      <tr><th>What sets the weight</th><th>Where you see it</th><th>Where it's set</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><a href="#rules">Progression rule</a></td><td>The routine log preview, as a proposal you can change</td><td>On an exercise in a routine, or built into a program</td></tr>
+      <tr><td><a href="/help/routines/#weight-source">Last-performance prefill</a></td><td>Starting weights copied from your last session</td><td>The routine's weight source</td></tr>
+      <tr><td><a href="#progressive-overload">Progressive overload suggestion</a></td><td>A <strong>Suggested</strong> line above the weight field while you log</td><td><a href="/help/settings/#coaching">Settings → Coaching</a></td></tr>
+      <tr><td><a href="#auto-progress">Auto-progress</a></td><td>The workout summary, as an offer to update the routine</td><td><a href="/help/settings/#coaching">Settings → Coaching</a> (off by default)</td></tr>
+      <tr><td><a href="/help/tools/#deload">Deload week</a></td><td>A banner on the Today screen, and lighter weights in the preview</td><td><a href="/help/settings/#coaching">Settings → Coaching → Deload</a></td></tr>
+    </tbody>
+  </table>
+  <p>How they fit together:</p>
+  <ul>
+    <li>A rule's proposal replaces the prefilled weight on that exercise's working sets. Exercises without a rule start from the weight source.</li>
+    <li>An exercise with a rule gets no overload suggestion, and auto-progress skips it.</li>
+    <li>The overload suggestion and auto-progress only ever raise a weight. A rule can also lower one, for example after repeated misses.</li>
+    <li>A deload week pauses a rule's count. See <a href="#holds-and-deloads">Holds, misses and deload weeks</a>.</li>
+  </ul>
+
+  <h2 id="rules">Progression rules</h2>
+  <p>A progression rule is a sentence on an exercise in a routine that says what happens to its weight next session, based on the last one. This is the rule StrongLifts uses, as the app shows it:</p>
+  <div class="callout">
+    <p>After <strong>3</strong> misses, drop <strong>10%</strong>. When all working sets hit the plan, add <strong>2.5 kg</strong>.</p>
+  </div>
+  <ul>
+    <li>The bold parts are chips. Tap one to change its number.</li>
+    <li>Badger checks the clauses from top to bottom and uses the first one that matches. If none matches, the weight stays where it is.</li>
+    <li>The increment shows in your unit: 2.5 kg if you log in kilos, 5 lbs in pounds, the figures the program itself uses.</li>
+    <li>Each exercise in a routine day can have one rule.</li>
+  </ul>
+  <p>Six of the <a href="/help/routines/#programs">built-in programs</a> come with their rules already written.</p>
+
+  <h3 id="writing-a-rule">Write a rule</h3>
+  <ol>
+    <li>Open a routine day and tap an exercise to open its planned sets.</li>
+    <li>In the <strong>Progression</strong> section at the top, tap <strong>Linear</strong> or <strong>Double progression</strong>. Badger writes a starting sentence.</li>
+    <li>Tap any number in the sentence (the increment, the percentage, the number of misses, the rep threshold) and type a new value.</li>
+  </ol>
+  <p>The sentence stays exactly as you leave it. To add a reminder for yourself ("only while I'm eating enough"), use <strong>Notes</strong>; the rule runs the same either way. To remove the rule, tap <strong>None</strong> and confirm.</p>
+
+  <h3 id="set-up-progression">Add rules to a routine you already have</h3>
+  <ol>
+    <li>On the routine detail screen, open the <strong>⋮ menu</strong> and tap <strong>Set up progression</strong>.</li>
+    <li>Read the list of sentences it would write, day by day.</li>
+    <li>Confirm to write them.</li>
+  </ol>
+  <p>Exercises with a rep range get double progression, and fixed-rep exercises get linear. Exercises that already have a rule, or no weight, are skipped. When the same exercise, with the same preset, appears on two or more newly ruled days, those days are marked <em>Progresses together on every day it appears</em> (see <a href="#progressing-together">Lifts that progress together</a>).</p>
+
+  <h3 id="reading-a-rule">Where a rule shows</h3>
+  <p>On the routine detail screen, the rule's sentence sits under the exercise name, in the same words the editor used. On a day where some exercises have rules, the others read <strong>No rule &middot; progression hints active</strong>.</p>
+
+  <h2 id="when-a-rule-acts">What the routine log preview shows</h2>
+  <p>A rule proposes a weight on the routine log preview, before you start, and you can change it there. The routine's planned sets stay as they are.</p>
+  <ul>
+    <li>The proposed weight is in the working sets. The line under them names the part of the rule that fired, for example <em>Rule met: all sets hit the plan last session &middot; tap edit to override</em>.</li>
+    <li>On a waved day, or with a training max, the line starts with where the number came from: <em>Week 2 of 4 &middot; from TM 135 lbs &middot; Rule met: the cycle finished &middot; tap edit to override</em>. A stage ladder shows <em>Stage 2 of 3</em> in place of the week.</li>
+    <li>When a rule holds the weight, the line says why, for example <em>Holding: the driver set fell short of its rep target</em>. When the rule has nothing to do, there's no line.</li>
+    <li>Reps come from the routine's plan. On a laddered program such as StrongLifts or GZCLP, a rule can also move you to the next <a href="#stages">stage</a>, a different set scheme already written into the routine.</li>
+    <li>Nothing is recorded until you tap <strong>Start</strong>, so backing out and opening the preview again shows the same proposal.</li>
+  </ul>
+
+  <h3 id="override">Use a different weight</h3>
+  <p>Tap the <strong>edit</strong> pencil on the exercise and type your weight. The line keeps the reason and adds <em>overridden</em>. The rule stays in place for next time.</p>
+
+  <h3 id="holds-and-deloads">Holds, misses and deload weeks</h3>
+  <ul>
+    <li><strong>Miss the minimum once and a 5/3/1 training max holds for that whole cycle.</strong> 5/3/1 only raises it at a cycle boundary, so a week 1 shortfall still counts three weeks later. The preview says <em>Holding: the plan's minimum was missed this cycle</em>. Setting the week by hand clears it.</li>
+    <li><strong>A <a href="/help/tools/#deload">deload week</a> pauses a rule's count without resetting it.</strong> It doesn't advance a cycle, and misses you'd already built up are still there afterward.</li>
+    <li>A deload week written into the program, such as 5/3/1's fourth week, is an ordinary week and counts.</li>
+  </ul>
+
+  <h2 id="training-max">Training max</h2>
+  <p>A training max is a number per lift, set a little below your real one-rep max, that programs such as 5/3/1 and nSuns take their percentages from. It's never loaded on the bar.</p>
+  <p>An exercise that uses one shows it under its name on the routine detail screen, for example <strong>Training max 135 lbs &middot; 120 → 130 → 135 ›</strong>.</p>
+  <ol>
+    <li>Tap that line, or tap <strong>Set a training max to use this rule</strong> on the routine log preview.</li>
+    <li>Accept Badger's proposal, or type your own number.</li>
+  </ol>
+  <p>The proposal is 90% of your best estimated 1RM for the lift, with the working shown. With no history for the lift, Badger asks you for a number instead.</p>
+  <p>After that, the rule moves it. The same sheet lists every move, marked as coming from the rule, from you, or from the first time it was set. Your own edit always wins. A shared routine file doesn't carry your training max, so whoever opens it sets their own.</p>
+
+  <h2 id="percent-sets">Percentage sets</h2>
+  <p>A percentage set is planned as a share of the training max (85%) instead of a weight (100 kg). The routine log preview works out the weight and rounds it to something you can load.</p>
+  <ol>
+    <li>Open the exercise's planned sets in the routine.</li>
+    <li>On a set, tap <strong>+ % of max</strong> and enter the percentage.</li>
+  </ol>
+  <p>The percentage replaces the weight field. Tap <strong>Use a weight instead</strong> and the weight you last typed comes back. The percentage controls appear when the exercise has a rule, when the day is waved, or when the set already uses them.</p>
+  <p>On the preview:</p>
+  <ul>
+    <li>The weight is rounded to your gym's plates, the bar you have pinned, the machine's step size, and whether the machine is logged per side. The <a href="/help/tools/">plate calculator</a> and the warm-up calculator round the same way.</li>
+    <li>A percentage that lands below the bar is raised to the bar, and the preview says so.</li>
+    <li>Until the exercise has a training max, the preview shows <strong>Set a training max to use this rule</strong>. Tap it to set one.</li>
+  </ul>
+  <p>Percentage and plain-weight sets can sit in the same day. The routine's weight source and history scope don't apply to a percentage set.</p>
+
+  <h3 id="percent-of-another-lift">A percentage of another lift</h3>
+  <p>To base a variation on the lift it assists, such as close-grip bench at 80% of your bench, pick that lift in the <strong>Percent of</strong> row.</p>
+  <ol>
+    <li>Open the variation's planned sets. Once it has at least one percentage set, a <strong>Percent of</strong> row appears under Progression.</li>
+    <li>Change it from <strong>This lift</strong> to the lift the percentage comes from. The list shows the other lifts in this routine.</li>
+  </ol>
+  <ul>
+    <li>The percentages now follow that lift's training max or top set. Change the bench's training max and the close-grip weights follow it the same session.</li>
+    <li>The lift you pick needs its own progression rule. Without one it has no number to lend, and the preview says so.</li>
+    <li>Remove that lift from the routine and the row reads <strong>Not in this routine</strong>. The percentages go back to the variation's own number.</li>
+    <li>This shares the number only. To share the number and the miss count, see <a href="#progressing-together">Lifts that progress together</a>.</li>
+  </ul>
+
+  <h2 id="driver-set">The driver set</h2>
+  <p>The driver is the one set whose logged reps a rule reads, such as the last main set in 5/3/1 or the key set in nSuns. Tap <strong>Drives progression</strong> on that set in the planned-sets editor, and a clause like <em>If the driver set reaches 8, add 5 lbs</em> reads your reps on it.</p>
+  <ul>
+    <li>When the set has a label such as <strong>5+</strong>, the sentence uses it: <em>If the 5+ set reaches 8, add 5 lbs</em>.</li>
+    <li>An exercise has one driver (one per week on a waved day). Marking a new one clears the old. A warmup can't be the driver.</li>
+    <li>Driver sets are usually <a href="/help/routines/#amrap-targets">open-topped</a> (5+), so the reps you get tell the rule how strong you were that day. Log the real number: a 5+ taken to 12 and one stopped at 5 lead to different weeks.</li>
+  </ul>
+
+  <h2 id="waves">Waved days (a cycle of weeks)</h2>
+  <p>A waved day runs a different session each week of a cycle, such as 5/3/1's four-week wave. Each set belongs to a week, and the preview shows only this week's sets.</p>
+  <ol>
+    <li>On the routine detail screen, open the day's <strong>Day options</strong> and set <strong>Wave</strong> to the number of weeks.</li>
+    <li>In each exercise's planned sets, pick the week for every set. Tap <strong>Every week</strong> for a set that belongs in all of them, such as accessory work.</li>
+  </ol>
+  <p>To turn the wave off, set it below two weeks.</p>
+
+  <h3 id="which-week">Which week the routine is on</h3>
+  <p>The whole routine is on one week, shown as <strong>Week 2 of 4</strong> in the <strong>WAVE</strong> section near the top of the routine detail screen. Every waved day in the routine follows it.</p>
+  <ul>
+    <li>It moves to the next week once you've trained every day of the cycle, in any order. Skipping a day doesn't cost you a week.</li>
+    <li>To change it, tap the section and pick a week in <strong>Which week?</strong>. It saves immediately.</li>
+    <li>The section only appears when the routine has a waved day.</li>
+  </ul>
+
+  <h3 id="rotating-exercises">Rotate exercises by week</h3>
+  <p>To change which lift you do each week (a board press one week, a good morning the next), add each variation as its own exercise in the day and put all its sets in its week.</p>
+  <p>An exercise whose sets all belong to other weeks is left out of that week's preview and workout. An exercise with no planned sets shows up every week.</p>
+
+  <h2 id="stages">Stage ladders</h2>
+  <p>A stage ladder moves you to a lighter set scheme when you stall. StrongLifts goes 5×5 → 3×5 → 1×5. GZCLP's T1 goes 5×3+ → 6×2+ → 10×1+, and its T2 goes 3×10 → 3×8 → 3×6.</p>
+  <ul>
+    <li>The rule's deload is what moves you down: in StrongLifts, three misses in a row drop the weight 10% and move you to the next stage.</li>
+    <li>The preview shows <em>Stage 2 of 3</em>. A laddered exercise has no WAVE section, and its stages only change when you stall.</li>
+    <li>StrongLifts' deadlift is already 1×5 and has no ladder. If you stall again at 1×5, the program's advice is to move on; Madcow 5×5 is in the Intermediate folder.</li>
+  </ul>
+
+  <h2 id="progressing-together">Lifts that progress together</h2>
+  <p>When a lift appears on more than one day, those days can share one number and one miss count. In Madcow, Friday's heavy triple sets the weight Monday ramps to. In 5/3/1 BBB, the main lift and its Boring But Big work read one training max.</p>
+  <ul>
+    <li>The built-in programs come set up this way. <a href="#set-up-progression">Set up progression</a> can do this for your own routine too, when the same exercise and preset appear on two or more days it's newly writing a rule for; it can't reproduce Madcow's or GZCLP's shape by itself.</li>
+    <li>In Madcow, one day moves each lift: Friday for the squat, bench and row, Wednesday for the press and deadlift. The other days take their percentages from that number.</li>
+  </ul>
+
+  <h2 id="progressive-overload">Progressive overload suggestion</h2>
+  <p>On an exercise without a rule, a <strong>Suggested: 82.5 kg</strong> line appears above the weight field once you've completed all your working sets in each of your last few sessions. <strong>Progressive overload trigger</strong> in <a href="/help/settings/#coaching">Settings → Coaching</a> sets how many (default 3).</p>
+  <ul>
+    <li>The suggestion is your last session's heaviest weight plus the exercise's increment, rounded to a weight your equipment can make. With a machine set, the machine's step is used.</li>
+    <li>It reads history for the machine you have set. Switch machines and the suggestion comes from that machine's history.</li>
+    <li>Tap × to dismiss it for this session.</li>
+  </ul>
+
+  <h3 id="double-progression">Double progression</h3>
+  <p>With a <a href="/help/routines/#rep-ranges">rep range</a> on an exercise, you add reps until you reach the top of the range, then add weight and drop back to the bottom.</p>
+  <p>While you work up the range, the suggestion reads <strong>Work toward 10 reps</strong>. Once every working set reaches the top for as many sessions as the progressive overload trigger asks, it goes back to suggesting weight.</p>
+  <p>An open-topped target (8+) never shows the "work toward" prompt. Exercises with a plain rep target get the weight suggestion only.</p>
+
+  <h2 id="auto-progress">Auto-progress routine weights</h2>
+  <p>Auto-progress offers to write heavier weights you lifted back into the routine, so the next session starts from them. It's off by default: turn on <strong>Auto-progress routine weights</strong> in <a href="/help/settings/#coaching">Settings → Coaching</a>.</p>
+  <ol>
+    <li>Finish a workout you started from a routine.</li>
+    <li>On the workout summary, the <strong>Update [Routine] &middot; [Day]?</strong> section lists each exercise you lifted heavier than planned, for example <em>80 → 82.5 kg</em>.</li>
+    <li>Uncheck anything you don't want to keep, then tap <strong>Update routine</strong>.</li>
+  </ol>
+  <p>If <strong>Workout timer auto-stop</strong> is on, the same section also appears on the pop-up when you finish your last set.</p>
+  <p>An exercise is offered only when you completed every planned working set, it's the exercise the routine planned (not an alternative you swapped in), and it has no progression rule.</p>
+  <p>Weights only go up. Sets are compared one by one, so a pyramid or back-off scheme keeps its shape and only the sets you beat change. Warmups don't count.</p>
+</HelpLayout>
