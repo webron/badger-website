@@ -36,6 +36,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Set timer sound</strong> - Plays a sound with the "Set complete" notification. You get that notification when a timed set ends without being announced aloud, for example with the phone locked on Android. It doesn't affect the voice.</li>
     <li><strong>Set timer voice</strong> - <strong>Female</strong>, <strong>Male</strong> or <strong>Off</strong>. Tap one to hear it. Off silences the spoken cues; you still get the "Set complete" notification when the phone is locked.</li>
+    <li><strong>Start rest when the timer ends</strong> - Starts the <a href={`/help/logging/#timer-end`}>rest timer</a> the moment a timed set's countdown reaches zero, before you log the set. On by default.</li>
+    <li><strong>Log the set when the timer ends</strong> - Also logs the set and marks it done when the countdown reaches zero, the same as tapping its check. Off by default.</li>
   </ul>
 
   <h2 id="workout-timer">Workout timer</h2>
@@ -65,29 +67,35 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Keep screen on</strong> - Stops your phone sleeping during a workout.</li>
     <li><strong>Haptic feedback</strong> - Vibration on taps and timer events.</li>
     <li><strong>Workout notification</strong> - Android only. Shows the current exercise and your next set target in the notification bar during a workout, so you can check it from the lock screen. See <a href={`/help/logging/#workout-notification`}>Workout notification</a>.</li>
-    <li><strong>Workout reminders</strong> - A notification on each weekday a routine day is <a href={`/help/routines/#creating`}>scheduled for</a>. <strong>Remind me</strong> sets how long before 8:00 AM that day it arrives.</li>
+    <li><strong>Workout reminders</strong> - A notification on each weekday a routine day is <a href={`/help/routines/#creating`}>scheduled for</a>. <strong>Remind me at</strong> sets the time it arrives. Changes to a routine's schedule take effect straight away.</li>
     <li><strong>End of workout summary</strong> - What the completion sheet shows when you finish a session.</li>
   </ul>
 
   <h2 id="data">Your data</h2>
   <p>Everything below is in the <strong>Your data</strong> section at the bottom of Settings. <strong>More → Data &amp; backup</strong> jumps straight to it.</p>
 
-  <h3 id="backup">Backup and restore</h3>
-  <p>Your data lives only on this phone. Back it up regularly, or turn on <a href={`#cloud-backup`}>Cloud backup</a>.</p>
+  <h3 id="backup">Backup</h3>
+  <p>Your workout data is stored locally in a SQLite database, and Badger keeps it backed up in three places:</p>
   <ul>
-    <li><strong>Manual backup</strong> - Saves everything as a <code>.workout_backup</code> file and opens the share sheet, so you can put it in Google Drive, your files app or anywhere else.</li>
-    <li><strong>Restore from backup</strong> - Pick a <code>.workout_backup</code> file. <strong>It replaces all your current data</strong>, so back up first if you need to. Badger checks the file is intact first and rejects a damaged one, leaving your data as it was.</li>
-    <li><strong>Restore previous data</strong> - Badger saves a copy of your data just before any restore replaces it. If the restore was a mistake, tap <strong>Restore previous data</strong> (under Restore) to go back, then restart the app.</li>
+    <li><strong>iPhone: iCloud, on by default.</strong> Your own private iCloud database - Badger's developer cannot read it. Turn it off on the Backup screen or in iOS Settings. Weigh-ins and heart rates read from Apple Health stay out of it: after a restore, opening Body brings back the last year of weigh-ins from Apple Health. Past heart rates are not restored.</li>
+    <li><strong>Android: on-phone copies, carried by Android's own backup.</strong> Badger keeps five dated copies on your phone. If your phone's own backup is turned on, Android carries those copies to your Google account for you - see <a href={`#android-backup-setting`}>where to check that setting</a> below.</li>
+    <li><strong>Google Drive, an optional extra on either platform.</strong> Backs up after every workout and is the way to move a log between an iPhone and an Android phone, since the other two are locked to their own platform.</li>
   </ul>
 
-  <h3 id="cloud-backup">Cloud backup</h3>
-  <p>Cloud backup saves Badger automatically to your own Google Drive. It's off until you turn it on:</p>
-  <ol>
-    <li>Go to <strong>More → Settings → Cloud backup</strong>.</li>
-    <li>Turn on <strong>Auto backup to your Drive</strong> and sign in with your Google account. Badger takes the first backup straight away.</li>
-  </ol>
-  <p>After that, Badger backs up when you finish a workout (at most once an hour) and once a day, whenever something has changed. It keeps the five most recent backups in a hidden app folder on your Drive. Tap <strong>Back up now</strong> to take one yourself. To restore on a new phone, see <a href={`/help/phone-migration/#cloud-backup`}>Moving to a new phone</a>.</p>
-  <p><strong>Back up equipment photos</strong>, on the same screen, is off by default. Turn it on and photos of your machines, attachments and bars go into every backup and come back when you restore, at the cost of much larger files on your Drive. Photos you already have are included from the next backup.</p>
+  <h4 id="cloud-backup">The Backup screen</h4>
+  <p>Open it from <strong>More → Settings → Your data → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
+  <ul>
+    <li><strong>Automatic</strong> - the iCloud switch and its status on iPhone, or the count of on-phone copies on Android, plus a manual <strong>Back up now</strong> for iCloud.</li>
+    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Undo last restore</strong> appears when a pre-restore snapshot exists, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself.</li>
+    <li><strong>Extra</strong> - the Google Drive switch, <strong>Back up equipment photos</strong> (off by default, iCloud and Drive only), a manual Drive backup, and <strong>Save a backup file</strong> for a one-off export you send yourself.</li>
+  </ul>
+  <p><strong>Restore from backup</strong> replaces your current database with the copy you picked. <strong>All current data will be overwritten</strong> - back up first if you need to keep it. Badger checks a copy is intact before replacing anything, so a corrupted or incomplete one is rejected and your current data is left untouched.</p>
+
+  <h4 id="android-backup-setting">Android's automatic restore needs Android backup turned on</h4>
+  <p>The on-phone copies only reach your Google account, and so only come back on a new or reinstalled phone, if your phone's own backup was on beforehand. Check it under your phone's <strong>Settings → System → Backup</strong> (the exact path varies by phone maker).</p>
+  <p>If it was off, restore instead from a Google Drive backup or a saved file - see <a href={`/help/phone-migration/`}>Moving to a new phone</a>.</p>
+  <p><strong>Back up equipment photos</strong> is a second opt-in on the Backup screen's Extra section, off by default. Leave it off and iCloud and Drive backups hold your training data only; turn it on and photos of your machines, attachments and bars ride along too.</p>
+  <p>The cost is larger files. Photos already on your equipment are included starting with the next backup. The on-phone copies Android keeps never include photos, to keep them small.</p>
 
   <h3 id="export">Exporting data</h3>
   <p><strong>Export workout data</strong> makes a CSV file with one row per set (date, exercise, weight, reps, duration, warmup flag, RPE, RIR and more) and opens the share sheet.</p>
