@@ -86,7 +86,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="backup">Backup</h3>
   <p>Your workout data is stored locally in a SQLite database, and Badger keeps it backed up in three places:</p>
   <ul>
-    <li><strong>iPhone: iCloud, on by default.</strong> Your own private iCloud database - Badger's developer cannot read it. Turn it off on the Backup screen or in iOS Settings.</li>
+    <li><strong>iPhone: iCloud, on by default.</strong> Your own private iCloud database - Badger's developer cannot read it. Turn it off on the Backup screen or in iOS Settings. Weigh-ins and heart rates read from Apple Health stay out of it: after a restore, opening Body brings back the last year of weigh-ins from Apple Health. Past heart rates are not restored.</li>
     <li><strong>Android: on-phone copies, carried by Android's own backup.</strong> Badger keeps five dated copies on your phone. If your phone's own backup is turned on, Android carries those copies to your Google account for you - see <a href={`#android-backup-setting`}>where to check that setting</a> below.</li>
     <li><strong>Google Drive, an optional extra on either platform.</strong> Backs up after every workout and is the way to move a log between an iPhone and an Android phone, since the other two are locked to their own platform.</li>
   </ul>

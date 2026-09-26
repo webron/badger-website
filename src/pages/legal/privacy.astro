@@ -24,7 +24,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li>Workouts, sets, and exercises (including weight, reps, distance, duration, RPE, RIR, notes, comments, and - if you switch it on - the end-of-set heart rate read from Apple Health or Health Connect).</li>
     <li>Routines, routine days, and predefined sets.</li>
-    <li>Body measurements and body-weight history, including any weigh-ins imported from Apple Health or Health Connect. Imported readings are saved in Badger's local database exactly like ones you type in, so they behave the same way everywhere else in the app - including in backups (see below).</li>
+    <li>Body measurements and body-weight history, including any weigh-ins imported from Apple Health or Health Connect. Imported readings are saved in Badger's local database exactly like ones you type in, so they behave the same way everywhere else in the app - including in backups, except iCloud backups (see below).</li>
     <li>Gyms, machines, attachments, and their links to exercises.</li>
     <li>Photos you add to a machine or attachment. They are saved as ordinary image files in Badger's own storage on your device. They are included in a backup only when the <strong>Back up equipment photos</strong> setting is on - off by default (see below), and only in an iCloud or Drive backup; the copies Android keeps on your phone never include them, to keep those copies small. Backed-up photos are never sent to us either way. Deleting the machine or attachment, or removing the photo, deletes the file.</li>
     <li>All app settings, preferences, and the debug log ring buffer.</li>
@@ -43,7 +43,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
       your own private iCloud database - one CloudKit zone under your Apple ID that only
       Badger's app on your own devices can open. We cannot read it; Apple does not give us
       access to it. Turn it off from Badger's Backup screen or from Badger's iCloud
-      permission in iOS Settings.</li>
+      permission in iOS Settings. Anything Badger read from Apple Health (imported
+      weigh-ins and end-of-set heart rates) is left out of these copies. After a restore
+      from iCloud, Badger imports the last year of weigh-ins from Apple Health again; past heart rates
+      are not restored.</li>
     <li><strong>Android: your phone's own backup, if you have it turned on.</strong> Badger
       keeps up to five dated copies of your log in its own storage on the phone. If your
       phone's system backup is turned on (Android's <code>allowBackup</code>, a phone-wide
