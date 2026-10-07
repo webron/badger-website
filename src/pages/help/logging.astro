@@ -109,10 +109,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="records">Personal records</h3>
   <p>When a working set beats your best for that exercise, a trophy badge appears on the set row, a message pops up at the bottom of the screen, and the phone buzzes if haptics are on.</p>
-  <p>Records are kept separately per <a href="/help/gyms/#bar-prs">bar</a>. While an <a href="/help/gyms/#accessories-and-records">accessory</a> is attached to an exercise, every set of it stays out of records; clear the accessories and those sets count again. An accessory never changes a weight, the plate math or the stepper. What counts as a best is explained under <a href="/help/progress/#prs">Personal records</a>.</p>
+  <p>Records are kept separately per <a href="/help/gyms/#bar-prs">bar</a>. <a href="#left-right-counts">Left and right work</a> has its own records. While an <a href="/help/gyms/#accessories-and-records">accessory</a> is attached to an exercise, every set of it stays out of records; clear the accessories and those sets count again. An accessory never changes a weight, the plate math or the stepper. What counts as a best is explained under <a href="/help/progress/#prs">Personal records</a>.</p>
 
   <h2 id="set-details">Warmups, RPE and to failure</h2>
-  <p>The <strong>Set details</strong> section under the main fields holds the warmup toggle, the RPE and RIR steppers and the <strong>To failure</strong> chip. It starts closed. Tap its header to open or close it; it stays that way for every exercise until you change it. When it's closed, the header lists anything that's on, for example "Warm-up" or "RPE 8".</p>
+  <p>The <strong>Set details</strong> section under the main fields holds the warmup toggle, the <a href="#left-right">Left and right</a> chip, the RPE and RIR steppers and the <strong>To failure</strong> chip. It starts closed. Tap its header to open or close it; it stays that way for every exercise until you change it. When it's closed, the header lists anything that's on, for example "Warm-up" or "RPE 8".</p>
 
   <h3 id="set-types">Warmup sets</h3>
   <p>Turn on the <strong>warmup</strong> toggle before you log a set to mark it as a warmup. Warmups show a "W" badge in place of a set number, and are left out of volume, records and progress graphs.</p>
@@ -147,6 +147,31 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p id="amrap-target">An <strong>8+</strong> in your plan is an AMRAP set: do at least 8, then <em>as many reps as possible</em>. A <strong>1+</strong> set means go to failure. Log the reps you actually got; the set meets the plan once you pass the floor. How to write one into a routine is under <a href="/help/routines/#amrap-targets">Open-topped targets</a>.</p>
   <p>AMRAP is what the plan asks for, and <strong>To failure</strong> is what you record afterward. They're independent.</p>
   <p>Tap To failure on a plain 8-rep set if that's how it went, or stop an 8+ set at 12 with reps left. In a program with a <a href="/help/progression/#rules">progression rule</a>, the open set is often the <a href="/help/progression/#driver-set">driver</a>, so the reps you log on it decide next session.</p>
+
+  <h2 id="left-right">Left and right sets</h2>
+  <p>For a one-arm or one-leg exercise, log the left and right separately and each gets its own number. It works on exercises that log reps or time.</p>
+
+  <h3 id="left-right-setup">Turn it on</h3>
+  <p>Open the exercise's edit screen and set <strong>Log left and right separately</strong>:</p>
+  <ul>
+    <li><strong>Off</strong> - the default. Nothing changes.</li>
+    <li><strong>Optional</strong> - each set can be both arms together or left and right. You choose per set.</li>
+    <li><strong>Always</strong> - every set logs left and right.</li>
+  </ul>
+  <p>The setting doesn't appear on weight-only, distance-only or distance + time exercises. A machine can override it in its <strong>Left and right</strong> section (see <a href="/help/gyms/#machines">Machines</a>); until you set one there, each exercise's own setting applies.</p>
+
+  <h3 id="left-right-log">Log a set</h3>
+  <p>On an <strong>Always</strong> exercise, the reps field is replaced by a <strong>Left</strong> and a <strong>Right</strong> field, with one weight. A timed exercise gets a left and a right time instead.</p>
+  <p>On an <strong>Optional</strong> exercise, open <strong>Set details</strong> and tap the <strong>Left and right</strong> chip beside <strong>Warm-up</strong>. The two chips are independent, so a warmup can be left and right too.</p>
+  <p>A left and right set is one set: one row, one rest timer after you log it, and RPE and RIR stay a single value for the set. It reads <strong>15 lbs &times; 12 L &middot; 11 R</strong> in your history and on the summary, and the hint above the fields shows your last one the same way.</p>
+
+  <h3 id="left-right-counts">How it counts</h3>
+  <ul>
+    <li><strong>Volume</strong> counts both arms: weight &times; (left + right).</li>
+    <li><strong>Graphs and estimated 1RM</strong> use your better arm.</li>
+    <li><strong>Records</strong> are kept for one-arm work apart from both-arms work, so a left and right set never competes with a barbell set of the same exercise. For one-arm work Badger tracks <strong>Overall</strong> (your better arm), <strong>Left</strong> and <strong>Right</strong>. A best on one arm flags the set with the arm, such as <strong>PR &middot; RIGHT</strong>. Sets logged before you turned this on count as both-arms sets.</li>
+  </ul>
+  <p>To plan these sets ahead, see <a href="/help/routines/#left-right-plan">Left and right in a routine</a>.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
   <p>The rest timer shows as a chip near the top of the training screen. It counts down after you save a set, then plays a sound, vibrates, or both (set this in Settings). It doesn't start after the last working set of your last exercise.</p>

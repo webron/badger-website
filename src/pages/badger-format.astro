@@ -661,6 +661,17 @@ const description =
             Needs Badger 1.1.12 or later.
           </td>
         </tr>
+        <tr>
+          <td><code>is_unilateral</code></td>
+          <td>boolean</td>
+          <td>
+            <code>true</code> plans the set for each arm: one target, <code>reps</code> and
+            optionally <code>reps_max</code>, that applies to the left and to the right. Leave the key
+            out when the set is not marked. It only takes effect on an exercise whose
+            <a href="#machine"><code>unilateral_mode</code></a> resolves to <code>"optional"</code>, or to
+            <code>"always"</code>, where every set is left and right anyway. Needs Badger 1.1.14 or later.
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1106,6 +1117,16 @@ const description =
             other kind is ignored.
           </td>
         </tr>
+        <tr>
+          <td><code>unilateral_mode</code></td>
+          <td>string</td>
+          <td>
+            Whether sets logged on this machine are left and right: <code>"off"</code>,
+            <code>"optional"</code> or <code>"always"</code>. It overrides the exercise's own setting,
+            including <code>"off"</code>. Leave the key out if the machine has no preference. Any other
+            value is read as absent. Needs Badger 1.1.14 or later.
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1305,7 +1326,7 @@ const description =
       which session was last evaluated. The recipient sets their own training max, from their own
       history, the first time they run the program.
     </li>
-    <li><strong>No per-exercise detail beyond name, type, and category.</strong> An exercise that gets created on import starts blank: no instructions, no muscles, no rest default, no increment. Anything you already had keeps everything it already has.</li>
+    <li><strong>No per-exercise detail beyond name, type, and category.</strong> An exercise that gets created on import starts blank: no instructions, no muscles, no rest default, no increment. Anything you already had keeps everything it already has. That includes an exercise's own <strong>Log left and right separately</strong> setting, which never travels, like its per-side weight setting. A machine's <code>unilateral_mode</code> does.</li>
     <li><strong>No photos</strong> of machines, attachments, or bars.</li>
     <li><strong>Nothing about you.</strong> No account, no device identifier, no settings, no training notes.</li>
   </ul>
@@ -1346,6 +1367,11 @@ const description =
     <li>
       <strong><code>logs_weight_per_side</code></strong>: older versions ignore the key and lose
       nothing else.
+    </li>
+    <li>
+      <strong>1.1.14 keys.</strong> A machine's <code>unilateral_mode</code> and a set's
+      <code>is_unilateral</code> are omitted when not set. An older version ignores both and
+      imports the routine or machine without them, so the sets read as ordinary both-arms sets.
     </li>
     <li>
       <strong>Older values still read.</strong> <code>machine_type: "plateLoaded"</code>; the
