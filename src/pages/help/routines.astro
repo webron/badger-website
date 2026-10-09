@@ -21,7 +21,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="starting">Start a workout from a routine</h2>
   <ol>
-    <li>Make the routine active: in the routine list, long-press it and tap <strong>Set active</strong>. Its days appear on the Today screen.</li>
+    <li>Make the routine active: in the routine list, tap its <strong>⋮</strong> and tap <strong>Set as active</strong>. Its days appear on the Today screen.</li>
     <li>On the Today screen, tap a day. The <strong>routine log preview</strong> opens with the day's exercises and their sets.</li>
     <li>Uncheck any exercise you want to leave out, or tap <strong>Swap</strong> to replace one for this workout only.</li>
     <li>Tap <strong>Start</strong>.</li>
@@ -61,6 +61,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Rep range</strong> - A top end, so the target reads "8-10". See <a href="#rep-ranges">Rep ranges</a>.</li>
     <li><strong>Open target (AMRAP)</strong> - No top end, so the target reads "8+". See <a href="#amrap-targets">Open-topped targets</a>.</li>
     <li><strong>Warmup flag</strong> - Marks the set as a warmup.</li>
+    <li><strong>Left and right</strong> - Plans the set for each arm. See <a href="#left-right-plan">Left and right in a routine</a>.</li>
     <li><strong>RPE or RIR</strong> - How hard the set should feel. See <a href="#intensity-targets">Intensity targets</a>.</li>
     <li><strong>Percentage</strong>, <strong>driver</strong> and <strong>week</strong> - Progression controls, shown when the exercise has a rule or the day is waved. See <a href="/help/progression/">Progression</a>.</li>
   </ul>
@@ -88,6 +89,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Targets are whole numbers, matching how you log RPE. A half-step target in an imported file rounds up.</li>
     <li>Warmups can't have a target.</li>
     <li>Badger shows the target beside what you log and doesn't compare the two.</li>
+  </ul>
+
+  <h3 id="left-right-plan">Left and right in a routine</h3>
+  <p>On an exercise set to <strong>Optional</strong>, tap the <strong>Left and right</strong> chip on a planned set to plan it for each arm. On an <strong>Always</strong> exercise every planned set is already left and right. Set this on the exercise or its machine; see <a href="/help/logging/#left-right">Left and right sets</a>.</p>
+  <ul>
+    <li>One rep target or range applies to each arm, so the target reads "8-10 each arm".</li>
+    <li>Starting the workout carries the mark onto the sets you log, and the last-session values fill the left and right fields.</li>
+    <li>A left and right set meets the plan only when both arms do. <a href="/help/progression/">Progression rules</a> judge the weaker arm.</li>
   </ul>
 
   <h3>Quick edit</h3>
@@ -123,7 +132,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The <strong>Notes</strong> section on the routine detail screen holds notes for the whole program: why you chose it, the current cycle, a target date. Tap it (or <strong>Add notes</strong>) to open the editor. Routine notes go with the routine when you share it as a <code>.badger</code> file.</p>
 
   <h3>Folders</h3>
-  <p>Tap the folder icon in the top bar of the routine list to create a folder. Long-press a routine to move it into one. Routines outside any folder appear under "Other".</p>
+  <p>Tap the folder icon in the top bar of the routine list to create a folder. To move a routine into one, tap the routine's <strong>⋮</strong> and pick the folder. Routines outside any folder appear under "Other".</p>
 
   <h2 id="progression">Progression</h2>
   <p>Progression rules, training maxes, percentage sets, waves and the overload suggestion are on the <a href="/help/progression/">Progression</a> page:</p>
@@ -173,7 +182,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The confirmation offers to set the new exercise's target weights from its own history. Its machine, attachment and grip defaults reset; the set and rep scheme stays.</p>
 
   <h2>Duplicate a routine</h2>
-  <p>Long-press a routine, tap <strong>Duplicate</strong> and name the copy. It includes all days, exercises, planned sets and groups.</p>
+  <p>In the routine list, tap the routine's <strong>⋮</strong>, tap <strong>Duplicate</strong> and name the copy. It includes all days, exercises, planned sets and groups.</p>
+  <p>Long-pressing a routine opens the same actions as its <strong>⋮</strong>.</p>
+
+  <h2 id="delete-a-routine">Delete a routine</h2>
+  <p>In the routine list, tap the routine's <strong>⋮</strong>, tap <strong>Delete</strong> and confirm. The same option is in the <strong>⋮</strong> menu inside the routine.</p>
+  <p>Workouts you logged from the routine stay in History. If you delete the active routine, no routine is active until you set another one.</p>
 
   <h2 id="create-from-history">Create a routine from your history</h2>
   <p>Turn past workouts into a multi-day routine, one day per workout, with their exercises, sets and warmups.</p>

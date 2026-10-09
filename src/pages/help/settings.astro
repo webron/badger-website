@@ -98,7 +98,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The cost is larger files. Photos already on your equipment are included starting with the next backup. The on-phone copies Android keeps never include photos, to keep them small.</p>
 
   <h3 id="export">Exporting data</h3>
-  <p><strong>Export workout data</strong> makes a CSV file with one row per set (date, exercise, weight, reps, duration, warmup flag, RPE, RIR and more) and opens the share sheet.</p>
+  <p><strong>Export workout data</strong> makes a CSV file with one row per set (date, exercise, weight, reps, duration, warmup flag, RPE, RIR and more) and opens the share sheet. Five columns at the end cover <a href="/help/logging/#left-right">left and right sets</a>: <code>is_unilateral</code>, <code>reps_left</code>, <code>reps_right</code>, <code>duration_left_seconds</code> and <code>duration_right_seconds</code>. On those rows, <code>reps</code> and <code>duration_seconds</code> hold the better arm.</p>
   <p>The file includes sets you never completed, such as the rest of a routine workout you started and left. To count only real training, filter on <code>is_complete</code>; <code>is_skipped</code> marks skipped sets. If you're giving the file to an AI, <a href={`/guides/ai/`}>Use your own AI</a> has a prompt that already explains this.</p>
 
   <h3 id="ai-context">Copying your context for an AI</h3>

@@ -23,6 +23,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Combined types</strong> (for example distance + time) - going farther, or covering the same distance faster, each counts.</li>
   </ul>
   <p>Warmup sets never count, and neither do <a href="/help/gyms/#accessories-and-records">sets logged with an accessory</a> such as a band or chains.</p>
+  <p><strong>Left and right work has its own records.</strong> Sets logged <a href="/help/logging/#left-right">left and right</a> are compared only with other left and right sets. They have <strong>Overall</strong> (your better arm), <strong>Left</strong> and <strong>Right</strong> records, and a set that beats one arm's best is flagged <strong>PR &middot; RIGHT</strong> or <strong>PR &middot; LEFT</strong>. Earlier sets count as both-arms sets.</p>
   <p><strong>Records are kept per machine and per bar.</strong> With a machine or a <a href="/help/gyms/#bar-prs">bar</a> set on the exercise, a set is compared only with sets on that same machine and bar. With neither set, it's compared with all your history.</p>
   <p><strong>Linked exercises share records.</strong> If you've <a href="/help/exercises/#linking">linked two exercises</a>, a new best on either counts as a PR on both, and their graphs combine.</p>
 
@@ -70,6 +71,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Bar</strong> - if you've used two or more named bars. It starts on <strong>All bars</strong>.</li>
     <li><strong>Accessories</strong> - if your history mixes plain sets with sets using bands, chains or straps: <strong>All work</strong>, <strong>No accessories</strong> or <strong>Accessories only</strong>. In All work, sessions with accessories appear as hollow rings. They never count as <a href="/help/gyms/#accessories-and-records">records</a>, so the BEST line can sit below a ring, and Accessories only shows no record marks at all.</li>
   </ul>
+
+  <h3 id="compare">Compare two exercises</h3>
+  <p>Put a second exercise on the same graph, for example incline bench against flat bench.</p>
+  <ol>
+    <li>Open an exercise's progress screen and pick a graph type.</li>
+    <li>Tap <strong>Compare</strong> below the graph type chips.</li>
+    <li>Pick the second exercise. It appears as a dashed line on the same axes, in the same unit.</li>
+  </ol>
+  <p>The list starts with exercises from the same category, then the rest, most recently trained first. It only offers exercises you've trained at least twice that have the graph type you're viewing. Each row shows how many sessions it has. Tap the exercise's chip to remove the comparison. Leaving the screen clears it too.</p>
+  <p>The machine, bar and accessory filters apply to the main exercise only. When one is on, a note under the chart says so. If the second exercise has no data for the selected graph type, a note says that instead of drawing an empty line.</p>
 
   <h2 id="strength-standards">Strength standards</h2>
   <p>Badger can draw reference lines on the estimated 1RM graph showing where a lift sits for your bodyweight, from untrained through novice, intermediate and advanced to elite. They cover five barbell lifts: <strong>bench press, squat, deadlift, overhead press and barbell row</strong>. Only exercises whose name matches one of those get them; dumbbell and machine versions aren't covered.</p>
