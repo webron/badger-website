@@ -471,6 +471,157 @@ def play_quality() -> dict:
                      "sessions before it reports one."}
 
 
+PLAY_PUBLISHER_KEY = "/Users/ron/Development/badger-fit/tools/play_publish/play-service-account.json"
+PLAY_PUBLISHER_SCOPE = "https://www.googleapis.com/auth/androidpublisher"
+
+
+def _review_id(link: str) -> str:
+    """The reviewId out of a bulk report's Review Link, or '' for none.
+
+    A rating with no text has no link at all, so it has no id either.
+    """
+    query = urllib.parse.urlparse(link or "").query
+    return (urllib.parse.parse_qs(query).get("reviewId") or [""])[0]
+
+
+def _play_review_rows(rows: list[dict]) -> list[dict]:
+    """Bulk-report rows as plain ratings, newest first."""
+    out = []
+    for row in rows:
+        try:
+            stars = int(row.get("Star Rating") or 0)
+        except ValueError:
+            continue
+        if not stars:
+            continue
+        out.append({
+            "id": _review_id(row.get("Review Link", "")),
+            "date": (row.get("Review Submit Date and Time") or "")[:10],
+            "updated": (row.get("Review Last Update Date and Time") or "")[:10],
+            "rating": stars,
+            "text": (row.get("Review Text") or "").strip(),
+            "version": row.get("App Version Name") or "",
+            "language": row.get("Reviewer Language") or "",
+            "fresh": False,
+        })
+    return sorted(out, key=lambda r: r["updated"] or r["date"], reverse=True)
+
+
+def _play_api_reviews() -> list[dict]:
+    """Written reviews from the last seven days, through the Reviews API.
+
+    The bulk files carry every rating, star-only ones included, but they lag a
+    few days and pick up an edited review late. The API is the opposite: fresh,
+    text only, and only a week deep. So the API only adds what the files have
+    not caught up with yet; it never replaces the files' counts.
+    """
+    if not os.path.exists(PLAY_PUBLISHER_KEY):
+        return []
+    from _google_auth import access_token
+    token = access_token(PLAY_PUBLISHER_KEY, PLAY_PUBLISHER_SCOPE)
+    url = (f"https://androidpublisher.googleapis.com/androidpublisher/v3/"
+           f"applications/{PLAY_PACKAGE}/reviews?maxResults=100")
+    payload = _get_json(url, {"Authorization": f"Bearer {token}"})
+    out = []
+    for review in payload.get("reviews", []):
+        comment = next((c["userComment"] for c in review.get("comments", [])
+                        if "userComment" in c), None)
+        if not comment:
+            continue
+        seconds = int((comment.get("lastModified") or {}).get("seconds") or 0)
+        day = datetime.fromtimestamp(seconds, timezone.utc).date().isoformat() if seconds else ""
+        out.append({
+            "id": review.get("reviewId", ""),
+            "date": day,
+            "updated": day,
+            "rating": int(comment.get("starRating") or 0),
+            "text": (comment.get("text") or "").strip(),
+            "version": comment.get("appVersionName") or "",
+            "language": comment.get("reviewerLanguage") or "",
+            "fresh": True,
+        })
+    return out
+
+
+def _gcs_list(bucket: str, prefix: str, token: str) -> list[str]:
+    url = (f"https://storage.googleapis.com/storage/v1/b/{bucket}/o?"
+           + urllib.parse.urlencode({"prefix": prefix}))
+    names: list[str] = []
+    while url:
+        payload = _get_json(url, {"Authorization": f"Bearer {token}"})
+        names.extend(item["name"] for item in payload.get("items", []))
+        page = payload.get("nextPageToken")
+        url = (f"https://storage.googleapis.com/storage/v1/b/{bucket}/o?"
+               + urllib.parse.urlencode({"prefix": prefix, "pageToken": page})) if page else ""
+    return names
+
+
+def play_ratings(days: int) -> dict:
+    """Every Play rating, star-only ones included, plus the store's average.
+
+    The monthly `reviews/` files list one row per rating whether or not the
+    person wrote anything, which is the only place a star-only rating shows up
+    with a date. Reading every month gives the lifetime count; the window then
+    picks out what is new.
+    """
+    if not os.path.exists(PLAY_KEY_PATH):
+        return {"error": f"No Play reporting key at {PLAY_KEY_PATH}."}
+    try:
+        from _google_auth import access_token
+        token = access_token(PLAY_KEY_PATH, PLAY_SCOPE)
+    except Exception as exc:  # noqa: BLE001
+        return {"error": f"Play auth failed: {exc}"}
+
+    try:
+        files = [n for n in _gcs_list(PLAY_BUCKET, "reviews/", token)
+                 if n.startswith(f"reviews/reviews_{PLAY_PACKAGE}_")]
+        rows: list[dict] = []
+        for name in files:
+            rows.extend(_play_csv(_gcs_object(PLAY_BUCKET, name, token)))
+        overviews = sorted(n for n in _gcs_list(PLAY_BUCKET, "stats/ratings/", token)
+                           if n.endswith("_overview.csv"))
+        overview = _play_csv(_gcs_object(PLAY_BUCKET, overviews[-1], token)) if overviews else []
+    except urllib.error.HTTPError as exc:
+        return {"error": f"Play ratings files returned HTTP {exc.code}."}
+    except urllib.error.URLError as exc:
+        return {"error": f"Play ratings files unreachable: {exc.reason}"}
+
+    ratings = _play_review_rows(rows)
+
+    api_note = ""
+    try:
+        known = {r["id"] for r in ratings if r["id"]}
+        fresh = [r for r in _play_api_reviews() if r["id"] and r["id"] not in known]
+    except Exception as exc:  # noqa: BLE001
+        fresh = []
+        api_note = f"Play Reviews API unavailable ({type(exc).__name__}), so the newest written reviews may be missing."
+
+    # Play's own running average, which is what the store page shows. Computing
+    # it from the rows would count an edited review twice.
+    average = None
+    for row in reversed(overview):
+        try:
+            value = float(row.get("Total Average Rating") or 0)
+        except ValueError:
+            continue
+        if value:
+            average = value
+            break
+
+    start, _ = utc_window(days)
+    week_start, _ = utc_window(7)
+    in_window = [r for r in ratings if (r["updated"] or r["date"]) >= start.isoformat()]
+    listed = sorted(fresh + in_window, key=lambda r: r["updated"] or r["date"], reverse=True)
+    return {
+        "start": start.isoformat(),
+        "lifetime": len(ratings),
+        "average": average,
+        "this_week": sum(1 for r in listed if (r["updated"] or r["date"]) >= week_start.isoformat()),
+        "ratings": listed,
+        "note": api_note,
+    }
+
+
 # --- App Store ---------------------------------------------------------------
 
 
@@ -771,4 +922,58 @@ def app_store_listing(country: str = "us") -> dict:
         "ratings": app.get("userRatingCount") or 0,
         "url": app.get("trackViewUrl", ""),
         "minimum_os": app.get("minimumOsVersion", ""),
+    }
+
+
+# Every App Store storefront, as the two-letter codes the lookup endpoint takes.
+# A code Apple does not sell in just returns no record, so a stale extra entry
+# costs one request; a MISSING one silently drops that country's ratings, which
+# is why the list errs long.
+APP_STOREFRONTS = (
+    "ae ag ai al am ao ar at au az ba bb be bf bg bh bj bm bn bo br bs bt bw by "
+    "bz ca cd cg ch ci cl cm cn co cr cv cy cz de dk dm do dz ec ee eg es fi fj "
+    "fm fr ga gb gd ge gh gm gr gt gw gy hk hn hr hu id ie il in iq is it jm jo "
+    "jp ke kg kh kn kr kw ky kz la lb lc lk lr lt lu lv ly ma md me mg mk ml mm "
+    "mn mo mr ms mt mu mv mw mx my mz na ne ng ni nl no np nr nz om pa pe pg ph "
+    "pk pl pt pw py qa ro rs ru rw sa sb sc se sg si sk sl sn sr st sv sz tc td "
+    "th tj tm tn to tr tt tw tz ua ug us uy uz vc ve vg vn vu xk ye za zm zw"
+).split()
+
+
+def app_store_ratings() -> dict:
+    """Star ratings summed across every storefront.
+
+    App Store ratings are per country, the authenticated API has none of them,
+    and a rating with no text appears nowhere else. The public lookup is per
+    storefront too, so asking only the US one reported "no ratings" while a
+    French user had left four stars. This asks all of them.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    def one(country: str):
+        query = urllib.parse.urlencode({"id": ASC_APP_ID, "country": country})
+        try:
+            results = _get_json(f"{ITUNES_LOOKUP}?{query}", {}, timeout=15).get("results") or []
+        except (urllib.error.URLError, ValueError):
+            return country, None
+        if not results:
+            return country, (0, 0.0)
+        app = results[0]
+        return country, (int(app.get("userRatingCount") or 0),
+                         float(app.get("averageUserRating") or 0))
+
+    with ThreadPoolExecutor(max_workers=12) as pool:
+        answers = list(pool.map(one, APP_STOREFRONTS))
+
+    failed = [c for c, v in answers if v is None]
+    rated = sorted(((c.upper(), n, avg) for c, v in answers if v for n, avg in [v] if n),
+                   key=lambda t: -t[1])
+    total = sum(n for _, n, _ in rated)
+    if len(failed) == len(answers):
+        return {"error": "The App Store lookup was unreachable for every storefront."}
+    return {
+        "total": total,
+        "average": round(sum(n * avg for _, n, avg in rated) / total, 2) if total else None,
+        "countries": rated,
+        "failed": failed,
     }

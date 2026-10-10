@@ -18,20 +18,25 @@ Usage:
 from __future__ import annotations
 
 import html
+import json
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
 from _stats_sources import (  # noqa: E402
-    STORE_EVENTS, app_store, app_store_listing, app_store_reviews,
-    goatcounter, play, play_quality, search_console,
+    STORE_EVENTS, app_store, app_store_listing, app_store_ratings,
+    app_store_reviews, goatcounter, play, play_quality, play_ratings,
+    search_console,
 )
 
 DEFAULT_OUT = Path.home() / "Development/badger-artifacts/site-stats/weekly.html"
 WEEKS = 5  # this week plus the four it is measured against
+# App Store ratings carry no date anywhere Apple exposes, so "new this week" is
+# the change in the worldwide count since an earlier run. Kept beside the page.
+RATINGS_HISTORY = DEFAULT_OUT.parent / "app-store-ratings.json"
 
 
 def esc(value: object) -> str:
@@ -201,6 +206,8 @@ def build_play(days: int) -> str:
         [[str(c), esc(name)] for name, c in p["sources"]],
         "No store acquisitions recorded in this window."))
 
+    parts.append(play_ratings_section(days))
+
     q = play_quality()
     parts.append("<h3>Quality</h3>")
     if "error" in q:
@@ -221,6 +228,63 @@ def build_play(days: int) -> str:
                 + " yet, so the newest days may be missing.")
 
     return panel("Play Store", f"{p['start']} to {p['end']}.{note}", "".join(parts))
+
+
+def play_ratings_section(days: int) -> str:
+    """Ratings and reviews, star-only ones included, newest first."""
+    r = play_ratings(days)
+    parts = ["<h3>Ratings and reviews</h3>"]
+    if "error" in r:
+        parts.append(f'<p class="error">{esc(r["error"])}</p>')
+        return "".join(parts)
+    average = (f'{stars(round(r["average"]))} {r["average"]:.1f} average, '
+               if r["average"] else "")
+    word = "rating" if r["lifetime"] == 1 else "ratings"
+    parts.append(f'<p class="sub">{esc(average)}{r["lifetime"]} {word} in total. '
+                 f'{r["this_week"]} new in the last 7 days.'
+                 + (f' {esc(r["note"])}' if r["note"] else "") + "</p>")
+
+    def text(row: dict) -> str:
+        body = esc(row["text"][:400]) if row["text"] else '<span class="empty">Stars only</span>'
+        if row["fresh"]:
+            body += (' <span class="empty">(from the last week; '
+                     'not in Play\'s monthly file yet)</span>')
+        return body
+
+    parts.append(rows_table(
+        ["Stars", "Date", "Version", "Review"],
+        [[esc(stars(row["rating"])), esc(row["updated"] or row["date"]),
+          esc(row["version"]), text(row)] for row in r["ratings"][:15]],
+        "Nobody rated Badger on Play in this window."))
+    return "".join(parts)
+
+
+def ratings_change(total: int, history_path: Path = RATINGS_HISTORY,
+                   today: date | None = None) -> tuple[int, str] | None:
+    """Record today's App Store count and return (change, since-date).
+
+    Compares against the newest earlier count at least six days old, so running
+    the report by hand mid-week does not reset "new this week" to zero. With no
+    count that old yet, it uses the oldest one it has; with none at all, None.
+    """
+    today = today or datetime.now(timezone.utc).date()
+    try:
+        history = json.loads(history_path.read_text())
+    except (OSError, ValueError):
+        history = {}
+    earlier = sorted(d for d in history if d < today.isoformat())
+    old_enough = [d for d in earlier
+                  if d <= (today - timedelta(days=6)).isoformat()]
+    base = (old_enough[-1] if old_enough else earlier[0]) if earlier else None
+    history[today.isoformat()] = total
+    try:
+        history_path.parent.mkdir(parents=True, exist_ok=True)
+        history_path.write_text(json.dumps(history, indent=1, sort_keys=True))
+    except OSError:
+        pass  # a read-only disk costs next week's delta, not this report
+    if base is None:
+        return None
+    return total - int(history[base]), base
 
 
 def stars(rating: object) -> str:
@@ -272,22 +336,42 @@ def build_app_store(days: int) -> str:
             parts.append(sparkline(buckets))
             subtitle = f'{store["start"]} to {store["end"]}'
 
+    ratings = app_store_ratings()
+    parts.append("<h3>Ratings</h3>")
+    if "error" in ratings:
+        parts.append(f'<p class="error">{esc(ratings["error"])}</p>')
+    elif not ratings["total"]:
+        parts.append('<p class="empty">No star ratings in any storefront yet.</p>')
+    else:
+        word = "rating" if ratings["total"] == 1 else "ratings"
+        summary = (f'{stars(round(ratings["average"]))} {ratings["average"]:.1f} from '
+                   f'{ratings["total"]} {word} across all storefronts.')
+        change = ratings_change(ratings["total"])
+        if change is None:
+            summary += " First count, so the change shows from next week."
+        else:
+            delta, since = change
+            summary += f' {delta:+d} since {since}.'
+        if ratings["failed"]:
+            summary += (f' {len(ratings["failed"])} storefronts did not answer, '
+                        f'so this may be low.')
+        parts.append(f'<p class="sub">{esc(summary)} Apple gives no date for a '
+                     f'rating, so the change is measured between reports.</p>')
+        parts.append(rows_table(
+            ["Ratings", "Average", "Storefront"],
+            [[str(n), f"{avg:.1f}", esc(c)] for c, n, avg in ratings["countries"]],
+            "None yet."))
+
     if "error" in listing:
         parts.append(f'<p class="error">{esc(listing["error"])}</p>')
     else:
-        rating = listing["rating"]
-        if listing["ratings"]:
-            summary = (f'{stars(round(rating))} {rating:.1f} from '
-                       f'{listing["ratings"]} ratings.')
-        else:
-            summary = "No star ratings yet."
         parts.append("<h3>Listing</h3>")
-        parts.append(f'<p class="sub">{esc(summary)} Live version '
+        parts.append(f'<p class="sub">Live version '
                      f'{esc(listing["version"])}, released {esc(listing["released"])}, '
                      f'iOS {esc(listing["minimum_os"])} and up.</p>')
 
     reviews = app_store_reviews(days)
-    parts.append("<h3>Reviews</h3>")
+    parts.append("<h3>Written reviews</h3>")
     if "error" in reviews:
         parts.append(f'<p class="error">{esc(reviews["error"])}</p>')
     else:
