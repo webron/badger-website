@@ -585,6 +585,8 @@ def play_ratings(days: int) -> dict:
         return {"error": f"Play ratings files returned HTTP {exc.code}."}
     except urllib.error.URLError as exc:
         return {"error": f"Play ratings files unreachable: {exc.reason}"}
+    except Exception as exc:  # noqa: BLE001 - a timeout or a bad file, not a dead report
+        return {"error": f"Play ratings files could not be read ({type(exc).__name__})."}
 
     ratings = _play_review_rows(rows)
 
@@ -614,8 +616,12 @@ def play_ratings(days: int) -> dict:
     listed = sorted(fresh + in_window, key=lambda r: r["updated"] or r["date"], reverse=True)
     return {
         "start": start.isoformat(),
+        # The files' count only. A fresh API review may be an edit of a row the
+        # files already hold, so adding it here could count one person twice.
         "lifetime": len(ratings),
+        "unfiled": len(fresh),
         "average": average,
+        # New OR edited, since an edit is the person saying something new.
         "this_week": sum(1 for r in listed if (r["updated"] or r["date"]) >= week_start.isoformat()),
         "ratings": listed,
         "note": api_note,
@@ -954,7 +960,8 @@ def app_store_ratings() -> dict:
         query = urllib.parse.urlencode({"id": ASC_APP_ID, "country": country})
         try:
             results = _get_json(f"{ITUNES_LOOKUP}?{query}", {}, timeout=15).get("results") or []
-        except (urllib.error.URLError, ValueError):
+        except Exception:  # noqa: BLE001 - one storefront must not sink the sweep
+            # socket.timeout on 3.9 is neither URLError nor TimeoutError.
             return country, None
         if not results:
             return country, (0, 0.0)

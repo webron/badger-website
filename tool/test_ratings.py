@@ -101,6 +101,39 @@ class RatingsChange(unittest.TestCase):
         self.assertEqual(report.ratings_change(2, self.path, date(2026, 10, 12)),
                          (1, "2026-10-05"))
 
+    def test_an_incomplete_count_is_not_kept_as_a_baseline(self):
+        report.ratings_change(13, self.path, date(2026, 10, 5))
+        self.assertEqual(report.ratings_change(3, self.path, date(2026, 10, 12), record=False),
+                         (-10, "2026-10-05"))
+        self.assertEqual(report.ratings_change(14, self.path, date(2026, 10, 19)),
+                         (1, "2026-10-05"))
+
+    def test_a_corrupt_history_file_costs_the_delta_not_the_report(self):
+        for junk in ("[]", '{"2026-10-05": "x"}', "not json"):
+            self.path.write_text(junk)
+            self.assertIsNone(report.ratings_change(1, self.path, date(2026, 10, 12)))
+
+
+class Timeouts(unittest.TestCase):
+    def test_a_storefront_timeout_does_not_escape(self):
+        import socket
+
+        def fake(url, headers, data=None, timeout=30):
+            if "country=fr" in url:
+                raise socket.timeout("slow")
+            return {"results": [{"userRatingCount": 1, "averageUserRating": 5}]}
+
+        with mock.patch.object(src, "_get_json", side_effect=fake):
+            out = src.app_store_ratings()
+        self.assertEqual(out["failed"], ["fr"])
+
+    def test_a_play_file_timeout_is_an_error_not_a_crash(self):
+        import socket
+        with mock.patch("os.path.exists", return_value=True), \
+             mock.patch("_google_auth.access_token", return_value="tok"), \
+             mock.patch.object(src, "_gcs_list", side_effect=socket.timeout("slow")):
+            self.assertIn("error", src.play_ratings(35))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -232,7 +232,10 @@ def build_play(days: int) -> str:
 
 def play_ratings_section(days: int) -> str:
     """Ratings and reviews, star-only ones included, newest first."""
-    r = play_ratings(days)
+    try:
+        r = play_ratings(days)
+    except Exception as exc:  # noqa: BLE001 - the rest of the panel still stands
+        r = {"error": f"Play ratings failed ({type(exc).__name__})."}
     parts = ["<h3>Ratings and reviews</h3>"]
     if "error" in r:
         parts.append(f'<p class="error">{esc(r["error"])}</p>')
@@ -240,8 +243,12 @@ def play_ratings_section(days: int) -> str:
     average = (f'{stars(round(r["average"]))} {r["average"]:.1f} average, '
                if r["average"] else "")
     word = "rating" if r["lifetime"] == 1 else "ratings"
-    parts.append(f'<p class="sub">{esc(average)}{r["lifetime"]} {word} in total. '
-                 f'{r["this_week"]} new in the last 7 days.'
+    unfiled = (f' plus {r["unfiled"]} newer written review'
+               f'{"" if r["unfiled"] == 1 else "s"} Play has not filed yet'
+               if r["unfiled"] else "")
+    parts.append(f'<p class="sub">{esc(average)}{r["lifetime"]} {word} in Play\'s '
+                 f'files{esc(unfiled)}. {r["this_week"]} new or updated in the '
+                 f'last 7 days.'
                  + (f' {esc(r["note"])}' if r["note"] else "") + "</p>")
 
     def text(row: dict) -> str:
@@ -260,7 +267,8 @@ def play_ratings_section(days: int) -> str:
 
 
 def ratings_change(total: int, history_path: Path = RATINGS_HISTORY,
-                   today: date | None = None) -> tuple[int, str] | None:
+                   today: date | None = None,
+                   record: bool = True) -> tuple[int, str] | None:
     """Record today's App Store count and return (change, since-date).
 
     Compares against the newest earlier count at least six days old, so running
@@ -269,13 +277,20 @@ def ratings_change(total: int, history_path: Path = RATINGS_HISTORY,
     """
     today = today or datetime.now(timezone.utc).date()
     try:
-        history = json.loads(history_path.read_text())
+        loaded = json.loads(history_path.read_text())
     except (OSError, ValueError):
-        history = {}
+        loaded = {}
+    # A hand-edited or truncated file must cost the delta, never the report.
+    history = {d: n for d, n in (loaded.items() if isinstance(loaded, dict) else [])
+               if isinstance(d, str) and isinstance(n, int)}
     earlier = sorted(d for d in history if d < today.isoformat())
     old_enough = [d for d in earlier
                   if d <= (today - timedelta(days=6)).isoformat()]
     base = (old_enough[-1] if old_enough else earlier[0]) if earlier else None
+    if not record:
+        # An incomplete count would become next week's baseline and show a
+        # swing that never happened, so it is compared but not kept.
+        return (total - history[base], base) if base else None
     history[today.isoformat()] = total
     try:
         history_path.parent.mkdir(parents=True, exist_ok=True)
@@ -284,7 +299,7 @@ def ratings_change(total: int, history_path: Path = RATINGS_HISTORY,
         pass  # a read-only disk costs next week's delta, not this report
     if base is None:
         return None
-    return total - int(history[base]), base
+    return total - history[base], base
 
 
 def stars(rating: object) -> str:
@@ -336,7 +351,10 @@ def build_app_store(days: int) -> str:
             parts.append(sparkline(buckets))
             subtitle = f'{store["start"]} to {store["end"]}'
 
-    ratings = app_store_ratings()
+    try:
+        ratings = app_store_ratings()
+    except Exception as exc:  # noqa: BLE001 - downloads and reviews still stand
+        ratings = {"error": f"App Store ratings failed ({type(exc).__name__})."}
     parts.append("<h3>Ratings</h3>")
     if "error" in ratings:
         parts.append(f'<p class="error">{esc(ratings["error"])}</p>')
@@ -346,7 +364,7 @@ def build_app_store(days: int) -> str:
         word = "rating" if ratings["total"] == 1 else "ratings"
         summary = (f'{stars(round(ratings["average"]))} {ratings["average"]:.1f} from '
                    f'{ratings["total"]} {word} across all storefronts.')
-        change = ratings_change(ratings["total"])
+        change = ratings_change(ratings["total"], record=not ratings["failed"])
         if change is None:
             summary += " First count, so the change shows from next week."
         else:
