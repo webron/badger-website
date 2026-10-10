@@ -254,8 +254,8 @@ def play_ratings_section(days: int) -> str:
     def text(row: dict) -> str:
         body = esc(row["text"][:400]) if row["text"] else '<span class="empty">Stars only</span>'
         if row.get("edited"):
-            body += (f' <span class="empty">(edited; first posted '
-                     f'{esc(row["date"])})</span>')
+            body += (f' <span class="empty">(probably an edit of the review '
+                     f'from {esc(row["date"])}, same device)</span>')
         elif row["fresh"]:
             body += (' <span class="empty">(from the last week; '
                      'not in Play\'s monthly file yet)</span>')

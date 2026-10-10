@@ -85,6 +85,21 @@ class PlayEdits(unittest.TestCase):
         self.assertEqual(len(unfiled), 1)
         self.assertEqual([r["text"] for r in merged], ["hi", "hi"])
 
+    def test_two_fresh_reviews_on_one_row_are_both_left_unfiled(self):
+        filed = [_row("m1s", "2026-10-01")]
+        fresh = [_row("m1s", "2026-10-09", fresh=True, rid="a"),
+                 _row("m1s", "2026-10-10", fresh=True, rid="b")]
+        for order in (fresh, fresh[::-1]):
+            merged, unfiled = src._fold_edits(filed, order)
+            self.assertEqual(len(unfiled), 2)
+            self.assertNotIn("edited", merged[0])
+
+    def test_an_older_app_version_cannot_be_an_edit_of_a_newer_one(self):
+        filed = [{**_row("m1s", "2026-10-01"), "version": "1.1.14"}]
+        fresh = [{**_row("m1s", "2026-10-10", fresh=True), "version": "1.1.13"}]
+        merged, unfiled = src._fold_edits(filed, fresh)
+        self.assertEqual(len(unfiled), 1)
+
 
 class AppStoreSweep(unittest.TestCase):
     def test_sums_every_storefront_and_weights_the_average(self):

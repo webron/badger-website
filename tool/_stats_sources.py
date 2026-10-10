@@ -546,29 +546,45 @@ def _play_api_reviews() -> list[dict]:
 
 
 def _fold_edits(filed: list[dict], fresh: list[dict]) -> tuple[list[dict], list[dict]]:
-    """Merge API reviews that are edits of a filed review into that row.
+    """Merge API reviews that look like edits of a filed review into that row.
 
     An edited Play review comes back from the API under a NEW reviewId, so the
     id alone made one person's edit look like a second reviewer (seen
-    2026-10-10: a 1 October review rewritten on the 10th). Play keeps one
-    review per user, so a fresh review is taken as an edit when exactly one
-    older WRITTEN row has the same device and language. Anything ambiguous
-    stays a separate unfiled review rather than being guessed into a row.
+    2026-10-10: a 1 October review rewritten on the 10th). Neither source names
+    the person, so this is a GUESS, and the report labels it as one: a fresh
+    review is taken as an edit only when exactly one older written row has the
+    same device and language and an app version no newer than the fresh one,
+    and no other fresh review points at that row. Two strangers on the same
+    phone model would still collide, which on an app this size is rare and
+    only lasts until Play's monthly file catches up.
     Returns (filed rows with edits applied, reviews still unfiled).
     """
-    merged = list(filed)
+    def version(v: str) -> tuple:
+        return tuple(int(p) for p in v.split(".") if p.isdigit())
+
+    def candidates(review: dict) -> list[int]:
+        return [i for i, row in enumerate(filed)
+                if row["text"] and row["device"]
+                and row["device"] == review["device"]
+                and row["language"] == review["language"]
+                and (row["updated"] or row["date"]) <= review["updated"]
+                and version(row["version"]) <= version(review["version"])]
+
+    claims: dict[int, list[dict]] = {}
     unfiled = []
     for review in fresh:
-        matches = [i for i, row in enumerate(merged)
-                   if row["text"] and not row["fresh"] and row["device"]
-                   and row["device"] == review["device"]
-                   and row["language"] == review["language"]
-                   and (row["updated"] or row["date"]) <= review["updated"]]
-        if len(matches) == 1:
-            original = merged[matches[0]]
-            merged[matches[0]] = {**review, "date": original["date"], "edited": True}
+        found = candidates(review)
+        if len(found) == 1:
+            claims.setdefault(found[0], []).append(review)
         else:
             unfiled.append(review)
+
+    merged = list(filed)
+    for index, reviews in claims.items():
+        if len(reviews) > 1:  # two fresh reviews, one row: no way to tell
+            unfiled.extend(reviews)
+            continue
+        merged[index] = {**reviews[0], "date": filed[index]["date"], "edited": True}
     return merged, unfiled
 
 
