@@ -502,6 +502,7 @@ def _play_review_rows(rows: list[dict]) -> list[dict]:
             "text": (row.get("Review Text") or "").strip(),
             "version": row.get("App Version Name") or "",
             "language": row.get("Reviewer Language") or "",
+            "device": row.get("Device") or "",
             "fresh": False,
         })
     return sorted(out, key=lambda r: r["updated"] or r["date"], reverse=True)
@@ -538,9 +539,37 @@ def _play_api_reviews() -> list[dict]:
             "text": (comment.get("text") or "").strip(),
             "version": comment.get("appVersionName") or "",
             "language": comment.get("reviewerLanguage") or "",
+            "device": comment.get("device") or "",
             "fresh": True,
         })
     return out
+
+
+def _fold_edits(filed: list[dict], fresh: list[dict]) -> tuple[list[dict], list[dict]]:
+    """Merge API reviews that are edits of a filed review into that row.
+
+    An edited Play review comes back from the API under a NEW reviewId, so the
+    id alone made one person's edit look like a second reviewer (seen
+    2026-10-10: a 1 October review rewritten on the 10th). Play keeps one
+    review per user, so a fresh review is taken as an edit when exactly one
+    older WRITTEN row has the same device and language. Anything ambiguous
+    stays a separate unfiled review rather than being guessed into a row.
+    Returns (filed rows with edits applied, reviews still unfiled).
+    """
+    merged = list(filed)
+    unfiled = []
+    for review in fresh:
+        matches = [i for i, row in enumerate(merged)
+                   if row["text"] and not row["fresh"] and row["device"]
+                   and row["device"] == review["device"]
+                   and row["language"] == review["language"]
+                   and (row["updated"] or row["date"]) <= review["updated"]]
+        if len(matches) == 1:
+            original = merged[matches[0]]
+            merged[matches[0]] = {**review, "date": original["date"], "edited": True}
+        else:
+            unfiled.append(review)
+    return merged, unfiled
 
 
 def _gcs_list(bucket: str, prefix: str, token: str) -> list[str]:
@@ -594,6 +623,7 @@ def play_ratings(days: int) -> dict:
     try:
         known = {r["id"] for r in ratings if r["id"]}
         fresh = [r for r in _play_api_reviews() if r["id"] and r["id"] not in known]
+        ratings, fresh = _fold_edits(ratings, fresh)
     except Exception as exc:  # noqa: BLE001
         fresh = []
         api_note = f"Play Reviews API unavailable ({type(exc).__name__}), so the newest written reviews may be missing."

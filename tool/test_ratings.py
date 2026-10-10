@@ -55,6 +55,37 @@ class PlayRows(unittest.TestCase):
         self.assertEqual(src._play_review_rows([{"Star Rating": ""}]), [])
 
 
+def _row(device, date, text="hi", fresh=False, rid=""):
+    return {"id": rid, "date": date, "updated": date, "rating": 5, "text": text,
+            "version": "1", "language": "en", "device": device, "fresh": fresh}
+
+
+class PlayEdits(unittest.TestCase):
+    def test_an_edit_under_a_new_id_replaces_the_original_row(self):
+        filed = [_row("m1s", "2026-10-01", rid="old"), _row("pnangn", "2026-10-04", text="")]
+        fresh = [_row("m1s", "2026-10-10", text="better", fresh=True, rid="new")]
+        merged, unfiled = src._fold_edits(filed, fresh)
+        self.assertEqual(unfiled, [])
+        self.assertEqual(len(merged), 2)
+        self.assertEqual(merged[0]["text"], "better")
+        self.assertEqual(merged[0]["date"], "2026-10-01")
+        self.assertEqual(merged[0]["updated"], "2026-10-10")
+        self.assertTrue(merged[0]["edited"])
+
+    def test_a_star_only_row_is_not_taken_as_the_original(self):
+        # Star-only ratings carry no text, so nothing says it was the same person.
+        filed = [_row("m1s", "2026-10-01", text="")]
+        merged, unfiled = src._fold_edits(filed, [_row("m1s", "2026-10-10", fresh=True)])
+        self.assertEqual(len(unfiled), 1)
+        self.assertNotIn("edited", merged[0])
+
+    def test_two_candidates_is_ambiguous_and_left_alone(self):
+        filed = [_row("m1s", "2026-09-01"), _row("m1s", "2026-10-01")]
+        merged, unfiled = src._fold_edits(filed, [_row("m1s", "2026-10-10", fresh=True)])
+        self.assertEqual(len(unfiled), 1)
+        self.assertEqual([r["text"] for r in merged], ["hi", "hi"])
+
+
 class AppStoreSweep(unittest.TestCase):
     def test_sums_every_storefront_and_weights_the_average(self):
         def fake(url, headers, data=None, timeout=30):
