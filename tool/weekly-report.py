@@ -200,6 +200,12 @@ def build_play(days: int) -> str:
         sparkline(buckets),
     ]
 
+    conv = p["listing_conversion"]
+    parts.append(
+        f'<p class="sub">{p["listing_visitors"]} people visited the store listing and '
+        f'{p["listing_acquisitions"]} installed from it'
+        + (f' ({conv:.0%} conversion).' if conv is not None else '.') + '</p>')
+
     parts.append("<h3>Where store visits came from</h3>")
     parts.append(rows_table(
         ["Acquisitions", "Traffic source"],

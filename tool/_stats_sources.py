@@ -320,12 +320,44 @@ def _play_csv(raw: bytes) -> list[dict]:
     return list(csv.DictReader(_io.StringIO(text)))
 
 
-def play(days: int) -> dict:
-    """Installs, uninstalls and where store visits came from.
+def _months_between(start: date, end: date) -> list[str]:
+    """Every yyyymm from start's month through end's, inclusive.
 
-    Play's bulk reports are monthly CSVs and lag a few days behind, which is why
-    this reads the current month and the one before it and then filters, rather
-    than trusting either file to cover the window on its own.
+    Taking only the two endpoints skipped the months between them once a window
+    ran past two months, and a monthly file the window touches is a file it needs.
+    """
+    out = []
+    year, month = start.year, start.month
+    while (year, month) <= (end.year, end.month):
+        out.append(f"{year:04d}{month:02d}")
+        year, month = (year + 1, 1) if month == 12 else (year, month + 1)
+    return out
+
+
+def _traffic_source_names(month: str) -> list[str]:
+    """Candidate object names for a month's traffic-source report, newest first.
+
+    Google stopped writing `total_store_performance_*` after 2026-08 and now
+    writes `store_performance_*` (which also carries listing visitors). August
+    exists under both names; the newer one is finer-grained, so it wins and the
+    old one is only a fallback for months that predate it.
+    """
+    base = f"stats/store_performance/%s_{PLAY_PACKAGE}_{month}_traffic_source.csv"
+    return [base % "store_performance", base % "total_store_performance"]
+
+
+def _acquisitions(row: dict) -> int:
+    """Acquisitions under either file's column name."""
+    return int(row.get("Store listing acquisitions")
+               or row.get("Total store acquisitions") or 0)
+
+
+def play(days: int) -> dict:
+    """Installs, uninstalls, listing visitors and where store visits came from.
+
+    Play's bulk reports are monthly CSVs and lag a few days behind, so this reads
+    every month the window touches and then filters by day, rather than trusting
+    any one file to cover the window on its own.
     """
     if not os.path.exists(PLAY_KEY_PATH):
         return {"error": f"No Play reporting key at {PLAY_KEY_PATH}."}
@@ -337,29 +369,34 @@ def play(days: int) -> dict:
         return {"error": f"Play auth failed: {exc}"}
 
     start, today = utc_window(days)
-    months = sorted({d.strftime("%Y%m") for d in (start, today)})
+    months = _months_between(start, today)
 
     installs: list[dict] = []
     sources: list[dict] = []
     missing = []
     for month in months:
-        for kind, sink in (
-            (f"stats/installs/installs_{PLAY_PACKAGE}_{month}_overview.csv", installs),
-            (f"stats/store_performance/total_store_performance_{PLAY_PACKAGE}_{month}_traffic_source.csv", sources),
+        # Each entry is the object names to try, in order; the first that exists wins.
+        for names, sink in (
+            ([f"stats/installs/installs_{PLAY_PACKAGE}_{month}_overview.csv"], installs),
+            (_traffic_source_names(month), sources),
         ):
-            try:
-                sink.extend(_play_csv(_gcs_object(PLAY_BUCKET, kind, token)))
-            except urllib.error.HTTPError as exc:
-                if exc.code == 403:
-                    return {"error": (
-                        "Play reporting key cannot read the bulk reports. Grant "
-                        "'View app information and download bulk reports' to "
-                        "play-reporter@badger-1040f.iam.gserviceaccount.com in "
-                        "Play Console, Users and permissions.")}
-                # A month with no file yet is normal early in a month, not an error.
-                missing.append(kind.rsplit("/", 1)[-1])
-            except urllib.error.URLError as exc:
-                return {"error": f"Play reports unreachable: {exc.reason}"}
+            for name in names:
+                try:
+                    sink.extend(_play_csv(_gcs_object(PLAY_BUCKET, name, token)))
+                    break
+                except urllib.error.HTTPError as exc:
+                    if exc.code == 403:
+                        return {"error": (
+                            "Play reporting key cannot read the bulk reports. Grant "
+                            "'View app information and download bulk reports' to "
+                            "play-reporter@badger-1040f.iam.gserviceaccount.com in "
+                            "Play Console, Users and permissions.")}
+                    # Only a 404 on the LAST candidate means the month has no file
+                    # yet, which is normal early in a month and not an error.
+                    if name == names[-1]:
+                        missing.append(names[0].rsplit("/", 1)[-1])
+                except urllib.error.URLError as exc:
+                    return {"error": f"Play reports unreachable: {exc.reason}"}
 
     def in_window(row: dict) -> bool:
         day = row.get("Date", "")
@@ -371,11 +408,17 @@ def play(days: int) -> dict:
         return sum(int(r.get(column) or 0) for r in rows)
 
     by_source: dict[str, int] = {}
+    listing_acquisitions = 0
+    listing_visitors = 0
     for row in sources:
         if not in_window(row):
             continue
         key = row.get("Traffic source") or "(unknown)"
-        by_source[key] = by_source.get(key, 0) + int(row.get("Total store acquisitions") or 0)
+        got = _acquisitions(row)
+        by_source[key] = by_source.get(key, 0) + got
+        listing_acquisitions += got
+        # Absent in the old `total_` files, which counted acquisitions only.
+        listing_visitors += int(row.get("Store listing visitors") or 0)
 
     # "Active Device Installs" is a running figure, not a daily one, so the
     # newest row is the current number rather than anything summed.
@@ -389,6 +432,11 @@ def play(days: int) -> dict:
         "active": active,
         "daily": [(r["Date"], int(r.get("Daily Device Installs") or 0)) for r in rows],
         "sources": sorted(by_source.items(), key=lambda kv: -kv[1]),
+        "listing_visitors": listing_visitors,
+        "listing_acquisitions": listing_acquisitions,
+        # None, not 0%, when nobody visited: a rate over nothing is unknown.
+        "listing_conversion": (listing_acquisitions / listing_visitors
+                               if listing_visitors else None),
         "missing": missing,
     }
 
