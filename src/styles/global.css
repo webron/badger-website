@@ -506,10 +506,13 @@ a:hover {
 /* Links sitting inside a block of body text carry an underline, not color
    alone. Petrol against the body ink does not reach the 3:1 that WCAG 1.4.1
    requires of a color-only affordance, so chrome links keep the spec's
-   underline-on-hover treatment and in-text links get a permanent rule. */
+   underline-on-hover treatment and in-text links get a permanent rule.
+   Callouts count as body text: some hold their sentence directly in the div,
+   with no <p> for the first selector to catch. */
 .prose p a,
 .prose li a,
-.prose td a {
+.prose td a,
+.prose .callout a {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
@@ -518,7 +521,8 @@ a:hover {
 
 .prose p a:hover,
 .prose li a:hover,
-.prose td a:hover {
+.prose td a:hover,
+.prose .callout a:hover {
   text-decoration-color: var(--accent-ink);
 }
 

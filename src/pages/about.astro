@@ -135,8 +135,12 @@ const description =
     margin-top: 26px;
   }
 
+  /* This page sits outside .prose, so it repeats the global in-text underline
+     rule. The addresses count too: in their list they read as plain colored
+     text otherwise (WCAG 1.4.1). */
   .intro p a,
-  .note a {
+  .note a,
+  .address dd > a {
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;

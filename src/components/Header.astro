@@ -168,4 +168,22 @@ const navLinks = [
       gap: 12px;
     }
   }
+
+  /* Below the 320px reflow line (folded foldables), the row above runs 17px
+     wide and pushes the theme toggle off-screen. Tighten the spacing rather
+     than drop the button; 320px and up is untouched. */
+  @media (max-width: 319.98px) {
+    .site-nav {
+      padding: 0 16px;
+      gap: 10px;
+    }
+
+    .nav-right {
+      gap: 8px;
+    }
+
+    .btn-accent {
+      padding-inline: 12px;
+    }
+  }
 </style>
