@@ -36,9 +36,12 @@ import { APP_STORE_URL, PLAY_URL } from '../store-links';
 interface Props {
   /** Only the hero instance takes the #download target the header links to. */
   id?: string;
+  /** The closing CTA instance sits below the fold; its badges can wait. */
+  lazy?: boolean;
 }
 
-const { id } = Astro.props;
+const { id, lazy = false } = Astro.props;
+const loading = lazy ? 'lazy' : undefined;
 ---
 
 <div class="store-badges" id={id}>
@@ -51,6 +54,7 @@ const { id } = Astro.props;
       alt="Download on the App Store"
       width="120"
       height="40"
+      loading={loading}
     />
   </a>
 
@@ -62,6 +66,7 @@ const { id } = Astro.props;
       alt="Get it on Google Play"
       width="646"
       height="250"
+      loading={loading}
     />
   </a>
 
