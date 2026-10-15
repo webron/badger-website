@@ -1,0 +1,225 @@
+/* GENERATED from design/tokens/badger.tokens.json by tools/tokens/build_tokens.dart. Do not edit by hand.
+ *
+ * Brand primitives only: one custom property per token, both
+ * themes side by side. Each site maps its own semantic names onto
+ * these inside its own light/dark blocks (badger-website does it
+ * in src/styles/global.css).
+ */
+:root {
+  /* color.hue */
+  --badger-hue-petrol: #2E7E90;
+  --badger-hue-teal: #0D9488;
+  --badger-hue-cyan: #0891B2;
+  --badger-hue-blue: #2563EB;
+  --badger-hue-indigo: #4338CA;
+  --badger-hue-violet: #7C3AED;
+  --badger-hue-purple: #9333EA;
+  --badger-hue-pink: #DB2777;
+  --badger-hue-rose: #E11D48;
+  --badger-hue-red: #DC2626;
+  --badger-hue-orange: #EA580C;
+  --badger-hue-amber: #B45309;
+  --badger-hue-green: #16A34A;
+
+  /* color.accent */
+  --badger-accent-petrol: var(--badger-hue-petrol);
+  --badger-accent-blue: var(--badger-hue-blue);
+  --badger-accent-violet: var(--badger-hue-violet);
+  --badger-accent-purple: var(--badger-hue-purple);
+  --badger-accent-pink: var(--badger-hue-pink);
+  --badger-accent-rose: var(--badger-hue-rose);
+  --badger-accent-red: var(--badger-hue-red);
+  --badger-accent-orange: var(--badger-hue-orange);
+  --badger-accent-amber: var(--badger-hue-amber);
+
+  /* color.onAccent */
+  --badger-on-accent: #FFFFFF;
+
+  /* color.category */
+  --badger-category-teal: var(--badger-hue-teal);
+  --badger-category-cyan: var(--badger-hue-cyan);
+  --badger-category-blue: var(--badger-hue-blue);
+  --badger-category-indigo: var(--badger-hue-indigo);
+  --badger-category-violet: var(--badger-hue-violet);
+  --badger-category-purple: var(--badger-hue-purple);
+  --badger-category-pink: var(--badger-hue-pink);
+  --badger-category-rose: var(--badger-hue-rose);
+  --badger-category-red: var(--badger-hue-red);
+  --badger-category-orange: var(--badger-hue-orange);
+  --badger-category-amber: var(--badger-hue-amber);
+  --badger-category-green: var(--badger-hue-green);
+
+  /* color.group */
+  --badger-group-teal: var(--badger-hue-teal);
+  --badger-group-cyan: var(--badger-hue-cyan);
+  --badger-group-blue: var(--badger-hue-blue);
+  --badger-group-violet: var(--badger-hue-violet);
+  --badger-group-pink: var(--badger-hue-pink);
+  --badger-group-rose: var(--badger-hue-rose);
+  --badger-group-orange: var(--badger-hue-orange);
+  --badger-group-green: var(--badger-hue-green);
+
+  /* color.paper */
+  --badger-paper-background: #F1EDE3;
+  --badger-paper-surface: #F7F3EA;
+  --badger-paper-surface-variant: #EAE4D6;
+  --badger-paper-ink: #262219;
+  --badger-paper-outline: #C6BEA9;
+  --badger-paper-outline-mid: #D0C9B7;
+  --badger-paper-outline-subtle: #D9D3C2;
+  --badger-paper-outline-faint: #E3DDCD;
+  --badger-paper-nav-background: var(--badger-paper-surface-variant);
+  --badger-paper-primary-container: #DCE8EA;
+  --badger-paper-text-primary: #262219;
+  --badger-paper-text-body: #3B3527;
+  --badger-paper-text-secondary: #5A5344;
+  --badger-paper-text-muted: #6E664F;
+  --badger-paper-text-muted-dark: #625B48;
+  --badger-paper-text-dimmed: var(--badger-paper-text-muted);
+  --badger-paper-text-disabled: #B3AB97;
+  --badger-paper-text-faint: #C9C2B0;
+  --badger-paper-success: #3E7D4E;
+  --badger-paper-warning: #92520A;
+  --badger-paper-error: #B03A2E;
+  --badger-paper-accent-ink: #23677A;
+  --badger-paper-highlight: #23677A;
+
+  /* color.slate */
+  --badger-slate-background: #1C1A16;
+  --badger-slate-surface: #232019;
+  --badger-slate-surface-variant: #2B2820;
+  --badger-slate-ink: #ECE5D4;
+  --badger-slate-outline: #423E36;
+  --badger-slate-outline-mid: #383429;
+  --badger-slate-outline-subtle: #33302A;
+  --badger-slate-outline-faint: #2A2721;
+  --badger-slate-nav-background: var(--badger-slate-surface-variant);
+  --badger-slate-primary-container: #17302F;
+  --badger-slate-text-primary: #ECE5D4;
+  --badger-slate-text-body: #D8D0BC;
+  --badger-slate-text-secondary: #A89F8A;
+  --badger-slate-text-muted: #8F8772;
+  --badger-slate-text-muted-dark: var(--badger-slate-text-muted);
+  --badger-slate-text-dimmed: var(--badger-slate-text-muted);
+  --badger-slate-text-disabled: #565040;
+  --badger-slate-text-faint: #403B30;
+  --badger-slate-success: #6FBF8E;
+  --badger-slate-warning: #E0A94F;
+  --badger-slate-error: #E07B6E;
+  --badger-slate-accent-ink: #4FA3B8;
+  --badger-slate-highlight: #4FA3B8;
+
+  /* font */
+  --badger-font-sans: 'Exo 2';
+  --badger-font-serif: 'Literata';
+
+  /* type */
+  --badger-type-display-large-family: var(--badger-font-sans);
+  --badger-type-display-large-size: 34px;
+  --badger-type-display-large-weight: 800;
+  --badger-type-display-large-style: normal;
+  --badger-type-display-medium-family: var(--badger-font-serif);
+  --badger-type-display-medium-size: 20px;
+  --badger-type-display-medium-weight: 500;
+  --badger-type-display-medium-style: italic;
+  --badger-type-display-small-family: var(--badger-font-serif);
+  --badger-type-display-small-size: 13px;
+  --badger-type-display-small-weight: 400;
+  --badger-type-display-small-style: italic;
+  --badger-type-headline-large-family: var(--badger-font-serif);
+  --badger-type-headline-large-size: 21px;
+  --badger-type-headline-large-weight: 600;
+  --badger-type-headline-large-style: normal;
+  --badger-type-headline-medium-family: var(--badger-font-sans);
+  --badger-type-headline-medium-size: 20px;
+  --badger-type-headline-medium-weight: 700;
+  --badger-type-headline-medium-style: normal;
+  --badger-type-headline-small-family: var(--badger-font-serif);
+  --badger-type-headline-small-size: 15.5px;
+  --badger-type-headline-small-weight: 500;
+  --badger-type-headline-small-style: italic;
+  --badger-type-title-large-family: var(--badger-font-sans);
+  --badger-type-title-large-size: 16px;
+  --badger-type-title-large-weight: 500;
+  --badger-type-title-large-style: normal;
+  --badger-type-title-large-letter-spacing: -0.2px;
+  --badger-type-title-medium-family: var(--badger-font-sans);
+  --badger-type-title-medium-size: 14px;
+  --badger-type-title-medium-weight: 500;
+  --badger-type-title-medium-style: normal;
+  --badger-type-title-small-family: var(--badger-font-sans);
+  --badger-type-title-small-size: 13px;
+  --badger-type-title-small-weight: 500;
+  --badger-type-title-small-style: normal;
+  --badger-type-body-large-family: var(--badger-font-sans);
+  --badger-type-body-large-size: 14px;
+  --badger-type-body-large-weight: 500;
+  --badger-type-body-large-style: normal;
+  --badger-type-body-medium-family: var(--badger-font-sans);
+  --badger-type-body-medium-size: 12px;
+  --badger-type-body-medium-weight: 400;
+  --badger-type-body-medium-style: normal;
+  --badger-type-body-small-family: var(--badger-font-sans);
+  --badger-type-body-small-size: 11px;
+  --badger-type-body-small-weight: 400;
+  --badger-type-body-small-style: normal;
+  --badger-type-label-large-family: var(--badger-font-sans);
+  --badger-type-label-large-size: 14px;
+  --badger-type-label-large-weight: 500;
+  --badger-type-label-large-style: normal;
+  --badger-type-label-medium-family: var(--badger-font-sans);
+  --badger-type-label-medium-size: 12px;
+  --badger-type-label-medium-weight: 500;
+  --badger-type-label-medium-style: normal;
+  --badger-type-label-small-family: var(--badger-font-sans);
+  --badger-type-label-small-size: 11px;
+  --badger-type-label-small-weight: 500;
+  --badger-type-label-small-style: normal;
+  --badger-type-label-small-letter-spacing: 0.8px;
+
+  /* space */
+  --badger-space-2: 2px;
+  --badger-space-4: 4px;
+  --badger-space-6: 6px;
+  --badger-space-8: 8px;
+  --badger-space-10: 10px;
+  --badger-space-12: 12px;
+  --badger-space-14: 14px;
+  --badger-space-16: 16px;
+  --badger-space-20: 20px;
+  --badger-space-24: 24px;
+  --badger-space-32: 32px;
+  --badger-space-48: 48px;
+  --badger-space-screen-padding: var(--badger-space-12);
+
+  /* radius */
+  --badger-radius-xs: 2px;
+  --badger-radius-progress-bar: 3px;
+  --badger-radius-sm: 4px;
+  --badger-radius-badge: 5px;
+  --badger-radius-rounded-square: 6px;
+  --badger-radius-chip: 8px;
+  --badger-radius-button: 10px;
+  --badger-radius-card: 12px;
+  --badger-radius-sheet: 16px;
+  --badger-radius-full: 999px;
+
+  /* border */
+  --badger-border-width: 0.5px;
+
+  /* icon */
+  --badger-icon-sm: 14px;
+  --badger-icon-chevron: 16px;
+  --badger-icon-md: 18px;
+  --badger-icon-lg: 20px;
+  --badger-icon-xl: 32px;
+  --badger-icon-hero: 48px;
+
+  /* size */
+  --badger-size-touch-target: 48px;
+
+  /* duration */
+  --badger-duration-fast: 120ms;
+  --badger-duration-normal: 200ms;
+  --badger-duration-slow: 300ms;
+}
