@@ -15,8 +15,8 @@
   /* 'Journal Arrows' sits between Exo 2 and its metric fallback purely to supply
      U+2192. See the @font-face below for why it is a separate family rather than
      plain 'Literata' in this stack. */
-  --font-sans: 'Exo 2', 'Journal Arrows', 'Exo 2 Fallback', system-ui, sans-serif;
-  --font-serif: 'Literata', 'Literata Fallback', Georgia, serif;
+  --font-sans: var(--badger-font-sans), 'Journal Arrows', 'Exo 2 Fallback', system-ui, sans-serif;
+  --font-serif: var(--badger-font-serif), 'Literata Fallback', Georgia, serif;
 }
 
 /* ---------------------------------------------------------------------------
