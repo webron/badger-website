@@ -1,4 +1,8 @@
 @import "tailwindcss";
+/* Brand primitives, generated from badger-fit design/tokens/badger.tokens.json.
+   Never edit that file here: change the JSON and re-run the build with
+   --website (see badger-fit docs/design_tokens.md). */
+@import "./badger-tokens.css";
 
 /* ============================================================================
    Field Journal foundation (M-web-0)
@@ -11,8 +15,8 @@
   /* 'Journal Arrows' sits between Exo 2 and its metric fallback purely to supply
      U+2192. See the @font-face below for why it is a separate family rather than
      plain 'Literata' in this stack. */
-  --font-sans: 'Exo 2', 'Journal Arrows', 'Exo 2 Fallback', system-ui, sans-serif;
-  --font-serif: 'Literata', 'Literata Fallback', Georgia, serif;
+  --font-sans: var(--badger-font-sans), 'Journal Arrows', 'Exo 2 Fallback', system-ui, sans-serif;
+  --font-serif: var(--badger-font-serif), 'Literata Fallback', Georgia, serif;
 }
 
 /* ---------------------------------------------------------------------------
@@ -111,53 +115,57 @@
    Tokens. Slate is the :root default, paper applies under a light preference,
    and [data-theme] wins over both (set pre-paint from localStorage by
    BaseLayout). This is the existing mechanism, repainted onto the new palette.
+
+   Values come from the shared brand tokens (badger-tokens.css), so the site
+   and the app cannot drift apart. The two washes stay literal: they are the
+   site's own translucent tints of accent-ink and warning, with no app twin.
    ------------------------------------------------------------------------ */
 
 :root {
   color-scheme: dark;
 
-  --bg: #1C1A16;
-  --surface: #232019;
-  --panel: #2B2820;
-  --ink: #ECE5D4;
-  --outline: #423E36;
-  --hair: #33302A;
-  --text: #ECE5D4;
-  --text-secondary: #A89F8A;
-  --text-muted: #8F8772;
-  --text-disabled: #565040;
-  --accent: #2E7E90;
-  --accent-ink: #4FA3B8;
-  --on-accent: #FFFFFF;
+  --bg: var(--badger-slate-background);
+  --surface: var(--badger-slate-surface);
+  --panel: var(--badger-slate-surface-variant);
+  --ink: var(--badger-slate-ink);
+  --outline: var(--badger-slate-outline);
+  --hair: var(--badger-slate-outline-subtle);
+  --text: var(--badger-slate-text-primary);
+  --text-secondary: var(--badger-slate-text-secondary);
+  --text-muted: var(--badger-slate-text-muted);
+  --text-disabled: var(--badger-slate-text-disabled);
+  --accent: var(--badger-accent-petrol);
+  --accent-ink: var(--badger-slate-accent-ink);
+  --on-accent: var(--badger-on-accent);
   --accent-wash: rgba(79, 163, 184, 0.14);
-  --success: #6FBF8E;
-  --warning: #E0A94F;
+  --success: var(--badger-slate-success);
+  --warning: var(--badger-slate-warning);
   --warning-wash: rgba(224, 169, 79, 0.12);
-  --error: #E07B6E;
+  --error: var(--badger-slate-error);
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     color-scheme: light;
 
-    --bg: #F1EDE3;
-    --surface: #F7F3EA;
-    --panel: #EAE4D6;
-    --ink: #262219;
-    --outline: #C6BEA9;
-    --hair: #D9D3C2;
-    --text: #262219;
-    --text-secondary: #5A5344;
-    --text-muted: #6E664F;
-    --text-disabled: #B3AB97;
-    --accent: #2E7E90;
-    --accent-ink: #23677A;
-    --on-accent: #FFFFFF;
+    --bg: var(--badger-paper-background);
+    --surface: var(--badger-paper-surface);
+    --panel: var(--badger-paper-surface-variant);
+    --ink: var(--badger-paper-ink);
+    --outline: var(--badger-paper-outline);
+    --hair: var(--badger-paper-outline-subtle);
+    --text: var(--badger-paper-text-primary);
+    --text-secondary: var(--badger-paper-text-secondary);
+    --text-muted: var(--badger-paper-text-muted);
+    --text-disabled: var(--badger-paper-text-disabled);
+    --accent: var(--badger-accent-petrol);
+    --accent-ink: var(--badger-paper-accent-ink);
+    --on-accent: var(--badger-on-accent);
     --accent-wash: rgba(35, 103, 122, 0.10);
-    --success: #3E7D4E;
-    --warning: #92520A;
+    --success: var(--badger-paper-success);
+    --warning: var(--badger-paper-warning);
     --warning-wash: rgba(146, 82, 10, 0.10);
-    --error: #B03A2E;
+    --error: var(--badger-paper-error);
   }
 }
 
@@ -168,47 +176,47 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #1C1A16;
-  --surface: #232019;
-  --panel: #2B2820;
-  --ink: #ECE5D4;
-  --outline: #423E36;
-  --hair: #33302A;
-  --text: #ECE5D4;
-  --text-secondary: #A89F8A;
-  --text-muted: #8F8772;
-  --text-disabled: #565040;
-  --accent: #2E7E90;
-  --accent-ink: #4FA3B8;
-  --on-accent: #FFFFFF;
+  --bg: var(--badger-slate-background);
+  --surface: var(--badger-slate-surface);
+  --panel: var(--badger-slate-surface-variant);
+  --ink: var(--badger-slate-ink);
+  --outline: var(--badger-slate-outline);
+  --hair: var(--badger-slate-outline-subtle);
+  --text: var(--badger-slate-text-primary);
+  --text-secondary: var(--badger-slate-text-secondary);
+  --text-muted: var(--badger-slate-text-muted);
+  --text-disabled: var(--badger-slate-text-disabled);
+  --accent: var(--badger-accent-petrol);
+  --accent-ink: var(--badger-slate-accent-ink);
+  --on-accent: var(--badger-on-accent);
   --accent-wash: rgba(79, 163, 184, 0.14);
-  --success: #6FBF8E;
-  --warning: #E0A94F;
+  --success: var(--badger-slate-success);
+  --warning: var(--badger-slate-warning);
   --warning-wash: rgba(224, 169, 79, 0.12);
-  --error: #E07B6E;
+  --error: var(--badger-slate-error);
 }
 
 [data-theme="light"] {
   color-scheme: light;
 
-  --bg: #F1EDE3;
-  --surface: #F7F3EA;
-  --panel: #EAE4D6;
-  --ink: #262219;
-  --outline: #C6BEA9;
-  --hair: #D9D3C2;
-  --text: #262219;
-  --text-secondary: #5A5344;
-  --text-muted: #6E664F;
-  --text-disabled: #B3AB97;
-  --accent: #2E7E90;
-  --accent-ink: #23677A;
-  --on-accent: #FFFFFF;
+  --bg: var(--badger-paper-background);
+  --surface: var(--badger-paper-surface);
+  --panel: var(--badger-paper-surface-variant);
+  --ink: var(--badger-paper-ink);
+  --outline: var(--badger-paper-outline);
+  --hair: var(--badger-paper-outline-subtle);
+  --text: var(--badger-paper-text-primary);
+  --text-secondary: var(--badger-paper-text-secondary);
+  --text-muted: var(--badger-paper-text-muted);
+  --text-disabled: var(--badger-paper-text-disabled);
+  --accent: var(--badger-accent-petrol);
+  --accent-ink: var(--badger-paper-accent-ink);
+  --on-accent: var(--badger-on-accent);
   --accent-wash: rgba(35, 103, 122, 0.10);
-  --success: #3E7D4E;
-  --warning: #92520A;
+  --success: var(--badger-paper-success);
+  --warning: var(--badger-paper-warning);
   --warning-wash: rgba(146, 82, 10, 0.10);
-  --error: #B03A2E;
+  --error: var(--badger-paper-error);
 }
 
 /* The M-web-0 compatibility aliases (--border, --color-accent and friends) are
