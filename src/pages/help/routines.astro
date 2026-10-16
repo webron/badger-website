@@ -12,7 +12,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="creating">Create a routine</h2>
   <ol>
-    <li>Go to <strong>More → Routines</strong>, tap <strong>+</strong> and enter a name.</li>
+    <li>Go to <strong>You → Routines</strong>, tap <strong>+</strong> and enter a name.</li>
     <li>Tap the routine to open it, then tap <strong>Add day</strong>.</li>
     <li>Tap the day, then tap <strong>Add exercise</strong> for each movement.</li>
     <li>Tap an exercise row to <a href="#predefined-sets">plan its sets</a>.</li>
@@ -33,22 +33,24 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>You can still start any day. If the days are assigned to weekdays, the Today screen highlights today's.</p>
 
   <h3 id="weight-source">Where starting weights come from (weight source)</h3>
-  <p>A segmented control on the routine detail screen sets this:</p>
+  <p>Open the <strong>Weights and reps</strong> section below the days on the routine screen (it's collapsed until you tap it). <strong>Pre-fill weights from</strong> sets this:</p>
   <ul>
-    <li><strong>Last perf.</strong> (default) - The weight from your most recent workout of each exercise, wherever that workout came from.</li>
+    <li><strong>Last time</strong> (default) - The weight from your most recent workout of each exercise, wherever that workout came from.</li>
     <li><strong>Routine</strong> - The planned set weights only. A set marked "Copy from previous" uses its planned value.</li>
     <li><strong>Both</strong> - Planned weights first, then your last performance where none is set.</li>
   </ul>
 
   <h3 id="history-scope">Which past workouts count (history scope)</h3>
+  <p><strong>History from</strong>, in the same <strong>Weights and reps</strong> section:</p>
   <ul>
     <li><strong>Any workout</strong> (default) - Looks at all your previous workouts.</li>
     <li><strong>This routine</strong> - Only workouts started from this routine. Use this when you run two programs at once.</li>
   </ul>
 
   <h3 id="rep-target">Where reps come from (rep target)</h3>
+  <p><strong>Rep target</strong>, in the same section:</p>
   <ul>
-    <li><strong>Last perf.</strong> (default) - Reps copy from your last session.</li>
+    <li><strong>Last time</strong> (default) - Reps copy from your last session.</li>
     <li><strong>Plan</strong> - Reps stay pinned to the planned sets. Use this for strict programs such as StrongLifts 5×5, where the rep count shouldn't drift.</li>
   </ul>
   <p>Weight still follows the weight source. An exercise with a <a href="/help/progression/#rules">progression rule</a> always takes its reps from the plan.</p>
