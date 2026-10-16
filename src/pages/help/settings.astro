@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Settings and data" description="What each setting in Badger does, and how to back up, restore, export and import your data.">
   <h1>Settings and data</h1>
 
-  <p>Open <strong>More → Settings</strong>. <strong>More → Data &amp; backup</strong> opens the same screen scrolled to <a href={`#data`}>Your data</a>.</p>
+  <p>Open <strong>You → Settings</strong>. <strong>You → Data &amp; backup</strong> opens the same screen scrolled to <a href={`#data`}>Your data</a>.</p>
 
   <p>Settings are grouped by what you're doing: <a href={`#logging`}>Logging</a>, the three timers (<a href={`#rest-timer`}>Rest timer</a>, <a href={`#set-timer`}>Set timer</a> and <a href={`#workout-timer`}>Workout timer</a>), <a href={`#coaching`}>Coaching</a>, <a href={`#app`}>App</a> and <a href={`#data`}>Your data</a>. <a href={`#training-notes`}>Training notes</a>, under More, are covered at the end.</p>
 
@@ -72,7 +72,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2 id="data">Your data</h2>
-  <p>Everything below is in the <strong>Your data</strong> section at the bottom of Settings. <strong>More → Data &amp; backup</strong> jumps straight to it.</p>
+  <p>Everything below is in the <strong>Your data</strong> section at the bottom of Settings. <strong>You → Data &amp; backup</strong> jumps straight to it.</p>
 
   <h3 id="backup">Backup</h3>
   <p>Your workout data is stored locally in a SQLite database, and Badger keeps it backed up in three places:</p>
@@ -83,7 +83,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h4 id="cloud-backup">The Backup screen</h4>
-  <p>Open it from <strong>More → Settings → Your data → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
+  <p>Open it from <strong>You → Settings → Your data → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
   <ul>
     <li><strong>Automatic</strong> - the iCloud switch and its status on iPhone, or the count of on-phone copies on Android, plus a manual <strong>Back up now</strong> for iCloud.</li>
     <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Undo last restore</strong> appears when a pre-restore snapshot exists, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself.</li>
@@ -120,7 +120,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p><strong>Delete all workout history</strong>, at the very bottom of Settings, permanently deletes every workout and set but keeps your exercises and routines. Badger asks you to confirm first.</p>
 
   <h2 id="training-notes">Training notes</h2>
-  <p><strong>More → Training notes</strong> is one free-text page for your own context: goals, injuries, training history, anything worth remembering. It saves as you type.</p>
+  <p><strong>You → Training notes</strong> is one free-text page for your own context: goals, injuries, training history, anything worth remembering. It saves as you type.</p>
   <p>Training notes are in your <a href={`#backup`}>backup</a>, so they come back when you restore on a new phone. They aren't included when you export data or share a routine. Notes about one program belong on the routine instead; see <a href={`/help/routines/#routine-notes`}>Routine notes</a>.</p>
   <p><strong>Copy for AI</strong>, at the bottom of the page, bundles these notes with your program, recent training, records and equipment. See <a href={`#ai-context`}>Copying your context for an AI</a>.</p>
 </HelpLayout>

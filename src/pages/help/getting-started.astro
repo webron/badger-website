@@ -14,9 +14,9 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <p>Get Badger from the <a href={APP_STORE_URL}>App Store</a> on iPhone or from <a href={PLAY_URL}>Google Play</a> on Android. On iOS it's an iPhone app only; there is no iPad build. The first launch asks two things:</p>
   <ol>
     <li><strong>Weight unit</strong> - Kilograms or pounds. This is the default for every exercise, and you can change it for a single exercise later.</li>
-    <li><strong>Import data</strong> - Bring in your history from FitNotes, Strong, Hevy or StrongLifts. You can skip this and do it later; see <a href="#importing">Import from another app</a>.</li>
+    <li><strong>Import data</strong> - Bring in your history from FitNotes, Strong, Hevy or StrongLifts. You can skip this and do it later; see <a href="#importing">Import from another app</a>. After an import, setup moves on by itself and its last page lists what came in.</li>
   </ol>
-  <p>After that you're on the Today screen.</p>
+  <p>After that you're on the Today screen. With no active routine, Today shows <strong>Pick a program or build a routine</strong>. If your imported history has named workouts, such as Strong's, it offers <strong>Turn your workouts into routines</strong> instead.</p>
 
   <h2 id="first-workout">Log your first workout</h2>
   <p>A <strong>workout</strong> is one day's session, and it holds the <strong>exercises</strong> you do in it.</p>
@@ -26,7 +26,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
     <li>Tap the exercise to open the <strong>training screen</strong>.</li>
     <li>Enter the weight and reps (or whatever fields the exercise uses) and tap the <strong>checkmark</strong> to log the set.</li>
     <li>The rest timer starts on its own. When it ends, log your next set.</li>
-    <li>When you finish an exercise, tap the <strong>All exercises</strong> pill at the bottom of the screen, then <strong>Add exercise</strong> for the next one. Tap an exercise in that list to switch back to it.</li>
+    <li>When you finish an exercise, tap the <strong>All exercises</strong> pill at the bottom of the screen, then <strong>Add exercise</strong> for the next one, or tap the <strong>+ Add</strong> pill beside it. Tap an exercise in that list to switch back to it.</li>
     <li>When the session is over, tap back to return to the Today screen and tap <strong>End workout</strong>. Badger records the end time and shows your workout summary.</li>
   </ol>
 
@@ -39,7 +39,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <h2>Start from a routine</h2>
   <p>If you follow a program, a routine fills in the exercises and weights for each day.</p>
   <ol>
-    <li>Go to <strong>More</strong> → <strong>Routines</strong>.</li>
+    <li>Go to <strong>You</strong> → <strong>Routines</strong>.</li>
     <li>Tap <strong>+</strong> to build your own, or pick one of the built-in programs (StrongLifts, 5/3/1, PPL and others).</li>
     <li>Long-press the routine and tap <strong>Set active</strong>. Its days appear on the Today screen.</li>
     <li>Tap a day to preview the workout, adjust any weights, then tap <strong>Start</strong>.</li>
@@ -65,7 +65,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
 
   <h3 id="importing-steps">Import the file into Badger</h3>
   <ol>
-    <li>Go to <strong>Settings → Your data</strong> and tap the row for your old app: <strong>Import from FitNotes</strong>, <strong>Import from Strong</strong>, <strong>Import from Hevy</strong> or <strong>Import from Stronglifts</strong>, and pick the file you exported.</li>
+    <li>Go to <strong>Settings → Your data</strong> and tap the row for your old app: <strong>Import from FitNotes</strong>, <strong>Import from Strong</strong>, <strong>Import from Hevy</strong> or <strong>Import from Stronglifts</strong>. The screen opens with that app's export steps. When your file is ready, tap <strong>Choose file</strong> and pick it.</li>
         <li>Check the preview: exercises, workout days, sets and the weight unit. For a FitNotes backup, set <strong>Weight unit in this file</strong> yourself. It starts on kg, which is what FitNotes normally stores; a backup from before about 2018 carries its unit per set and doesn't need it.</li>
     <li>Check <strong>Exercise mapping</strong>. It shows how many of your exercises matched ones already in your library, which keeps their history, PRs and graphs together. Tap <strong>Review exercise mapping</strong> to change what any name is logged against, or to add it as a new exercise.</li>
     <li>Tap <strong>Import</strong>.</li>

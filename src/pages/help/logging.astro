@@ -28,7 +28,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Each exercise opens on the training screen, with three tabs: <strong>Track</strong> (logging sets), <strong>History</strong> (your past sessions of this exercise) and <strong>Graph</strong> (its progress chart). Swipe to switch between them.</p>
 
   <h3>Move between exercises</h3>
-  <p>Tap the <strong>All exercises</strong> pill at the bottom of the screen. From the list you can tap an exercise to switch to it, drag to reorder, or tap <strong>Add exercise</strong>.</p>
+  <p>Tap the <strong>All exercises</strong> pill at the bottom of the screen. From the list you can tap an exercise to switch to it, drag to reorder, or tap <strong>Add exercise</strong>. To add another exercise without leaving the training screen, tap the <strong>+ Add</strong> pill beside <strong>All exercises</strong>.</p>
 
   <h3>More options (⋮ menu)</h3>
   <ul>
@@ -54,7 +54,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The notes screen's heading reads <strong>Notes &middot; MachineName</strong>. Notes you wrote for the exercise in general appear in their own block, and the attachment's notes ("use the thick end") appear in the same card. Increment, rest, instructions and muscles apply to the exercise on every machine.</p>
 
   <h2 id="logging-a-set">Log a set</h2>
-  <p>The Track tab shows the input fields at the top and your logged sets below. The fields follow the exercise type: weight and reps for a barbell lift, time for a plank.</p>
+  <p>The Track tab shows the input fields at the top and your logged sets below. The fields follow the exercise type: weight and reps for a barbell lift, time for a plank. They start from the first working set of your last session of that exercise, and from zero if you've never done it.</p>
   <ol>
     <li>Enter the weight and reps (or time, distance) with the <strong>+/−</strong> buttons, or tap a field and type.</li>
     <li>Tap the <strong>✓</strong> to save the set.</li>
@@ -100,7 +100,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>A row of chips under the input fields shows the <strong>machine</strong>, its <strong>attachment</strong>, the <strong>grip</strong>, the <strong>bar</strong>, any <strong>accessories</strong>, and the <strong>rest</strong> that starts when you finish the set. Tap a chip to change it. Long-press the machine chip to open that machine's screen.</p>
   <p>Only the chips that apply to the exercise appear:</p>
   <ul>
-    <li><strong>Grip</strong> appears when the machine has grip types (set them in <strong>More → Machines</strong>). Pick <strong>No grip</strong> to clear it.</li>
+    <li><strong>Grip</strong> appears when the machine has grip types (set them in <strong>You → Machines</strong>). Pick <strong>No grip</strong> to clear it.</li>
     <li><strong><a href="/help/gyms/#picking-a-bar">Bar</a></strong> appears on a barbell exercise at a gym with bars. The bar feeds the plate calculator and your warmups, and records are kept per bar.</li>
     <li><strong><a href="/help/gyms/#picking-accessories">Accessories</a></strong> appear on barbell and bodyweight exercises at a gym with accessories, and on a machine marked as supporting bands. Pick several at once; the chip shows the count and colors, such as "2 bands". Sets with an accessory attached don't count toward records (see <a href="#records">Personal records</a>).</li>
   </ul>
@@ -176,6 +176,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="rest-timer">Rest timer</h2>
   <p>The rest timer shows as a chip near the top of the training screen. It counts down after you save a set, then plays a sound, vibrates, or both (set this in Settings). It doesn't start after the last working set of your last exercise.</p>
+  <p>The first time a rest or set timer runs, Badger asks to send notifications. Tap <strong>Allow</strong> to get an alert when a timer ends with the phone locked, or <strong>Not now</strong> to skip it.</p>
   <p>Tap the chip to open the rest timer sheet:</p>
   <ul>
     <li><strong>While a timer runs:</strong> <strong>Stop</strong>, <strong>+30s</strong>, or <strong>Restart</strong> from the full duration.</li>
@@ -255,6 +256,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="finishing">Finish a workout</h2>
   <p>On the Today screen, tap <strong>End workout</strong>. The workout summary opens. On a routine workout, it can offer to update the routine with heavier weights you lifted; see <a href="/help/progression/#auto-progress">Auto-progress routine weights</a>.</p>
+
+  <p>A workout started from a routine finishes by itself once every planned set is done. A free workout doesn't: ticking its last set leaves it open, so you can add more, and you end it with <strong>End workout</strong>.</p>
 
   <h3 id="resuming">Resume a finished workout</h3>
   <p>Forgot an exercise? Open <strong>today's</strong> workout summary and tap <strong>Resume workout</strong>. It's offered for today's workout only.</p>

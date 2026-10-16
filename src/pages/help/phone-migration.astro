@@ -49,7 +49,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </p>
   <h3>Google Drive backup</h3>
   <ol>
-    <li>On the old phone, go to <strong>More → Settings → Your data → Backup</strong> and turn on <strong>Google Drive backup</strong>, signing in with your Google account. Badger takes the first backup straight away, and then after every workout and once a day when something has changed.</li>
+    <li>On the old phone, go to <strong>You → Settings → Your data → Backup</strong> and turn on <strong>Google Drive backup</strong>, signing in with your Google account. Badger takes the first backup straight away, and then after every workout and once a day when something has changed.</li>
     <li>Install Badger on the new phone and turn on Google Drive backup there too, with the same Google account.</li>
     <li>On the Backup screen's <strong>Restore a copy</strong> list, tap the Drive copy you want. Badger confirms, then restarts with your history in place.</li>
   </ol>
@@ -74,7 +74,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h4 id="step-1">Step 1 - Back up on the old phone</h4>
   <ol>
-    <li>Go to <strong>More → Settings → Your data</strong>.</li>
+    <li>Go to <strong>You → Settings → Your data</strong>.</li>
     <li>Tap <strong>Manual backup</strong>. The system share sheet opens.</li>
     <li>Save the <code>.workout_backup</code> file somewhere you'll be able to reach from the new phone - Google Drive, email-to-self, WhatsApp, a USB transfer, or your preferred cloud storage app.</li>
   </ol>
@@ -92,7 +92,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h4 id="step-3">Step 3 - Restore the backup</h4>
   <ol>
     <li>Make sure the backup file from Step 1 is reachable on the new phone (saved in Files, Drive, or attached to an email you've opened).</li>
-    <li>Open Badger → <strong>More → Settings → Your data → Backup</strong>.</li>
+    <li>Open Badger → <strong>You → Settings → Your data → Backup</strong>.</li>
     <li>Under <strong>Extra</strong>, tap <strong>From a file…</strong>.</li>
     <li>Pick the <code>.workout_backup</code> file. Badger will confirm - tap <strong>Restore</strong>.</li>
     <li>The app replaces its current database with the one from the backup and restarts. When it comes back up, all of your history is there.</li>
@@ -120,7 +120,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>The picker doesn't see my file.</strong> Move the backup into your phone's main <em>Downloads</em> or <em>Documents</em> folder, or open it directly from your cloud app's share sheet ("Open with Badger").</li>
     <li><strong>Restore fails with a format error.</strong> The file may have been truncated during transfer - re-export on the old phone and move it again via a different channel.</li>
-    <li><strong>New iPhone didn't offer to restore.</strong> iCloud backup may have been off on the old phone, or the check may not have found a copy yet - open <strong>More → Settings → Your data → Backup</strong> and check <strong>Restore a copy</strong> directly.</li>
+    <li><strong>New iPhone didn't offer to restore.</strong> iCloud backup may have been off on the old phone, or the check may not have found a copy yet - open <strong>You → Settings → Your data → Backup</strong> and check <strong>Restore a copy</strong> directly.</li>
     <li><strong>New Android phone didn't restore automatically.</strong> Your old phone's system backup setting was probably off - check <strong>Settings → System → Backup</strong> on the old phone for next time, and restore this once from a Google Drive backup or a saved file.</li>
     <li><strong>Old phone is dead, no manual backup.</strong> If Google Drive backup was on, sign in with the same Google account on the new phone under <strong>Settings → Your data → Backup</strong> and restore from there. If it was off and no backup file exists, the data cannot be recovered.</li>
   </ul>
