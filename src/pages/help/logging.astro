@@ -39,7 +39,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Replace exercise</strong> - Swap in a different exercise. Sets already logged stay attached.</li>
     <li><strong>Switch to alternative</strong> or <strong>Plan B - swap exercise</strong> - Swap for this workout only. See <a href="/help/routines/#alternatives">Alternative exercises</a>.</li>
-    <li><strong>Skip exercise</strong> - Skip every set left on this exercise. See <a href="#missed-vs-skipped">Skip a set</a>.</li>
+    <li><strong>Skip remaining sets</strong> - Skip every set on this exercise that is not done yet. It does not show once every set is done. See <a href="#missed-vs-skipped">Skip a set</a>.</li>
     <li><strong>Superset</strong> - Group exercises. See <a href="#supersets">Supersets</a>.</li>
     <li><strong>Change gym</strong> - Switch which gym this workout is at.</li>
     <li><strong>Set machine</strong> - Pick the machine and attachment. <strong>New machine…</strong> and <strong>New attachment…</strong> at the bottom of each picker add one on the spot.</li>
@@ -254,7 +254,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>If you did the set but came up short, log what you did. If you didn't do it at all, skip it.</p>
   <ul>
     <li><strong>Skip one set:</strong> tap its row, then tap <strong>Skip</strong>. Tap <strong>Unskip</strong> to undo.</li>
-    <li><strong>Skip the rest of an exercise:</strong> open the <strong>⋮ menu</strong> and tap <strong>Skip exercise</strong>, or long-press the exercise in the <strong>Exercises</strong> list and tap <strong>Skip remaining sets</strong>. The same menu item reads <strong>Unskip exercise</strong> once every set on it is skipped.</li>
+    <li><strong>Skip the rest of an exercise:</strong> open the <strong>⋮ menu</strong>, or long-press the exercise in the <strong>Exercises</strong> list, and tap <strong>Skip remaining sets</strong>. Sets you already did stay done. Once nothing is left to skip, the same item reads <strong>Unskip exercise</strong> if some sets are skipped, and does not appear if every set is done.</li>
   </ul>
   <p>A skipped set stays on the training screen, struck through, and is left out of your history, all calculations, and plateau and deload detection.</p>
   <p>A short set is a real set. Aiming for 8 and getting 6? Log the 6. It counts toward volume, shows in your history and feeds plateau and deload detection. On a routine workout, the summary marks it as under plan.</p>
