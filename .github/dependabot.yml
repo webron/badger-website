@@ -11,9 +11,14 @@ updates:
     cooldown:
       default-days: 7
       semver-major-days: 14
+    # Two grouped PRs a month at most: one for minor + patch, one for every
+    # major bump together. Ungrouped, the first run opened a PR per major per
+    # directory (over 20), which is more than anyone reviews.
     groups:
       npm-minor-and-patch:
         update-types: [minor, patch]
+      npm-major:
+        update-types: [major]
     open-pull-requests-limit: 5
   - package-ecosystem: github-actions
     directory: /
