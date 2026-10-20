@@ -1,0 +1,26 @@
+# Supply-chain hardening (2026-10-20). The cooldown waits before proposing a
+# new release: most malicious releases are caught and pulled within days.
+# Security updates ignore the cooldown. Monthly and grouped, so it stays a
+# small review a month.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    groups:
+      npm-minor-and-patch:
+        update-types: [minor, patch]
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']
