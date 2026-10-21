@@ -39,8 +39,10 @@ def old_row(day: str, source: str, acq: int) -> dict:
 
 
 def install_row(day: str, n: int = 1) -> dict:
+    # Shaped like Play's current file: the "Daily Device Uninstalls" column is
+    # always 0, and the real counts live in the "... events" columns.
     return {"Date": day, "Daily Device Installs": n, "Daily Device Uninstalls": 0,
-            "Active Device Installs": 10}
+            "Active Device Installs": 10, "Install events": n, "Uninstall events": 0}
 
 
 def not_found(name: str) -> urllib.error.HTTPError:
@@ -86,6 +88,34 @@ class MonthsBetween(unittest.TestCase):
 
     def test_one_month(self):
         self.assertEqual(src._months_between(date(2026, 10, 1), date(2026, 10, 11)), ["202610"])
+
+
+class InstallAndUninstallCounts(unittest.TestCase):
+    """Play zeroed "Daily Device Uninstalls"; the report then said "0 uninstalled"
+    every week. Uninstalls (and installs) come from the "... events" columns."""
+
+    def run_rows(self, rows: list[dict]) -> dict:
+        h = PlayHarness({INSTALLS % (PKG, "202610"): rows},
+                        today=date(2026, 10, 11), days=11)
+        return h.run()
+
+    def test_uninstalls_come_from_uninstall_events(self):
+        rows = [install_row("2026-10-01") | {"Uninstall events": 2},
+                install_row("2026-10-02") | {"Uninstall events": 3}]
+        self.assertEqual(self.run_rows(rows)["uninstalls"], 5)
+
+    def test_installs_come_from_install_events(self):
+        rows = [install_row("2026-10-01", 4) | {"Install events": 5},
+                install_row("2026-10-02", 1) | {"Install events": 2}]
+        p = self.run_rows(rows)
+        self.assertEqual(p["installs"], 7)
+        self.assertEqual(p["daily"], [("2026-10-01", 5), ("2026-10-02", 2)])
+
+    def test_falls_back_to_the_old_columns_when_the_event_columns_are_absent(self):
+        rows = [{"Date": "2026-10-01", "Daily Device Installs": 3,
+                 "Daily Device Uninstalls": 2, "Active Device Installs": 10}]
+        p = self.run_rows(rows)
+        self.assertEqual((p["installs"], p["uninstalls"]), (3, 2))
 
 
 class TrafficSourceFiles(unittest.TestCase):
