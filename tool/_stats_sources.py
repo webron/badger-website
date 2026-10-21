@@ -352,17 +352,24 @@ def _acquisitions(row: dict) -> int:
                or row.get("Total store acquisitions") or 0)
 
 
+def _event_count(row: dict, event_col: str, old_col: str) -> int:
+    """Use the event column whenever it is present, even when its value is a real
+    zero (0, "0" or a blank cell); only a row without the column falls back."""
+    col = event_col if event_col in row else old_col
+    return int(row.get(col) or 0)
+
+
 def _installs(row: dict) -> int:
     """Installs for a day. Play fills "Install events"; "Daily Device Installs"
     is the older column, kept as a fallback for files that lack the new one."""
-    return int(row.get("Install events") or row.get("Daily Device Installs") or 0)
+    return _event_count(row, "Install events", "Daily Device Installs")
 
 
 def _uninstalls(row: dict) -> int:
     """Uninstalls for a day. Play stopped filling "Daily Device Uninstalls" (it
     is 0 on every row) and now reports the real count in "Uninstall events". The
     old column is a fallback only for files that predate the new one."""
-    return int(row.get("Uninstall events") or row.get("Daily Device Uninstalls") or 0)
+    return _event_count(row, "Uninstall events", "Daily Device Uninstalls")
 
 
 def play(days: int) -> dict:

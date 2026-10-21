@@ -117,6 +117,22 @@ class InstallAndUninstallCounts(unittest.TestCase):
         p = self.run_rows(rows)
         self.assertEqual((p["installs"], p["uninstalls"]), (3, 2))
 
+    def test_a_real_zero_uninstall_event_beats_the_old_column(self):
+        for zero in (0, "0", ""):
+            with self.subTest(zero=zero):
+                rows = [{"Date": "2026-10-01", "Install events": 1,
+                         "Uninstall events": zero, "Daily Device Uninstalls": 4}]
+                self.assertEqual(self.run_rows(rows)["uninstalls"], 0)
+
+    def test_a_real_zero_install_event_beats_the_old_column(self):
+        for zero in (0, "0", ""):
+            with self.subTest(zero=zero):
+                rows = [{"Date": "2026-10-01", "Install events": zero,
+                         "Daily Device Installs": 4}]
+                p = self.run_rows(rows)
+                self.assertEqual(p["installs"], 0)
+                self.assertEqual(p["daily"], [("2026-10-01", 0)])
+
 
 class TrafficSourceFiles(unittest.TestCase):
     def test_reads_the_new_name_and_reports_visitors(self):
