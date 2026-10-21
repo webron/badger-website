@@ -1,0 +1,65 @@
+# Lints the workflow files themselves (supply-chain hardening, 2026-10-20).
+#
+#   - zizmor audits for script injection, dangerous triggers, unpinned actions
+#     and credential leaks. An injection in a workflow that runs on Ron's own
+#     machines means code running on those machines.
+#   - actionlint checks syntax, expressions and shell in run: blocks.
+#
+# GitHub-hosted on purpose: this job only reads YAML, so there is no reason to
+# put it on a self-hosted runner, and it starts only when a workflow file
+# changes, so it costs about a minute a few times a month.
+
+name: workflow lint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/**'
+      - '.github/actionlint.yaml'
+      - '.github/dependabot.yml'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '.github/actionlint.yaml'
+      - '.github/dependabot.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: workflow-lint-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  lint:
+    name: zizmor + actionlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+
+      # advanced-security off: that mode uploads SARIF to code scanning, which a
+      # private repo without GitHub Advanced Security cannot receive. Plain
+      # output fails the job on any finding instead.
+      - uses: zizmorcore/zizmor-action@85b2b9fb8e3325e7a23d7d0a9d7ba5ae0f999e3e # v0.7.1
+        with:
+          version: 1.31.1
+          advanced-security: false
+
+      # The release binary at a fixed version, checked against its published
+      # sha256, rather than piping the project's install script into bash.
+      - name: actionlint
+        env:
+          ACTIONLINT_VERSION: 1.7.12
+          ACTIONLINT_SHA256: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+        run: |
+          tgz="actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          curl -fsSL -o "$RUNNER_TEMP/$tgz" "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/$tgz"
+          echo "$ACTIONLINT_SHA256  $RUNNER_TEMP/$tgz" | sha256sum -c --quiet
+          tar -xzf "$RUNNER_TEMP/$tgz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint" -color
