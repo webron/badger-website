@@ -352,6 +352,26 @@ def _acquisitions(row: dict) -> int:
                or row.get("Total store acquisitions") or 0)
 
 
+def _event_count(row: dict, event_col: str, old_col: str) -> int:
+    """Use the event column whenever it is present, even when its value is a real
+    zero (0, "0" or a blank cell); only a row without the column falls back."""
+    col = event_col if event_col in row else old_col
+    return int(row.get(col) or 0)
+
+
+def _installs(row: dict) -> int:
+    """Installs for a day. Play fills "Install events"; "Daily Device Installs"
+    is the older column, kept as a fallback for files that lack the new one."""
+    return _event_count(row, "Install events", "Daily Device Installs")
+
+
+def _uninstalls(row: dict) -> int:
+    """Uninstalls for a day. Play stopped filling "Daily Device Uninstalls" (it
+    is 0 on every row) and now reports the real count in "Uninstall events". The
+    old column is a fallback only for files that predate the new one."""
+    return _event_count(row, "Uninstall events", "Daily Device Uninstalls")
+
+
 def play(days: int) -> dict:
     """Installs, uninstalls, listing visitors and where store visits came from.
 
@@ -404,9 +424,6 @@ def play(days: int) -> dict:
 
     rows = [r for r in installs if in_window(r)]
 
-    def total(column: str) -> int:
-        return sum(int(r.get(column) or 0) for r in rows)
-
     by_source: dict[str, int] = {}
     listing_acquisitions = 0
     listing_visitors = 0
@@ -427,10 +444,10 @@ def play(days: int) -> dict:
     return {
         "start": start.isoformat(),
         "end": rows[-1]["Date"] if rows else today.isoformat(),
-        "installs": total("Daily Device Installs"),
-        "uninstalls": total("Daily Device Uninstalls"),
+        "installs": sum(_installs(r) for r in rows),
+        "uninstalls": sum(_uninstalls(r) for r in rows),
         "active": active,
-        "daily": [(r["Date"], int(r.get("Daily Device Installs") or 0)) for r in rows],
+        "daily": [(r["Date"], _installs(r)) for r in rows],
         "sources": sorted(by_source.items(), key=lambda kv: -kv[1]),
         "listing_visitors": listing_visitors,
         "listing_acquisitions": listing_acquisitions,
