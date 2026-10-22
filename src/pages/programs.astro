@@ -39,6 +39,14 @@ interface ProgramCopy {
 
 const programCopy: ProgramCopy[] = [
   {
+    slug: 'full-body-starter',
+    title: 'Full Body Starter',
+    level: 'Beginner',
+    cadence: '3 days a week',
+    blurb:
+      'Two full-body days, A and B, that you alternate three times a week, on machines and dumbbells. There is no training max and no rule to set up: most exercises are 3 sets of 10 to 12, and when a set feels easy at the top of its reps, you add a little weight next time. A good first program if the barbell lifts feel like a lot.',
+  },
+  {
     slug: 'stronglifts-5x5',
     title: 'StrongLifts 5x5',
     level: 'Beginner',
@@ -147,7 +155,9 @@ function readProgram(slug: string): ProgramFile {
 }
 
 const programs = programCopy.map((p) => ({ ...p, file: readProgram(p.slug) }));
-const appVersion = programs[0].file.appVersion;
+// Files are regenerated per release, so a newer program can sit beside older exports.
+const appVersions = [...new Set(programs.map((p) => p.file.appVersion))].sort();
+const appVersion = appVersions.join(' and ');
 
 // **Whether the DOWNLOADS carry rules is a fact about the files, not about the
 // app, and the two moved apart.** A `.badger` file carries a rule as a
@@ -201,7 +211,7 @@ const progressCards = [
 ];
 
 const description =
-  'Ten starter programs as .badger files you can import straight into Badger: StrongLifts 5x5, Starting Strength, full body, GZCLP, 5/3/1 Boring But Big, nSuns 531LP, Madcow 5x5, upper/lower, a five-day push/pull/legs and upper/lower hybrid, and six-day push/pull/legs. Six of them carry their own progression rules.';
+  'Eleven starter programs as .badger files you can import straight into Badger: Full Body Starter, StrongLifts 5x5, Starting Strength, full body, GZCLP, 5/3/1 Boring But Big, nSuns 531LP, Madcow 5x5, upper/lower, a five-day push/pull/legs and upper/lower hybrid, and six-day push/pull/legs. Six of them carry their own progression rules.';
 ---
 
 <BaseLayout title="Program files" description={description}>
@@ -215,9 +225,9 @@ const description =
       import into Badger in one step.
     </p>
     <p class="sub">
-      All ten are also built into the app, under You &rarr; Routines, on a new install. Already
-      using Badger? Programs added in an update don't appear in a routine list you already have, so
-      import the file to get one.
+      All eleven are also built into the app, under You &rarr; Routines, on a new install. Already
+      using Badger? Full Body Starter is added to your routine list when you update. For any other
+      program, import the file.
     </p>
     <p class="sub">
       {
@@ -238,7 +248,7 @@ const description =
     </ul>
 
     <div class="rule-ink section-rule"></div>
-    <p class="caps section-label">Ten programs, ready to import</p>
+    <p class="caps section-label">Eleven programs, ready to import</p>
 
     <ul class="programs">
       {

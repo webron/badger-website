@@ -11,7 +11,8 @@ A .badger file is a single JSON text file you can read in any text editor. It ho
 
 ## Programs
 
-- [Programs](https://badger.fit/programs/): Ten ready-made programs, what each one is and who it suits, with a .badger download for each.
+- [Programs](https://badger.fit/programs/): Eleven ready-made programs, what each one is and who it suits, with a .badger download for each.
+- [Full Body Starter](https://badger.fit/programs/full-body-starter.badger): Beginner.
 - [StrongLifts 5x5](https://badger.fit/programs/stronglifts-5x5.badger): Beginner.
 - [Starting Strength](https://badger.fit/programs/starting-strength.badger): Beginner.
 - [Full Body, 3 days](https://badger.fit/programs/full-body-3-day.badger): Beginner.

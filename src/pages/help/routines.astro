@@ -119,8 +119,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Set rest time on the exercise itself (Exercise → settings), and it applies everywhere you train it. The routine's <strong>Rest (seconds)</strong> field is used only when the exercise has no rest of its own.</p>
 
   <h2>Organize days and routines</h2>
-  <h3>Schedule a day</h3>
+  <h3 id="schedule-a-day">Schedule a day</h3>
   <p>Open the day's <strong>Day options</strong> and set <strong>Scheduled days</strong> to pick weekdays. A <strong>calendar icon</strong> then appears on the day row - tap it to change them. The day shows as scheduled on the Today screen on those days, and as short labels (Mon, Wed, Fri) on the row. A warning appears if two days share a weekday.</p>
+  <p>Scheduled days count only on your <a href="#starting">active program</a>. Its days set your <a href="/help/settings/#workout-reminders">workout reminders</a> and put the faint dots on the History calendar. Another routine's scheduled days do neither until you make it active.</p>
 
   <h3>Day options</h3>
   <p>Open a day's <strong>Day options</strong>:</p>
@@ -228,10 +229,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <hr />
 
   <h2 id="programs">Built-in programs</h2>
-  <p>Badger includes 10 programs in 3 folders, on a <strong>new install only</strong>. If you've used Badger a while, download the one you want from the <a href="/programs/">Programs</a> page, or add rules to a routine you already have with <a href="/help/progression/#set-up-progression">Set up progression</a>. Six of the programs come with <a href="/help/progression/#rules">progression rules</a> already written.</p>
+  <p>Badger includes 11 programs in 3 folders. A new install has all of them. If you've used Badger a while, <strong>Full Body Starter</strong> is added when you update; download any other from the <a href="/programs/">Programs</a> page, or add rules to a routine you already have with <a href="/help/progression/#set-up-progression">Set up progression</a>. Six of the programs come with <a href="/help/progression/#rules">progression rules</a> already written.</p>
+
+  <p>In <strong>You → Routines</strong>, each program shows a one-line description and tags for the equipment it needs: Barbell, Squat rack, Machines or Dumbbells.</p>
 
   <h3>Beginner</h3>
   <ul>
+    <li id="full-body-starter"><strong>Full Body Starter</strong> - Two full-body days, Day A and Day B, that you alternate three times a week, on machines and dumbbells. Most exercises are 3 sets of 10 to 12 reps. It has no training max and no progression rule: when a set feels easy at the top of its reps, add a little weight next time.</li>
     <li><strong>StrongLifts 5×5</strong> - Two alternating full-body days (A and B), 5 sets of 5 on the major compound lifts. Adds weight every session you complete, drops 10% after three misses in a row, and moves down a <a href="/help/progression/#stages">stage ladder</a> (5×5, 3×5, 1×5) as you stall.</li>
     <li><strong>Starting Strength</strong> - Similar to StrongLifts, with slightly different exercises and 3×5 progression. When you stall, its rule halves your increment instead of deloading you.</li>
   </ul>
