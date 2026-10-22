@@ -11,7 +11,10 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  * Import claims checked against hevy_parser.dart and hevy_importer.dart on
  * 2026-09-05:
  *   - weight unit from the weight_kg / weight_lbs header, distance from
- *     distance_km / distance_miles (hevy_parser.dart:104-111)
+ *     distance_km / distance_miles (hevy_parser.dart:104-111). A miles
+ *     export is kept in miles (no conversion to km); the app displays it in
+ *     the reader's distance unit (hevy_importer.dart, hevyDistanceUnitTag,
+ *     app schema v84, 2026-10-22).
  *   - carried: title, exercise_title, reps, duration_seconds, exercise_notes,
  *     set_index, rpe (importer :253), and set_type, which is why warmups
  *     survive as warmups (:197, importer :252)
@@ -70,7 +73,7 @@ const description =
     </li>
     <li>
       <strong>Kilograms or pounds, kilometers or miles</strong>, read from the file's column names and
-      kept in the unit you logged.
+      kept in the unit you logged. A miles export stays in miles, and Badger shows it in your distance unit.
     </li>
     <li>
       <strong>Your PRs</strong>, worked out from the imported history, so your records and graphs
