@@ -16,6 +16,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Unit system</strong> - Kilograms or pounds, for every exercise that doesn't set its own.</li>
     <li><strong>Default weight increment</strong> - The step for the stepper buttons and the progressive overload suggestion, when an exercise has no increment of its own.</li>
     <li><strong>Track personal records</strong> - Turns PR badges and notices on or off.</li>
+    <li id="save-set"><strong>Save set</strong> - What Save set does in a workout. <strong>Log as you go</strong> logs the set as done in one tap. <strong>Plan, then tick</strong> adds it to your list to tick when you've done it. Badger asks the first time you save a set; until then this reads Not chosen.</li>
     <li><strong>Auto-select next set</strong> - Highlights the next unfinished set when you open an exercise.</li>
     <li><strong>Auto-advance to next exercise</strong> - Moves you to the next exercise after you complete or skip the last set.</li>
     <li><strong>Warm-up style</strong> - How the warm-up generator builds sets: <strong>Percent</strong> (a ramp based on your working weight) or <strong>Plates</strong> (evenly spaced, easy-to-load weights). See <a href={`/help/logging/#set-types`}>Warmup sets</a>.</li>
@@ -26,7 +27,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Default rest time</strong> - Rest after a working set when the exercise and the session don't set their own (30s-300s).</li>
     <li><strong>Default warm-up rest</strong> - Rest after a warmup set (15s-120s).</li>
-    <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set.</li>
+    <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set. Never after a cardio set.</li>
     <li><strong>Rest timer sound</strong> - Plays a sound when rest ends. Pick from several sounds, with a preview.</li>
     <li><strong>Rest timer vibration</strong> - Vibrates when rest ends.</li>
   </ul>
