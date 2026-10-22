@@ -44,7 +44,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The screen has two tabs: <strong>Overview</strong> (stats, graph and records) and <strong>History</strong> (every session, with sets you can edit). History is covered on the History page under <a href={`/help/history/#per-exercise`}>One exercise's history</a>.</p>
   <p>The stats row at the top shows:</p>
   <ul>
-    <li><strong>Estimated 1RM</strong> - your current best.</li>
+    <li><strong>Estimated 1RM</strong> - your current best. On a machine or cable exercise this leads with <strong>Max weight</strong> instead (the heaviest weight you've lifted, with its reps and date), and the estimated 1RM is one chip away on the graph.</li>
     <li><strong>30-day change</strong> - how much your estimated 1RM has moved over the last 30 days, as a percentage.</li>
     <li><strong>Last session</strong> - the date and a short summary of the last time you did it.</li>
   </ul>
@@ -52,8 +52,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="graphs">Graphs</h2>
   <p>Tap the chips above the chart to switch what it plots:</p>
   <ul>
-    <li><strong>Estimated 1RM</strong> - best estimated 1RM per session.</li>
-    <li><strong>Max weight</strong> - heaviest weight per session.</li>
+    <li><strong>Estimated 1RM</strong> - best estimated 1RM per session. It comes first for barbell and dumbbell work.</li>
+    <li><strong>Max weight</strong> - heaviest weight per session. It comes first for machine and cable exercises.</li>
     <li><strong>Workout volume</strong> - total weight × reps per session.</li>
     <li><strong>Total reps</strong> - reps across all working sets per session.</li>
     <li><strong>Max reps</strong> - most reps in one set per session.</li>
