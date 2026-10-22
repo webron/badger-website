@@ -17,6 +17,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap the day, then tap <strong>Add exercise</strong> for each movement.</li>
     <li>Tap an exercise row to <a href="#predefined-sets">plan its sets</a>.</li>
   </ol>
+  <p>To change an exercise later, open its <strong>⋮ menu</strong> and tap <strong>Replace</strong>. If the exercise has a <a href="/help/progression/#rules">progression rule</a>, Badger asks <strong>Replace (exercise)?</strong> first, because the new exercise starts without the rule and without its training max. Tap <strong>Replace</strong> to go ahead or <strong>Cancel</strong> to keep it.</p>
   <p>To turn workouts you've already logged into a routine, see <a href="#create-from-history">Create a routine from your history</a>.</p>
 
   <h2 id="starting">Start a workout from a routine</h2>
@@ -238,8 +239,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3>Intermediate</h3>
   <ul>
-    <li><strong>GZCLP</strong> - Three tiers: heavy compounds (T1), medium compounds (T2) and accessory work (T3). Each tier has its own rule; T1 and T2 also have their own <a href="/help/progression/#stages">stage ladder</a>, but T3's rule has none.</li>
-    <li><strong>5/3/1 BBB</strong> - Wendler's 5/3/1 main sets, then Boring But Big 5×10, both as percentages of one <a href="/help/progression/#training-max">training max</a> on a four-week <a href="/help/progression/#waves">wave</a>. Set the training max once per lift; the rule raises it at the end of each cycle unless the plus set came up short.</li>
+    <li><strong>GZCLP</strong> - Cody Lefever's three-tier program: heavy compounds (T1), medium compounds (T2) and accessory work (T3). T1 runs 5×3 (last set as many reps as you can), then 6×2, then 10×1. T2 runs 3×10, then 3×8, then 3×6. T3 is 3×15 with the last set as many reps as you can, and the weight goes up once that set reaches 25. T1 and T2 have their own <a href="/help/progression/#stages">stage ladder</a>; T3's rule has none.</li>
+    <li><strong>5/3/1 BBB</strong> - Wendler's 5/3/1 main sets, then Boring But Big 5×10 on the same lift (press on Press Day, deadlift on Deadlift Day, bench on Bench Day, squat on Squat Day), both as percentages of one <a href="/help/progression/#training-max">training max</a> on a four-week <a href="/help/progression/#waves">wave</a>. Week 4 (the deload) still includes the 5×10. Badger asks for each training max when you make the program active; the rule raises it at the end of each cycle unless the plus set came up short. If you added 5/3/1 BBB before 1.1.15, your copy keeps its original pairing (bench on Press Day, squat on Deadlift Day, press on Bench Day, deadlift on Squat Day).</li>
     <li><strong>nSuns 531LP</strong> - A long percentage ramp each session off a training max, with one <a href="/help/progression/#driver-set">driver set</a> whose reps decide the week's increment.</li>
     <li><strong>Madcow 5×5</strong> - Weekly progression. Every set is a percentage of the lift's top set, and all three days of a lift <a href="/help/progression/#progressing-together">share that number</a>. It deloads 10% after two missed weeks.</li>
   </ul>

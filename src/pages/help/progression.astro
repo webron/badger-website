@@ -40,7 +40,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>The bold parts are chips. Tap one to change its number.</li>
     <li>Badger checks the clauses from top to bottom and uses the first one that matches. If none matches, the weight stays where it is.</li>
     <li>The increment shows in your unit: 2.5 kg if you log in kilos, 5 lbs in pounds, the figures the program itself uses.</li>
-    <li>Each exercise in a routine day can have one rule.</li>
+    <li>Each exercise in a routine day can have one rule. The rule belongs to that slot: if you tap <strong>Replace</strong> on the exercise, Badger asks first, because the new exercise starts without the rule (and without its training max).</li>
   </ul>
   <p>Six of the <a href="/help/routines/#programs">built-in programs</a> come with their rules already written.</p>
 
@@ -87,11 +87,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="training-max">Training max</h2>
   <p>A training max is a number per lift, set a little below your real one-rep max, that programs such as 5/3/1 and nSuns take their percentages from. It's never loaded on the bar.</p>
   <p>An exercise that uses one shows it under its name on the routine detail screen, for example <strong>Training max 135 lbs &middot; 120 → 130 → 135 ›</strong>.</p>
+  <p>Badger asks for your training maxes when you make a routine active. If a lift in it has a rule that needs a training max you haven't set, the <strong>Set your training maxes</strong> sheet opens with one row per lift. It works for any routine with a training max rule, including routines you build and imported <code>.badger</code> files.</p>
   <ol>
-    <li>Tap that line, or tap <strong>Set a training max to use this rule</strong> on the routine log preview.</li>
-    <li>Accept Badger's proposal, or type your own number.</li>
+    <li>At the top, pick <strong>I know my 1-rep max</strong> or <strong>I know my training max</strong>. With a 1-rep max, Badger stores 90% of the number you type, rounded to your plates. A training max is stored exactly as typed.</li>
+    <li>Fill in a row for each lift. A lift you have logged before is filled in for you from your history (90% of your best estimated 1-rep max) and marked <strong>From your history</strong>. Change it if it's off.</li>
+    <li>Tap <strong>Save</strong>.</li>
   </ol>
-  <p>The proposal is 90% of your best estimated 1RM for the lift, with the working shown. With no history for the lift, Badger asks you for a number instead.</p>
+  <p>A row you leave blank stays unset. <strong>Later</strong> closes the sheet without saving anything. Lifts that share one training max share one row; when two rows are the same exercise, the day names under each one tell them apart.</p>
+  <p>You can also set one later. Tap the lift's training max line on the routine detail screen, or the <strong>Set a training max to use this rule</strong> line on the routine log preview. On the preview it opens the same sheet for that lift.</p>
   <p>After that, the rule moves it. The same sheet lists every move, marked as coming from the rule, from you, or from the first time it was set. Your own edit always wins. A shared routine file doesn't carry your training max, so whoever opens it sets their own.</p>
 
   <h2 id="percent-sets">Percentage sets</h2>
@@ -105,7 +108,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li>The weight is rounded to your gym's plates, the bar you have pinned, the machine's step size, and whether the machine is logged per side. The <a href="/help/tools/">plate calculator</a> and the warm-up calculator round the same way.</li>
     <li>A percentage that lands below the bar is raised to the bar, and the preview says so.</li>
-    <li>Until the exercise has a training max, the preview shows <strong>Set a training max to use this rule</strong>. Tap it to set one.</li>
+    <li>Until the exercise has a training max, the preview shows <strong>Set a training max to use this rule</strong>. Tap it to open the <a href="#training-max">Set your training maxes</a> sheet for that lift.</li>
   </ul>
   <p>Percentage and plain-weight sets can sit in the same day. The routine's weight source and history scope don't apply to a percentage set.</p>
 
@@ -159,7 +162,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2 id="progressing-together">Lifts that progress together</h2>
-  <p>When a lift appears on more than one day, those days can share one number and one miss count. In Madcow, Friday's heavy triple sets the weight Monday ramps to. In 5/3/1 BBB, the main lift and its Boring But Big work read one training max.</p>
+  <p>When a lift appears on more than one day, those days can share one number and one miss count. In Madcow, Friday's heavy triple sets the weight Monday ramps to. In 5/3/1 BBB, the main lift and its Boring But Big 5×10 are the same lift on the same day, and they read one training max.</p>
+  <p>On the preview, the 5×10 line reads <strong>Tap to set the (lift) training max, or tap edit to type a weight</strong>. Tap it to open the sheet for that lift.</p>
   <ul>
     <li>The built-in programs come set up this way. <a href="#set-up-progression">Set up progression</a> can do this for your own routine too, when the same exercise and preset appear on two or more days it's newly writing a rule for; it can't reproduce Madcow's or GZCLP's shape by itself.</li>
     <li>In Madcow, one day moves each lift: Friday for the squat, bench and row, Wednesday for the press and deadlift. The other days take their percentages from that number.</li>
