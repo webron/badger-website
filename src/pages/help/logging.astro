@@ -63,11 +63,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The Track tab shows the input fields at the top and your logged sets below. The fields follow the exercise type: weight and reps for a barbell lift, time for a plank. They start from the first working set of your last session of that exercise, and from zero if you've never done it.</p>
   <ol>
     <li>Enter the weight and reps (or time, distance) with the <strong>+/−</strong> buttons, or tap a field and type.</li>
-    <li>Tap the <strong>✓</strong> to save the set.</li>
+    <li>Tap <strong>Save set</strong>.</li>
   </ol>
-  <p>The set appears in the list, and the <a href="#rest-timer">rest timer</a> starts if auto-start is on.</p>
+  <p id="logging-mode">What Save set does depends on how you log. Badger asks the first time you save a set in a workout, with a short picture of each way:</p>
   <ul>
-    <li><strong>Edit a set:</strong> tap its row to load it into the fields, change it, and tap ✓. Tap the row again to let go without saving.</li>
+    <li><strong>Log as you go:</strong> Save set logs the set as done. It's ticked, your <a href="#rest-timer">rest timer</a> starts and Badger checks for a record. One tap per set.</li>
+    <li><strong>Plan, then tick:</strong> Save set adds the set to your list, waiting. Tap the circle on its row when you've done it. That logs it, starts your rest timer and checks for a record.</li>
+  </ul>
+  <p>Sets your routine planned, and sets copied from a past workout, are ticked the same way in both. If you came from FitNotes, Badger starts with the way you logged there. Change it any time in <a href="/help/settings/#save-set">Settings → Logging → Save set</a>.</p>
+  <ul>
+    <li><strong>Edit a set:</strong> tap its row to load it into the fields, change it, and tap <strong>Update</strong>. Tap the row again to let go without saving.</li>
     <li><strong>Delete a set:</strong> tap its row, tap <strong>Delete</strong> and confirm.</li>
     <li><strong>Repeat a set:</strong> tap the <strong>Repeat last</strong> chip below your sets. It names the set it will copy, such as a weight and reps or a duration.</li>
   </ul>
@@ -182,7 +187,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>To plan these sets ahead, see <a href="/help/routines/#left-right-plan">Left and right in a routine</a>.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
-  <p>The rest timer shows as a chip near the top of the training screen. It counts down after you save a set, then plays a sound, vibrates, or both (set this in Settings). It doesn't start after the last working set of your last exercise.</p>
+  <p>The rest timer shows as a chip near the top of the training screen. It counts down after you save a set, then plays a sound, vibrates, or both (set this in Settings). It doesn't start after the last working set of your last exercise, or on its own after a cardio exercise (one in the Cardio category, or one logged as Distance + Time or Distance only). Tap the chip to start one by hand.</p>
   <p>The first time a rest or set timer runs, Badger asks to send notifications. Tap <strong>Allow</strong> to get an alert when a timer ends with the phone locked, or <strong>Not now</strong> to skip it.</p>
   <p>Tap the chip to open the rest timer sheet:</p>
   <ul>
