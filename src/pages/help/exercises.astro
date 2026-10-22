@@ -34,6 +34,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>An exercise with no equipment type shows an empty-bracket glyph on its row. Open the exercise and set the type to fix it.</p>
   <p>Search, chips, muscle filter and equipment filter all combine. Type "row", pick the Back chip and filter to cable, and you see only what matches all three.</p>
 
+  <h2 id="picker">Pick an exercise for a workout</h2>
+  <p>When you add an exercise to a workout, the picker opens with the keyboard up, ready for a search. Right under the search box is a row of category chips: <strong>All</strong>, then one per category. Tap a chip to close the keyboard and see only that category. A search or a filter you set stays narrowed to it.</p>
+  <p>In each category, the exercises you have logged come first, newest first, each with the day you last did it ("last done Oct 14"). The rest of the category follows in A-Z order.</p>
+  <p>The two buttons in the top bar are labeled <strong>Muscle</strong> and <strong>Equipment</strong>. They open the same filters as in the library.</p>
+
   <h2 id="favorites">Favorites</h2>
   <p>Open the <strong>⋮</strong> menu on an exercise's row and tap <strong>Favorite</strong>. A star appears on the row, and the <strong>Favorites</strong> chip shows only your starred exercises. Tap <strong>Unfavorite</strong> in the same menu to remove it.</p>
 
@@ -52,24 +57,35 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="creating">Create an exercise</h2>
   <p>Tap <strong>+</strong> in the exercise library.</p>
-  <p>You can also create one while you add exercises to a workout or a routine day. Search for it in the exercise picker, then tap <strong>Create</strong> at the bottom of the list. The form opens with your search as the name. When you save, the new exercise goes straight into the workout or the day.</p>
+  <p>You can also create one while you add exercises to a workout or a routine day. Search for it in the exercise picker, then tap <strong>Create</strong> at the bottom of the list. The form opens with your search as the name and the category chip you picked. Saving puts it straight into the workout or the day.</p>
+  <p>Badger fills in the exercise type and equipment from the name. A name close to one in the library takes that exercise's type and equipment: "pike push up" starts as Reps Only and Bodyweight, like Push-Up. A word like "dumbbell" or "cable" sets the equipment. Check the type before you save, because it decides what you log for each set.</p>
+  <p>With no library match, Badger goes by words in the name:</p>
+  <ul>
+    <li>push up, pull up or dips: Reps Only</li>
+    <li>plank, hold or hang: Time Only</li>
+    <li>run, bike, rower or treadmill: Distance + Time</li>
+    <li>anything else: Weight + Reps</li>
+  </ul>
+  <p>Once you pick the type or equipment yourself, changing the name leaves it alone.</p>
+  <p>The form shows only the fields that fit the type and equipment. Weight settings appear only for a type that logs weight, and the plate calculator and bar weight only for a barbell or machine exercise. The save button stays at the bottom of the screen while you scroll.</p>
 
   <h3>Required fields</h3>
   <ul>
     <li><strong>Name</strong></li>
-    <li><strong>Category</strong> - A built-in category or one of your own.</li>
     <li><strong>Exercise type</strong> - Decides which fields you fill in when logging (see below).</li>
+    <li><strong>Category</strong> - A built-in category or one of your own.</li>
   </ul>
 
   <h3>Optional fields</h3>
   <ul>
+    <li><strong>Equipment type</strong> - Barbell, dumbbell, machine, cable, bodyweight, kettlebell, band or other. It decides which equipment settings the form shows.</li>
     <li><strong>Weight unit</strong> - kg or lbs. Starts on your global setting.</li>
     <li><strong>Default increment</strong> - How much weight the progressive overload suggestion adds.</li>
     <li><strong>Default rest (working sets)</strong> - Rest timer length after a working set.</li>
     <li><strong>Default rest (warmup sets)</strong> - Rest timer length after a warmup set.</li>
     <li><strong>Primary &amp; secondary muscles</strong> - Picked on the body diagram. Used for muscle balance and filtering.</li>
-    <li><strong>Plate calculator mode</strong> - Dual-loaded (barbell, leg press) or Single-loaded (T-bar, landmine). Sets how the <a href="/help/tools/">plate calculator</a> splits the weight.</li>
-    <li><strong>Bar weight</strong> - Replaces the default bar weight in the plate calculator.</li>
+    <li><strong>Plate calculator mode</strong> - Dual-loaded (barbell, leg press) or Single-loaded (T-bar, landmine). Sets how the <a href="/help/tools/">plate calculator</a> splits the weight. Shown for barbell and machine exercises.</li>
+    <li><strong>Bar weight</strong> - Replaces the default bar weight in the plate calculator. Shown for barbell and machine exercises.</li>
     <li><strong>Log left and right separately</strong> - Off, Optional or Always, for one-arm and one-leg work. Offered on exercises that log reps or time. See <a href="/help/logging/#left-right">Left and right sets</a>.</li>
     <li><strong>Compatible machines</strong> - Machines at your gyms that this exercise uses. The training screen offers these when you pick a machine.</li>
     <li><strong>Default graph</strong> - Which progress graph shows first.</li>
