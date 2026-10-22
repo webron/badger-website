@@ -75,6 +75,21 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <p>New exercises go into an "Imported" category (a FitNotes backup keeps your own categories instead). Where a name states its equipment, Badger fills in the equipment type: "Cable Fly" arrives as cable, "Smith Machine Squat" as machine. You can edit exercises and move them between categories in the exercise library afterwards.</p>
   <p><strong>Import each file once.</strong> Sets on a date that already has a workout are added to that workout, and nothing is overwritten, so importing the same file again adds those sets a second time. The preview warns you when a file overlaps days you've already logged.</p>
 
+  <h2 id="coming-back">Coming back after a break</h2>
+  <p>After six weeks or more without a workout, Today opens with a card: "Welcome back. It's been 9 weeks. Want to start lighter this week?"</p>
+  <ul>
+    <li><strong>Start lighter</strong> - Begins a lighter week that runs for 7 days from that day. Each weight starts at 60% of what you last lifted, rounded to a load you can make. You do the same sets as usual. It works even if deload detection is off, and it doesn't change your deload settings.</li>
+    <li><strong>Not now</strong> - Closes the card. Nothing changes.</li>
+  </ul>
+  <p>The card shows once per break. If you train again and later take another six weeks off, it comes back.</p>
+  <p>During the lighter week, a banner on Today says when it ends. Tap <strong>End early</strong> to go back to full weights. Workouts that week are deload workouts: their summary shows no comparison with last time, and they don't move your program's progression. Your first normal workout after it compares with the last one before the break.</p>
+  <h3 id="after-a-long-gap">Last time, and weight suggestions</h3>
+  <ul>
+    <li>The line above the weight field says how long ago you last did the exercise, for example "Last 8 @ 80 kg, 14 weeks ago".</li>
+    <li>After eight weeks away from an exercise, Badger stops suggesting more weight for it until you've trained it again for a few sessions in a row.</li>
+  </ul>
+  <p>Add a little weight each session as it feels right. If an injury or a physio sets limits, write them in the exercise's <a href="/help/exercises/">notes</a> so they're on screen while you train.</p>
+
   <h2 id="home-screen-widget">Home-screen and lock-screen widgets</h2>
   <p>The <strong>Journal</strong> widget shows this week's attendance (a dot for each day you trained), your last entry and, if you follow a routine, the next day to train. With nothing logged yet, it invites you to start a workout. Tap it to open the app.</p>
   <h3>Android</h3>
