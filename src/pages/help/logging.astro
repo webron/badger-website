@@ -87,14 +87,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p id="progressive-overload">A <strong>Suggested: 82.5 kg</strong> line above the fields means you're ready to add weight. See <a href="/help/progression/#progressive-overload">Progressive overload suggestion</a>.</p>
 
   <h3 id="duration-entry">Typing a duration</h3>
-  <p>Anywhere Badger asks for a duration (the Track tab, a routine's planned sets, quick edit, editing a past set), you can type a time:</p>
+  <p>Anywhere Badger asks for a duration (the Track tab, a routine's planned sets, quick edit, editing a past set, the set timer), type the digits and Badger builds the time from the right:</p>
   <ul>
-    <li><strong>15:00</strong> - fifteen minutes.</li>
-    <li><strong>900</strong> - a plain number is seconds.</li>
-    <li><strong>90:00</strong> - minutes aren't capped.</li>
-    <li><strong>1:30:00</strong> - hours, minutes, seconds.</li>
+    <li>Type <strong>2</strong>, <strong>0</strong>, <strong>0</strong>, <strong>0</strong> and the field reads <strong>0:02</strong>, <strong>0:20</strong>, <strong>2:00</strong>, then <strong>20:00</strong>.</li>
+    <li>Backspace takes the last digit off, so <strong>20:00</strong> goes back to <strong>2:00</strong>.</li>
+    <li>Keep typing past four digits and hours appear: <strong>1</strong>, <strong>3</strong>, <strong>0</strong>, <strong>0</strong>, <strong>0</strong>, <strong>0</strong> reads <strong>1:30:00</strong>. The longest is <strong>99:59:59</strong>.</li>
+    <li>Seconds above 59 are fixed when you leave the field: <strong>0:75</strong> becomes <strong>1:15</strong>.</li>
   </ul>
-  <p>When you leave the field it switches to the short form, so a typed <strong>15</strong> shows as <strong>0:15</strong>. The +/− buttons move in seconds.</p>
+  <p>Tap a duration to select it, and the next digit starts a new time. Pasting a time such as <strong>15:00</strong> works too. The +/− buttons move 5 seconds up to 5:00, and 1 minute from 5:00 on.</p>
 
   <h3 id="per-side">Weight per side</h3>
   <p>When an exercise or its machine is set to per side, the weight label reads <strong>WEIGHT (LBS / SIDE)</strong>, and your sets read <strong>90 lbs &times; 8 /side</strong> in your history, on the workout summary and in the exercise's log.</p>
@@ -115,6 +115,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Tap the comment icon on a set row, type your comment ("felt strong", "elbow twinge") and tap <strong>Save</strong>. A dot on the icon means the set has a comment. Comments show, read-only, on the workout summary and in History.</p>
 
   <h3 id="records">Personal records</h3>
+  <p>The first time you log an exercise, nothing is a record yet: the set reads <strong>First time</strong> instead. Records start with your next workout of that exercise. See <a href="/help/progress/#first-time">The first time you log an exercise</a>.</p>
   <p>When a working set beats your best for that exercise, a trophy badge appears on the set row, a message pops up at the bottom of the screen, and the phone buzzes if haptics are on.</p>
   <p>Records are kept separately per <a href="/help/gyms/#bar-prs">bar</a>. <a href="#left-right-counts">Left and right work</a> has its own records. While an <a href="/help/gyms/#accessories-and-records">accessory</a> is attached to an exercise, every set of it stays out of records; clear the accessories and those sets count again. An accessory never changes a weight, the plate math or the stepper. What counts as a best is explained under <a href="/help/progress/#prs">Personal records</a>.</p>
 
@@ -261,9 +262,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Skipping the last set left on an exercise moves you to the next exercise that still has work, the same as completing it. Turn off <strong>Auto-advance to next exercise</strong> in <strong>Settings → Logging</strong> to stay put.</p>
 
   <h2 id="finishing">Finish a workout</h2>
-  <p>On the Today screen, tap <strong>End workout</strong>. The workout summary opens. On a routine workout, it can offer to update the routine with heavier weights you lifted; see <a href="/help/progression/#auto-progress">Auto-progress routine weights</a>.</p>
+  <p>Tap <strong>End</strong> next to the timer at the top of Today and the workout summary opens. You can also tap <strong>End workout</strong> at the bottom of Today, or open the exercise list on the training screen and tap <strong>End workout</strong> in its last row. Once a workout has ended, those buttons read <strong>Summary</strong>.</p>
+  <p>On a routine workout, the summary can offer to update the routine with heavier weights you lifted; see <a href="/help/progression/#auto-progress">Auto-progress routine weights</a>.</p>
+  <p>The clock at the top of Today only counts. <strong>End</strong> is what stops it.</p>
+  <p>A workout started from a routine finishes by itself once every planned set is done. A free workout doesn't: ticking its last set leaves it open, so you can add more, and you end it with <strong>End</strong>.</p>
 
-  <p>A workout started from a routine finishes by itself once every planned set is done. A free workout doesn't: ticking its last set leaves it open, so you can add more, and you end it with <strong>End workout</strong>.</p>
+  <h3 id="unticked-sets">Sets you saved but didn't tick</h3>
+  <p>If some sets are saved but not ticked, Badger asks before it ends the workout. <strong>Leave them out</strong> ends it as it stands: the sets stay saved and unticked, and they don't count. <strong>Count them</strong> ticks them first. Close the sheet to keep going.</p>
+
+  <h3 id="forgot-to-end">Forgot to end it</h3>
+  <p>If a workout has no new completed set for 3 hours, or is still open the next day, Badger ends it at the time of your last completed set the next time you open the app. The duration, the Apple Health or Health Connect entry and your backup use that time.</p>
 
   <h3 id="resuming">Resume a finished workout</h3>
   <p>Forgot an exercise? Open <strong>today's</strong> workout summary and tap <strong>Resume workout</strong>. It's offered for today's workout only.</p>
