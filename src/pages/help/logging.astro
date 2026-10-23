@@ -144,18 +144,24 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p><strong>RIR</strong> counts the reps you had left before failure:</p>
   <ul>
-    <li><strong>0</strong> - Nothing left. That was failure.</li>
+    <li><strong>0</strong> - Nothing left. One more rep would have failed.</li>
     <li><strong>1</strong> - One rep left in the tank.</li>
     <li><strong>2</strong> - Two left. A common target for working sets.</li>
     <li><strong>3+</strong> - Comfortable, well short of failure.</li>
   </ul>
   <p>The two describe the same thing from opposite ends: RPE 8 is RIR 2, RPE 9 is RIR 1, RPE 10 is RIR 0. Pick whichever is easier to answer and stick with it.</p>
+  <p>If you tried another rep and it failed, tap <a href="#to-failure">To failure</a> instead of setting RIR. That set had no reps left to count.</p>
   <h4>Which one to use</h4>
   <p>If you're newer to lifting, RIR is usually easier, since it's a question about reps you've just counted. RPE can tell a hard set from an all-out one, where RIR reads 0 for both. Go with your honest read; most people's scale settles after a month or two.</p>
   <p>The fields are hidden while the warmup toggle is on. Logged values show as small badges on each set row, and you can add or change them later by tapping a past set in your history. Logged RIR also feeds the RPE/RIR trigger of <a href="/help/tools/#deload">deload detection</a>, when that trigger is on.</p>
+  <p>A set marked to failure counts as RIR 0 for deload detection.</p>
 
   <h3 id="to-failure">Mark a set to failure</h3>
-  <p>Tap the <strong>To failure</strong> chip next to the steppers to record that a set went all the way. It sets RIR to 0, and tapping it again clears it. A set to failure is about effort: if you were aiming for 8 and got 6, log the 6 (see <a href="#missed-vs-skipped">Skip a set, or log a short one</a>).</p>
+  <p>Tap the <strong>To failure</strong> chip next to the steppers when you tried a rep and it failed. Tap it again to clear it.</p>
+  <p>To failure and RIR 0 are different answers. RIR 0 means you stopped with nothing left, and one more rep would have failed. To failure means a rep did fail. History shows them apart: the set's badge reads <strong>To failure</strong> or <strong>RIR 0</strong>.</p>
+  <p>While To failure is on, the RIR stepper is greyed out, because a failed set has no reps in reserve. Turning it on clears any RIR you set. RPE stays available, since RPE 10 and failure agree.</p>
+  <p>A set to failure is about effort: if you were aiming for 8 and got 6, log the 6 (see <a href="#missed-vs-skipped">Skip a set, or log a short one</a>). To fix a past set, tap it in your history; the edit sheet has the same chip.</p>
+  <p>Sets you marked with this chip before version 1.1.15 were saved as RIR 0, and they still read RIR 0.</p>
 
   <h3 id="amrap">AMRAP sets (8+)</h3>
   <p id="amrap-target">An <strong>8+</strong> in your plan is an AMRAP set: do at least 8, then <em>as many reps as possible</em>. A <strong>1+</strong> set means go to failure. Log the reps you actually got; the set meets the plan once you pass the floor. How to write one into a routine is under <a href="/help/routines/#amrap-targets">Open-topped targets</a>.</p>
