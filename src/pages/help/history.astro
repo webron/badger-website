@@ -81,6 +81,17 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>The workout comment you added when you finished.</li>
   </ul>
 
+  <h3 id="compared-with-last-time">Compared with last time</h3>
+  <p>On a workout you started without a routine, <strong>Compared with last time</strong> lists each exercise with your best set today, your best set the last time you did it, and a mark:</p>
+  <ul>
+    <li><strong>&#9650;</strong> stronger</li>
+    <li><strong>-</strong> about the same (within 1%)</li>
+    <li><strong>&#9661;</strong> lighter</li>
+  </ul>
+  <p>Badger compares estimated strength, so more weight for fewer reps can still count as stronger. Reps-only, timed and distance exercises compare reps, time or distance. An exercise you're doing for the first time says <strong>First time</strong>. Warmups and unfinished sets don't count, and a deload workout is never the one you're compared with.</p>
+  <p>A deload workout shows a <strong>Deload workout</strong> banner and no comparison.</p>
+  <p>On a workout with no weights, such as pull-ups or a treadmill run, the stats show your total reps, time or distance in place of volume. On a day that mixes the two, volume stays and your bodyweight reps are added.</p>
+
   <h3 id="pace">Pace</h3>
   <p>Below the stats row, <strong>Pace</strong> shows how the session was spent: how long each exercise took, your average rest between its sets, and the session total. It's worked out from when you logged each set, so there's nothing extra to do while you train.</p>
   <ul>
@@ -93,7 +104,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>When a workout came from a routine day, each working set can show two lines beneath it:</p>
   <ul>
     <li><code>plan: 8-10 reps</code> - what the routine asked for. A small caret marks a set that came in under the lower number.</li>
-    <li><code>last session: 80 kg × 8</code> - what you did last time, with a caret showing whether you beat it, matched it or came in under.</li>
+    <li><code>last session: 80 kg × 8</code> - what you did last time, with a caret showing whether you beat it, matched it or came in under. A deload workout is skipped, so after a deload week you're compared with the week before it.</li>
   </ul>
   <p>A set beyond what the routine prescribed is marked <strong>extra set</strong>.</p>
   <p>If you met the plan or beat your last session anywhere in the workout, a wins card appears above the stats row, for example:</p>

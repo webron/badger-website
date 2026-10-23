@@ -13,12 +13,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Start from the <strong>Today</strong> screen:</p>
   <ul>
     <li><strong>Free workout</strong> - Tap <strong>New workout</strong> and pick your first exercise.</li>
+    <li><strong>Repeat your last workout</strong> - When you haven't trained today, a <strong>Last workout</strong> card above New workout names the day and the first exercises, for example "Last workout, Tuesday: Lat Pulldown, Chest Press, Leg Press and 2 more". Tap <strong>Repeat it</strong>, then <strong>Copy</strong>. To copy an older workout, tap <strong>Copy previous workout</strong>.</li>
     <li><strong>From a routine</strong> - Tap a day of your active routine. The routine log preview opens; tap <strong>Start</strong>. See <a href="/help/routines/#starting">Start a workout from a routine</a>.</li>
   </ul>
   <p>The Today screen also shows:</p>
   <ul>
     <li><strong>This Week</strong> - How many days you've trained this week, plus a warning for any muscle group you haven't trained for a while.</li>
-    <li><strong>Weekly volume chips</strong> - Sets logged per muscle category this week. A colored dot marks a group that needs attention. Tap a chip for the muscle balance detail.</li>
+    <li><strong>Weekly volume chips</strong> - Sets logged per muscle category this week, one chip for each muscle you trained. A colored dot marks a group that needs attention. Tap a chip for the muscle balance detail.</li>
+    <li><strong>Program week</strong> - If your active program runs in weeks, like 5/3/1, which week you're on and which days are done. See <a href="/help/progression/#which-week">Which week the routine is on</a>.</li>
+    <li><strong>Welcome back</strong> - After six weeks or more without a workout, an offer to start lighter. See <a href="/help/getting-started/#coming-back">Coming back after a break</a>.</li>
     <li><strong>Monthly report</strong> - In the first two weeks of a month: last month's workout count, total volume (with the change from the month before) and exercises you tried for the first time. Tap × to dismiss it.</li>
     <li><strong>Deload banner</strong> and <strong>plateau card</strong> - When those features are on. See <a href="/help/tools/#deload">Deload</a> and <a href="/help/progress/#plateau-detection">Plateau detection</a>.</li>
     <li><strong>One year ago</strong> - If you trained on this date a year back, a line at the bottom says so, for example "One year ago &middot; Entry &#8470; 63 &middot; Push Day". Tap it to open that session. If you didn't train that day, the line doesn't appear.</li>
@@ -79,7 +82,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h3 id="plan-reference">See your target while you log</h3>
-  <p>On a workout started from a routine, a line above the input fields shows the plan and your last performance, for example <strong>Plan 8-10 &middot; Last 8 @ 80 kg</strong>. It follows you from set to set.</p>
+  <p>On a workout started from a routine, a line above the input fields shows the plan and your last performance, for example <strong>Plan 8-10 &middot; Last 8 @ 80 kg, 3 days ago</strong>. It follows you from set to set, and says how long ago that last session was.</p>
   <ul>
     <li>A set you haven't done yet shows its target in the list, such as <strong>80 kg × 8+</strong>, until you complete it.</li>
     <li>A dim <strong>+</strong> or <strong>-10</strong> in the reps box shows an open or ranged target. It disappears once you change the number.</li>
