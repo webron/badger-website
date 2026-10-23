@@ -61,7 +61,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="creating">Create an exercise</h2>
   <p>Tap <strong>+</strong> in the exercise library.</p>
   <p>You can also create one while you add exercises to a workout or a routine day. Search for it in the exercise picker, then tap <strong>Create</strong> at the bottom of the list. The form opens with your search as the name and the category chip you picked. Saving puts it straight into the workout or the day.</p>
-  <p>Badger fills in the exercise type and equipment from the name. A name close to one in the library takes that exercise's type and equipment: "pike push up" starts as Reps Only and Bodyweight, like Push-Up. A word like "dumbbell" or "cable" sets the equipment. Check the type before you save, because it decides what you log for each set.</p>
+  <p>Badger fills in the exercise type and equipment from the name. A name close to one in the library takes that exercise's type and equipment: "clap push up" starts as Reps Only and Bodyweight, like Push-Up. A word like "dumbbell" or "cable" sets the equipment. Check the type before you save, because it decides what you log for each set.</p>
   <p>With no library match, Badger goes by words in the name:</p>
   <ul>
     <li>push up, pull up or dips: Reps Only</li>
@@ -131,6 +131,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
       ))}
     </tbody>
   </table>
+
+  <p id="change-type">You can change an exercise's type later on its edit screen. If the exercise already has logged sets, Badger asks before it saves, because those sets keep only the fields the new type shows. For example, sets logged as Reps Only keep their reps and show a dash for weight.</p>
+  <p>Changing the equipment to or from Bodyweight on a Weight + Reps exercise asks too, because it changes whether logged weights read as added weight.</p>
+
+  <h2 id="bodyweight">Bodyweight, weighted and assisted exercises</h2>
+  <p>Push-Up, Pull-Up, Chin-Up and Dips are Reps Only: you log reps and nothing else. When you start adding weight, or using a machine that helps you up, log on the exercise made for it:</p>
+  <ul>
+    <li><strong>Weighted Pull-Up, Weighted Chin-Up, Weighted Dip and Weighted Push-Up</strong> log weight and reps. Enter only the weight you add, such as a belt or a vest. A set with no weight reads <em>BW × 8</em>, and a set with weight reads <em>+25 lbs × 6</em>. Your body weight is never added, so volume and records count the added weight only. Sets with no added weight count toward your reps records.</li>
+    <li><strong>Assisted Pull-Up and Assisted Dip</strong> log the assistance the machine gives. Less assistance is the harder set, so a lower number counts as the record (see <a href="/help/progress/#record-weight">Record weight</a>).</li>
+  </ul>
+  <p>If you want one history for strict and weighted sets, log them all on the weighted exercise and leave the weight empty for strict sets.</p>
+  <p>The library also has easier and harder versions of the common moves: Knee Push-Up, Incline Push-Up, Pike Push-Up, Archer Push-Up, Handstand Push-Up, Negative Pull-Up, Dead Hang, Bodyweight Squat and Muscle-Up. For machines there is Ab Crunch Machine. Imports from Hevy and Strong land on these, so <em>Pull Up (Weighted)</em> becomes Weighted Pull-Up with its weight.</p>
+  <p>When the same reps come easily every session, Badger suggests the next version up. See <a href="/help/progression/#bodyweight-progress">When to move on</a>.</p>
 
   <h2 id="categories">Categories</h2>
   <p>Every exercise belongs to a category. The 8 built-in ones are Chest, Back, Shoulders, Biceps, Triceps, Legs, Core and Cardio. Categories drive the library's chip row, the exercise picker's filters, and the weekly volume chips on the Today screen.</p>
