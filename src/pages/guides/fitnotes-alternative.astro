@@ -36,7 +36,8 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  *   - supersets: on workouts and on routine days
  *   - per-exercise weight increment, rest time and favorite: filled only where
  *     the Badger exercise has no value of its own; favorite can only be turned on
- *   - goals: weight/reps, distance and duration goals; other kinds skipped
+ *   - goals are stored (_importGoals) but Badger has no screen that shows a goal
+ *     (2026-10-23), so the page does not claim them
  *   - per-day workout comments, workout start and end times, per-exercise bar
  *     weights
  *   - NOT imported: FitNotes' general bar list and plate inventory (the plate
@@ -52,7 +53,7 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  */
 
 const description =
-  'Move to Badger from FitNotes without losing anything. Your .fitnotes backup brings the whole library across: categories, exercises, every set, routines, body weight, goals, and your custom measurements.';
+  'Move to Badger from FitNotes without losing anything. Your .fitnotes backup brings the whole library across: categories, exercises, every set, routines, body weight, and your custom measurements.';
 
 const modified = '2026-09-24';
 ---
@@ -115,10 +116,6 @@ const modified = '2026-09-24';
     <li>
       <strong>Workout comments and times.</strong> The comment you left on a day becomes the
       workout's note, and each workout shows when it started and ended.
-    </li>
-    <li>
-      <strong>Goals</strong> for weight and reps, distance, or duration. Other kinds of goal are
-      skipped.
     </li>
     <li>
       <strong>Exercise settings.</strong> Each exercise's bar weight comes across. Weight
