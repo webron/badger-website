@@ -21,8 +21,15 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  *     Notes, Workout Name, RPE (:96-107, importer :242-243)
  *   - session start/end resolved from Strong's full datetime Date column via
  *     resolveSessionTimes (:134)
- *   - NOT carried: warmups. Strong's export does not mark them, and nothing in
- *     the parser infers them from Set Order. Do not add a warmup claim here.
+ *
+ * Re-checked 2026-10-23 for 1.1.15 against branch feat/import-gaps
+ * (strong_parser.dart, strong_importer.dart):
+ *   - Workout Notes column lands in the workout's note, after the workout name
+ *     (workoutNotesCol, :106)
+ *   - Set Order markers W (warm-up), F (failure) and D (drop set) are read
+ *     (:183-194): W and F are kept as warmup and failure sets, D comes in as a
+ *     working set. Older exports that only number the sets import as before,
+ *     all working sets. The parser never infers warmups from plain numbers.
  */
 
 const description =
@@ -63,7 +70,13 @@ const description =
     </li>
     <li>
       <strong>Per-set notes, on their set.</strong> The note on one heavy triple stays with that
-      triple. Workout notes and the workout's name become notes on the session.
+      triple. The workout's name, then its Workout Notes, become the note on the session.
+    </li>
+    <li>
+      <strong>Warmups and failure sets.</strong> When the export marks a set <code>W</code> or
+      <code>F</code> in Set Order, it arrives as a warmup or a failure set. A drop set
+      (<code>D</code>) comes in as a working set. Older exports that only number the sets arrive as
+      working sets.
     </li>
     <li>
       <strong>Session times.</strong> Imported workouts show when they started and how long they ran.
@@ -85,10 +98,6 @@ const description =
   <p><strong>What does not come across:</strong></p>
 
   <ul>
-    <li>
-      <strong>Warmups, as warmups.</strong> Strong's export does not mark them, so every set arrives
-      as a working set.
-    </li>
     <li>
       <strong>Your routines.</strong> The export holds history only. Start from one of Badger's ten
       built-in programs or build your own.

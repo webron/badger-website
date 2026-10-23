@@ -26,6 +26,11 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  * stall ladder (seed_programs.dart _seedProgramsV69Rules and
  * _seedProgramsV70StallLadder, new installs only; the gallery file carries
  * both), and re-importing duplicating overlapping sets (import_overlap.dart).
+ *
+ * Re-checked 2026-10-23 for 1.1.15 against branch feat/import-gaps
+ * (stronglifts_parser.dart, body_weight_import.dart): the body weight column
+ * now comes in as body weight readings, one per day, skipped on a day that
+ * already has one. Warmups are still not marked by the export.
  */
 
 const description =
@@ -149,6 +154,10 @@ const description =
     <li>Kilograms or pounds, read from the file's headers and kept in the unit you logged, with no rounding.</li>
     <li>The workout name, as a note on that session, and each row's note, on its first set.</li>
     <li>When each session started and how long it ran.</li>
+    <li>
+      Your body weight, from the body weight column, as one reading per day. A day that already has
+      a reading is skipped.
+    </li>
     <li>
       Your PRs, worked out from the imported history. New exercises land in an "Imported" category
       for you to sort.

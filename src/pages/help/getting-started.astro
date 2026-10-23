@@ -53,17 +53,25 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <p>Find your old app below for what to export, then follow <a href="#importing-steps">Import the file into Badger</a>.</p>
 
   <h3 id="importing-fitnotes">FitNotes</h3>
-  <p>In FitNotes, go to <strong>Settings → Backup</strong> to write a <code>.fitnotes</code> file. The backup brings your categories, exercises, every set, body weight and custom measurements. FitNotes doesn't mark warmups, so every set arrives as a working set.</p>
+  <p>In FitNotes, go to <strong>Settings → Backup</strong> to write a <code>.fitnotes</code> file. The backup brings:</p>
+  <ul>
+    <li>Your categories, exercises, every set, body weight and custom measurements.</li>
+    <li>Your routines, with their days, exercises and planned sets. A routine with the same name as one already in Badger is skipped.</li>
+    <li>Supersets on workouts and routine days, your daily workout comments, and workout start and end times.</li>
+    <li>Goals for weight and reps, distance or duration. Other kinds are skipped.</li>
+    <li>Each exercise's bar weight. Weight increment, rest time and favorite fill in only where the Badger exercise has no value of its own, and favorite can only be turned on.</li>
+  </ul>
+  <p>The bar list and plate inventory stay out, since the plate calculator keeps its own. FitNotes doesn't mark warmups, so every set arrives as a working set.</p>
   <p>Moving to an iPhone? FitNotes has no iPhone version, so make the backup before you give up the Android phone. See <a href="/guides/fitnotes-on-iphone/">FitNotes on iPhone</a>.</p>
 
   <h3 id="importing-strong">Strong</h3>
-  <p>In Strong, go to <strong>Profile → Settings → Export Data</strong> to produce a <code>strong.csv</code> file. Your RPE, per-set notes and session times come with it, in kg or lbs, from any region's export. Strong doesn't mark warmups, so every set arrives as a working set.</p>
+  <p>In Strong, go to <strong>Profile → Settings → Export Data</strong> to produce a <code>strong.csv</code> file. Your RPE, per-set notes and session times come with it, in kg or lbs, from any region's export. The <strong>Workout Notes</strong> column becomes the workout's note, after the workout name. When the export marks a set <code>W</code> (warmup), <code>F</code> (failure) or <code>D</code> (drop set) in <strong>Set Order</strong>, warmups and failure sets arrive as such and drop sets arrive as working sets. Older exports that only number the sets import as working sets.</p>
 
   <h3 id="importing-hevy">Hevy</h3>
-  <p>In Hevy, go to <strong>Profile → Settings → Export &amp; Import Data → Export Workouts</strong>. Skip <strong>Export Measurements</strong>, which has no workouts in it. Warmups come across as warmups, sets Hevy marked as failure come across as <a href="/help/logging/#to-failure">To failure</a>, and your RPE and session times come along too.</p>
+  <p>In Hevy, go to <strong>Profile → Settings → Export &amp; Import Data → Export Workouts</strong>. Skip <strong>Export Measurements</strong>, which has no workouts in it. Warmups come across as warmups, sets Hevy marked as failure come across as <a href="/help/logging/#to-failure">To failure</a>, and your RPE and session times come along too. The workout description becomes the workout's note, after the title, and supersets come across as Badger supersets.</p>
 
   <h3 id="importing-stronglifts">StrongLifts</h3>
-  <p>In StrongLifts, go to <strong>Settings → Export workout data</strong> to produce a CSV. Badger reads the weight unit and each session's start time and length from the file. StrongLifts doesn't mark warmups, so every set arrives as a working set.</p>
+  <p>In StrongLifts, go to <strong>Settings → Export workout data</strong> to produce a CSV. Badger reads the weight unit and each session's start time and length from the file. The body weight column comes in as body weight readings, one per day, and a day that already has one is skipped. StrongLifts doesn't mark warmups, so every set arrives as a working set.</p>
 
   <h3 id="importing-steps">Import the file into Badger</h3>
   <ol>
