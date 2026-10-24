@@ -19,6 +19,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Search looks at each exercise's name, its category and its equipment. So "bicep curl" finds Barbell Curl, which sits in the Biceps category, and "dumbbell curl" finds Hammer Curl. Plurals and accents don't matter: "squats" finds every squat.</p>
   <p>A few everyday words work too. "Abs" finds the Core exercises, and "stationary bike", "rower", "stairmaster" and "cross trainer" find the cardio machines by their names in the library.</p>
   <p>In the exercise pickers, names that match exactly or start with what you typed come first.</p>
+  <p id="other-languages">You can also search for about a hundred of the most common lifts by their German, French or Spanish name. "Kreuzheben" finds Deadlift, "développé couché" finds Flat Barbell Bench Press, and "sentadilla" finds Barbell Back Squat. In the exercise pickers, the name you typed shows in lighter text under the English one. The rest of the app is in English.</p>
 
   <h3>Filter chips</h3>
   <p>Under the search box are the chips <strong>All</strong>, <strong>Favorites</strong>, and one per category. Tap <strong>Favorites</strong> for only your starred exercises, or a category chip for only that category.</p>
@@ -41,6 +42,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>When you add an exercise to a workout, the picker opens with the keyboard up, ready for a search. Right under the search box is a row of category chips: <strong>All</strong>, then one per category. Tap a chip to close the keyboard and see only that category. A search or a filter you set stays narrowed to it.</p>
   <p>In each category, the exercises you have logged come first, newest first, each with the day you last did it ("last done Oct 14"). The rest of the category follows in A-Z order.</p>
   <p>The two buttons in the top bar are labeled <strong>Muscle</strong> and <strong>Equipment</strong>. They open the same filters as in the library.</p>
+  <p>Under each name, a row shows the equipment and the main muscle, for example "Cable machine · Lats". An exercise that logs something other than weight and reps adds what it logs: "Bodyweight · Abs · Time".</p>
+  <p id="exercise-info">Tap a row to add the exercise straight away. To read about it first, tap the <strong>i</strong> button at the end of the row. A sheet shows the illustration (when there is one), how to do the exercise and the main muscles, with a button to add it. The picker for a routine day works the same way.</p>
 
   <h2 id="favorites">Favorites</h2>
   <p>Open the <strong>⋮</strong> menu on an exercise's row and tap <strong>Favorite</strong>. A star appears on the row, and the <strong>Favorites</strong> chip shows only your starred exercises. Tap <strong>Unfavorite</strong> in the same menu to remove it.</p>
@@ -94,7 +97,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Compatible machines</strong> - Machines at your gyms that this exercise uses. The training screen offers these when you pick a machine.</li>
     <li><strong>Default graph</strong> - Which progress graph shows first.</li>
     <li><strong>Notes</strong> - Your reminders (form cues, machine settings, links). They show at the top of the training screen when you log this exercise.</li>
-    <li><strong>Instructions</strong> - Technique cues, filled in for every built-in exercise. On the training screen, tap the notes card to read them in full, or tap its pencil to edit them.</li>
+    <li><strong>Instructions</strong> - How to do the exercise, filled in for every built-in exercise. The most common machine and dumbbell exercises explain it in plain words; if you have edited an instruction, your text stays. On the training screen, tap the notes card to read them in full, or tap its pencil to edit them.</li>
   </ul>
 
   <h2 id="types">Exercise types</h2>
