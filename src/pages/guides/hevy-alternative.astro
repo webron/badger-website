@@ -11,14 +11,20 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  * Import claims checked against hevy_parser.dart and hevy_importer.dart on
  * 2026-09-05:
  *   - weight unit from the weight_kg / weight_lbs header, distance from
- *     distance_km / distance_miles (hevy_parser.dart:104-111)
+ *     distance_km / distance_miles (hevy_parser.dart:104-111). A miles
+ *     export is kept in miles (no conversion to km); the app displays it in
+ *     the reader's distance unit (hevy_importer.dart, hevyDistanceUnitTag,
+ *     app schema v84, 2026-10-22).
  *   - carried: title, exercise_title, reps, duration_seconds, exercise_notes,
  *     set_index, rpe (importer :253), and set_type, which is why warmups
  *     survive as warmups (:197, importer :252)
  *   - real session start/end from start_time / end_time (:90-92)
- *   - superset_id IS parsed (:198) but the importer does NOT rebuild supersets
- *     from it. Do not claim supersets come across. If that changes, this
- *     comment and the page both need updating.
+ *
+ * Re-checked 2026-10-23 for 1.1.15 against branch feat/import-gaps:
+ *   - supersets: the importer now rebuilds Badger supersets from superset_id
+ *   - description: the workout description lands in the workout's note, after
+ *     the title (hevy_importer.dart:231-236, combineWorkoutComment)
+ *   - failure sets were already kept as failure sets
  */
 
 const description =
@@ -56,21 +62,25 @@ const description =
 
   <ul>
     <li>
-      <strong>Warmups stay warmups.</strong> Hevy is the only app Badger imports from whose export
-      marks set type, so your ramp-up sets arrive flagged and stay out of your PRs and volume.
+      <strong>Warmups stay warmups.</strong> Hevy's export marks set type, so your ramp-up sets
+      arrive flagged and stay out of your PRs and volume. Failure sets stay failure sets too.
+    </li>
+    <li>
+      <strong>Supersets, as supersets.</strong> Exercises you grouped in Hevy arrive grouped in
+      Badger.
     </li>
     <li><strong>Every set</strong>, with its date, exercise, weight, reps, distance, and time.</li>
     <li><strong>Your RPE</strong>, on each set.</li>
     <li>
       <strong>Your exercise notes</strong>, on the exercise they belong to, and each workout's title
-      as a note on that session.
+      and description as the note on that session.
     </li>
     <li>
       <strong>Session times.</strong> Imported workouts show when they started and how long they ran.
     </li>
     <li>
       <strong>Kilograms or pounds, kilometers or miles</strong>, read from the file's column names and
-      kept in the unit you logged.
+      kept in the unit you logged. A miles export stays in miles, and Badger shows it in your distance unit.
     </li>
     <li>
       <strong>Your PRs</strong>, worked out from the imported history, so your records and graphs
@@ -81,10 +91,6 @@ const description =
   <p><strong>What does not come across:</strong></p>
 
   <ul>
-    <li>
-      <strong>Supersets, as supersets.</strong> All the sets arrive, but Badger does not rebuild the
-      grouping yet.
-    </li>
     <li>
       <strong>Your routines.</strong> The export holds history only. Start from one of Badger's ten
       built-in programs or build your own.
@@ -98,8 +104,8 @@ const description =
   <h2 id="how">Doing it</h2>
 
   <p>
-    In Hevy, go to <strong>Profile &rarr; Settings &rarr; Export Data &rarr; Export as CSV</strong>,
-    move the file to the phone you train with, then open <strong>Settings &rarr; Your data &rarr;
+    In Hevy, go to <strong>Profile &rarr; Settings &rarr; Export &amp; Import Data &rarr; Export Workouts</strong>
+    (Export Measurements has no workouts in it), save the file on the phone you train with, then open <strong>Settings &rarr; Your data &rarr;
     Import from Hevy</strong> in Badger. Import each file once. The full steps are in
     <a href="/help/getting-started/#importing">importing from another app</a>.
   </p>

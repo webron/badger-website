@@ -9,6 +9,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <hr />
 
+  <p>Until you've logged a workout, Progress is empty and offers <strong>Start a workout</strong>.</p>
+
   <h2>Find an exercise</h2>
   <p>The Exercises tab lists every exercise, most recently trained first. Tap the sort icon to switch to A to Z. The search bar and filter chips work the same way as in the exercise library. Tap an exercise to open its progress screen.</p>
 
@@ -18,6 +20,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Weight + reps</strong> - the highest <strong>estimated 1RM</strong>, using the Epley formula: <code>weight × (1 + reps / 30)</code>. More weight, or more reps at the same weight, is a PR.</li>
     <li><strong>Weight only</strong> - heaviest weight.</li>
     <li><strong>Reps only</strong> - most reps.</li>
+    <li id="weighted-bodyweight"><strong>Weighted bodyweight</strong> (Weighted Pull-Up and the like) - the same, on the weight you add. A set with no added weight counts for most reps only. See <a href="/help/exercises/#bodyweight">Bodyweight exercises</a>.</li>
     <li><strong>Distance</strong> - farthest distance.</li>
     <li><strong>Time</strong> - the longest time, unless you set <a href={`#record-time`}>Record time</a> to Shorter.</li>
     <li><strong>Combined types</strong> (for example distance + time) - going farther, or covering the same distance faster, each counts.</li>
@@ -26,6 +29,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p><strong>Left and right work has its own records.</strong> Sets logged <a href="/help/logging/#left-right">left and right</a> are compared only with other left and right sets. They have <strong>Overall</strong> (your better arm), <strong>Left</strong> and <strong>Right</strong> records, and a set that beats one arm's best is flagged <strong>PR &middot; RIGHT</strong> or <strong>PR &middot; LEFT</strong>. Earlier sets count as both-arms sets.</p>
   <p><strong>Records are kept per machine and per bar.</strong> With a machine or a <a href="/help/gyms/#bar-prs">bar</a> set on the exercise, a set is compared only with sets on that same machine and bar. With neither set, it's compared with all your history.</p>
   <p><strong>Linked exercises share records.</strong> If you've <a href="/help/exercises/#linking">linked two exercises</a>, a new best on either counts as a PR on both, and their graphs combine.</p>
+
+  <h3 id="first-time">The first time you log an exercise</h3>
+  <p>Your first workout with an exercise sets no records, because there is nothing to beat yet. The best set reads <strong>First time</strong> where a PR badge would have been, and the workout summary lists these exercises under <strong>First time</strong> as your starting numbers.</p>
+  <p>Records start with your next workout of that exercise: beat a starting number and it shows as a PR.</p>
+  <p>Anything you imported counts as an earlier workout, so if you brought your history from another app, your first Badger workout can already set records. Records are also kept per machine, so the first time you use a new machine for an exercise you've done before, you can still set a PR there.</p>
 
   <h3>Timed and assisted exercises</h3>
   <p id="record-time"><strong>Choose whether a longer or shorter time wins.</strong> On a timed exercise's edit screen, set <strong>Record time</strong> to <em>Longer</em> (holds, carries, dead hangs), <em>Shorter</em> (timed runs and for-time efforts) or <em>Default</em>. Default means longer, except for distance + time exercises, where faster wins.</p>
@@ -37,7 +45,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The screen has two tabs: <strong>Overview</strong> (stats, graph and records) and <strong>History</strong> (every session, with sets you can edit). History is covered on the History page under <a href={`/help/history/#per-exercise`}>One exercise's history</a>.</p>
   <p>The stats row at the top shows:</p>
   <ul>
-    <li><strong>Estimated 1RM</strong> - your current best.</li>
+    <li><strong>Estimated 1RM</strong> - your current best. On a machine or cable exercise this leads with <strong>Max weight</strong> instead (the heaviest weight you've lifted, with its reps and date), and the estimated 1RM is one chip away on the graph.</li>
     <li><strong>30-day change</strong> - how much your estimated 1RM has moved over the last 30 days, as a percentage.</li>
     <li><strong>Last session</strong> - the date and a short summary of the last time you did it.</li>
   </ul>
@@ -45,15 +53,25 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="graphs">Graphs</h2>
   <p>Tap the chips above the chart to switch what it plots:</p>
   <ul>
-    <li><strong>Estimated 1RM</strong> - best estimated 1RM per session.</li>
-    <li><strong>Max weight</strong> - heaviest weight per session.</li>
+    <li><strong>Estimated 1RM</strong> - best estimated 1RM per session. It comes first for barbell and dumbbell work.</li>
+    <li><strong>Max weight</strong> - heaviest weight per session. It comes first for machine and cable exercises.</li>
     <li><strong>Workout volume</strong> - total weight × reps per session.</li>
     <li><strong>Total reps</strong> - reps across all working sets per session.</li>
     <li><strong>Max reps</strong> - most reps in one set per session.</li>
     <li><strong>Weight at N reps</strong> - heaviest weight at a chosen rep count.</li>
     <li><strong>Rep maxes</strong> - best weight for each rep count over time.</li>
-    <li><strong>Max distance / Total distance / Max time / Total time / Max speed / Max pace</strong> - for distance and timed exercises.</li>
+    <li><strong>Max distance / Total distance / Max time / Total time</strong> - for distance and timed exercises.</li>
+    <li><strong><a href="#pace">Best pace</a></strong> (or <strong>Best speed</strong>) - for walking, running, treadmill, hiking, bikes and rowers.</li>
   </ul>
+
+  <h3 id="pace">Pace and speed</h3>
+  <p>Walking, running, treadmill, hiking, cycling, rowing machine and Ski Erg show <strong>Best pace</strong> first, with your fastest set of each day. Badger works it out from the distance and time you already log, in your distance unit, so there is nothing extra to enter.</p>
+  <ul>
+    <li><strong>Walking, running, treadmill, hiking</strong> - minutes per mile or per kilometer, for example <em>8:03 /mi</em>. The line goes down as you get faster, because a faster pace is fewer minutes.</li>
+    <li><strong>Bikes</strong> - the chip says <strong>Best speed</strong>, in mph or km/h. The line goes up as you get faster.</li>
+    <li><strong>Rowing machine and Ski Erg</strong> - time per 500 m, for example <em>2:05 /500 m</em>. The line goes down as you get faster.</li>
+  </ul>
+  <p>The number at the top of the page is your best pace and the day you set it. Badger does not track incline, level or floors, so put those in the set note. Your own exercises count too when the name says what they are, such as "Trail run" or "Spin bike". Carries, sled work and swimming do not get a pace.</p>
 
   <h3>Graph controls</h3>
   <ul>
@@ -132,9 +150,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h4>Volume zones</h4>
   <p>Each bar's background shows three zones, explained in a small legend on the card:</p>
   <ul>
-    <li><strong>Amber</strong> - below MEV (minimum effective volume): too little to drive progress.</li>
-    <li><strong>Green</strong> - between MEV and MRV: the productive range.</li>
-    <li><strong>Red</strong> - above MRV (maximum recoverable volume): more than you can recover from before the next session.</li>
+    <li><strong>Amber, Under target</strong> - below <a href="/glossary/#mev">MEV</a> (minimum effective volume): too little to drive progress.</li>
+    <li><strong>Green, In range</strong> - between MEV and <a href="/glossary/#mrv">MRV</a>: the productive range.</li>
+    <li><strong>Red, Above range</strong> - above MRV (maximum recoverable volume): more than you can recover from before the next session.</li>
   </ul>
 
   <h4>Weekly targets</h4>

@@ -29,6 +29,20 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  * There is deliberately no warmup claim: FitNotes does not mark warmups, so
  * the importer has nothing to read and every set arrives as a working set.
  *
+ * Re-checked 2026-10-23 for 1.1.15 against branch feat/import-gaps
+ * (fitnotes_parser.dart, fitnotes_importer.dart _doImport and _importGoals):
+ *   - routines (days, exercises, planned sets): imported; a routine whose name
+ *     matches one already in Badger is skipped
+ *   - supersets: on workouts and on routine days
+ *   - per-exercise weight increment, rest time and favorite: filled only where
+ *     the Badger exercise has no value of its own; favorite can only be turned on
+ *   - goals are stored (_importGoals) but Badger has no screen that shows a goal
+ *     (2026-10-23), so the page does not claim them
+ *   - per-day workout comments, workout start and end times, per-exercise bar
+ *     weights
+ *   - NOT imported: FitNotes' general bar list and plate inventory (the plate
+ *     calculator keeps its own)
+ *
  * 2026-09-12: the preview step used to say Badger "detects" the weight unit. It
  * does not, for the schema most people will have. `_parseWorkoutEntry` (the
  * post-2018 table) builds its entries with no storedUnit at all, so the import
@@ -39,7 +53,7 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  */
 
 const description =
-  'Move to Badger from FitNotes without losing anything. Your .fitnotes backup brings the whole library across: categories, exercises, every set, body weight, and your custom measurements.';
+  'Move to Badger from FitNotes without losing anything. Your .fitnotes backup brings the whole library across: categories, exercises, every set, routines, body weight, and your custom measurements.';
 
 const modified = '2026-09-24';
 ---
@@ -92,6 +106,22 @@ const modified = '2026-09-24';
       <strong>Backups from before 2018</strong>, when FitNotes changed its database layout. On those,
       Badger turns the stored kilograms back into the unit you typed, so a pounds log stays in pounds.
     </li>
+    <li>
+      <strong>Your routines</strong>, with their days, exercises and planned sets. A routine with
+      the same name as one already in Badger is skipped.
+    </li>
+    <li>
+      <strong>Supersets</strong>, on your past workouts and on routine days.
+    </li>
+    <li>
+      <strong>Workout comments and times.</strong> The comment you left on a day becomes the
+      workout's note, and each workout shows when it started and ended.
+    </li>
+    <li>
+      <strong>Exercise settings.</strong> Each exercise's bar weight comes across. Weight
+      increment, rest time and favorite fill in only where the Badger exercise has no value of its
+      own, and favorite can only be turned on.
+    </li>
     <li><strong>Your body weight history</strong>, added to Badger's body weight track.</li>
     <li>
       <strong>Your custom measurements</strong> (waist, arms, whatever you tracked), each as its own
@@ -111,8 +141,8 @@ const modified = '2026-09-24';
       working set. You can flag warmups yourself afterward.
     </li>
     <li>
-      <strong>Routines.</strong> You set programs up in Badger, starting from scratch or from one of
-      the built-in programs.
+      <strong>Your bar list and plate inventory.</strong> The plate calculator keeps its own; set
+      your plates in Badger once.
     </li>
   </ul>
 
@@ -136,7 +166,7 @@ const modified = '2026-09-24';
     <li>
       <strong>Routines that pre-fill.</strong> Build your program once and each session opens with
       your exercises and last weights in place.
-      <a href="/programs/">Ten programs ship built in</a>, including StrongLifts 5x5, GZCLP and PPL.
+      <a href="/programs/">Eleven programs ship built in</a>, including StrongLifts 5x5, GZCLP and PPL.
     </li>
     <li>
       <strong>Gym and machine tracking.</strong> Record which gym and machine a set was done on, with

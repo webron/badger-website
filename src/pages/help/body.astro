@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Body tracking" description="Track body weight and measurements in Badger, and connect Apple Health or Health Connect.">
   <h1>Body tracking</h1>
 
-  <p>Log body weight and tape measurements alongside your training. Open it from <strong>More &rarr; Body</strong>. Once you've logged a measurement, a small <strong>Body</strong> section appears at the bottom of Progress &rarr; Overview with your latest reading and its trend.</p>
+  <p>Log body weight and tape measurements alongside your training. Open it from <strong>You &rarr; Body</strong>. Once you've logged a measurement, a small <strong>Body</strong> section appears at the bottom of Progress &rarr; Overview with your latest reading and its trend.</p>
 
   <hr />
 
@@ -39,6 +39,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Every workout you finish is saved to your health store as a strength training session, so your rings, daily summary and other connected apps know you trained.</p>
   <p>Badger writes the start and end time only, with no calorie estimate. Use your watch's figure for calories.</p>
   <p>A back-dated workout isn't written, because with no timer running there's no duration to report.</p>
+  <p id="health-offer">You can also turn this on from a workout summary. Once, after a workout, Badger asks <strong>Save workouts to Apple Health?</strong> (<strong>Save workouts to Health Connect?</strong> on Android).</p>
+  <ul>
+    <li><strong>Turn on</strong> asks your phone for permission and saves the workout you just finished.</li>
+    <li><strong>Not now</strong> is final: the question doesn't come back. The switch is still in Settings.</li>
+  </ul>
+  <p>The question is a <a href="/help/settings/#hints">hint</a>, so turning hints off stops it. It doesn't appear on a summary where you logged an exercise for the first time.</p>
 
   <h3 id="import-weight">Importing body weight</h3>
   <p>Weigh-ins in your health store (from a smart scale, another app, or typed into Health) appear in your body tracker as ordinary entries. Badger asks for body weight only.</p>

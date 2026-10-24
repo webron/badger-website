@@ -17,7 +17,104 @@ import Footer from '../components/Footer.astro';
 //
 // 2026-09-24 voice pass: 1.1.7 to 1.1.12 were trimmed to one change per short
 // sentence, in the style of 1.1.0. Keep new entries in that register.
+//
+// A release carries either `highlights` (a flat list, every release up to
+// 1.1.14) or `groups` ([{ title, items }], from 1.1.15), which draws a small
+// heading over each run of bullets. Use groups when a release has too many
+// lines to scan flat. 1.1.15's grouped list is the full account; the in-app
+// card is an eight-line cut of it.
 const releases = [
+  {
+    version: '1.1.15',
+    date: 'October 2026',
+    headline: 'Easier to start, and easier to come back',
+    groups: [
+      {
+        title: 'Logging',
+        items: [
+          'Choose how Save set works. Log as you go logs the set and starts rest. Plan, then tick lets you fill sets in and tick them when done. Change it in Settings, Logging.',
+          'End a workout from Today, the Exercises sheet or the button at the bottom. Saved sets you did not tick get one question: count them or leave them out.',
+          'A workout you forgot to end closes at its last set after three hours.',
+          'An exercise\'s first session reads First time instead of a record.',
+          'Type a duration like a microwave: 2, 0, 0 gives 2:00.',
+          'RPE and RIR are a row of numbers to tap. To failure is its own value, apart from RIR 0.',
+          'The set timer has a stopwatch. Stop it and the time goes into the set.',
+          'Hold + or - to keep counting.',
+          'Bodyweight sets read BW × 8 or +25 lbs × 6, and bodyweight never counts toward your heaviest set or 1RM.',
+          'On Reps Only and Time Only exercises, Badger says when it is time for a harder version.',
+          'Remove an exercise from a workout, with Undo.',
+          'The plate calculator and 1RM show only where they fit. Plan B is now Swap exercise.',
+        ],
+      },
+      {
+        title: 'Exercises',
+        items: [
+          'Search finds what you type: words in any order, plurals, "abs", "push ups". German, French and Spanish names work for about 100 lifts.',
+          'The picker shows your exercises first, with category chips. Tap i to see how an exercise is done.',
+          'Create an exercise straight from the picker.',
+          'Fourteen new exercises, including Muscle-Up, Dead Hang, Weighted Pull-Up and Assisted Dip.',
+        ],
+      },
+      {
+        title: 'Bring your history',
+        items: [
+          'FitNotes import brings routines, supersets, comments, body weight, measurements and goals. Cardio and carries stay what they were.',
+          'Strong imports bring notes and failure sets. Hevy imports bring notes, supersets and failure sets.',
+          'The import preview shows the date range and lists close name matches apart. Keep my exercise names keeps yours.',
+          'First setup asks which app you are coming from.',
+        ],
+      },
+      {
+        title: 'Today, and coming back',
+        items: [
+          'Today shows your last workout with Repeat it.',
+          'After six weeks away, Start lighter runs a week at 60%.',
+          'On a program, Today shows the week and the days done. A missed day stays next.',
+          'A workout summary compares each exercise with last time.',
+        ],
+      },
+      {
+        title: 'Routines',
+        items: [
+          'When a program needs a training max you have not set, a sheet asks for all of them at once, filled in from your history for lifts you have logged.',
+          'Duplicate a routine day. Add several exercises at once.',
+          'Full Body Starter, a new beginner program. Every built-in program says what it is and what it needs.',
+          'Set as active program is a button on the routine.',
+        ],
+      },
+      {
+        title: 'Progress',
+        items: [
+          'Exercise history shows the routine day each session came from, with a filter.',
+          'Best pace, best speed and time per 500 m for cardio.',
+          'Machines and cables lead with max weight.',
+        ],
+      },
+      {
+        title: 'Lock screen and notifications',
+        items: [
+          'iPhone: one Live Activity for the whole workout. On iOS 17 and later it has rest buttons, and Set done when a set is waiting to be ticked.',
+          'Android: the workout notification has rest buttons, and Set done when a set is waiting to be ticked. The widget turns over at midnight.',
+        ],
+      },
+      {
+        title: 'Your region',
+        items: [
+          'The decimal comma works everywhere, imports included.',
+          'Dates and the clock follow your phone\'s region.',
+          'Distance has its own unit, kilometers or miles.',
+        ],
+      },
+      {
+        title: 'Also',
+        items: [
+          'Reminders follow your active routine\'s days, and pause after two ignored weeks.',
+          'Short tips show once, one at a time, and turn off with one tap.',
+          'Fixes: reps, time and distance carry to the next set; Swap exercise picks up the new equipment; a 0-rep set is never a record; re-importing a file no longer duplicates an exercise; the training tabs scroll at large text sizes.',
+        ],
+      },
+    ],
+  },
   {
     version: '1.1.14',
     date: 'October 2026',
@@ -310,11 +407,25 @@ const releases = [
 
           {r.headline && <p class="release-headline">{r.headline}</p>}
 
-          <ul class="release-notes">
-            {r.highlights.map((h) => (
-              <li>{h}</li>
+          {r.highlights && (
+            <ul class="release-notes">
+              {r.highlights.map((h) => (
+                <li>{h}</li>
+              ))}
+            </ul>
+          )}
+
+          {r.groups &&
+            r.groups.map((g) => (
+              <section class="release-group">
+                <h3>{g.title}</h3>
+                <ul class="release-notes">
+                  {g.items.map((h) => (
+                    <li>{h}</li>
+                  ))}
+                </ul>
+              </section>
             ))}
-          </ul>
         </article>
       ))
     }
@@ -398,6 +509,21 @@ const releases = [
     font-weight: 600;
     line-height: 1.5;
     color: var(--text);
+  }
+
+  /* A grouped release (1.1.15 on): a small label over each run of bullets. It
+     borrows the Latest badge's small caps so no new type style is added. */
+  .release-group {
+    margin-top: 22px;
+  }
+
+  .release-group h3 {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
   }
 
   .release-notes {

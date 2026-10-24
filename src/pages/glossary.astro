@@ -2,7 +2,7 @@
 import HelpLayout from '../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Glossary" description="Plain-English definitions of the training terms and Badger's own words: RPE, RIR, 1RM, AMRAP, training max, deload, driver set, waved days, stages and more.">
+<HelpLayout title="Glossary" description="Plain-English definitions of the training terms and Badger's own words: set, rep, warm-up, PR, RPE, RIR, 1RM, MEV, MRV, AMRAP, training max, deload, driver set, waved days, stages and more.">
   <div class="glossary">
   <h1>Glossary</h1>
 
@@ -25,8 +25,17 @@ import HelpLayout from '../layouts/HelpLayout.astro';
   <h3>Hypertrophy</h3>
   <p>Muscle growth. Usually trained in the 6 to 20 rep range at moderate intensity (RPE 7 to 9, RIR 1 to 3). Pure strength training tends toward lower reps at higher intensity.</p>
 
+  <h3 id="mev">MEV (minimum effective volume)</h3>
+  <p>The fewest hard sets per week for a muscle group that still make it grow. Below it you are doing too little to drive progress. On the Progress tab the Volume card calls a group under its MEV <strong>Under target</strong>. See <a href="/help/progress/#weekly-volume">weekly volume</a>.</p>
+
+  <h3 id="mrv">MRV (maximum recoverable volume)</h3>
+  <p>The most hard sets per week for a muscle group that you can recover from before the next session. Above it, extra sets cost you more than they give. The Volume card calls a group over its MRV <strong>Above range</strong>, and anything between MEV and MRV <strong>In range</strong>.</p>
+
   <h3>PR (personal record)</h3>
   <p>Your best-ever performance on an exercise. Badger marks a new one as you log it, and what counts as a record depends on the exercise type. See <a href="/help/progress/#prs">personal records</a>.</p>
+
+  <h3 id="rep">Rep (repetition)</h3>
+  <p>One full movement of an exercise: a squat down and back up, a curl up and back down. A set is a group of reps done in a row. "8 reps" means you did the movement eight times without stopping to rest.</p>
 
   <h3>RIR (reps in reserve)</h3>
   <p>How many more reps you could have done before failure. RIR counts reps left, where RPE counts effort: RIR 2 is roughly RPE 8, and RIR 0 is RPE 10.</p>
@@ -49,6 +58,9 @@ import HelpLayout from '../layouts/HelpLayout.astro';
   </ul>
   <p>RPE is subjective and takes time to calibrate. It's useful for tracking fatigue over time and for adjusting how hard you train on the day. Badger records it as an optional field on every set (1 to 10).</p>
 
+  <h3 id="set">Set</h3>
+  <p>A group of reps done in a row, followed by a rest. "3 sets of 8" means eight reps, rest, eight reps, rest, eight reps. Badger logs one row per set, with its weight and reps. Sets are either <a href="#warm-up">warm-up</a> or <a href="#working-set">working</a> sets.</p>
+
   <h3>Superset</h3>
   <p>Two or more exercises done back to back with little or no rest between them, resting after each full round. Common uses: opposing muscle groups (biceps curls with triceps pushdowns), circuits, or saving time.</p>
   <p>In Badger, exercises in the same group move you to the next exercise without starting the rest timer. The rest timer starts after the last exercise in the group.</p>
@@ -64,10 +76,10 @@ import HelpLayout from '../layouts/HelpLayout.astro';
   <h3>Volume</h3>
   <p>Total work done, usually <strong>sets × reps × weight</strong>. Badger shows volume in your chosen unit (kg or lbs) in the progress graphs, the activity heatmap and the weekly muscle balance.</p>
 
-  <h3>Warmup set</h3>
-  <p>A lighter set before your working sets, to prepare your joints and muscles for the heavier loads without tiring you. Badger leaves warmup sets out of volume and PRs.</p>
+  <h3 id="warm-up">Warm-up</h3>
+  <p>A lighter set before your working sets, to prepare your joints and muscles for the heavier loads without tiring you. Badger leaves warm-up sets out of volume and PRs, and shows them with a W instead of a number. The <strong>Warm-up calc</strong> chip builds a ramp for you.</p>
 
-  <h3>Working set</h3>
+  <h3 id="working-set">Working set</h3>
   <p>A set at or near your training weight: the sets you track for progress. Badger counts working sets in volume and uses them for PRs.</p>
 
   <hr />
@@ -142,7 +154,7 @@ import HelpLayout from '../layouts/HelpLayout.astro';
   <p>A training day that runs a different session each week of a cycle, like 5/3/1's four-week wave. Each set belongs to one week, or to every week. The routine moves to the next week once you've trained every day of the cycle. See <a href="/help/progression/#waves">waved days</a>.</p>
 
   <h3>Weight source</h3>
-  <p>A routine setting for where starting weights come from: <strong>Last perf.</strong> (your most recent workout of each exercise), <strong>Routine</strong> (the planned weights), or <strong>Both</strong> (planned weights first, then your last performance where none is set). See <a href="/help/routines/#weight-source">weight source</a>.</p>
+  <p>A routine setting for where starting weights come from: <strong>Last time</strong> (your most recent workout of each exercise), <strong>Routine</strong> (the planned weights), or <strong>Both</strong> (planned weights first, then your last performance where none is set). See <a href="/help/routines/#weight-source">weight source</a>.</p>
 
   <h3>Workout</h3>
   <p>A single training session: one day's exercises and sets.</p>

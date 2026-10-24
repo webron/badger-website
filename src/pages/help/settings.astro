@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Settings and data" description="What each setting in Badger does, and how to back up, restore, export and import your data.">
   <h1>Settings and data</h1>
 
-  <p>Open <strong>More → Settings</strong>. <strong>More → Data &amp; backup</strong> opens the same screen scrolled to <a href={`#data`}>Your data</a>.</p>
+  <p>Open <strong>You → Settings</strong>. <strong>You → Data &amp; backup</strong> opens the same screen scrolled to <a href={`#data`}>Your data</a>.</p>
 
   <p>Settings are grouped by what you're doing: <a href={`#logging`}>Logging</a>, the three timers (<a href={`#rest-timer`}>Rest timer</a>, <a href={`#set-timer`}>Set timer</a> and <a href={`#workout-timer`}>Workout timer</a>), <a href={`#coaching`}>Coaching</a>, <a href={`#app`}>App</a> and <a href={`#data`}>Your data</a>. <a href={`#training-notes`}>Training notes</a>, under More, are covered at the end.</p>
 
@@ -13,9 +13,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="logging">Logging</h2>
   <ul>
-    <li><strong>Unit system</strong> - Kilograms or pounds, for every exercise that doesn't set its own.</li>
+    <li><strong>Weight unit</strong> - Kilograms or pounds, for every exercise that doesn't set its own.</li>
+    <li><strong>Distance unit</strong> - Kilometers or miles, for every distance in the app. It starts from your phone's region and is separate from the weight unit. See <a href={`/help/logging/#distance-unit`}>Distance unit</a>.</li>
     <li><strong>Default weight increment</strong> - The step for the stepper buttons and the progressive overload suggestion, when an exercise has no increment of its own.</li>
     <li><strong>Track personal records</strong> - Turns PR badges and notices on or off.</li>
+    <li id="effort-scale"><strong>Effort scale</strong> - <strong>RIR</strong> or <strong>RPE</strong>, the scale a new exercise opens on. RIR is the default. See <a href={`/help/logging/#rpe-rir`}>RPE and RIR</a>.</li>
+    <li id="save-set"><strong>Save set</strong> - What Save set does in a workout. <strong>Log as you go</strong> logs the set as done in one tap. <strong>Plan, then tick</strong> adds it to your list to tick when you've done it. Badger asks the first time you save a set; until then this reads Not chosen.</li>
     <li><strong>Auto-select next set</strong> - Highlights the next unfinished set when you open an exercise.</li>
     <li><strong>Auto-advance to next exercise</strong> - Moves you to the next exercise after you complete or skip the last set.</li>
     <li><strong>Warm-up style</strong> - How the warm-up generator builds sets: <strong>Percent</strong> (a ramp based on your working weight) or <strong>Plates</strong> (evenly spaced, easy-to-load weights). See <a href={`/help/logging/#set-types`}>Warmup sets</a>.</li>
@@ -26,13 +29,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Default rest time</strong> - Rest after a working set when the exercise and the session don't set their own (30s-300s).</li>
     <li><strong>Default warm-up rest</strong> - Rest after a warmup set (15s-120s).</li>
-    <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set.</li>
+    <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set. Never after a cardio set.</li>
     <li><strong>Rest timer sound</strong> - Plays a sound when rest ends. Pick from several sounds, with a preview.</li>
     <li><strong>Rest timer vibration</strong> - Vibrates when rest ends.</li>
   </ul>
 
   <h2 id="set-timer">Set timer</h2>
-  <p>These cover the countdown on <a href={`/help/logging/#set-timer`}>timed sets</a>.</p>
+  <p>These cover the stopwatch and countdown on <a href={`/help/logging/#set-timer`}>timed sets</a>.</p>
   <ul>
     <li><strong>Set timer sound</strong> - Plays a sound with the "Set complete" notification. You get that notification when a timed set ends without being announced aloud, for example with the phone locked on Android. It doesn't affect the voice.</li>
     <li><strong>Set timer voice</strong> - <strong>Female</strong>, <strong>Male</strong> or <strong>Off</strong>. Tap one to hear it. Off silences the spoken cues; you still get the "Set complete" notification when the phone is locked.</li>
@@ -66,13 +69,26 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Default history view</strong> - Whether the History tab opens on the list or the calendar.</li>
     <li><strong>Keep screen on</strong> - Stops your phone sleeping during a workout.</li>
     <li><strong>Haptic feedback</strong> - Vibration on taps and timer events.</li>
-    <li><strong>Workout notification</strong> - Android only. Shows the current exercise and your next set target in the notification bar during a workout, so you can check it from the lock screen. See <a href={`/help/logging/#workout-notification`}>Workout notification</a>.</li>
-    <li><strong>Workout reminders</strong> - A notification on each weekday a routine day is <a href={`/help/routines/#creating`}>scheduled for</a>. <strong>Remind me at</strong> sets the time it arrives. Changes to a routine's schedule take effect straight away.</li>
+    <li id="hints"><strong>Show hints</strong> - One-time tips that appear when a feature would help, such as offering to mark your lighter sets as warm-ups, or to save your workouts to Apple Health or Health Connect. Each tip shows once. Tap X and it never comes back; leave it untouched and it gets one more try. Turn this off to stop all tips.</li>
+    <li><strong>Workout notification</strong> (iPhone: <strong>Workout on the lock screen</strong>) - Shows your current set, the rest countdown and buttons such as Set done on the lock screen during a workout. See <a href={`/help/logging/#lock-screen`}>Your workout on the lock screen</a>.</li>
+    <li><strong>Workout reminders</strong> - A notification on your training days. See <a href={`#workout-reminders`}>Workout reminders</a>.</li>
     <li><strong>End of workout summary</strong> - What the completion sheet shows when you finish a session.</li>
   </ul>
+  <p id="region">Dates and the clock follow your phone's region: day first and a 24-hour clock where your region uses them, and date pickers that start the week on Monday where that is local. Type 2,5 or 2.5 in any number field and it reads the same.</p>
+
+  <h3 id="workout-reminders">Workout reminders</h3>
+  <p>Turn on <strong>Workout reminders</strong> to get a notification on your training days. Badger asks for notification permission when you turn the switch on. If notifications are off for Badger, the row says so and shows <strong>Open settings</strong>.</p>
+  <p>Which days it uses depends on your active program:</p>
+  <ul>
+    <li><strong>The active program has days set.</strong> Reminders follow those days, and Settings shows them read-only, for example "Mon, Wed, Fri from Upper/Lower. Change them in the routine." To change them, <a href={`/help/routines/#schedule-a-day`}>change the scheduled days</a> in the routine.</li>
+    <li><strong>Otherwise.</strong> Tap the weekday chips to pick your days. They start from the weekdays you trained in the last 3 weeks.</li>
+  </ul>
+  <p><strong>Remind me at</strong> sets the time. Only the active program counts: another routine's scheduled days send no reminders and don't show on the calendar.</p>
+  <p>The reminder reads "Workout day" and names your last workout, such as "Last time: Lat Pulldown, Chest Press, Leg Press." When the day comes from a routine, the day's name comes first.</p>
+  <p>After two weeks with no workout, reminders pause. Log a workout and they start again.</p>
 
   <h2 id="data">Your data</h2>
-  <p>Everything below is in the <strong>Your data</strong> section at the bottom of Settings. <strong>More → Data &amp; backup</strong> jumps straight to it.</p>
+  <p>Everything below is in the <strong>Your data</strong> section at the bottom of Settings. <strong>You → Data &amp; backup</strong> jumps straight to it.</p>
 
   <h3 id="backup">Backup</h3>
   <p>Your workout data is stored locally in a SQLite database, and Badger keeps it backed up in three places:</p>
@@ -83,7 +99,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h4 id="cloud-backup">The Backup screen</h4>
-  <p>Open it from <strong>More → Settings → Your data → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
+  <p>Open it from <strong>You → Settings → Your data → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
   <ul>
     <li><strong>Automatic</strong> - the iCloud switch and its status on iPhone, or the count of on-phone copies on Android, plus a manual <strong>Back up now</strong> for iCloud.</li>
     <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Undo last restore</strong> appears when a pre-restore snapshot exists, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself.</li>
@@ -99,6 +115,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="export">Exporting data</h3>
   <p><strong>Export workout data</strong> makes a CSV file with one row per set (date, exercise, weight, reps, duration, warmup flag, RPE, RIR and more) and opens the share sheet. Five columns at the end cover <a href="/help/logging/#left-right">left and right sets</a>: <code>is_unilateral</code>, <code>reps_left</code>, <code>reps_right</code>, <code>duration_left_seconds</code> and <code>duration_right_seconds</code>. On those rows, <code>reps</code> and <code>duration_seconds</code> hold the better arm.</p>
+  <p>The last two columns are <code>is_failure</code> and <code>distance_unit</code>. <code>is_failure</code> reads <code>true</code> on a set you marked <a href="/help/logging/#to-failure">To failure</a>, and its <code>rir</code> is blank. <code>distance_unit</code> reads <code>km</code> or <code>mi</code> and is blank when the set has no distance. The <code>distance</code> column holds the number as you typed it, so read the two together.</p>
   <p>The file includes sets you never completed, such as the rest of a routine workout you started and left. To count only real training, filter on <code>is_complete</code>; <code>is_skipped</code> marks skipped sets. If you're giving the file to an AI, <a href={`/guides/ai/`}>Use your own AI</a> has a prompt that already explains this.</p>
 
   <h3 id="ai-context">Copying your context for an AI</h3>
@@ -110,6 +127,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="importing">Importing workout history</h3>
   <p>The Your data section has an import option for each app Badger can read: <strong>Import from FitNotes</strong> (a <code>.fitnotes</code> backup), and <strong>Import from Strong</strong>, <strong>Import from Hevy</strong> and <strong>Import from Stronglifts</strong> (each a CSV export). For how to export from each app and what carries over, see <a href={`/help/getting-started/#importing`}>Import from another app</a>.</p>
+  <p>Strong, Stronglifts and Hevy files that write weights with a decimal comma import correctly.</p>
+  <p>The preview shows the date range of the file. Close name matches are listed apart from sure ones, and <strong>Keep my exercise names</strong> adds every name as its own exercise.</p>
   <p>If you see "file is too large" (the limit is 10&nbsp;MB), the file is probably damaged. Export it again from the other app.</p>
   <p><strong>Don't import the same file twice.</strong> A second import adds the sets again on the same days instead of replacing them. The preview warns you when some of the dates already have workouts.</p>
 
@@ -120,7 +139,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p><strong>Delete all workout history</strong>, at the very bottom of Settings, permanently deletes every workout and set but keeps your exercises and routines. Badger asks you to confirm first.</p>
 
   <h2 id="training-notes">Training notes</h2>
-  <p><strong>More → Training notes</strong> is one free-text page for your own context: goals, injuries, training history, anything worth remembering. It saves as you type.</p>
+  <p><strong>You → Training notes</strong> is one free-text page for your own context: goals, injuries, training history, anything worth remembering. It saves as you type.</p>
   <p>Training notes are in your <a href={`#backup`}>backup</a>, so they come back when you restore on a new phone. They aren't included when you export data or share a routine. Notes about one program belong on the routine instead; see <a href={`/help/routines/#routine-notes`}>Routine notes</a>.</p>
   <p><strong>Copy for AI</strong>, at the bottom of the page, bundles these notes with your program, recent training, records and equipment. See <a href={`#ai-context`}>Copying your context for an AI</a>.</p>
 </HelpLayout>

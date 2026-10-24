@@ -7,8 +7,11 @@ const description =
 
 // One entry per app someone arrives from. FitNotes, Strong and Hevy each have
 // a page, because each import genuinely differs: a FitNotes backup is a
-// database and carries the library, Strong's CSV carries RPE and per-set notes,
-// Hevy's marks set type so warmups survive.
+// database and carries the library and routines, Strong's CSV carries RPE and
+// per-set notes, Hevy's marks set type so warmups survive.
+// Re-checked 2026-10-23 for 1.1.15: FitNotes routines now import; Strong's
+// Set Order W/F/D markers and Workout Notes, Hevy's description and supersets,
+// and StrongLifts body weight all come across.
 //
 // StrongLifts is last and points at the 5x5 program page on purpose. That page
 // already carries the import walkthrough, and a second page of ours aimed at
@@ -17,13 +20,13 @@ const fromApps = [
   {
     app: 'FitNotes',
     href: '/guides/fitnotes-alternative/',
-    note: 'The backup is a database, so your categories, library, body weight and measurements come too.',
+    note: 'The backup is a database, so your categories, library, routines, body weight and measurements come too.',
     full: true,
   },
   {
     app: 'Strong',
     href: '/guides/strong-alternative/',
-    note: 'A CSV that brings your RPE and your per-set notes with it.',
+    note: 'A CSV that brings your RPE and your notes with it, and warmups and failure sets when the export marks them.',
     full: true,
   },
   {
@@ -57,8 +60,8 @@ const fromApps = [
   <h2>Your first 5 minutes</h2>
   <ol>
     <li>Save an export from your old app. <a href="/help/getting-started/#importing">Importing from another app</a> says where each app keeps it.</li>
-    <li>In Badger, tap <strong>Import</strong> during first-launch onboarding, or later go to <strong>Settings → Your data</strong>.</li>
-    <li>Choose your old app: FitNotes, Strong, Hevy, or Stronglifts, and pick the file.</li>
+    <li>In Badger, open the import page during first-launch onboarding, or later go to <strong>Settings → Your data</strong>.</li>
+    <li>Choose your old app: FitNotes, Strong, Hevy, or StrongLifts. In onboarding, the main button then reads <strong>Import from</strong> that app. The screen shows that app's export steps first; tap <strong>Choose file</strong> and pick the file.</li>
     <li>Check the preview: exercises, workout days, sets, and the weight unit. Strong, Hevy and StrongLifts files set the unit; for a FitNotes backup, check it yourself.</li>
     <li>Tap <strong>Import</strong>.</li>
   </ol>
@@ -75,7 +78,7 @@ const fromApps = [
   <ul>
     <li>Your PRs are worked out from the imported history, with no extra step.</li>
     <li>Import each file once. A second import adds its sets again on any day you already have, and the preview warns you before that happens.</li>
-    <li>Routines do not come across from any app. Start from a <a href="/help/routines/#programs">built-in program</a> or build your own.</li>
+    <li>Only a FitNotes backup brings routines. From any other app, start from a <a href="/help/routines/#programs">built-in program</a> or build your own.</li>
   </ul>
 
   <h2 id="your-old-app">Your old app</h2>

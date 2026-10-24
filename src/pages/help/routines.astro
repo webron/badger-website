@@ -12,16 +12,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="creating">Create a routine</h2>
   <ol>
-    <li>Go to <strong>More → Routines</strong>, tap <strong>+</strong> and enter a name.</li>
+    <li>Go to <strong>You → Routines</strong>, tap <strong>+</strong> and enter a name.</li>
     <li>Tap the routine to open it, then tap <strong>Add day</strong>.</li>
-    <li>Tap the day, then tap <strong>Add exercise</strong> for each movement.</li>
-    <li>Tap an exercise row to <a href="#predefined-sets">plan its sets</a>.</li>
+    <li>Tap the day, then tap <strong>Add exercise</strong>. Tap each exercise you want for the day so it gets a check mark, then tap <strong>Add 3 exercises</strong> (the button counts your picks). They're added in the order you tapped them. Your picks stay checked while you search or switch category chips, and the <strong>Recent</strong> list at the top shows what you've logged lately. Each exercise starts with three empty sets. An exercise you added before this change, with no sets, starts its workout with three empty sets filled in from your last workout.</li>
+    <li>Tap an exercise row to <a href="#predefined-sets">plan its sets</a>: fill them in, or add and remove sets.</li>
   </ol>
+  <p>Have a plan written down? Your AI can turn it into a Badger routine. See <a href="/guides/ai/#prompts">Use your own AI</a>.</p>
+  <p>To change an exercise later, open its <strong>⋮ menu</strong> and tap <strong>Replace exercise</strong>. If the exercise has a <a href="/help/progression/#rules">progression rule</a>, Badger asks <strong>Replace (exercise)?</strong> first, because the new exercise starts without the rule and without its training max. Tap <strong>Replace</strong> to go ahead or <strong>Cancel</strong> to keep it.</p>
   <p>To turn workouts you've already logged into a routine, see <a href="#create-from-history">Create a routine from your history</a>.</p>
 
   <h2 id="starting">Start a workout from a routine</h2>
   <ol>
-    <li>Make the routine active: in the routine list, tap its <strong>⋮</strong> and tap <strong>Set as active</strong>. Its days appear on the Today screen.</li>
+    <li>Make the routine active: open it and tap <strong>Set as active program</strong> at the top. Its days appear on the Today screen. Only one routine is active at a time, so this replaces the one Today showed before.</li>
     <li>On the Today screen, tap a day. The <strong>routine log preview</strong> opens with the day's exercises and their sets.</li>
     <li>Uncheck any exercise you want to leave out, or tap <strong>Swap</strong> to replace one for this workout only.</li>
     <li>Tap <strong>Start</strong>.</li>
@@ -33,22 +35,24 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>You can still start any day. If the days are assigned to weekdays, the Today screen highlights today's.</p>
 
   <h3 id="weight-source">Where starting weights come from (weight source)</h3>
-  <p>A segmented control on the routine detail screen sets this:</p>
+  <p>Open the <strong>Weights and reps</strong> section below the days on the routine screen (it's collapsed until you tap it). <strong>Pre-fill weights from</strong> sets this:</p>
   <ul>
-    <li><strong>Last perf.</strong> (default) - The weight from your most recent workout of each exercise, wherever that workout came from.</li>
+    <li><strong>Last time</strong> (default) - The weight from your most recent workout of each exercise, wherever that workout came from.</li>
     <li><strong>Routine</strong> - The planned set weights only. A set marked "Copy from previous" uses its planned value.</li>
     <li><strong>Both</strong> - Planned weights first, then your last performance where none is set.</li>
   </ul>
 
   <h3 id="history-scope">Which past workouts count (history scope)</h3>
+  <p><strong>History from</strong>, in the same <strong>Weights and reps</strong> section:</p>
   <ul>
     <li><strong>Any workout</strong> (default) - Looks at all your previous workouts.</li>
     <li><strong>This routine</strong> - Only workouts started from this routine. Use this when you run two programs at once.</li>
   </ul>
 
   <h3 id="rep-target">Where reps come from (rep target)</h3>
+  <p><strong>Rep target</strong>, in the same section:</p>
   <ul>
-    <li><strong>Last perf.</strong> (default) - Reps copy from your last session.</li>
+    <li><strong>Last time</strong> (default) - Reps copy from your last session.</li>
     <li><strong>Plan</strong> - Reps stay pinned to the planned sets. Use this for strict programs such as StrongLifts 5×5, where the rep count shouldn't drift.</li>
   </ul>
   <p>Weight still follows the weight source. An exercise with a <a href="/help/progression/#rules">progression rule</a> always takes its reps from the plan.</p>
@@ -62,10 +66,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Open target (AMRAP)</strong> - No top end, so the target reads "8+". See <a href="#amrap-targets">Open-topped targets</a>.</li>
     <li><strong>Warmup flag</strong> - Marks the set as a warmup.</li>
     <li><strong>Left and right</strong> - Plans the set for each arm. See <a href="#left-right-plan">Left and right in a routine</a>.</li>
-    <li><strong>RPE or RIR</strong> - How hard the set should feel. See <a href="#intensity-targets">Intensity targets</a>.</li>
+    <li><strong>RPE, RIR or To failure</strong> - How hard the set should feel. See <a href="#intensity-targets">Intensity targets</a>.</li>
     <li><strong>Percentage</strong>, <strong>driver</strong> and <strong>week</strong> - Progression controls, shown when the exercise has a rule or the day is waved. See <a href="/help/progression/">Progression</a>.</li>
   </ul>
-  <p>On a timed exercise, type a duration as a time or in seconds: <strong>15:00</strong> or <strong>900</strong> for a fifteen-minute ride. See <a href="/help/logging/#duration-entry">Typing a duration</a>.</p>
+  <p><strong>Add set</strong> starts a new set as a copy of the last one of its kind: a working set copies the last working set, and <strong>Add warm-up</strong> copies the last warm-up. Change what differs.</p>
+  <p>On a timed exercise, type the digits of the time: <strong>2</strong>, <strong>0</strong>, <strong>0</strong>, <strong>0</strong> reads <strong>20:00</strong>, a twenty-minute ride. See <a href="/help/logging/#duration-entry">Typing a duration</a>.</p>
 
   <h3 id="rep-ranges">Rep ranges</h3>
   <p>Tap <strong>+ rep range</strong> under a working set and set the top end. The target then reads "8-10" in the editor, on the routine log preview, above the set recorder while you train, and on the workout summary.</p>
@@ -79,17 +84,22 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>An 8+ set meets the plan at 8.</li>
     <li>Raise the rep number and the set stays open: an 8+ becomes a 12+.</li>
   </ul>
-  <p>See <a href="/help/logging/#amrap">AMRAP and to failure</a> for logging one.</p>
+  <p>See <a href="/help/logging/#amrap">AMRAP and to failure</a> for logging one. To ask for failure on a set with an exact target or a range, such as 8-10, use the <a href="#failure-target">To failure</a> target instead.</p>
 
-  <h3 id="intensity-targets">Intensity targets (RPE and RIR)</h3>
-  <p>A set can say how hard it should feel as well as how heavy: <strong>RPE 8</strong> or <strong>RIR 2</strong>. Tap <strong>+ RPE</strong> or <strong>+ RIR</strong> beside the rep-target controls on a working set, and use the same stepper you <a href="/help/logging/#rpe-rir">log with</a>.</p>
-  <p>The target shows beside the set on the log preview, and above the entry area on the training screen: <em>Plan 8-10 @ RPE 8</em>.</p>
+  <h3 id="intensity-targets">Intensity targets (RPE, RIR and to failure)</h3>
+  <p>A set can say how hard it should feel as well as how heavy: <strong>RPE 8</strong>, <strong>RIR 2</strong> or <strong>To failure</strong>. Tap <strong>+ Effort target</strong> beside the rep-target controls on a working set.</p>
+  <p>Then use the same switch and numbers you <a href="/help/logging/#rpe-rir">log with</a>: pick <strong>RIR</strong> (0 to 5+) or <strong>RPE</strong> (6 to 10), then a number. It opens on your <a href="/help/settings/#effort-scale">Effort scale</a> setting. Switching scales converts the target (RIR 2 becomes RPE 8). Tap the picked number again to clear the target.</p>
+  <p>The target shows beside the set on the log preview, and above the entry area on the training screen: <em>Plan 8-10 @ RPE 8</em>. That set's RPE or RIR also starts at the target, so logging it as planned takes no tap.</p>
   <ul>
-    <li>Pick one: setting RPE clears RIR, and the other way round.</li>
+    <li>Pick one: setting RPE, RIR or To failure clears the other two.</li>
     <li>Targets are whole numbers, matching how you log RPE. A half-step target in an imported file rounds up.</li>
     <li>Warmups can't have a target.</li>
     <li>Badger shows the target beside what you log and doesn't compare the two.</li>
   </ul>
+  <h4 id="failure-target">To failure</h4>
+  <p>Use the <strong>To failure</strong> chip when the program says to keep going until a rep fails, for example "8-10, to failure". It works with any rep target: an exact number, a range, or an AMRAP. The training screen shows <em>Plan 8-10 to failure</em>.</p>
+  <p>To failure is not RIR 0. RIR 0 asks you to stop when one more rep would fail; To failure asks for the rep that fails.</p>
+  <p>The chip follows the numbers on either scale. Tap it to switch the set to failure, and the numbers grey out. Tap it again to clear the target.</p>
 
   <h3 id="left-right-plan">Left and right in a routine</h3>
   <p>On an exercise set to <strong>Optional</strong>, tap the <strong>Left and right</strong> chip on a planned set to plan it for each arm. On an <strong>Always</strong> exercise every planned set is already left and right. Set this on the exercise or its machine; see <a href="/help/logging/#left-right">Left and right sets</a>.</p>
@@ -117,8 +127,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Set rest time on the exercise itself (Exercise → settings), and it applies everywhere you train it. The routine's <strong>Rest (seconds)</strong> field is used only when the exercise has no rest of its own.</p>
 
   <h2>Organize days and routines</h2>
-  <h3>Schedule a day</h3>
+  <h3 id="schedule-a-day">Schedule a day</h3>
   <p>Open the day's <strong>Day options</strong> and set <strong>Scheduled days</strong> to pick weekdays. A <strong>calendar icon</strong> then appears on the day row - tap it to change them. The day shows as scheduled on the Today screen on those days, and as short labels (Mon, Wed, Fri) on the row. A warning appears if two days share a weekday.</p>
+  <p>Scheduled days count only on your <a href="#starting">active program</a>. Its days set your <a href="/help/settings/#workout-reminders">workout reminders</a> and put the faint dots on the History calendar. Another routine's scheduled days do neither until you make it active.</p>
 
   <h3>Day options</h3>
   <p>Open a day's <strong>Day options</strong>:</p>
@@ -163,9 +174,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>To swap during the workout, open the training screen's <strong>⋮ menu</strong> and tap <strong>Switch to alternative…</strong>. The original is listed too, labeled <strong>(original)</strong>, so you can switch back. You can also pick an alternative before you start, from the swap icon on the routine log preview.</p>
   <p>A swap lasts for that workout only. The new exercise comes in with its own recent weights, your routine stays the same, and your history records what you actually did.</p>
 
-  <h3 id="plan-b">Plan B: when there's no alternative set up</h3>
-  <p>Open the training screen's <strong>⋮ menu</strong> and tap <strong>Plan B - swap exercise…</strong> (it reads <strong>Switch to alternative…</strong> when alternatives exist, and opens the same sheet). This works in free workouts too.</p>
-  <p>The <strong>Plan B</strong> section lists up to eight substitutes:</p>
+  <h3 id="swap-exercise">Swap exercise: when there's no alternative set up</h3>
+  <p>Open the training screen's <strong>⋮ menu</strong> and tap <strong>Swap exercise</strong> (it reads <strong>Switch to alternative…</strong> when alternatives exist, and opens the same sheet). This works in free workouts too.</p>
+  <p>If you skip an exercise before logging a set on it, a card asks <strong>Equipment taken?</strong> and offers the same sheet with a <strong>Swap exercise</strong> button. A swap is for today only.</p>
+  <p>The <strong>Suggestions</strong> section lists up to eight substitutes:</p>
   <ul>
     <li>They share a <strong>primary muscle</strong> with the exercise you're replacing.</li>
     <li>They're <strong>available where you are</strong>. A machine exercise appears only when a machine linked to it is at your workout's gym. Barbell, dumbbell, cable, band, kettlebell and bodyweight exercises always appear, and so does every machine exercise when the workout has no gym.</li>
@@ -184,6 +196,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Duplicate a routine</h2>
   <p>In the routine list, tap the routine's <strong>⋮</strong>, tap <strong>Duplicate</strong> and name the copy. It includes all days, exercises, planned sets and groups.</p>
   <p>Long-pressing a routine opens the same actions as its <strong>⋮</strong>.</p>
+
+  <h2 id="duplicate-a-day">Duplicate a day</h2>
+  <p>When a new day repeats most of one you already have, such as a second upper-body day, copy it instead of entering it again. On the routine detail screen, tap the day's <strong>⋮</strong>, tap <strong>Duplicate day</strong> and name the copy. It appears right below the original, in the same routine.</p>
+  <p>The copy has the same exercises in the same order, the same supersets, and the same planned sets with their reps, weights and intensity targets. Progression rules come along too. Two things stay behind:</p>
+  <ul>
+    <li><strong>Scheduled weekdays.</strong> The copy starts unscheduled, so two days never land on the same weekday by accident. <a href="#schedule-a-day">Schedule it</a> yourself.</li>
+    <li><strong>Progress.</strong> A lift that already <a href="/help/progression/#progressing-together">progresses together</a> with other days keeps doing so on the copy. If only one of those days moves the weight, as in Madcow, the copy follows that day and doesn't move it. Any other lift with a rule starts its own progress on the copy.</li>
+  </ul>
 
   <h2 id="delete-a-routine">Delete a routine</h2>
   <p>In the routine list, tap the routine's <strong>⋮</strong>, tap <strong>Delete</strong> and confirm. The same option is in the <strong>⋮</strong> menu inside the routine.</p>
@@ -226,18 +246,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <hr />
 
   <h2 id="programs">Built-in programs</h2>
-  <p>Badger includes 10 programs in 3 folders, on a <strong>new install only</strong>. If you've used Badger a while, download the one you want from the <a href="/programs/">Programs</a> page, or add rules to a routine you already have with <a href="/help/progression/#set-up-progression">Set up progression</a>. Six of the programs come with <a href="/help/progression/#rules">progression rules</a> already written.</p>
+  <p>Badger includes 11 programs in 3 folders. A new install has all of them. If you've used Badger a while, <strong>Full Body Starter</strong> is added when you update; download any other from the <a href="/programs/">Programs</a> page, or add rules to a routine you already have with <a href="/help/progression/#set-up-progression">Set up progression</a>. Six of the programs come with <a href="/help/progression/#rules">progression rules</a> already written.</p>
+
+  <p>In <strong>You → Routines</strong>, each program shows a one-line description and tags for the equipment it needs: Barbell, Squat rack, Machines or Dumbbells.</p>
 
   <h3>Beginner</h3>
   <ul>
+    <li id="full-body-starter"><strong>Full Body Starter</strong> - Two full-body days, Day A and Day B, that you alternate three times a week, on machines and dumbbells. Most exercises are 3 sets of 10 to 12 reps. It has no training max and no progression rule: when a set feels easy at the top of its reps, add a little weight next time.</li>
     <li><strong>StrongLifts 5×5</strong> - Two alternating full-body days (A and B), 5 sets of 5 on the major compound lifts. Adds weight every session you complete, drops 10% after three misses in a row, and moves down a <a href="/help/progression/#stages">stage ladder</a> (5×5, 3×5, 1×5) as you stall.</li>
     <li><strong>Starting Strength</strong> - Similar to StrongLifts, with slightly different exercises and 3×5 progression. When you stall, its rule halves your increment instead of deloading you.</li>
   </ul>
 
   <h3>Intermediate</h3>
   <ul>
-    <li><strong>GZCLP</strong> - Three tiers: heavy compounds (T1), medium compounds (T2) and accessory work (T3). Each tier has its own rule; T1 and T2 also have their own <a href="/help/progression/#stages">stage ladder</a>, but T3's rule has none.</li>
-    <li><strong>5/3/1 BBB</strong> - Wendler's 5/3/1 main sets, then Boring But Big 5×10, both as percentages of one <a href="/help/progression/#training-max">training max</a> on a four-week <a href="/help/progression/#waves">wave</a>. Set the training max once per lift; the rule raises it at the end of each cycle unless the plus set came up short.</li>
+    <li><strong>GZCLP</strong> - Cody Lefever's three-tier program: heavy compounds (T1), medium compounds (T2) and accessory work (T3). T1 runs 5×3 (last set as many reps as you can), then 6×2, then 10×1. T2 runs 3×10, then 3×8, then 3×6. T3 is 3×15 with the last set as many reps as you can, and the weight goes up once that set reaches 25. T1 and T2 have their own <a href="/help/progression/#stages">stage ladder</a>; T3's rule has none.</li>
+    <li><strong>5/3/1 BBB</strong> - Wendler's 5/3/1 main sets, then Boring But Big 5×10 on the same lift (press on Press Day, deadlift on Deadlift Day, bench on Bench Day, squat on Squat Day), both as percentages of one <a href="/help/progression/#training-max">training max</a> on a four-week <a href="/help/progression/#waves">wave</a>. Week 4 (the deload) still includes the 5×10. Badger asks for each training max when you make the program active; the rule raises it at the end of each cycle unless the plus set came up short. If you added 5/3/1 BBB before 1.1.15, your copy keeps its original pairing (bench on Press Day, squat on Deadlift Day, press on Bench Day, deadlift on Squat Day).</li>
     <li><strong>nSuns 531LP</strong> - A long percentage ramp each session off a training max, with one <a href="/help/progression/#driver-set">driver set</a> whose reps decide the week's increment.</li>
     <li><strong>Madcow 5×5</strong> - Weekly progression. Every set is a percentage of the lift's top set, and all three days of a lift <a href="/help/progression/#progressing-together">share that number</a>. It deloads 10% after two missed weeks.</li>
   </ul>

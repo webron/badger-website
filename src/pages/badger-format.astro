@@ -662,6 +662,20 @@ const description =
           </td>
         </tr>
         <tr>
+          <td><code>target_failure</code></td>
+          <td>boolean</td>
+          <td>
+            <code>true</code> asks for the set to be taken until a rep fails. This is not
+            <code>target_rir: 0</code>, which means stop when one more rep would fail. Omitted when
+            not set. It is an intensity target, so it sits beside any rep target, including a range
+            or <code>is_amrap</code>. Mutually exclusive with <code>target_rpe</code> and
+            <code>target_rir</code>: if a set carries it beside either, import keeps
+            <code>target_failure</code> and drops the number. Any value other than
+            <code>true</code> reads as not set. Never valid on a warmup; import drops it there.
+            Needs Badger 1.1.15 or later.
+          </td>
+        </tr>
+        <tr>
           <td><code>is_unilateral</code></td>
           <td>boolean</td>
           <td>
@@ -1372,6 +1386,11 @@ const description =
       <strong>1.1.14 keys.</strong> A machine's <code>unilateral_mode</code> and a set's
       <code>is_unilateral</code> are omitted when not set. An older version ignores both and
       imports the routine or machine without them, so the sets read as ordinary both-arms sets.
+    </li>
+    <li>
+      <strong>1.1.15 keys.</strong> A set's <code>target_failure</code> is omitted unless it is
+      <code>true</code>. An older version ignores it and reads the set as one with no intensity
+      target.
     </li>
     <li>
       <strong>Older values still read.</strong> <code>machine_type: "plateLoaded"</code>; the
