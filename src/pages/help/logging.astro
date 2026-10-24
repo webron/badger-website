@@ -137,16 +137,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Records are kept separately per <a href="/help/gyms/#bar-prs">bar</a>. <a href="#left-right-counts">Left and right work</a> has its own records. While an <a href="/help/gyms/#accessories-and-records">accessory</a> is attached to an exercise, every set of it stays out of records; clear the accessories and those sets count again. An accessory never changes a weight, the plate math or the stepper. What counts as a best is explained under <a href="/help/progress/#prs">Personal records</a>.</p>
 
   <h2 id="set-details">Warmups, RPE and to failure</h2>
-  <p>The <strong>Set details</strong> section under the main fields holds the warmup toggle, the <a href="#left-right">Left and right</a> chip, the RIR and RPE numbers and the <strong>To failure</strong> chip. It starts closed. Tap its header to open or close it; it stays that way for every exercise until you change it. When it's closed, the header lists anything that's on, for example "Warm-up" or "RPE 8".</p>
+  <p>The <strong>Set details</strong> section under the main fields holds the warmup toggle, the <a href="#left-right">Left and right</a> chip, the RIR or RPE numbers and the <strong>To failure</strong> chip. It starts closed. Tap its header to open or close it; it stays that way for every exercise until you change it. When it's closed, the header lists anything that's on, for example "Warm-up" or "RPE 8".</p>
 
   <h3 id="set-types">Warmup sets</h3>
   <p>Turn on the <strong>warmup</strong> toggle before you log a set to mark it as a warmup. Warmups show a "W" badge in place of a set number, and are left out of volume, records and progress graphs.</p>
   <p>To have Badger build the warmups for you, tap the <strong>Warm-up calc</strong> chip beside the toggle; see <a href="/help/tools/#warmup-calc">Warm-up calculator</a>. Set your usual style and number of warmup sets in <strong>Settings → Logging</strong>, and change them for one exercise on its edit screen. If a routine already plans warmup sets, those are used as they are.</p>
 
   <h3 id="rpe-rir">RPE and RIR</h3>
-  <p>RPE and RIR record how hard a set felt. Both are optional: leave them blank and everything else works the same. Tap either label in the app for a short version of this section.</p>
-  <p>Each is one row of numbers in <strong>Set details</strong>: RIR <strong>0 1 2 3 4 5+</strong> and RPE <strong>6 7 8 9 10</strong>. Tap a number to pick it. Tap it again to clear it. <strong>5+</strong> means 5 or more reps left.</p>
-  <p>What you pick stays for the next set of the same exercise, so a session at RIR 2 is one tap, not one per set. Change it when a set feels different. If your routine plans an RPE or RIR for a set, that set starts at the plan's number instead.</p>
+  <p>RPE and RIR record how hard a set felt. They're optional: leave them blank and everything else works the same. Tap the <strong>(i)</strong> beside them in the app for a short version of this section.</p>
+  <p>You see one scale at a time. Tap <strong>RIR</strong> or <strong>RPE</strong> on the switch in <strong>Set details</strong>, then tap a number on the row under it: RIR <strong>0 1 2 3 4 5+</strong> or RPE <strong>6 7 8 9 10</strong>. Tap the number again to clear it. <strong>5+</strong> means 5 or more reps left.</p>
+  <p>Switching scales converts your number: RIR 2 becomes RPE 8. RIR 5+ has no match on the RPE row, so switching clears it.</p>
+  <p>What you pick stays for the next set of the same exercise, scale included, so a session at RIR 2 is one tap, not one per set. Change it when a set feels different.</p>
+  <p>A set your routine plans at an RPE or RIR starts at the plan's number, on the plan's scale. A new exercise opens on the scale you pick in <a href="/help/settings/#effort-scale">Settings → Logging → Effort scale</a>.</p>
+  <p>Sets you logged with both an RPE and an RIR before version 1.1.15 keep both. They open on your Effort scale setting, and the other number stays as it was.</p>
   <h4 id="rpe-rir-scales">Reading the numbers</h4>
   <p><strong>RPE</strong> rates the effort out of 10. The useful range is 6 to 10:</p>
   <ul>
@@ -163,17 +166,17 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>2</strong> - Two left. A common target for working sets.</li>
     <li><strong>3 to 5+</strong> - Comfortable, well short of failure.</li>
   </ul>
-  <p>The two describe the same thing from opposite ends: RPE 8 is RIR 2, RPE 9 is RIR 1, RPE 10 is RIR 0. Pick whichever is easier to answer and stick with it.</p>
-  <p>If you tried another rep and it failed, tap <a href="#to-failure">To failure</a> instead of setting RIR. That set had no reps left to count.</p>
+  <p>The two describe the same thing from opposite ends: RPE 10 is RIR 0, RPE 9 is RIR 1, RPE 8 is RIR 2, RPE 7 is RIR 3, RPE 6 is RIR 4. Pick whichever is easier to answer and stick with it.</p>
+  <p>If you tried another rep and it failed, tap <a href="#to-failure">To failure</a> instead of picking a number. That set had no reps left to count.</p>
   <h4>Which one to use</h4>
   <p>If you're newer to lifting, RIR is usually easier, since it's a question about reps you've just counted. RPE can tell a hard set from an all-out one, where RIR reads 0 for both. Go with your honest read; most people's scale settles after a month or two.</p>
   <p>The fields are hidden while the warmup toggle is on. Logged values show as small badges on each set row, and you can add or change them later by tapping a past set in your history. Logged RIR also feeds the RPE/RIR trigger of <a href="/help/tools/#deload">deload detection</a>, when that trigger is on.</p>
   <p>A set marked to failure counts as RIR 0 for deload detection.</p>
 
   <h3 id="to-failure">Mark a set to failure</h3>
-  <p>Tap the <strong>To failure</strong> chip under the RIR and RPE numbers when you tried a rep and it failed. Tap it again to clear it.</p>
+  <p>Tap the <strong>To failure</strong> chip after the RIR or RPE numbers when you tried a rep and it failed. Tap it again to clear it.</p>
   <p>To failure and RIR 0 are different answers. RIR 0 means you stopped with nothing left, and one more rep would have failed. To failure means a rep did fail. History shows them apart: the set's badge reads <strong>To failure</strong> or <strong>RIR 0</strong>.</p>
-  <p>While To failure is on, the RIR numbers are greyed out, because a failed set has no reps in reserve. Turning it on clears any RIR you set. RPE stays available, since RPE 10 and failure agree.</p>
+  <p>While To failure is on, the numbers are greyed out on both scales, and turning it on clears the number you picked. Turn it off and the numbers come back, empty. Your next set doesn't start at failure.</p>
   <p>A set to failure is about effort: if you were aiming for 8 and got 6, log the 6 (see <a href="#missed-vs-skipped">Skip a set, or log a short one</a>). To fix a past set, tap it in your history; the edit sheet has the same chip.</p>
   <p>Sets you marked with this chip before version 1.1.15 were saved as RIR 0, and they still read RIR 0.</p>
 
