@@ -246,16 +246,26 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>On iPhone, the spoken countdown keeps going through a locked screen. On Android, or on an iPhone where a call or another app took the audio, a <strong>Set complete</strong> notification arrives when the set ends instead.</p>
   <p>Voice <strong>Off</strong> doesn't stop that notification. To make it silent, turn off <strong>Settings → Set timer → Set timer sound</strong>; the rest timer has its own sound setting. That toggle only covers the notification - the spoken countdown keeps talking with it off.</p>
 
-  <h2 id="lock-screen">Timers on the lock screen</h2>
-  <h3>iPhone: Live Activities</h3>
-  <p>On iOS 16.2 and later, both timers appear as a Live Activity: a countdown card on the lock screen, and a compact countdown in the Dynamic Island on models that have one. Tap it to go back to your workout.</p>
-  <p>Both cards name the exercise. The rest card reads "Rest done" when it finishes; a timed set shows "SET" while it runs and "SET DONE" at the end.</p>
-  <p>The first time, iOS asks "Allow Live Activities from Badger?". Allow it to see the countdown outside the app; you can change it later in iOS Settings under Badger.</p>
+  <h2 id="lock-screen">Your workout on the lock screen</h2>
+  <h3 id="live-activity">iPhone: Live Activity</h3>
+  <p>On iOS 16.2 and later, your workout shows as a Live Activity on the lock screen, and in the Dynamic Island on models that have one. Tap it to go back to your workout.</p>
+  <p>Between sets it shows the exercise, the set you're on ("Set 3 of 4"), its target and how long you've been training. During rest it shows the countdown and the set that comes next, such as "Next: set 4, 80 kg &times; 8".</p>
+  <p>A timed set shows its countdown, or counts up for a stopwatch, and reads "SET DONE" at the end.</p>
+  <p>On iOS 17 and later the card has buttons:</p>
+  <ul>
+    <li><strong>Set done</strong> ticks the set that's waiting, the same as tapping its check mark: the rest timer starts and records are checked. It shows only when a set is waiting to be ticked, which means a workout from a routine or <a href={`#logging-mode`}>Plan, then tick</a>. With Log as you go there's no button.</li>
+    <li><strong>-15 s</strong> and <strong>+15 s</strong> shorten or lengthen the rest. <strong>Skip</strong> ends it.</li>
+  </ul>
+  <p>When the next set is on a different exercise, including the next one in a superset, open Badger once to move there. Set done comes back after that.</p>
+  <p>The first time, iOS asks "Allow Live Activities from Badger?". Allow it to see your workout outside the app; you can change it later in iOS Settings under Badger.</p>
+  <p>To turn it off, use <strong>Settings → App → Workout on the lock screen</strong>. The rest and set timers then show on their own card while they run, with no buttons.</p>
   <p>On iOS 26.6 and later, a rest timer that finishes while the phone is locked plays the Badger sound you picked. On earlier versions, iOS plays its standard sound instead.</p>
 
   <h3 id="workout-notification">Android: workout notification</h3>
-  <p>During a workout, a notification shows the exercise you're on and your next set's target, such as "85 kg &times; 8", so you can check it from the lock screen. It adds the elapsed time once the workout timer is running, and tapping it takes you back to that exercise.</p>
-  <p>It updates as you switch exercises, move through a superset and complete sets, and reads "No target set" when the exercise has no sets left. During rest it shows the countdown, then goes back to the target.</p>
+  <p>During a workout, a notification shows the exercise you're on and the set that's next, such as "Set 3 of 4 &middot; 85 kg &times; 8", so you can check it from the lock screen. It adds the elapsed time once the workout timer is running, and tapping it takes you back to that exercise.</p>
+  <p>It updates as you switch exercises, move through a superset and complete sets, and reads "No target set" when the exercise has no sets left. During rest it shows the countdown and the next set, then goes back to the set.</p>
+  <p>It has the same buttons as the iPhone card: <strong>-15 s</strong>, <strong>+15 s</strong> and <strong>Skip</strong> during rest, and <strong>Set done</strong> when a set is waiting to be ticked. They work without opening Badger.</p>
+  <p>The notification stays on your phone. Android doesn't send ongoing notifications to a watch, so it doesn't appear on a Wear OS watch. The alert when a rest ends does.</p>
   <p>Turn it off in <strong>Settings → App → Workout notification</strong>. Workouts logged for a past date don't get one.</p>
 
   <h2 id="supersets">Supersets</h2>
