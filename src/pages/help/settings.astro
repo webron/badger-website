@@ -74,6 +74,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Workout reminders</strong> - A notification on your training days. See <a href={`#workout-reminders`}>Workout reminders</a>.</li>
     <li><strong>End of workout summary</strong> - What the completion sheet shows when you finish a session.</li>
   </ul>
+  <p id="region">Dates and the clock follow your phone's region: day first and a 24-hour clock where your region uses them, and date pickers that start the week on Monday where that is local. Type 2,5 or 2.5 in any number field and it reads the same.</p>
 
   <h3 id="workout-reminders">Workout reminders</h3>
   <p>Turn on <strong>Workout reminders</strong> to get a notification on your training days. Badger asks for notification permission when you turn the switch on. If notifications are off for Badger, the row says so and shows <strong>Open settings</strong>.</p>
@@ -126,6 +127,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="importing">Importing workout history</h3>
   <p>The Your data section has an import option for each app Badger can read: <strong>Import from FitNotes</strong> (a <code>.fitnotes</code> backup), and <strong>Import from Strong</strong>, <strong>Import from Hevy</strong> and <strong>Import from Stronglifts</strong> (each a CSV export). For how to export from each app and what carries over, see <a href={`/help/getting-started/#importing`}>Import from another app</a>.</p>
+  <p>Strong, Stronglifts and Hevy files that write weights with a decimal comma import correctly.</p>
+  <p>The preview shows the date range of the file. Close name matches are listed apart from sure ones, and <strong>Keep my exercise names</strong> adds every name as its own exercise.</p>
   <p>If you see "file is too large" (the limit is 10&nbsp;MB), the file is probably damaged. Export it again from the other app.</p>
   <p><strong>Don't import the same file twice.</strong> A second import adds the sets again on the same days instead of replacing them. The preview warns you when some of the dates already have workouts.</p>
 
