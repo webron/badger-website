@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Privacy Policy" description="Badger privacy policy - what we store, what leaves your device, and your rights.">
   <h1>Privacy Policy</h1>
 
-  <p><strong>Last updated:</strong> 2026-10-22</p>
+  <p><strong>Last updated:</strong> 2026-10-28</p>
 
   <p>
     Badger is a local-first workout tracker. Your training data lives on your device
@@ -60,7 +60,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Data that can leave your device only when you initiate it</h2>
   <ul>
-    <li><strong>Manual backups</strong> - you tap <em>Manual backup</em> in Settings to open the system share sheet and save a <code>.workout_backup</code> file wherever you choose (local storage, your own Drive, email-to-self, etc.).</li>
+    <li><strong>Backup files</strong> - you tap <em>Save a backup file</em> in the Backup screen to open the system share sheet and save a <code>.workout_backup</code> file wherever you choose (local storage, your own Drive, email-to-self, etc.).</li>
     <li><strong>CSV exports</strong> - workout history CSV exports open the share sheet.</li>
     <li><strong>AI context copies</strong> - <em>Copy context for AI</em> assembles a plain-text summary of your training (your training notes, active program, recent sessions, records, gym equipment, and avoided exercises) on your device and shows it to you in full. Tapping Copy places it on your clipboard; tapping Share opens the system share sheet. Badger sends it nowhere - where it goes next is entirely your choice, and if you paste it into an AI service, that service's own privacy policy applies to it from that point. It excludes body measurements, any health data, and your workout, set, exercise and machine comments.</li>
     <li><strong>Debug log exports</strong> - the last ~500 lines of in-memory logs can be exported as a plain-text file via the share sheet.</li>
@@ -87,7 +87,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
       readings from your health store and saves them in your local body tracker as ordinary
       entries. Badger reads body weight only; no other health category is requested.
       Because these readings are saved locally like any other entry, they are included in
-      your backups - the manual backup file and, if you have enabled it, the cloud backup
+      your backups - the backup file you save and, if you have enabled it, the cloud backup
       to your own Google Drive.</li>
     <li><strong>Reading heart rate</strong> - when you turn this on, Badger reads heart-rate
       samples from your health store for the period a workout was running, and keeps
@@ -125,8 +125,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>
     No analytics SDKs, no advertising SDKs, no crash-reporting SDKs. Fonts are bundled inside
     the app rather than fetched from a font service, so displaying text makes no network
-    request. Firebase integration is scaffolded in the codebase for possible future features
-    but is not initialized or used in this version.
+    request. Badger contains no Firebase code.
   </p>
 
   <h2>What the app explicitly does not do</h2>
