@@ -27,8 +27,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="rest-timer">Rest timer</h2>
   <ul>
-    <li><strong>Default rest time</strong> - Rest after a working set when the exercise and the session don't set their own (30s-300s).</li>
-    <li><strong>Default warm-up rest</strong> - Rest after a warmup set (15s-120s).</li>
+    <li><strong>Default rest time</strong> - Rest after a working set when nothing nearer sets one: this workout, the set, the routine and the exercise all come first (30s-300s). See <a href={`/help/logging/#rest-ladder`}>How long the rest is</a>.</li>
+    <li><strong>Default warm-up rest</strong> - Rest after a warmup set when this workout, the set and the exercise's warm-up rest don't set one (15s-120s). Without it Badger uses 1:00.</li>
     <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set. Never after a cardio set.</li>
     <li><strong>Rest timer sound</strong> - Plays a sound when rest ends. Pick from several sounds, with a preview.</li>
     <li><strong>Rest timer vibration</strong> - Vibrates when rest ends.</li>

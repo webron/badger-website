@@ -120,7 +120,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>A routine's weight column shows the same label, naming the machine: <strong>WEIGHT (LBS / SIDE &middot; CYBEX LEG PRESS)</strong>.</p>
 
   <h3 id="context-chips">Machine, bar, grip and accessories</h3>
-  <p>A row of chips under the input fields shows the <strong>machine</strong>, its <strong>attachment</strong>, the <strong>grip</strong>, the <strong>bar</strong>, any <strong>accessories</strong>, and the <strong>rest</strong> that starts when you finish the set. Tap a chip to change it. Long-press the machine chip to open that machine's screen.</p>
+  <p>A row of chips under the input fields shows the <strong>machine</strong>, its <strong>attachment</strong>, the <strong>grip</strong>, the <strong>bar</strong>, any <strong>accessories</strong>, and the <strong>rest</strong> that starts when you finish the set (<a href="#rest-chip">where it came from</a>). Tap a chip to change it. Long-press the machine chip to open that machine's screen.</p>
   <p>Only the chips that apply to the exercise appear:</p>
   <ul>
     <li><strong>Grip</strong> appears when the machine has grip types (set them in <strong>You → Machines</strong>). Pick <strong>No grip</strong> to clear it.</li>
@@ -215,21 +215,53 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The first time a rest or set timer runs, Badger asks to send notifications. Tap <strong>Allow</strong> to get an alert when a timer ends with the phone locked, or <strong>Not now</strong> to skip it.</p>
   <p>Tap the chip to open the rest timer sheet:</p>
   <ul>
-    <li><strong>While a timer runs:</strong> <strong>Stop</strong>, <strong>+30s</strong>, or <strong>Restart</strong> from the full duration.</li>
+    <li><strong>While a timer runs:</strong> <strong>Stop</strong>, <strong>+30s</strong>, <strong>Restart</strong> from the full duration, or <a href="#rest-edit"><strong>Edit rest</strong></a>.</li>
     <li><strong>When none is running:</strong> pick a preset or type a number of seconds, then tap <strong>Start</strong> for a one-off timer.</li>
   </ul>
 
-  <h3>How long the rest is</h3>
-  <p>Badger uses the first of these that's set:</p>
+  <h3 id="rest-ladder">How long the rest is</h3>
+  <p>Badger uses the first of these that has a value. Set the lower ones once and the higher ones only for the exceptions.</p>
   <ol>
-    <li>A one-off duration you set in the rest timer sheet</li>
-    <li>The exercise's own rest (on the exercise notes screen)</li>
-    <li>The routine's rest for that exercise</li>
+    <li><strong>Just this workout</strong>: a rest you set for this exercise, kept until you finish the workout</li>
+    <li><strong>This set</strong>: a rest planned on the set in a routine (<a href="/help/routines/#rest-per-set">Rest per set</a>)</li>
+    <li><strong>The exercise in this routine</strong>: the routine's <strong>Rest between sets</strong></li>
+    <li><strong>The exercise default</strong>: the exercise's own rest, on its notes screen</li>
     <li>The default in <a href="/help/settings/#rest-timer">Settings → Rest timer</a></li>
-    <li>The last duration you used</li>
-    <li>90 seconds</li>
+    <li>The last duration you used, then 1:30</li>
   </ol>
-  <p>Warmup sets use a separate, shorter rest, set per exercise or in Settings.</p>
+  <p>A warm-up set follows a shorter list: just this workout, this set, the exercise's warm-up rest, the warm-up default in Settings, then 1:00. A rest you set for working sets never lands after a warm-up.</p>
+  <p>The routine's rest sits above the exercise's own default. The exercise default still applies in a free workout and in every routine that has no rest of its own for that exercise.</p>
+
+  <h3 id="rest-chip">Where the number came from</h3>
+  <p>The rest chip under the input fields shows the rest that starts when you save the set, and where it came from: <strong>Rest: 2:00 · routine</strong>. The running timer names the same source, such as <strong>After set 2 · Routine</strong>. Times read in minutes and seconds.</p>
+  <ul>
+    <li><strong>Rest: 3:00 · this workout</strong> - set for this exercise in this workout only.</li>
+    <li><strong>Rest: 5:00 · this set</strong> - planned on the set.</li>
+    <li><strong>Rest: 2:00 · routine</strong> - the exercise's rest in this routine.</li>
+    <li><strong>Rest: 1:30 · exercise</strong> - the exercise's default.</li>
+    <li><strong>Rest: 1:30 · Settings</strong> - the Settings default.</li>
+    <li><strong>Rest: 1:30 · last</strong> - the last duration you used.</li>
+    <li><strong>Rest: 1:00 · warm-up</strong> - after a warm-up set.</li>
+  </ul>
+
+  <h3 id="rest-edit">Change the rest mid-workout</h3>
+  <p>Tap the rest chip, or <strong>Edit rest</strong> on the running timer. Pick a time or type one (2, 0, 0 reads 2:00), choose where to <strong>Save to</strong> and tap <strong>Save</strong>. The sheet starts on the level that supplied the number, so you change what was in effect. Switch the choice first if you want something else.</p>
+  <table>
+    <thead>
+      <tr><th>When you edit</th><th>It saves to</th><th>Other choices</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Routine, the set has its own rest</td><td>That set</td><td>The exercise in this routine (clears this set's own rest), just this workout</td></tr>
+      <tr><td>Routine, the set has no rest of its own</td><td>The exercise in this routine</td><td>This set only, just this workout</td></tr>
+      <tr><td>Routine with no rest for the exercise, but the exercise has a default</td><td>The exercise in this routine (starts one)</td><td>This set only, just this workout</td></tr>
+      <tr><td>Free workout</td><td>The exercise default</td><td>Just this workout</td></tr>
+      <tr><td>Warm-up set in a routine</td><td>That set</td><td>Just this workout</td></tr>
+      <tr><td>Warm-up set in a free workout</td><td>The exercise's warm-up rest</td><td>Just this workout</td></tr>
+    </tbody>
+  </table>
+  <p>An edit made inside a routine stays in that routine: the exercise's own 1:30 stays for every other routine. A free workout has no routine, so the exercise default is the only level that lasts.</p>
+  <p>Saving to a set updates the next rest in this workout too. If you had set a rest for just this workout, saving to a lasting level replaces it, so the new number shows right away.</p>
+  <p><strong>+30s</strong> and <strong>Skip</strong> on the running timer, and the presets in the timer sheet, change only the rest that is running. They save nothing.</p>
 
   <h2 id="set-timer">Set timer (timed exercises)</h2>
   <p>A timed exercise (a plank, a carry) gets a timer for the set itself, started from the training screen. It keeps running when you lock the phone or switch apps.</p>
@@ -275,7 +307,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Turn it off in <strong>Settings → App → Workout notification</strong>. Workouts logged for a past date don't get one.</p>
 
   <h2 id="supersets">Supersets</h2>
-  <p>A superset is a group of exercises you alternate between. After you log a set of one, Badger switches to the next exercise in the group with no rest in between. After the last one in the round, the rest timer starts and you go back to the first exercise that still has sets left.</p>
+  <p>A superset is a group of exercises you alternate between. After you log a set of one, Badger switches to the next exercise in the group with no rest in between. After the last one in the round, the rest timer starts and you go back to the first exercise that still has sets left. The rest comes from the set that ends the round, using the usual order above.</p>
   <p>Grouped exercises show as a named, colored block in exercise lists, and the training screen shows the superset's name under the exercise name.</p>
 
   <h3>Create a superset</h3>
