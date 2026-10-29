@@ -25,7 +25,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p id="other-languages">You can also search for about a hundred of the most common lifts by their German, French or Spanish name. "Kreuzheben" finds Deadlift, "développé couché" finds Flat Barbell Bench Press, and "sentadilla" finds Barbell Back Squat. In the exercise pickers, the name you typed shows in lighter text under the English one. The rest of the app is in English.</p>
 
   <h3>Filter chips</h3>
-  <p>Under the search box are the chips <strong>All</strong>, <strong>Favorites</strong>, and one per category. Tap <strong>Favorites</strong> for only your starred exercises, or a category chip for only that category.</p>
+  <p>Under the search box are the chips <strong>All</strong>, <strong>Favorites</strong>, and one per category. Tap <strong>Favorites</strong> for only your starred exercises, or a category chip for only that category. Once you <a href="#hide">hide</a> an exercise, a <strong>Hidden</strong> chip appears after Favorites.</p>
 
   <h3>Muscle filter</h3>
   <p>Tap the <strong>muscle icon</strong> in the top bar. A body diagram sits above a scrollable list:</p>
@@ -51,9 +51,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="favorites">Favorites</h2>
   <p>Open the <strong>⋮</strong> menu on an exercise's row and tap <strong>Favorite</strong>. A star appears on the row, and the <strong>Favorites</strong> chip shows only your starred exercises. Tap <strong>Unfavorite</strong> in the same menu to remove it.</p>
 
-  <h2>Avoided exercises</h2>
+  <h2 id="avoided">Avoided exercises</h2>
   <p>Mark an exercise you want to stay away from (an injury, a preference, equipment you don't have): open the <strong>⋮</strong> menu on its row and tap <strong>Mark as avoided</strong>.</p>
   <p>In the library it gets an "Avoided" tag and a dimmed name, and you can still log it. It's left out of <a href="/help/routines/#swap-exercise">Swap exercise</a> suggestions, and <a href="/help/settings/#ai-context">Copy context for AI</a> lists it so an AI knows to leave it out. Tap <strong>Remove from avoided</strong> in the same menu to clear it.</p>
+  <p>To take an exercise out of the pickers altogether, <a href="#hide">hide it</a> instead.</p>
 
   <h2 id="detail">The exercise page</h2>
   <p>An exercise's page leads with your history for it: every session you've logged, newest first.</p>
@@ -174,6 +175,65 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>To unlink, tap the linked exercise's chip (it has an <strong>×</strong>) and confirm. The two stop sharing history, and both stay in the library.</p>
   <p id="merged-duplicates">Looking for <em>Lying Leg Curl</em> or <em>Good Morning (Legs)</em>? They're now <em>Leg Curl (Lying)</em> and <em>Good Morning</em>, and sets you logged under the old names are there, with your records and graphs.</p>
 
+  <h2 id="hide-merge">Hide and merge exercises</h2>
+  <p>Hide an exercise to keep it out of your pickers. Merge two exercises when they are the same lift.</p>
+
+  <h3 id="hide">Hide an exercise</h3>
+  <p>Open the <strong>⋮</strong> menu on an exercise's row in the library, or on its page, and tap <strong>Hide from pickers</strong>. It takes effect at once, with an Undo on the message that appears. Tap <strong>Show in pickers</strong> in the same menu to bring it back.</p>
+  <p>A hidden exercise leaves the add-exercise picker, the routine day picker, swap options, Plan B and every suggestion. Its history, records, Progress graphs, calendar and routines stay as they are, and a routine slot on it still runs.</p>
+  <p>Hidden exercises are under the <strong>Hidden</strong> chip in the library, after Favorites. The chip appears once you hide something. Library search finds them too.</p>
+  <p>When a picker search matches a hidden exercise, one line says so: "1 hidden exercise matches: Landmine Press". Tap <strong>Show</strong> to add it to the workout without unhiding it.</p>
+  <p>Hidden is not the same as <a href="#avoided">avoided</a>:</p>
+  <ul>
+    <li><strong>Avoided</strong> stays in the pickers, dimmed, and is never suggested.</li>
+    <li><strong>Hidden</strong> is out of the pickers and never suggested.</li>
+  </ul>
+
+  <h3 id="merge">Merge two exercises</h3>
+  <p>Use it when two exercises are the same lift, for example when an import or a rename left a duplicate. The sets from both end up on the one that stays, and no history is lost.</p>
+  <p>Start from any of these:</p>
+  <ul>
+    <li><strong>Merge into...</strong> in the <strong>⋮</strong> menu on an exercise's row or page.</li>
+    <li><strong>Merge into...</strong> in the "Can't delete" dialog.</li>
+    <li>The warning you get when you rename an exercise to a name you already have: tap <strong>Merge into it</strong> or <strong>Keep both</strong>.</li>
+  </ul>
+  <p>Creating a new exercise with a name you already have offers <strong>Use</strong> that exercise or <strong>Create anyway</strong> instead.</p>
+
+  <h4>Choose and preview</h4>
+  <p>Pick the other exercise. Likely matches are listed first, under "Looks like the same exercise".</p>
+  <p>Under <strong>Which one stays?</strong>, the exercise that stays keeps its name and settings, and its empty fields fill from the other. A built-in exercise stays by default, since it carries the how-to, picture and muscle map. Otherwise the one with more sets stays. You can rename it afterwards.</p>
+  <p>The preview lists what moves: sets, routine slots, goals, notes and links. It also lists what changes:</p>
+  <ul>
+    <li>Records are worked out again over both histories, so a record can stop being one when the other exercise's sets were better.</li>
+    <li>The merged name leaves your library and pickers.</li>
+    <li>Imports that use that name land on the one that stays.</li>
+  </ul>
+  <p>The button names the count, for example <strong>Merge 212 sets</strong>. Tap it and the merge runs, with no second confirmation. First, Badger saves a safety copy of your log, the same one <strong>Delete all history</strong> takes. If no copy can be saved, the merge does not start.</p>
+
+  <h4>What gets combined</h4>
+  <ul>
+    <li><strong>Exercise notes</strong> - yours first, then the other's under "From &lt;name&gt;:".</li>
+    <li><strong>Machine notes</strong> - on a machine both exercises used.</li>
+    <li><strong>Goals and links</strong> - all kept.</li>
+    <li><strong>Favorite or avoided</strong> - kept if either exercise had it. Hidden stays only if both were hidden.</li>
+    <li><strong>Routine slots</strong> - each keeps its own training max.</li>
+  </ul>
+  <p>A workout that had both exercises now lists the lift twice.</p>
+
+  <h4>What can't merge</h4>
+  <ul>
+    <li>Exercises of different types can merge, with the same warning the edit screen shows when you <a href="#change-type">change a type</a>.</li>
+    <li>An assisted exercise (lighter is better) can't merge with one where heavier is better.</li>
+    <li>While either exercise is in today's unfinished workout, Badger says "Finish today's workout first."</li>
+  </ul>
+
+  <h4 id="undo-merge">Undo a merge</h4>
+  <p>Right after the merge, tap <strong>Undo</strong> on the message. Later, the exercise's page shows "Merged with &lt;name&gt;, &lt;date&gt;." with <strong>Undo merge</strong>, which stays until you use it.</p>
+  <p>Undo puts everything back except changes you made since. Sets you logged afterwards stay on the exercise that stayed, and a note you edited keeps your edit.</p>
+
+  <h4>Importing again</h4>
+  <p>Import the same Strong, Hevy, FitNotes or StrongLifts file again, or an old .badger routine, and the merged name lands on the exercise that stayed. The duplicate does not come back.</p>
+
   <h2>Changing exercise settings mid-workout</h2>
   <p>On the training screen, tap the info icon in the top bar (or the pencil on the notes card, when it's showing) to open the exercise notes screen. Changes there apply to the exercise from now on, in every workout:</p>
   <ul>
@@ -187,7 +247,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Delete an exercise</h2>
   <p>In the exercise library, open the <strong>⋮</strong> menu on the exercise's row and tap <strong>Delete</strong>, then confirm.</p>
-  <p>An exercise that's logged in a workout or used in a routine can't be deleted yet. A note shows how many workouts and routines use it; remove it from those first.</p>
+  <p>An exercise that's logged in a workout or used in a routine can't be deleted. The dialog shows how many workouts and routines use it, and offers <strong>Hide</strong> to <a href="#hide">keep it out of the pickers</a> or <strong>Merge into...</strong> if it <a href="#merge">duplicates another exercise</a>.</p>
 </HelpLayout>
 
 <style>
