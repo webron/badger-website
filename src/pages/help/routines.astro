@@ -66,6 +66,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Open target (AMRAP)</strong> - No top end, so the target reads "8+". See <a href="#amrap-targets">Open-topped targets</a>.</li>
     <li><strong>Warmup flag</strong> - Marks the set as a warmup.</li>
     <li><strong>Left and right</strong> - Plans the set for each arm. See <a href="#left-right-plan">Left and right in a routine</a>.</li>
+    <li><strong>Rest time</strong> - How long to rest after this set. See <a href="#rest-per-set">Rest per set</a>.</li>
     <li><strong>RPE, RIR or To failure</strong> - How hard the set should feel. See <a href="#intensity-targets">Intensity targets</a>.</li>
     <li><strong>Percentage</strong>, <strong>driver</strong> and <strong>week</strong> - Progression controls, shown when the exercise has a rule or the day is waved. See <a href="/help/progression/">Progression</a>.</li>
   </ul>
@@ -109,6 +110,17 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>A left and right set meets the plan only when both arms do. <a href="/help/progression/">Progression rules</a> judge the weaker arm.</li>
   </ul>
 
+  <h3 id="rest-per-set">Rest per set</h3>
+  <p>Tap <strong>+ Rest time</strong> beside <strong>+ rep range</strong> and <strong>+ Effort target</strong> on a set to give it its own rest. The set then shows a <strong>Rest: 5:00</strong> chip. Type the time (5, 0, 0 reads 5:00) or pick a preset.</p>
+  <p>Mark only the sets that differ. Set <strong>Rest between sets</strong> once on the exercise (see <a href="#per-exercise-overrides">Per-exercise settings</a>) and every set without its own rest uses it. A 5/3/1 top set can rest 5:00 while the other sets rest 2:00.</p>
+  <ul>
+    <li><strong>Duplicate set</strong> copies the rest, and <strong>Add set</strong> starts from the last set of its kind, rest included.</li>
+    <li>When you mark a set as a warm-up, Badger offers once to use 1:00 after every warm-up. A warm-up with no rest of its own rests for the exercise's warm-up rest, then the warm-up default in Settings, then 1:00.</li>
+    <li>A set that belongs to one week of a program keeps its own rest. A set set to <strong>Every week</strong> has one rest for all weeks.</li>
+    <li>In a superset the rest runs when a round ends, so a member's rest counts only on the set that closes the round.</li>
+  </ul>
+  <p>While you train, the chip reads <strong>Rest: 5:00 · this set</strong>. Changing it mid-workout can save back to the set or to the exercise: see <a href="/help/logging/#rest-edit">Change the rest mid-workout</a>.</p>
+
   <h3>Quick edit</h3>
   <p><strong>Quick edit</strong>, next to <strong>Day options</strong> on each day card, puts every exercise on the day on one screen, with fields for its first working set: weight and reps, or whichever fields the exercise type uses. Change a value and submit to save. Tap an exercise name to open its full set editor.</p>
   <p>Quick edit shows a rep range read-only. Raise the reps past the top of the range and the range is dropped for an exact target.</p>
@@ -124,7 +136,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Default grip type (when the machine has grip types)</li>
     <li id="default-accessories">Default accessories - the band, chain or straps you always use on that exercise, attached for you each time you log the day. Sets with an accessory attached don't count toward <a href="/help/progress/#prs">personal records</a>.</li>
   </ul>
-  <p>Set rest time on the exercise itself (Exercise → settings), and it applies everywhere you train it. The routine's <strong>Rest (seconds)</strong> field is used only when the exercise has no rest of its own.</p>
+  <p><strong>Rest between sets</strong> on the exercise in a routine sets the rest for every set that has none of its own, in minutes and seconds. It beats the exercise's own default rest, which still applies in a free workout and in routines that leave this empty. See <a href="/help/logging/#rest-ladder">How long the rest is</a>.</p>
 
   <h2>Organize days and routines</h2>
   <h3 id="schedule-a-day">Schedule a day</h3>
@@ -162,7 +174,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2>Supersets in routines</h2>
-  <p>Open the <strong>⋮ menu</strong> on an exercise in the routine detail screen, choose <strong>Superset…</strong>, check the exercises to group and confirm. Tap the group's colored header to rename, recolor, reorder, add or remove exercises, or dissolve it. Workouts started from the routine keep the groups. See <a href="/help/logging/#supersets">Supersets</a>.</p>
+  <p>Open the <strong>⋮ menu</strong> on an exercise in the routine detail screen, choose <strong>Superset…</strong>, check the exercises to group and confirm. Tap the group's colored header to rename, recolor, reorder, add or remove exercises, or dissolve it. Workouts started from the routine keep the groups. In a superset, rest runs when a round ends. See <a href="/help/logging/#supersets">Supersets</a>.</p>
 
   <h2 id="alternatives">Alternative exercises</h2>
   <p>Give an exercise up to two alternatives so you can swap mid-workout when a machine is taken or something hurts.</p>
@@ -241,7 +253,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The image shows sets and reps without weights unless you turn on <strong>Include my weights</strong> on the share sheet. The switch starts off each time. Percentage sets always show their percentage (say 65% of your training max), with the switch on or off.</p>
 
   <h3 id="sharing-rules">What a routine file carries</h3>
-  <p>A <code>.badger</code> file carries the days, sets, rep targets, routine notes, progression rules, percentage sets, driver flags and waves. It doesn't carry your training max, photos or private setup notes, so whoever opens it sets their own training max. See <a href="/badger-format/#progression">the format reference</a>.</p>
+  <p>A <code>.badger</code> file carries the days, sets, rep targets, rest times, routine notes, progression rules, percentage sets, driver flags and waves. It doesn't carry your training max, photos or private setup notes, so whoever opens it sets their own training max. See <a href="/badger-format/#progression">the format reference</a>.</p>
 
   <hr />
 
@@ -253,13 +265,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Beginner</h3>
   <ul>
     <li id="full-body-starter"><strong>Full Body Starter</strong> - Two full-body days, Day A and Day B, that you alternate three times a week, on machines and dumbbells. Most exercises are 3 sets of 10 to 12 reps. It has no training max and no progression rule: when a set feels easy at the top of its reps, add a little weight next time.</li>
-    <li><strong>StrongLifts 5×5</strong> - Two alternating full-body days (A and B), 5 sets of 5 on the major compound lifts. Adds weight every session you complete, drops 10% after three misses in a row, and moves down a <a href="/help/progression/#stages">stage ladder</a> (5×5, 3×5, 1×5) as you stall.</li>
+    <li><strong>StrongLifts 5×5</strong> - Two alternating full-body days (A and B), 5 sets of 5 on the major compound lifts. Adds weight every session you complete, drops 10% after three misses in a row, and moves down a <a href="/help/progression/#stages">stage ladder</a> (5×5, 3×5, 1×5) as you stall. New copies rest 3:00 after work sets and 1:30 after warm-ups.</li>
     <li><strong>Starting Strength</strong> - Similar to StrongLifts, with slightly different exercises and 3×5 progression. When you stall, its rule halves your increment instead of deloading you.</li>
   </ul>
 
   <h3>Intermediate</h3>
   <ul>
-    <li><strong>GZCLP</strong> - Cody Lefever's three-tier program: heavy compounds (T1), medium compounds (T2) and accessory work (T3). T1 runs 5×3 (last set as many reps as you can), then 6×2, then 10×1. T2 runs 3×10, then 3×8, then 3×6. T3 is 3×15 with the last set as many reps as you can, and the weight goes up once that set reaches 25. T1 and T2 have their own <a href="/help/progression/#stages">stage ladder</a>; T3's rule has none.</li>
+    <li><strong>GZCLP</strong> - Cody Lefever's three-tier program: heavy compounds (T1), medium compounds (T2) and accessory work (T3). T1 runs 5×3 (last set as many reps as you can), then 6×2, then 10×1. T2 runs 3×10, then 3×8, then 3×6. T3 is 3×15 with the last set as many reps as you can, and the weight goes up once that set reaches 25. T1 and T2 have their own <a href="/help/progression/#stages">stage ladder</a>; T3's rule has none. New copies rest 3:00 after T1, 2:00 after T2 and 1:00 after T3.</li>
     <li><strong>5/3/1 BBB</strong> - Wendler's 5/3/1 main sets, then Boring But Big 5×10 on the same lift (press on Press Day, deadlift on Deadlift Day, bench on Bench Day, squat on Squat Day), both as percentages of one <a href="/help/progression/#training-max">training max</a> on a four-week <a href="/help/progression/#waves">wave</a>. Week 4 (the deload) still includes the 5×10. Badger asks for each training max when you make the program active; the rule raises it at the end of each cycle unless the plus set came up short. If you added 5/3/1 BBB before 1.1.15, your copy keeps its original pairing (bench on Press Day, squat on Deadlift Day, press on Bench Day, deadlift on Squat Day).</li>
     <li><strong>nSuns 531LP</strong> - A long percentage ramp each session off a training max, with one <a href="/help/progression/#driver-set">driver set</a> whose reps decide the week's increment.</li>
     <li><strong>Madcow 5×5</strong> - Weekly progression. Every set is a percentage of the lift's top set, and all three days of a lift <a href="/help/progression/#progressing-together">share that number</a>. It deloads 10% after two missed weeks.</li>
