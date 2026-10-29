@@ -101,6 +101,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>Pace appears once a session has at least four completed sets and a running clock. Backdated logs and some older sessions don't show it.</p>
 
+  <h3 id="session-effort">Session effort</h3>
+  <p><strong>Session effort</strong> is one number from 1 to 10 for how hard the whole workout felt. It's optional, and nothing else in Badger depends on it.</p>
+  <ul>
+    <li><strong>1 to 3</strong> is Easy, <strong>4 to 6</strong> Moderate, <strong>7 to 8</strong> Hard and <strong>9 to 10</strong> All out.</li>
+    <li>When you end a workout, the <strong>Workout complete</strong> sheet asks <em>How hard was that session?</em> Tap a number, or tap it again to clear it. It's saved with <strong>Done</strong>, along with your note. Skip it and the workout is saved without a rating.</li>
+    <li>On the workout summary, a <strong>Session effort</strong> section above Pace shows the rating, for example <strong>7 (Hard)</strong>. Tap it to change it, or tap <strong>Clear rating</strong>.</li>
+  </ul>
+  <p>A workout you ended from Today, or that Badger ended for you, never shows the completion sheet. Rate it from its summary: tap <strong>Add session effort</strong>.</p>
+  <p>The rating shows as <strong>effort 7</strong> on the History list and in the calendar's day summary. It's a separate thing from <a href="/help/logging/#rpe-rir">RPE and RIR</a>, which describe one set. It isn't sent to Apple Health or Health Connect, and <a href="/help/progression/">deload detection</a> doesn't read it. It's included in your <a href="/help/settings/#export">CSV export</a> and in backups.</p>
+
   <h3>Planned vs. actual (routine workouts)</h3>
   <p>When a workout came from a routine day, each working set can show two lines beneath it:</p>
   <ul>
