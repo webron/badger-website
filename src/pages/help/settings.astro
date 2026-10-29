@@ -102,10 +102,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Open it from <strong>You → Settings → Your data → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
   <ul>
     <li><strong>Automatic</strong> - the iCloud switch and its status on iPhone, or the count of on-phone copies on Android, plus a manual <strong>Back up now</strong> for iCloud.</li>
-    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Undo last restore</strong> appears when a pre-restore snapshot exists, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself.</li>
+    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Undo last restore</strong> appears when a pre-restore snapshot exists, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself. A file that isn't a Badger backup is refused with a message, and nothing changes.</li>
     <li><strong>Extra</strong> - the Google Drive switch, <strong>Back up equipment photos</strong> (off by default, iCloud and Drive only), a manual Drive backup, and <strong>Save a backup file</strong> for a one-off export you send yourself.</li>
   </ul>
   <p><strong>Restore from backup</strong> replaces your current database with the copy you picked. <strong>All current data will be overwritten</strong> - back up first if you need to keep it. Badger checks a copy is intact before replacing anything, so a corrupted or incomplete one is rejected and your current data is left untouched.</p>
+  <p><strong>Undo last restore</strong> (also <strong>Restore previous data</strong> under <strong>Your data</strong>) puts your log back as it was before the restore, and your settings with it: units, plate sets and the rest the restore replaced.</p>
 
   <h4 id="android-backup-setting">Android's automatic restore needs Android backup turned on</h4>
   <p>The on-phone copies only reach your Google account, and so only come back on a new or reinstalled phone, if your phone's own backup was on beforehand. Check it under your phone's <strong>Settings → System → Backup</strong> (the exact path varies by phone maker).</p>
@@ -128,6 +129,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="importing">Importing workout history</h3>
   <p>The Your data section has an import option for each app Badger can read: <strong>Import from FitNotes</strong> (a <code>.fitnotes</code> backup), and <strong>Import from Strong</strong>, <strong>Import from Hevy</strong> and <strong>Import from Stronglifts</strong> (each a CSV export). For how to export from each app and what carries over, see <a href={`/help/getting-started/#importing`}>Import from another app</a>.</p>
   <p>Strong, Stronglifts and Hevy files that write weights with a decimal comma import correctly.</p>
+  <p>Strong and FitNotes previews have a <strong>Weight unit in this file</strong> choice. Every import first saves a safety copy of your log, and asks before importing anyway if it can't.</p>
   <p>The preview shows the date range of the file. Close name matches are listed apart from sure ones, and <strong>Keep my exercise names</strong> adds every name as its own exercise.</p>
   <p>If you see "file is too large" (the limit is 10&nbsp;MB), the file is probably damaged. Export it again from the other app.</p>
   <p><strong>Don't import the same file twice.</strong> A second import adds the sets again on the same days instead of replacing them. The preview warns you when some of the dates already have workouts.</p>
