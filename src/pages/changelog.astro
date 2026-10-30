@@ -25,6 +25,71 @@ import Footer from '../components/Footer.astro';
 // card is an eight-line cut of it.
 const releases = [
   {
+    version: '1.1.16',
+    date: 'October 2026',
+    headline: 'Goals, records, and your year in review',
+    groups: [
+      {
+        title: 'Goals and records',
+        items: [
+          'Set a goal for a lift. Its chart draws the goal and a pace line, a workout flags the set that reaches it, and You, Goals lists them all. FitNotes goals come in with an import.',
+          'Your records, on Progress, Overview, lists the latest and the best for every lift, with a month filter and one row per machine or bar.',
+          'The monthly report shows the month\'s records and stays until you dismiss it.',
+          'Leave a workout out of records from its summary menu. Its sets still count toward volume and graphs.',
+        ],
+      },
+      {
+        title: 'Your year',
+        items: [
+          'Your year on Progress: your training in numbers, your records and programs, and how it compares with the year before. Share it as an image.',
+          'From December 1 to January 31, Today offers it as a card.',
+        ],
+      },
+      {
+        title: 'Logging',
+        items: [
+          'Log more than one workout on the same day. Today shows what you finished earlier, and offers to add to a workout you just ended.',
+          'History has Log another workout, and the calendar shows a count on days with more than one.',
+          'Give each set its own rest time. The rest chip shows where a rest came from, and Edit rest saves it to just this workout, the set, the routine or the exercise.',
+          'Rate how hard a session was, from 1 to 10, on the summary. History shows it, and the CSV export carries it.',
+          'Strong, Hevy and StrongLifts imports keep each session as its own workout.',
+        ],
+      },
+      {
+        title: 'Exercises',
+        items: [
+          'Hide an exercise from the pickers. Search still finds it, with a Show link.',
+          'Merge two exercises into one, with a preview and Undo. Badger saves a safety copy first.',
+          'Ten kettlebell lifts, including Goblet Squat, Turkish Get-Up and Farmer\'s Carry.',
+        ],
+      },
+      {
+        title: 'Programs',
+        items: [
+          'When a program cycle ends, a sheet shows how it went and lets you adjust training maxes.',
+          'A routine lists its past cycles, and Progress has Looking back.',
+          'The widget shows the program\'s week and cycle.',
+        ],
+      },
+      {
+        title: 'Settings and tools',
+        items: [
+          'Settings is a short index of eight pages. Default bar and Plates and racks are new pages.',
+          'Calculators on You: 1RM, plate calculator and percent of max, no workout needed.',
+          'Timer sound is one choice: Off, Chime, Bell or Beep. Export debug logs moved to Send feedback.',
+        ],
+      },
+      {
+        title: 'Also',
+        items: [
+          'Badger asks before a change deletes a progression rule or training max, takes a safety copy before every import, and asks kg or lbs for a Strong file.',
+          'A failed backup shows on Today and on the Backup page.',
+          'Fixes: History filters reach past the first 50 workouts; a typed set survives the app closing; tapping the rest alert opens the exercise; chart dates show the year; a backup from a newer version of Badger is refused.',
+        ],
+      },
+    ],
+  },
+  {
     version: '1.1.15',
     date: 'October 2026',
     headline: 'Easier to start, and easier to come back',
