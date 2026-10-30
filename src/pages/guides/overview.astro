@@ -14,7 +14,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/logging/#logging-mode">Log as you go, or plan then tick</a></strong> - one tap per set, or plan your sets and tick each one when it's done. Badger asks the first time.</li>
     <li><strong><a href="/help/logging/#duration-entry">Typing a duration</a></strong> - type 2, 0, 0, 0 and it reads 20:00, like a microwave.</li>
     <li><strong><a href="/help/logging/#set-types">Warm-up and working sets</a></strong> - mark any set as a warm-up so it stays out of your records.</li>
-    <li><strong><a href="/help/logging/#rest-timer">Rest timer</a></strong> - starts on its own after a set (not after cardio), with custom durations, sound, and vibration.</li>
+    <li><strong><a href="/help/logging/#rest-timer">Rest timer</a></strong> - starts on its own after a set (not after cardio), with custom durations, a choice of sound (Off, Chime, Bell or Beep), and vibration.</li>
     <li><strong><a href="/help/logging/#finishing">End a workout</a></strong> - End beside the timer, a check for sets you forgot to tick, and a forgotten workout closed at its last set.</li>
     <li><strong><a href="/help/logging/#set-timer">Set timer</a></strong> - a stopwatch or a countdown for planks, carries, and anything else measured in seconds (Stop fills in the time you held), spoken aloud in a male or female voice while it runs, including with an iPhone's screen locked. Rest starts on its own when it ends.</li>
     <li><strong><a href="/help/logging/#lock-screen">Workout on the lock screen</a></strong> - your current set, rest countdown and elapsed time on the lock screen: a Live Activity on iPhone, a notification on Android. Rest buttons, and Set done when a set is waiting to be ticked (iPhone needs iOS 17 or later for the buttons).</li>
@@ -132,6 +132,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/gyms/#machines">Weight config</a></strong> - logging unit and step size per machine, including non-uniform stacks.</li>
     <li><strong><a href="/help/logging/#per-side">Weight per side</a></strong> - record whether a number means one side or the total, and see it on every set you logged.</li>
     <li><strong><a href="/help/gyms/">Per-gym plate inventory</a></strong> - the plates a given gym actually has.</li>
+    <li><strong><a href="/help/settings/#plates-and-racks">Plates and racks</a></strong> - open your default gym's plates and racks from Settings or You → Equipment.</li>
+    <li><strong><a href="/help/settings/#default-bar">Default bar</a></strong> - the bar weight used when the exercise, machine and bar you picked set none.</li>
     <li><strong><a href="/help/gyms/#racks">Dumbbell and kettlebell racks</a></strong> - list what is on the rack and the +/− stepper walks it, gaps and all, instead of ticking a fixed increment.</li>
     <li><strong><a href="/help/gyms/#rack-colors">Kettlebell colors</a></strong> - the competition color code comes preset, so the weight you type is checked against the bell you picked up.</li>
     <li><strong><a href="/help/gyms/#bars">Named bars</a></strong> - the trap bar, the EZ curl, the worn 45. Each with its own weight, feeding your plate math and warm-ups.</li>
@@ -154,7 +156,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>History</h2>
   <ul>
-    <li><strong><a href="/help/history/#views">List and calendar views</a></strong> - browse past workouts either way.</li>
+    <li><strong><a href="/help/history/#views">List and calendar views</a></strong> - browse past workouts either way. History opens on the tab you used last.</li>
     <li><strong><a href="/help/history/#filtering">Filter by category</a></strong> - narrow history to one kind of training.</li>
     <li><strong><a href="/help/history/#search">Journal search</a></strong> - find any note you have written, across workouts, exercises, machines, and routines.</li>
     <li><strong><a href="/help/history/#pace">Session pace</a></strong> - how long each exercise took and how long you rested, worked out from your own log.</li>
@@ -169,8 +171,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Your data</h2>
   <ul>
-    <li><strong><a href="/help/settings/#importing">Import</a></strong> - bring history from FitNotes, Strong, Hevy, or StrongLifts. A FitNotes backup brings your routines too.</li>
+    <li><strong><a href="/help/settings/#importing">Import</a></strong> - bring history from FitNotes, Strong, Hevy, or StrongLifts, all from one Import from another app row. A FitNotes backup brings your routines too.</li>
     <li><strong><a href="/help/settings/#export">Export to CSV</a></strong> - your full per-set history as a spreadsheet.</li>
+    <li><strong><a href="/help/settings/#debug-logs">Debug logs</a></strong> - share a text file of recent app activity from You → Send feedback when you report a bug.</li>
     <li><strong><a href="/help/settings/#ai-context">Copy context for AI</a></strong> - your program, recent training, records, equipment and constraints as text to paste into any AI.</li>
     <li><strong><a href="/help/settings/#backup">Backup and restore</a></strong> - iCloud on iPhone, on-phone copies on Android, and an optional Google Drive extra.</li>
     <li><strong><a href="/help/settings/">Share setups</a></strong> - send routines, gyms, and machines to someone as a .badger file.</li>

@@ -73,7 +73,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Log as you go:</strong> Save set logs the set as done. It's ticked, your <a href="#rest-timer">rest timer</a> starts and Badger checks for a record. One tap per set.</li>
     <li><strong>Plan, then tick:</strong> Save set adds the set to your list, waiting. Tap the circle on its row when you've done it. That logs it, starts your rest timer and checks for a record.</li>
   </ul>
-  <p>Sets your routine planned, and sets copied from a past workout, are ticked the same way in both. If you came from FitNotes, Badger starts with the way you logged there. Change it any time in <a href="/help/settings/#save-set">Settings → Logging → Save set</a>.</p>
+  <p>Sets your routine planned, and sets copied from a past workout, are ticked the same way in both. If you came from FitNotes, Badger starts with the way you logged there. Change it any time in <a href="/help/settings/#save-set">Settings → Logging sets → Save set</a>.</p>
   <p>In Log as you go, Save set keeps you on the exercise, so you can do as many sets as you like and move on when you're ready. Ticking the last of the sets you planned still moves you to the next exercise.</p>
   <ul>
     <li><strong>Edit a set:</strong> tap its row to load it into the fields. The line <strong>Editing set 2</strong> shows which one. Change it and tap <strong>Update</strong>; the boxes clear and the next waiting set is selected, and <strong>Set 2 updated</strong> appears with <strong>Undo</strong>. To add a new set with those numbers instead, tap <strong>New set instead</strong>. Tap the row again to let go without saving.</li>
@@ -107,11 +107,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Tap a duration to select it, and the next digit starts a new time. Pasting a time such as <strong>15:00</strong> works too. The +/− buttons move 5 seconds up to 5:00, and 1 minute from 5:00 on.</p>
 
   <h3 id="distance-unit">Distance unit</h3>
-  <p>Distances show in kilometers or miles, whichever you pick under <strong>You → Settings → Logging → Distance unit</strong>. New installs pick it during setup, and it starts from your phone's region.</p>
+  <p>Distances show in kilometers or miles, whichever you pick under <strong>You → Settings → Units and equipment → Distance unit</strong>. New installs pick it during setup, and it starts from your phone's region.</p>
   <p>When you update with distances already logged, Badger asks <strong>Kilometers or miles?</strong> once.</p>
   <p>Tap <strong>Miles</strong> if you logged them in miles: your past distances keep their numbers, so a 3.1 stays 3.1 and now reads as 3.1 mi. Tap <strong>Kilometers</strong> and nothing changes.</p>
   <p>Close the question without answering and it comes back the next time you open the app. With no distances logged yet, Badger asks the first time a distance field appears on the training screen.</p>
-  <p>After that, changing the unit in Settings changes how every distance is shown: graphs, records, history, set rows and the plan line. A distance logged in the other unit is converted for display, and the number you typed is kept as typed.</p>
+  <p>After that, changing the unit in Settings → Units and equipment changes how every distance is shown: graphs, records, history, set rows and the plan line. A distance logged in the other unit is converted for display, and the number you typed is kept as typed.</p>
 
   <h3 id="per-side">Weight per side</h3>
   <p>When an exercise or its machine is set to per side, the weight label reads <strong>WEIGHT (LBS / SIDE)</strong>, and your sets read <strong>90 lbs &times; 8 /side</strong> in your history, on the workout summary and in the exercise's log.</p>
@@ -141,14 +141,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="set-types">Warmup sets</h3>
   <p>Turn on the <strong>warmup</strong> toggle before you log a set to mark it as a warmup. Warmups show a "W" badge in place of a set number, and are left out of volume, records and progress graphs.</p>
-  <p>To have Badger build the warmups for you, tap the <strong>Warm-up calc</strong> chip beside the toggle; see <a href="/help/tools/#warmup-calc">Warm-up calculator</a>. Set your usual style and number of warmup sets in <strong>Settings → Logging</strong>, and change them for one exercise on its edit screen. If a routine already plans warmup sets, those are used as they are.</p>
+  <p>To have Badger build the warmups for you, tap the <strong>Warm-up calc</strong> chip beside the toggle; see <a href="/help/tools/#warmup-calc">Warm-up calculator</a>. Set your usual style and number of warmup sets in <strong>Settings → Logging sets</strong>, and change them for one exercise on its edit screen. If a routine already plans warmup sets, those are used as they are.</p>
 
   <h3 id="rpe-rir">RPE and RIR</h3>
   <p>RPE and RIR record how hard a set felt. They're optional: leave them blank and everything else works the same. Tap the <strong>(i)</strong> beside them in the app for a short version of this section.</p>
   <p>You see one scale at a time. Tap <strong>RIR</strong> or <strong>RPE</strong> on the switch in <strong>Set details</strong>, then tap a number on the row under it: RIR <strong>0 1 2 3 4 5+</strong> or RPE <strong>6 7 8 9 10</strong>. Tap the number again to clear it. <strong>5+</strong> means 5 or more reps left.</p>
   <p>Switching scales converts your number: RIR 2 becomes RPE 8. RIR 5+ has no match on the RPE row, so switching clears it.</p>
   <p>What you pick stays for the next set of the same exercise, scale included, so a session at RIR 2 is one tap, not one per set. Change it when a set feels different.</p>
-  <p>A set your routine plans at an RPE or RIR starts at the plan's number, on the plan's scale. A new exercise opens on the scale you pick in <a href="/help/settings/#effort-scale">Settings → Logging → Effort scale</a>.</p>
+  <p>A set your routine plans at an RPE or RIR starts at the plan's number, on the plan's scale. A new exercise opens on the scale you pick in <a href="/help/settings/#effort-scale">Settings → Logging sets → Effort scale</a>.</p>
   <p>Sets you logged with both an RPE and an RIR before version 1.1.15 keep both. They open on your Effort scale setting, and the other number stays as it was.</p>
   <h4 id="rpe-rir-scales">Reading the numbers</h4>
   <p><strong>RPE</strong> rates the effort out of 10. The useful range is 6 to 10:</p>
@@ -211,7 +211,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>To plan these sets ahead, see <a href="/help/routines/#left-right-plan">Left and right in a routine</a>.</p>
 
   <h2 id="rest-timer">Rest timer</h2>
-  <p>The rest timer shows as a chip near the top of the training screen. It counts down after you save a set, then plays a sound, vibrates, or both (set this in Settings). It doesn't start after the last working set of your last exercise, or on its own after a cardio exercise (one in the Cardio category, or one logged as Distance + Time or Distance only). Tap the chip to start one by hand.</p>
+  <p>The rest timer shows as a chip near the top of the training screen. It counts down after you save a set, then plays a sound, vibrates, or both (set this in Settings → Timers and sounds). It doesn't start after the last working set of your last exercise, or on its own after a cardio exercise (one in the Cardio category, or one logged as Distance + Time or Distance only). Tap the chip to start one by hand.</p>
   <p>The first time a rest or set timer runs, Badger asks to send notifications. Tap <strong>Allow</strong> to get an alert when a timer ends with the phone locked, or <strong>Not now</strong> to skip it.</p>
   <p>Tap the chip to open the rest timer sheet:</p>
   <ul>
@@ -225,11 +225,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>A one-off duration you set in the rest timer sheet</li>
     <li>The exercise's own rest (on the exercise notes screen)</li>
     <li>The routine's rest for that exercise</li>
-    <li>The default in <a href="/help/settings/#rest-timer">Settings → Rest timer</a></li>
+    <li>The default in <a href="/help/settings/#rest-timer">Settings → Timers and sounds → Default rest time</a></li>
     <li>The last duration you used</li>
     <li>90 seconds</li>
   </ol>
-  <p>Warmup sets use a separate, shorter rest, set per exercise or in Settings.</p>
+  <p>Warmup sets use a separate, shorter rest, set per exercise or in Settings → Timers and sounds.</p>
 
   <h2 id="set-timer">Set timer (timed exercises)</h2>
   <p>A timed exercise (a plank, a carry) gets a timer for the set itself, started from the training screen. It keeps running when you lock the phone or switch apps.</p>
@@ -241,16 +241,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="timer-end">When the countdown ends</h3>
   <p>When the countdown reaches zero, Badger fills in the set's duration and starts your rest timer. The set stays open until you tap its check, and that tap doesn't restart the rest.</p>
-  <p>To have Badger log the set for you as well, turn on <strong>Settings → Set timer → Log the set when the timer ends</strong>. To start rest yourself, turn off <strong>Start rest when the timer ends</strong>. In a superset, rest follows the superset's own rule. If you stop the timer early, neither happens. A stopwatch has no end, so neither applies to it.</p>
+  <p>To have Badger log the set for you as well, turn on <strong>Settings → Timers and sounds → Log the set when the timer ends</strong>. To start rest yourself, turn off <strong>Start rest when the timer ends</strong>. In a superset, rest follows the superset's own rule. If you stop the timer early, neither happens. A stopwatch has no end, so neither applies to it.</p>
 
   <h3>What Badger says while the set runs</h3>
   <p>With a stopwatch running, Badger counts you in with "3, 2, 1, Go", then says the time you have held at each whole minute: "1 minute", "2 minutes". It never says "Time" or counts down, because there is nothing to count down to. On the lock screen the stopwatch counts up.</p>
   <p>With a countdown and the app open, Badger counts you in with "3, 2, 1, Go", warns you at 30 and 10 seconds left, and says "Time" at the end. On a long set it also calls out the minutes left: every minute under ten, every five minutes up to thirty, every ten above that.</p>
-  <p>Pick the voice in <strong>Settings → Set timer → Set timer voice</strong>: <strong>Female</strong>, <strong>Male</strong> or <strong>Off</strong>. Tap a choice to hear it. The voices are built into the app, so they work offline. If music is playing, it gets quieter while Badger speaks.</p>
+  <p>Pick the voice in <strong>Settings → Timers and sounds → Set timer voice</strong>: <strong>Female</strong>, <strong>Male</strong> or <strong>Off</strong>. Tap a choice to hear it. The voices are built into the app, so they work offline. If music is playing, it gets quieter while Badger speaks.</p>
 
   <h3>When the phone is locked</h3>
   <p>On iPhone, the spoken countdown keeps going through a locked screen. On Android, or on an iPhone where a call or another app took the audio, a <strong>Set complete</strong> notification arrives when the set ends instead.</p>
-  <p>Voice <strong>Off</strong> doesn't stop that notification. To make it silent, turn off <strong>Settings → Set timer → Set timer sound</strong>; the rest timer has its own sound setting. That toggle only covers the notification - the spoken countdown keeps talking with it off.</p>
+  <p>Voice <strong>Off</strong> doesn't stop that notification. To make it silent, turn off <strong>Settings → Timers and sounds → Set timer sound</strong>; the rest timer has its own sound setting. That toggle only covers the notification - the spoken countdown keeps talking with it off.</p>
 
   <h2 id="lock-screen">Your workout on the lock screen</h2>
   <h3 id="live-activity">iPhone: Live Activity</h3>
@@ -264,7 +264,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>When the next set is on a different exercise, including the next one in a superset, open Badger once to move there. Set done comes back after that.</p>
   <p>The first time, iOS asks "Allow Live Activities from Badger?". Allow it to see your workout outside the app; you can change it later in iOS Settings under Badger.</p>
-  <p>To turn it off, use <strong>Settings → App → Workout on the lock screen</strong>. The rest and set timers then show on their own card while they run, with no buttons.</p>
+  <p>To turn it off, use <strong>Settings → Notifications → Workout on the lock screen</strong>. The rest and set timers then show on their own card while they run, with no buttons.</p>
   <p>On iOS 26.6 and later, a rest timer that finishes while the phone is locked plays the Badger sound you picked. On earlier versions, iOS plays its standard sound instead.</p>
 
   <h3 id="workout-notification">Android: workout notification</h3>
@@ -272,7 +272,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>It updates as you switch exercises, move through a superset and complete sets, and reads "No target set" when the exercise has no sets left. During rest it shows the countdown and the next set, then goes back to the set.</p>
   <p>It has the same buttons as the iPhone card: <strong>-15 s</strong>, <strong>+15 s</strong> and <strong>Skip</strong> during rest, and <strong>Set done</strong> when a set is waiting to be ticked. They work without opening Badger.</p>
   <p>The notification stays on your phone. Android doesn't send ongoing notifications to a watch, so it doesn't appear on a Wear OS watch. The alert when a rest ends does.</p>
-  <p>Turn it off in <strong>Settings → App → Workout notification</strong>. Workouts logged for a past date don't get one.</p>
+  <p>Turn it off in <strong>Settings → Notifications → Workout notification</strong>. Workouts logged for a past date don't get one.</p>
 
   <h2 id="supersets">Supersets</h2>
   <p>A superset is a group of exercises you alternate between. After you log a set of one, Badger switches to the next exercise in the group with no rest in between. After the last one in the round, the rest timer starts and you go back to the first exercise that still has sets left.</p>
@@ -304,7 +304,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>A skipped set stays on the training screen, struck through, and is left out of your history, all calculations, and plateau and deload detection.</p>
   <p>A short set is a real set. Aiming for 8 and getting 6? Log the 6. It counts toward volume, shows in your history and feeds plateau and deload detection. On a routine workout, the summary marks it as under plan.</p>
-  <p>Skipping the last set left on an exercise moves you to the next exercise that still has work, the same as completing it. Turn off <strong>Auto-advance to next exercise</strong> in <strong>Settings → Logging</strong> to stay put.</p>
+  <p>Skipping the last set left on an exercise moves you to the next exercise that still has work, the same as completing it. Turn off <strong>Auto-advance to next exercise</strong> in <strong>Settings → Logging sets</strong> to stay put.</p>
 
   <h2 id="finishing">Finish a workout</h2>
   <p>Tap <strong>End</strong> next to the timer at the top of Today and the workout summary opens. You can also tap <strong>End workout</strong> at the bottom of Today, or open the exercise list on the training screen and tap <strong>End workout</strong> in its last row. Once a workout has ended, those buttons read <strong>Summary</strong>.</p>
