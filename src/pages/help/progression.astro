@@ -151,6 +151,35 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>The section only appears when the routine has a waved day.</li>
   </ul>
 
+  <h3 id="cycle-done">When a cycle ends</h3>
+  <p>Log the last day of a cycle and a <strong>Cycle 3 done</strong> sheet opens once, after you tap <strong>Done</strong> on the workout's completion sheet. It appears for programs that run a cycle of weeks off a training max, such as 5/3/1 and nSuns. StrongLifts and GZCLP move through stages instead, so they have no cycle to close.</p>
+  <p>The sheet shows, from top to bottom:</p>
+  <ul>
+    <li>The days you trained, the weeks it ran and the personal records you set.</li>
+    <li><strong>Training max</strong> - each lift's number for the next cycle, such as <strong>Squat 140 → 145 kg</strong>. A lift that stays put shows why, for example <em>Holding: the plan's minimum was missed this cycle</em>. These training maxes apply when you start the next cycle.</li>
+    <li><strong>Top sets</strong> - each lift's best set, with ▲ when it beat the last cycle's, <strong>Same</strong>, or ▼ when it was lighter.</li>
+    <li><strong>Records in this cycle</strong> - the personal records you set, one per exercise.</li>
+  </ul>
+  <p>Three buttons close it. <strong>Keep going</strong> closes the sheet; the next cycle is already set up. <strong>Adjust training maxes</strong> changes the numbers (below). <strong>Change program</strong> opens your routine list. A workout you finish with <strong>End workout</strong> on Today has no completion sheet, so no Cycle done sheet opens for it, but the cycle is still saved under <a href="#past-cycles">Past cycles</a>.</p>
+
+  <h3 id="adjust-training-maxes">Adjust the next cycle's training maxes</h3>
+  <ol>
+    <li>On the Cycle done sheet, tap <strong>Adjust training maxes</strong>.</li>
+    <li>Each lift shows the number the next cycle would use. Change the lifts you want to change.</li>
+    <li>Tap <strong>Save</strong>. <strong>Cancel</strong> leaves everything as it was.</li>
+  </ol>
+  <p>A lift you change uses your number for the whole next cycle, with no increase added on top. It shows in the lift's <a href="#training-max">training max history</a> as your own edit. Lifts you leave alone keep the number the sheet showed.</p>
+  <p>The latest cycle's page under <a href="#past-cycles">Past cycles</a> opens the same sheet until the next cycle ends.</p>
+
+  <h3 id="past-cycles">Past cycles</h3>
+  <p>Every finished cycle is saved. You find the list in two places:</p>
+  <ul>
+    <li><strong>Cycles</strong>, under the wave on the routine's detail screen, lists that routine's cycles, newest first.</li>
+    <li><strong>Looking back</strong>, on <a href="/help/progress/#looking-back">Progress → Overview</a>, lists the cycles of all your programs, and your past years.</li>
+  </ul>
+  <p>Tap a row to open that cycle's page: the Cycle done sheet as it looked when the cycle ended, without the Next paragraph. Each row keeps the program name it had then, so renaming or deleting a routine leaves its cycles in place.</p>
+  <p>Neither list appears until your first cycle finishes. Cycles you finished before this update are not listed, so a program already running counts from cycle 1.</p>
+
   <h3 id="rotating-exercises">Rotate exercises by week</h3>
   <p>To change which lift you do each week (a board press one week, a good morning the next), add each variation as its own exercise in the day and put all its sets in its week.</p>
   <p>An exercise whose sets all belong to other weeks is left out of that week's preview and workout. An exercise with no planned sets shows up every week.</p>
