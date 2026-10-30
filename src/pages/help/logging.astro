@@ -351,11 +351,34 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>If a workout has no new completed set for 3 hours, or is still open the next day, Badger ends it at the time of your last completed set the next time you open the app. For a workout from today or yesterday, the duration, the Apple Health or Health Connect entry and your backup use that time. An older workout gets the same end time, but nothing is sent to Apple Health or Health Connect.</p>
 
   <h3 id="resuming">Resume a finished workout</h3>
-  <p>Forgot an exercise? Open <strong>today's</strong> workout summary and tap <strong>Resume workout</strong>. It's offered for today's workout only.</p>
+  <p>Forgot an exercise? Tap <strong>Resume</strong> on the <strong>Done today</strong> card on Today, or open <strong>today's</strong> workout summary and tap <strong>Resume workout</strong>. It's offered for today's workouts only. An ended workout has no <strong>+ Add exercise</strong>, so resume it first.</p>
   <p>The workout timer picks up where it stopped when you log the first new set, so the time between finishing and resuming isn't counted. Editing or re-marking sets on a finished workout doesn't change its duration.</p>
 
   <h3 id="exercise-order">Exercises done out of order</h3>
   <p>Badger records the order you actually did your exercises. When you complete the first set of an exercise, it moves into place after the ones you've already done, and exercises you haven't started stay queued after it. Your routine's planned order stays the same. You can still drag to reorder, and a drag sticks.</p>
+
+  <h2 id="more-than-one-workout">More than one workout a day</h2>
+  <p>A day can hold more than one workout, and each one is its own journal entry with its own entry number.</p>
+
+  <h3 id="done-today">After a workout ends</h3>
+  <p>Today folds an ended workout into a <strong>Done today</strong> card with two buttons: <strong>Resume</strong> to keep going and <strong>Summary</strong> to open it. The start options come back below the card.</p>
+  <p>The routine day you just finished moves to the bottom of the list, marked "Done 7:02 AM" with an <strong>Again</strong> button, and the next day in your routine is marked <strong>Up next</strong>.</p>
+
+  <h3 id="start-another">Start another workout</h3>
+  <ul>
+    <li><strong>New workout</strong> - Within an hour of ending a workout, it asks once: "Add to the workout you just ended?" Tap <strong>Add to &#8470; 121</strong> to reopen that workout, or <strong>Start a new workout</strong>.</li>
+    <li><strong>A routine day</strong> - Tap it as usual. Starting a routine day never asks.</li>
+    <li><strong>One open at a time</strong> - Starting a workout while another is open asks you to end the open one first.</li>
+  </ul>
+  <p>While the second workout is open, the header on Today shows its entry number and start time, for example "&#8470; 122 &middot; started 6:15 PM". A line under it links to the first one: "Earlier today: &#8470; 121 &middot; Upper A".</p>
+
+  <h3 id="repeat-a-day">Do a routine day twice</h3>
+  <p>A second session can be any routine day, including one you already did today. Its preview says "You did this day at 7:02 AM. It counts as a new session: progression rules run again, and Lower A stays up next."</p>
+  <p>The routine moves on once for each routine-day session, in the order you started them. A free workout never moves it.</p>
+
+  <h3 id="last-time-same-day">Last time and records</h3>
+  <p>For a second workout, "last time" is the earlier workout that day ("this morning"). If you reopen the earlier workout, it compares with the session before it, never with the later one.</p>
+  <p>Start times show beside entry numbers only on days with two or more workouts, for example "&#8470; 122 &middot; 6:15 PM &middot; Upper A". <a href="/help/history/#same-day">History</a> lists every workout of the day. Progress charts still plot one point per day: the best set, and the volume summed across that day's workouts.</p>
 
   <h2 id="progression">Progression rules and suggestions</h2>
   <p>How a routine's rules, training maxes and percentage sets set your weights, and how the progressive overload suggestion and auto-progress work, is on the <a href="/help/progression/">Progression</a> page.</p>
