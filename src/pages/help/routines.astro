@@ -33,6 +33,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Which day comes next</h3>
   <p>Only one routine is active at a time, and it sits at the top of the routine list with an accent border. On an alternating program (A/B days not tied to weekdays), the Today screen highlights the next day in the sequence and moves it to the top once you finish the one before.</p>
   <p>You can still start any day. If the days are assigned to weekdays, the Today screen highlights today's.</p>
+  <p>You can also start a day you already did today. The preview says it counts as a new session, and progression rules run again. The routine moves on once for each routine-day session, in the order you started them, and a free workout never moves it. See <a href="/help/logging/#repeat-a-day">Do a routine day twice</a>.</p>
 
   <h3 id="weight-source">Where starting weights come from (weight source)</h3>
   <p>Open the <strong>Weights and reps</strong> section below the days on the routine screen (it's collapsed until you tap it). <strong>Pre-fill weights from</strong> sets this:</p>
@@ -140,7 +141,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Organize days and routines</h2>
   <h3 id="schedule-a-day">Schedule a day</h3>
-  <p>Open the day's <strong>Day options</strong> and set <strong>Scheduled days</strong> to pick weekdays. A <strong>calendar icon</strong> then appears on the day row - tap it to change them. The day shows as scheduled on the Today screen on those days, and as short labels (Mon, Wed, Fri) on the row. A warning appears if two days share a weekday.</p>
+  <p>Open the day's <strong>Day options</strong> and set <strong>Scheduled days</strong> to pick weekdays. A <strong>calendar icon</strong> then appears on the day row - tap it to change them. The day shows as scheduled on the Today screen on those days, and as short labels (Mon, Wed, Fri) on the row.</p>
+  <p>Two days of one routine can share a weekday, for a planned double such as a morning run and an evening lift. The day editor then shows a plan line, for example "Mon and Fri: two sessions. Easy run first, then Upper A", with no conflict warning.</p>
+  <p>The routine's day order decides which comes first, so reorder the days to swap them. On that weekday, Today marks the session still to do as <strong>Up next</strong>. See <a href="/help/logging/#more-than-one-workout">More than one workout a day</a>.</p>
   <p>Scheduled days count only on your <a href="#starting">active program</a>. Its days set your <a href="/help/settings/#workout-reminders">workout reminders</a> and put the faint dots on the History calendar. Another routine's scheduled days do neither until you make it active.</p>
 
   <h3>Day options</h3>

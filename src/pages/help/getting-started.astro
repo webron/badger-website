@@ -82,7 +82,8 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   </ol>
   <p>A close match is skipped when the library exercise has no field for something your file logged. A Farmer Walk with a distance would lose it on a weight and reps exercise, for example. It's added as a new exercise instead, and the review sheet says why.</p>
   <p>New exercises go into an "Imported" category (a FitNotes backup keeps your own categories instead). Where a name states its equipment, Badger fills in the equipment type: "Cable Fly" arrives as cable, "Smith Machine Squat" as machine. You can edit exercises and move them between categories in the exercise library afterwards.</p>
-  <p><strong>Import each file once.</strong> Sets on a date that already has a workout are added to that workout, and nothing is overwritten, so importing the same file again adds those sets a second time. The preview warns you when a file overlaps days you've already logged.</p>
+  <p>Strong, Hevy and StrongLifts imports create one workout for each session in the file, so two sessions on the same day arrive as two workouts. A FitNotes backup arrives as one workout per day, since its file has no sessions. Imports you made earlier are not changed.</p>
+  <p><strong>Import each file once.</strong> Nothing is overwritten, so importing the same file again adds everything a second time. The preview warns you when a file overlaps days you've already logged.</p>
 
   <h2 id="coming-back">Coming back after a break</h2>
   <p>After six weeks or more without a workout, Today opens with a card: "Welcome back. It's been 9 weeks. Want to start lighter this week?"</p>
