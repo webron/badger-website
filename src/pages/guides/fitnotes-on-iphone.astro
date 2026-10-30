@@ -39,8 +39,8 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  *     (fitnotes_parser.dart, fitnotes_importer.dart)
  *   - the picker is FileType.any, which on iOS is the system Files picker, so
  *     any location Files can see works (fitnotes_import_screen.dart:75)
- *   - in-app path: Settings, Your data, Import from FitNotes
- *     (settings_screen.dart:1084, under the "Your data" section header), and
+ *   - in-app path: Settings, Backup, import and export, Import from another
+ *     app, FitNotes (the import sheet; changed in the 2026-10 Settings regroup), and
  *     the same import is offered in first-launch onboarding
  *     (onboarding_screen.dart:339)
  *   - re-importing ADDS overlapping sets again (duplicates) and the preview
@@ -107,8 +107,8 @@ const modified = '2026-09-24';
     </li>
     <li><strong>Install Badger</strong> from the App Store.</li>
     <li>
-      <strong>Import.</strong> Go to <strong>Settings &rarr; Your data &rarr; Import from
-      FitNotes</strong>, or pick FitNotes during first-launch onboarding and tap <strong>Import from FitNotes</strong>. Then tap <strong>Choose file</strong> to browse to the file in the
+      <strong>Import.</strong> Go to <strong>Settings &rarr; Backup, import and export &rarr;
+      Import from another app &rarr; FitNotes</strong>, or pick FitNotes during first-launch onboarding and tap <strong>Import from FitNotes</strong>. Then tap <strong>Choose file</strong> to browse to the file in the
       Files picker.
     </li>
     <li>
