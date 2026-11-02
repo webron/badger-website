@@ -43,6 +43,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Replace exercise</strong> - Swap in a different exercise. Sets already logged stay attached.</li>
     <li><strong>Switch to alternative</strong> or <strong>Swap exercise</strong> - Swap for this workout only. See <a href="/help/routines/#alternatives">Alternative exercises</a>.</li>
     <li><strong>Skip remaining sets</strong> - Skip every set on this exercise that is not done yet. It does not show once every set is done. See <a href="#missed-vs-skipped">Skip a set</a>.</li>
+    <li><strong>Rep target…</strong> - Set a total number of reps for this exercise today. See <a href="#rep-target">Total rep target</a>.</li>
     <li><strong>Superset</strong> - Group exercises. See <a href="#supersets">Supersets</a>. Not shown on cardio.</li>
     <li><strong>Change gym</strong> - Switch which gym this workout is at.</li>
     <li><strong>Set machine</strong> - Pick the machine and attachment. <strong>New machine…</strong> and <strong>New attachment…</strong> at the bottom of each picker add one on the spot.</li>
@@ -305,6 +306,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>A skipped set stays on the training screen, struck through, and is left out of your history, all calculations, and plateau and deload detection.</p>
   <p>A short set is a real set. Aiming for 8 and getting 6? Log the 6. It counts toward volume, shows in your history and feeds plateau and deload detection. On a routine workout, the summary marks it as under plan.</p>
   <p>Skipping the last set left on an exercise moves you to the next exercise that still has work, the same as completing it. Turn off <strong>Auto-advance to next exercise</strong> in <strong>Settings → Logging</strong> to stay put.</p>
+
+  <h2 id="rep-target">Total rep target</h2>
+  <p>Set a total number of reps for an exercise, such as 30 pull-ups, and split them over as many sets as you like. Open the <strong>⋮ menu</strong> on the training screen and tap <strong>Rep target…</strong>.</p>
+  <p>The sheet opens on the last target you used and shows how last time went, for example <em>Last time, Oct 29 &middot; 30 of 30 in 4 sets</em>. Change the number and save. <strong>No target today</strong> removes it. Outside a routine, the target never goes up by itself.</p>
+
+  <h3 id="rep-target-counter">The counter</h3>
+  <p>The SETS header shows your total against the target, such as <strong>24 / 30 reps</strong>, with a small meter and <strong>6 to go</strong>. Each set shows a running total. Tap the counter to change the target.</p>
+  <ul>
+    <li>Only finished working sets count. Warm-ups and skipped sets don't.</li>
+    <li>Weight doesn't matter, so it works for weighted lifts too.</li>
+    <li>Sets past the target still count. Reaching it turns the counter teal with a check.</li>
+    <li>On a left and right exercise, each set counts the weaker arm.</li>
+  </ul>
+  <p>The <a href="#finishing">workout summary</a> shows the result against the target, such as <strong>31 / 30 reps</strong> and <strong>Target reached</strong>.</p>
+  <p>To plan a total in a routine, see <a href="/help/routines/#rep-target-plan">Plan by total reps</a>.</p>
 
   <h2 id="finishing">Finish a workout</h2>
   <p>Tap <strong>End</strong> next to the timer at the top of Today and the workout summary opens. You can also tap <strong>End workout</strong> at the bottom of Today, or open the exercise list on the training screen and tap <strong>End workout</strong> in its last row. Once a workout has ended, those buttons read <strong>Summary</strong>.</p>
