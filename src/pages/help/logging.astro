@@ -38,6 +38,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Long-press the exercise on <strong>Today</strong> or in the <strong>Exercises</strong> list, and tap <strong>Remove from workout</strong>. On the training screen, <strong>Remove from workout</strong> is also in the ⋮ menu. The exercise and its sets leave this workout. Changed your mind? Tap <strong>Undo</strong> on the message at the bottom of the screen, and everything comes back as it was.</p>
   <p>If you remove the exercise you're on, the screen moves to the next one. Removing the only exercise takes you back to Today. Your routine is not changed.</p>
 
+  <h3 id="undo-deletes">Undo a delete</h3>
+  <p>Almost everything you delete in Badger comes with an <strong>Undo</strong>. A message at the bottom of the screen offers it for 8 seconds, such as <strong>Set 3 deleted</strong>. Tap <strong>Undo</strong> and the item returns to where it was. A second delete replaces the message. With TalkBack or VoiceOver on, it stays until you act on it or close it.</p>
+  <p>Deleting a whole workout or routine asks first, then offers Undo. Library exercises, machines, attachments, bars and accessories ask first and can't be undone.</p>
+
   <h3>More options (⋮ menu)</h3>
   <ul>
     <li><strong>Replace exercise</strong> - Swap in a different exercise. Sets already logged stay attached.</li>
@@ -78,7 +82,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>In Log as you go, Save set keeps you on the exercise, so you can do as many sets as you like and move on when you're ready. Ticking the last of the sets you planned still moves you to the next exercise.</p>
   <ul>
     <li><strong>Edit a set:</strong> tap its row to load it into the fields. The line <strong>Editing set 2</strong> shows which one. Change it and tap <strong>Update</strong>; the boxes clear and the next waiting set is selected, and <strong>Set 2 updated</strong> appears with <strong>Undo</strong>. To add a new set with those numbers instead, tap <strong>New set instead</strong>. Tap the row again to let go without saving.</li>
-    <li><strong>Delete a set:</strong> tap its row, tap <strong>Delete</strong> and confirm.</li>
+    <li><strong>Delete a set:</strong> tap its row and tap <strong>Delete</strong>. The set goes at once, and <a href="#undo-deletes">Undo</a> brings it back.</li>
     <li><strong>Repeat a set:</strong> tap the <strong>Repeat last</strong> chip below your sets. It names the set it will copy, such as a weight and reps or a duration, along with its RPE or RIR.</li>
   </ul>
 
@@ -303,7 +307,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li>Rename it and pick its color.</li>
     <li>Drag exercises into the order you alternate in.</li>
-    <li>Remove one exercise. A superset left with one exercise is removed.</li>
+    <li>Remove one exercise, with an Undo. A superset left with one exercise is removed.</li>
     <li>Add exercises.</li>
     <li>Dissolve it, with an Undo. Your logged sets aren't affected.</li>
   </ul>
