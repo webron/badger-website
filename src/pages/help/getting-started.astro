@@ -33,7 +33,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   </ol>
 
   <div class="callout">
-    <strong>Tip:</strong> The workout timer starts when you log your first set, if auto-start is on in Settings. To start it yourself, tap the timer chip at the top right of the Today screen.
+    <strong>Tip:</strong> The workout timer starts when you log your first set, if auto-start is on in Settings → Timers and sounds. To start it yourself, tap the timer chip at the top right of the Today screen.
   </div>
 
   <p>The full tour of the training screen is on <a href="/help/logging/">Logging workouts</a>.</p>
@@ -58,6 +58,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
     <li>Your categories, exercises, every set, body weight and custom measurements.</li>
     <li>Your routines, with their days, exercises and planned sets. A routine with the same name as one already in Badger is skipped.</li>
     <li>Supersets on workouts and routine days, your daily workout comments, and workout start and end times.</li>
+    <li>Your goals, with the ones your history already met counted for you. See <a href="/help/goals/#fitnotes">Goals from FitNotes</a>.</li>
     <li>Each exercise's bar weight. Weight increment, rest time and favorite fill in only where the Badger exercise has no value of its own, and favorite can only be turned on.</li>
   </ul>
   <p>The bar list and plate inventory stay out, since the plate calculator keeps its own. FitNotes doesn't mark warmups, so every set arrives as a working set.</p>
@@ -74,14 +75,15 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
 
   <h3 id="importing-steps">Import the file into Badger</h3>
   <ol>
-    <li>Go to <strong>Settings → Your data</strong> and tap the row for your old app: <strong>Import from FitNotes</strong>, <strong>Import from Strong</strong>, <strong>Import from Hevy</strong> or <strong>Import from Stronglifts</strong>. The screen opens with that app's export steps. When your file is ready, tap <strong>Choose file</strong> and pick it.</li>
-        <li>Check the preview: exercises, workout days, sets and the weight unit. For a FitNotes backup, set <strong>Weight unit in this file</strong> yourself. It starts on kg, which is what FitNotes normally stores; a backup from before about 2018 carries its unit per set and doesn't need it.</li>
+    <li>Go to <strong>Settings → Backup, import and export</strong>, tap <strong>Import from another app</strong> and pick your old app: FitNotes, Strong, Hevy or StrongLifts. The screen opens with that app's export steps. When your file is ready, tap <strong>Choose file</strong> and pick it.</li>
+        <li>Check the preview: exercises, workout days, sets and the weight unit. Strong and FitNotes show <strong>Weight unit in this file</strong>, which you can change. Strong starts on the unit in the file's header, else your app's unit. FitNotes starts on your app's unit; a backup from before about 2018 carries its unit per set.</li>
     <li>Check the date range under <strong>Workout days</strong>, then <strong>Exercise mapping</strong>. It shows how many of your exercises matched ones already in your library, which keeps their history, PRs and graphs together. Tap <strong>Review exercise mapping</strong> to change what any name is logged against, or to add it as a new exercise. Close guesses are listed first, under <strong>Close guesses</strong>. Turn on <strong>Keep my exercise names</strong> to add every name from your file as its own exercise instead of matching.</li>
-    <li>Tap <strong>Import</strong>. A big file takes a minute, and the screen stays awake while it writes.</li>
+    <li>Tap <strong>Import</strong>. Badger first saves a safety copy of your log, listed on the <a href="/help/settings/#cloud-backup">Backup screen</a> as <strong>Before destructive action</strong>. If it can't, Badger asks whether to <strong>Import anyway</strong>. A big file takes a minute, and the screen stays awake while it writes.</li>
   </ol>
   <p>A close match is skipped when the library exercise has no field for something your file logged. A Farmer Walk with a distance would lose it on a weight and reps exercise, for example. It's added as a new exercise instead, and the review sheet says why.</p>
   <p>New exercises go into an "Imported" category (a FitNotes backup keeps your own categories instead). Where a name states its equipment, Badger fills in the equipment type: "Cable Fly" arrives as cable, "Smith Machine Squat" as machine. You can edit exercises and move them between categories in the exercise library afterwards.</p>
-  <p><strong>Import each file once.</strong> Sets on a date that already has a workout are added to that workout, and nothing is overwritten, so importing the same file again adds those sets a second time. The preview warns you when a file overlaps days you've already logged.</p>
+  <p>Strong, Hevy and StrongLifts imports create one workout for each session in the file, so two sessions on the same day arrive as two workouts. A FitNotes backup arrives as one workout per day, since its file has no sessions. Imports you made earlier are not changed.</p>
+  <p><strong>Import each file once.</strong> Nothing is overwritten, so importing the same file again adds everything a second time. The preview warns you when a file overlaps days you've already logged.</p>
 
   <h2 id="coming-back">Coming back after a break</h2>
   <p>After six weeks or more without a workout, Today opens with a card: "Welcome back. It's been 9 weeks. Want to start lighter this week?"</p>
@@ -111,7 +113,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
     <li><strong>Above the time</strong> - the next day to train, or this week's count when you don't follow a routine.</li>
   </ul>
   <p>While your active routine is a program that runs in weeks, such as 5/3/1, the widget adds a line under the rest: <strong>5/3/1 BBB · Week 2 of 4 · cycle 4</strong>. Android shows it at every size, and iPhone shows it on the medium size when there is room. A program already running counts from cycle 1.</p>
-  <p>The widget refreshes when you open Badger and after you finish a workout. It follows your light or dark theme and your accent color. It turns to the new day at midnight and starts a fresh week on the first day of the week you chose in Settings, even if you have not opened Badger for days.</p>
+  <p>The widget refreshes when you open Badger and after you finish a workout. It follows your light or dark theme and your accent color. It turns to the new day at midnight and starts a fresh week on the first day of the week you chose in Settings → Display and behavior, even if you have not opened Badger for days.</p>
 
   <h2>Key terms</h2>
   <ul>

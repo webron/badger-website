@@ -1,0 +1,55 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Goals per lift" description="Set a target on a lift, such as Bench press 100 kg × 1 or a 2:00 plank, and see how far you are from it on the chart, during a workout and in your history.">
+  <h1>Goals per lift</h1>
+
+  <p>A goal is a target on one exercise: <em>Bench press 100 kg × 1</em>, <em>12 pull-ups</em>, <em>5 km in 25:00</em>, <em>a 2:00 plank</em>. A lift can have several goals. Badger shows what is left, draws the target on the chart, and marks the set that reaches it.</p>
+
+  <h2 id="set-a-goal">Set a goal</h2>
+  <p>Open the lift's progress page, find the <strong>Goals</strong> section and tap <strong>Set a goal</strong>. During a workout, tap <strong>⋮ → Set a goal</strong> on the exercise instead.</p>
+  <p>The form has the same boxes a set of that exercise has: weight, reps, distance and time. Fill one or more of them; the boxes start at your best, so you change the number you want to beat. Target date and note are optional. Then tap <strong>Save goal</strong>.</p>
+  <p>Each goal row says what is left, for example <em>5 kg to go</em>.</p>
+
+  <h2 id="what-counts">What counts as reaching it</h2>
+  <p>One completed working set has to meet every box you filled. A goal of 80 kg × 8 is reached by 80 kg for 8 reps or by 85 kg for 9, and a set of 80 kg for 7 falls short.</p>
+  <ul>
+    <li><strong>Real sets only</strong> - An estimated 1RM never reaches a goal.</li>
+    <li><strong>From the day you set it</strong> - Only sets logged on or after that day count, so <em>get back to 100 kg</em> works even if you lifted it years ago.</li>
+    <li><strong>Working sets</strong> - Warmup sets, skipped sets, <a href="/help/gyms/#accessories-and-records">sets with an accessory</a> such as a band or chains, and workouts you <a href="/help/progress/#leave-out">left out of records</a> do not count.</li>
+    <li><strong>Any machine or bar</strong> - A goal belongs to the lift, whatever equipment you used.</li>
+    <li><strong>Assisted exercises</strong> - With <a href="/help/progress/#record-weight">Record weight</a> set to Lighter, the set has to be at most the weight you chose.</li>
+    <li><strong>Timed exercises</strong> - <a href="/help/progress/#record-time">Record time</a> decides whether a longer or a faster time wins.</li>
+    <li><strong>Left and right sets</strong> - Both arms have to meet it.</li>
+    <li><strong>Weighted bodyweight</strong> - The goal uses the weight you add.</li>
+  </ul>
+
+  <h2 id="on-the-chart">On the chart</h2>
+  <p>The progress page opens on the chart that measures your next goal. A goal of 100 kg × 1 opens <strong>Max weight</strong>. A goal of 80 kg × 8 opens <strong>Rep max progress</strong> at 8 reps.</p>
+  <p>The chart draws one dashed goal line: the next goal above your best. Tap another goal row to draw that one instead. A chart chip that has a goal on its chart carries a small flag. <strong>Est. 1RM</strong> and <strong>Volume</strong> draw no goal line.</p>
+
+  <h2 id="pace-line">Add a target date</h2>
+  <p>A target date adds a pace line to the chart: a dotted guide from your best on the day you set the goal to the goal on the target date. The time still ahead is lightly shaded, and a caption states the pace, for example <em>about 1.7 kg a month</em>.</p>
+  <p>The line is a guide, and when the date passes, the goal stays open and the row reads <em>Target date Mar 1 passed</em>. The row's <strong>⋮</strong> menu has <strong>Edit</strong>, <strong>Change date</strong> and <strong>Delete</strong>, and Delete offers Undo.</p>
+
+  <h2 id="during-a-workout">During a workout</h2>
+  <p>One quiet line under the plan line names your next goal and your best toward it.</p>
+  <p>When the boxes hold a set that would reach the goal, the line reads <strong>This set reaches your goal</strong> and the set shows an outlined <strong>GOAL</strong> flag. Log the set and the flag fills in, with the usual PR buzz and flash.</p>
+  <p>A set that reaches a goal is still a <a href="/help/progress/#prs">personal record</a> when it is your best ever. It stays in Personal records, on the chart's record ring and best line, and in the workout's PR count. Only the flag on that one set row reads GOAL.</p>
+
+  <h2 id="reached">Reached goals</h2>
+  <p>The workout summary shows a <strong>Reached</strong> stamp with the goal, such as <em>100 kg × 1</em>, and a <strong>Goal reached</strong> section. It takes the place of the all-time PR stamp that day, since a screen carries one stamp. The sheet you see when you finish a workout has no stamp.</p>
+  <p>Reached goals stay as history: each lift keeps a <strong>Reached</strong> part under its open goals, with the date and how long it took, for example <em>19 weeks · 6 weeks before the date</em>.</p>
+  <p>If you fix a wrong set or delete a workout, the date moves or the goal reopens, the same way records do.</p>
+
+  <h2 id="goals-list">All your goals</h2>
+  <p>Open <strong>You → Goals</strong> to see every goal across your lifts: open goals first, then reached ones, newest first. Tapping a goal opens that lift's progress page.</p>
+
+  <h2 id="fitnotes">Goals from FitNotes</h2>
+  <p>A FitNotes backup brings its goals along. The import result counts them and says how many your FitNotes history already met, counted from each goal's FitNotes start date. Progress shows a one-time hint that points to the Goals list.</p>
+  <p>Imported goals read <strong>From FitNotes</strong> and keep their FitNotes title. FitNotes goals have no target date, so add one from the row's <strong>⋮</strong> menu. Goals that mix weight with distance are skipped. The rest of the import is described under <a href="/help/getting-started/#importing-fitnotes">FitNotes</a>.</p>
+
+  <h2 id="export">Export your goals</h2>
+  <p><strong>Export workout data</strong> shares a second CSV with your goals, as described under <a href="/help/settings/#export">Exporting data</a>.</p>
+</HelpLayout>

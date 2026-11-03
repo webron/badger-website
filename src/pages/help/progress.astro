@@ -30,10 +30,22 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p><strong>Records are kept per machine and per bar.</strong> With a machine or a <a href="/help/gyms/#bar-prs">bar</a> set on the exercise, a set is compared only with sets on that same machine and bar. With neither set, it's compared with all your history.</p>
   <p><strong>Linked exercises share records.</strong> If you've <a href="/help/exercises/#linking">linked two exercises</a>, a new best on either counts as a PR on both, and their graphs combine.</p>
 
+  <h3 id="leave-out">Leave a workout out of your records</h3>
+  <p>Trained at a hotel gym or on an odd bar? Open the workout's summary and tap <strong>⋮ → Leave out of records</strong>. None of its sets can set a record or stop a later set from being one.</p>
+  <p>The sets still count toward your graphs, volume and totals. To undo it, tap <strong>⋮ → Count in records</strong> and your records come back.</p>
+
   <h3 id="first-time">The first time you log an exercise</h3>
   <p>Your first workout with an exercise sets no records, because there is nothing to beat yet. The best set reads <strong>First time</strong> where a PR badge would have been, and the workout summary lists these exercises under <strong>First time</strong> as your starting numbers.</p>
   <p>Records start with your next workout of that exercise: beat a starting number and it shows as a PR.</p>
   <p>Anything you imported counts as an earlier workout, so if you brought your history from another app, your first Badger workout can already set records. Records are also kept per machine, so the first time you use a new machine for an exercise you've done before, you can still set a PR there.</p>
+
+  <h3 id="records-list">See all your records</h3>
+  <p>On Progress, open <strong>Overview</strong> and tap <strong>Your records</strong>. It lists every record you've set, in two tabs:</p>
+  <ul>
+    <li><strong>Latest</strong> - newest first, each with its date and the best it beat, for example <em>was 175 kg &times; 2</em>. Tap one to open that workout.</li>
+    <li><strong>Best per lift</strong> - your top record for each exercise, A to Z. Tap one to open its progress screen.</li>
+  </ul>
+  <p>Pick a year at the top to see only the records you set that year. Your <a href="#year-in-review">year in review</a> opens the same list for its year: tap <strong>All N records</strong> under its records. Linked exercises share a row, and a lift you train on a machine or a named bar gets its own row for each, because those records are kept apart. The list follows the same rules as the PR badges, so first sessions, warm-ups and workouts left out of records never appear.</p>
 
   <h3>Timed and assisted exercises</h3>
   <p id="record-time"><strong>Choose whether a longer or shorter time wins.</strong> On a timed exercise's edit screen, set <strong>Record time</strong> to <em>Longer</em> (holds, carries, dead hangs), <em>Shorter</em> (timed runs and for-time efforts) or <em>Default</em>. Default means longer, except for distance + time exercises, where faster wins.</p>
@@ -99,6 +111,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ol>
   <p>The list starts with exercises from the same category, then the rest, most recently trained first. It only offers exercises you've trained at least twice that have the graph type you're viewing. Each row shows how many sessions it has. Tap the exercise's chip to remove the comparison. Leaving the screen clears it too.</p>
   <p>The machine, bar and accessory filters apply to the main exercise only. When one is on, a note under the chart says so. If the second exercise has no data for the selected graph type, a note says that instead of drawing an empty line.</p>
+
+  <p>To chase a number on one lift, <a href="/help/goals/">set a goal</a>. The chart draws it as a dashed line.</p>
 
   <h2 id="strength-standards">Strength standards</h2>
   <p>Badger can draw reference lines on the estimated 1RM graph showing where a lift sits for your bodyweight, from untrained through novice, intermediate and advanced to elite. They cover five barbell lifts: <strong>bench press, squat, deadlift, overhead press and barbell row</strong>. Only exercises whose name matches one of those get them; dumbbell and machine versions aren't covered.</p>
@@ -190,4 +204,31 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Badger tracks how often you train each muscle group and flags the ones falling behind. On the Today screen, a colored dot on a weekly volume chip marks a group that needs attention.</p>
   <p>When any group is flagged, a <strong>Muscle balance</strong> card appears on the Overview tab. For each group it shows the status (OK, warning or neglected), when you last trained it, and its set count in the rolling window. Tap <strong>+ Log exercise</strong> on a flagged group to open the exercise picker filtered to that category.</p>
   <p>To turn the warnings off, or mute single categories, go to <strong>Settings → Coaching → Muscle balance warnings</strong>.</p>
+
+  <h2 id="year-in-review">Your year in review</h2>
+  <p>Once you have logged 10 or more workouts in a calendar year, Badger puts together a review of it: your workouts, your weeks, your records and your main lifts.</p>
+
+  <h3>Where to find it</h3>
+  <ul>
+    <li><strong>Progress → Overview.</strong> A <strong>Your year</strong> card sits at the top, showing your latest year. Tap it to open the review. Earlier years with 10 or more workouts are listed as links beside the heading.</li>
+    <li><strong>Today.</strong> From December 1 to January 31 a <strong>Your year</strong> card offers the review. Tap the X to dismiss it for the season, which hides it for the rest of that December and January. There is no notification.</li>
+  </ul>
+  <p>The current year shows as "so far" until it ends. Your first year starts at your first workout, not on January 1.</p>
+
+  <h3>What's in it</h3>
+  <p>Any part with nothing to show is left out. From the top:</p>
+  <ol>
+    <li><strong>Cover.</strong> The entry numbers your year spans, such as Entries № 211 to 366, and the dates of your first and last workout. Reach 100 workouts in the year and a stamp marks it.</li>
+    <li><strong>Workouts.</strong> How many you trained.</li>
+    <li><strong>Sets, hours and PRs.</strong> Total sets, time trained, and personal records set. With no records, weeks trained takes the PR slot.</li>
+    <li><strong>Weeks.</strong> A bar for each week of the year, and how many of them you trained. It names your longest run of weeks in a row and your longest break, with the day you came back.</li>
+    <li><strong>Records.</strong> The biggest records of the year, each with the number it beat. A year with no new records shows your best sets instead.</li>
+    <li><strong>Main lifts.</strong> The four lifts you trained most, month by month by estimated 1RM, with the change from your first month to your last. A gap in the line means no training that month.</li>
+    <li><strong>Most trained.</strong> The muscles you did the most sets for, ranked.</li>
+    <li><strong>First time.</strong> Lifts you logged for the first time this year, with the date. In a first year this comes right after Weeks, since everything was new.</li>
+  </ol>
+  <p>Only working sets count. Warm-ups are left out of every number.</p>
+
+  <h3>Share your year</h3>
+  <p>Tap <strong>Share your year</strong> at the bottom of the review to make one image: your workout count, weeks trained, sets, hours, PRs and main lifts, in your theme and accent. It follows the same share sheet as workouts and routines.</p>
 </HelpLayout>

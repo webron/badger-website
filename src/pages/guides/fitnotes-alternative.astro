@@ -47,7 +47,7 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  * does not, for the schema most people will have. `_parseWorkoutEntry` (the
  * post-2018 table) builds its entries with no storedUnit at all, so the import
  * runs on the kg/lbs control the user sets on the preview screen
- * (`_importWeightUnit`, defaulting to kg). Only `_parseTrainingLog`, the legacy
+ * (`_importWeightUnit`, defaulting to the app's unit since 1.1.16). Only `_parseTrainingLog`, the legacy
  * table, reads a per-row unit column. Both this page and
  * /guides/fitnotes-on-iphone now say which is which.
  */
@@ -150,14 +150,14 @@ const modified = '2026-09-24';
 
   <p>
     In FitNotes, go to <strong>Settings &rarr; Backup</strong> to write a <code>.fitnotes</code>
-    file, move it to the phone you train with, then open <strong>Settings &rarr; Your data &rarr;
-    Import from FitNotes</strong> in Badger. Import each backup once. The full steps are in
+    file, move it to the phone you train with, then open <strong>Settings &rarr; Backup, import and export &rarr;
+    Import from another app &rarr; FitNotes</strong> in Badger. Import each backup once. The full steps are in
     <a href="/help/getting-started/#importing">importing from another app</a>.
   </p>
 
   <p>
-    On the preview, check the weight unit. Badger assumes kilograms, which is what FitNotes normally
-    stores; a pre-2018 backup carries its own unit on each set.
+    On the preview, check the weight unit. It starts on your app's unit; change it if your backup used
+    the other one. A pre-2018 backup carries its own unit on each set.
   </p>
 
   <h2 id="whats-different">What you get that you did not have</h2>
