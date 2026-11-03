@@ -429,7 +429,11 @@ const description =
         <tr>
           <td><code>rest_override_seconds</code></td>
           <td>integer</td>
-          <td>Rest for this slot, when it should differ from the exercise's own default.</td>
+          <td>
+            Rest between sets for this slot, in seconds. It wins over the exercise's own default
+            rest. A set's own <a href="#predefined-set"><code>rest_seconds</code></a> wins over it.
+            Versions before 1.1.16 let the exercise's default win instead.
+          </td>
         </tr>
         <tr>
           <td><code>default_machine_name</code></td>
@@ -673,6 +677,16 @@ const description =
             <code>target_failure</code> and drops the number. Any value other than
             <code>true</code> reads as not set. Never valid on a warmup; import drops it there.
             Needs Badger 1.1.15 or later.
+          </td>
+        </tr>
+        <tr>
+          <td><code>rest_seconds</code></td>
+          <td>integer</td>
+          <td>
+            Seconds of rest after this set. Omitted when not set, which means the set uses the
+            slot's <a href="#day-exercise"><code>rest_override_seconds</code></a>, then the exercise's
+            own default. A warmup can carry one too. Whole seconds: zero or less reads as not set, and import caps a longer rest at 3600 (one hour).
+            Needs Badger 1.1.16 or later.
           </td>
         </tr>
         <tr>
@@ -1391,6 +1405,12 @@ const description =
       <strong>1.1.15 keys.</strong> A set's <code>target_failure</code> is omitted unless it is
       <code>true</code>. An older version ignores it and reads the set as one with no intensity
       target.
+    </li>
+    <li>
+      <strong>1.1.16 keys.</strong> A set's <code>rest_seconds</code> is omitted when not set. An
+      older version ignores it and rests for the slot's <code>rest_override_seconds</code> instead.
+      That key also changed meaning: it now wins over the exercise's own default rest, which an
+      older version does not know.
     </li>
     <li>
       <strong>Older values still read.</strong> <code>machine_type: "plateLoaded"</code>; the

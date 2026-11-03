@@ -10,7 +10,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <hr />
 
   <h2 id="views">Browse your workouts</h2>
-  <p>Two tabs at the top switch between a list and a calendar. To choose which one History opens on, see <a href={`/help/settings/#app`}>Default history view</a>.</p>
+  <p>Two tabs at the top switch between a list and a calendar. History opens on the tab you used last.</p>
 
   <p>Until you've logged a workout, History is empty. It offers <strong>Log a workout</strong>, for today or a past day, and <strong>Import from another app</strong>.</p>
 
@@ -33,11 +33,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Today is outlined in your accent color.</li>
     <li>The arrows move between months. <strong>Today</strong> in the top right jumps back to today.</li>
     <li>A faint dot marks a day your active program has scheduled and you haven't trained yet.</li>
+    <li>A day with two or more workouts shows a small count.</li>
   </ul>
+
+  <h3 id="same-day">Days with more than one workout</h3>
+  <p>Tap a day with two or more workouts and the panel below the calendar lists every one of them, each with its entry number and start time, for example "&#8470; 122 &middot; 6:15 PM &middot; Upper A".</p>
+  <p><strong>Log another workout</strong> sits at the bottom of every day that has a workout. See <a href="/help/logging/#more-than-one-workout">More than one workout a day</a> for how to start a second one from Today.</p>
 
   <h2 id="log-past">Log a workout for an earlier day</h2>
   <ol>
-    <li>In calendar view, tap the day: any past day, or today, that has no workout yet.</li>
+    <li>In calendar view, tap the day: any past day, or today. On a day that already has a workout, tap <strong>Log another workout</strong> at the bottom of the day's panel.</li>
     <li>Tap <strong>Log a workout</strong> in the summary below the calendar.</li>
     <li>Choose how to fill it:
       <ul>
@@ -80,6 +85,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>The gym and machine, if you recorded them.</li>
     <li>The workout comment you added when you finished.</li>
   </ul>
+  <p>To keep a workout's sets from setting records, tap <strong>⋮ → Leave out of records</strong>. See <a href="/help/progress/#leave-out">Leave a workout out of your records</a>.</p>
 
   <h3 id="compared-with-last-time">Compared with last time</h3>
   <p>On a workout you started without a routine, <strong>Compared with last time</strong> lists each exercise with your best set today, your best set the last time you did it, and a mark:</p>
@@ -99,6 +105,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>In a superset, time spent on the partner exercise doesn't count as rest.</li>
   </ul>
   <p>Pace appears once a session has at least four completed sets and a running clock. Backdated logs and some older sessions don't show it.</p>
+
+  <h3 id="session-effort">Session effort</h3>
+  <p><strong>Session effort</strong> is one number from 1 to 10 for how hard the whole workout felt. It's optional, and nothing else in Badger depends on it.</p>
+  <ul>
+    <li><strong>1 to 3</strong> is Easy, <strong>4 to 6</strong> Moderate, <strong>7 to 8</strong> Hard and <strong>9 to 10</strong> All out.</li>
+    <li>When you end a workout, the <strong>Workout complete</strong> sheet asks <em>How hard was that session?</em> Tap a number, or tap it again to clear it. It's saved with <strong>Done</strong>, along with your note. Skip it and the workout is saved without a rating.</li>
+    <li>On the workout summary, a <strong>Session effort</strong> section above Pace shows the rating, for example <strong>7 (Hard)</strong>. Tap it to change it, or tap <strong>Clear rating</strong>.</li>
+  </ul>
+  <p>A workout you ended from Today, or that Badger ended for you, never shows the completion sheet. Rate it from its summary: tap <strong>Add session effort</strong>.</p>
+  <p>The rating shows as <strong>effort 7</strong> on the History list and in the calendar's day summary. It's a separate thing from <a href="/help/logging/#rpe-rir">RPE and RIR</a>, which describe one set. It isn't sent to Apple Health or Health Connect, and <a href="/help/progression/">deload detection</a> doesn't read it. It's included in your <a href="/help/settings/#export">CSV export</a> and in backups.</p>
 
   <h3>Planned vs. actual (routine workouts)</h3>
   <p>When a workout came from a routine day, each working set can show two lines beneath it:</p>
