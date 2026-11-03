@@ -83,7 +83,18 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <p>A close match is skipped when the library exercise has no field for something your file logged. A Farmer Walk with a distance would lose it on a weight and reps exercise, for example. It's added as a new exercise instead, and the review sheet says why.</p>
   <p>New exercises go into an "Imported" category (a FitNotes backup keeps your own categories instead). Where a name states its equipment, Badger fills in the equipment type: "Cable Fly" arrives as cable, "Smith Machine Squat" as machine. You can edit exercises and move them between categories in the exercise library afterwards.</p>
   <p>Strong, Hevy and StrongLifts imports create one workout for each session in the file, so two sessions on the same day arrive as two workouts. A FitNotes backup arrives as one workout per day, since its file has no sessions. Imports you made earlier are not changed.</p>
-  <p><strong>Import each file once.</strong> Nothing is overwritten, so importing the same file again adds everything a second time. The preview warns you when a file overlaps days you've already logged.</p>
+  <h3 id="importing-again">Importing the same file again</h3>
+  <p>Badger skips what it already has. The preview says how many sessions will be skipped, and the result lists them.</p>
+  <ul>
+    <li><strong>Strong, Hevy and StrongLifts</strong> - a session is skipped when a workout in Badger started in the same minute. Another session on the same day imports as normal. A workout with no start time never counts as a match.</li>
+    <li><strong>FitNotes</strong> - a day is skipped when it already has a workout in Badger.</li>
+  </ul>
+  <p>To bring the skipped ones in anyway, turn on <strong>Import them anyway</strong> on the preview. They then appear twice.</p>
+
+  <h3 id="undo-import">Undo an import</h3>
+  <p>Tap <strong>Undo import</strong> under <strong>Done</strong> when the import finishes. Later, use <strong>Undo last import</strong> in <strong>Settings → Backup, import and export</strong>. It's there for 30 days, or until your next import.</p>
+  <p>Undo removes the workouts, sets, exercises, routines, body measurements and goals the import added. It keeps everything you had before. It also keeps any imported workout you changed since, and any imported exercise you've logged since.</p>
+  <p>Badger says how many will go, and saves a copy of your log on your phone first. To bring the import back, tap <strong>Restore previous data</strong> on the same page.</p>
 
   <h2 id="coming-back">Coming back after a break</h2>
   <p>After six weeks or more without a workout, Today opens with a card: "Welcome back. It's been 9 weeks. Want to start lighter this week?"</p>

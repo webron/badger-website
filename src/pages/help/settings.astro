@@ -167,7 +167,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Open it from <strong>You → Data &amp; backup → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
   <ul>
     <li><strong>Automatic</strong> - the iCloud switch and its status on iPhone, or the count of on-phone copies on Android, plus a manual <strong>Back up now</strong> for iCloud.</li>
-    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Restore previous data</strong> appears when Badger holds a copy from before the last restore or history delete, and brings back whatever was there, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself. A file that isn't a Badger backup is refused with a message, and nothing changes.</li>
+    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Restore previous data</strong> appears when Badger holds a copy from before the last restore, history delete or undone import, and brings back whatever was there, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself. A file that isn't a Badger backup is refused with a message, and nothing changes.</li>
     <li><strong>Extra</strong> - the Google Drive switch, <strong>Back up equipment photos</strong> (off by default, iCloud and Drive only), a manual Drive backup, and <strong>Save a backup file</strong> for a one-off export you send yourself.</li>
   </ul>
   <p><strong>Restore from backup</strong> replaces your current database with the copy you picked. <strong>All current data will be overwritten</strong> - back up first if you need to keep it. Badger checks a copy is intact before replacing anything, so a corrupted or incomplete one is rejected and your current data is left untouched.</p>
@@ -199,7 +199,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Strong and FitNotes previews have a <strong>Weight unit in this file</strong> choice. Every import first saves a safety copy of your log, and asks before importing anyway if it can't.</p>
   <p>The preview shows the date range of the file. Close name matches are listed apart from sure ones, and <strong>Keep my exercise names</strong> adds every name as its own exercise.</p>
   <p>If you see "file is too large" (the limit is 10&nbsp;MB), the file is probably damaged. Export it again from the other app.</p>
-  <p><strong>Don't import the same file twice.</strong> A second import adds the workouts again instead of replacing them. The preview warns you when some of the dates already have workouts.</p>
+  <p>Importing the same file again skips what Badger already has, unless you turn on <strong>Import them anyway</strong>. See <a href={`/help/getting-started/#importing-again`}>Importing the same file again</a>.</p>
+  <p><strong>Undo last import</strong> appears under <strong>Import from another app</strong> for 30 days after an import, or until the next one. It removes what that import added and keeps anything you changed since. See <a href={`/help/getting-started/#undo-import`}>Undo an import</a>.</p>
 
   <h3 id="debug-logs">Debug logs</h3>
   <p><strong>Export debug logs</strong> is on <strong>You → Send feedback</strong>, in the <strong>Diagnostics</strong> section. It shares a text file of the app's recent activity (about the last 500 lines from this session) for reporting a bug. It holds no health or workout data.</p>
