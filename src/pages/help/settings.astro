@@ -67,8 +67,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="workout-timer">Workout timer</h3>
   <ul>
     <li><strong>Workout timer auto-start</strong> - Starts the workout clock when you complete your first set.</li>
-    <li><strong>Workout timer auto-stop</strong> - Stops it when you complete the last set of the session.</li>
   </ul>
+  <p>What the last planned set does is under <a href={`#finishing`}>Finishing a workout</a>.</p>
 
   <h3 id="sounds">Sounds and vibration</h3>
   <ul>
@@ -97,6 +97,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="finishing">Finishing a workout</h2>
   <p><strong>Settings → Finishing a workout</strong></p>
+  <p id="after-last-planned-set"><strong>After the last planned set</strong> - What happens when you tick the last planned set of a routine workout. See <a href="/help/logging/#plan-done">When the plan is done</a>.</p>
+  <ul>
+    <li><strong>Ask</strong> (the default) - A <strong>Plan done</strong> card offers <strong>Finish workout</strong> and <strong>Not yet</strong>.</li>
+    <li><strong>Finish at once</strong> - The workout ends and the summary sheet opens. <strong>Resume</strong> is on it.</li>
+    <li><strong>Keep going</strong> - Nothing is asked. Tap <strong>Finish</strong> in the bar at the bottom when you're done.</li>
+  </ul>
+  <p>If you had turned off <strong>Workout timer auto-stop</strong> in an earlier version, this starts on <strong>Keep going</strong>.</p>
   <p>Choose what the completion sheet shows when you finish a session. Each is a switch under <strong>Summary shows</strong>:</p>
   <ul>
     <li><strong>Total volume</strong></li>
