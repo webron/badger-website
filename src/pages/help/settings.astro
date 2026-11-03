@@ -54,7 +54,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Default rest time</strong> - Rest after a working set when nothing nearer sets one: this workout, the set, the routine and the exercise all come first (30s-300s). See <a href={`/help/logging/#rest-ladder`}>How long the rest is</a>.</li>
     <li><strong>Default warm-up rest</strong> - Rest after a warmup set when this workout, the set and the exercise's warm-up rest don't set one (15s-120s). Without it Badger uses 1:00.</li>
-    <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set. Never after a cardio set.</li>
+    <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set. Never after a cardio set. The countdown shows on the <a href={`/help/logging/#rest-card`}>rest card</a> at the bottom of the training screen.</li>
   </ul>
 
   <h3 id="set-timer">Set timer</h3>
@@ -73,7 +73,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="sounds">Sounds and vibration</h3>
   <ul>
     <li id="rest-timer-sound"><strong>Rest timer sound</strong> - One picker for the sound that plays when rest ends: <strong>Off</strong>, <strong>Chime</strong>, <strong>Bell</strong> or <strong>Beep</strong>.</li>
-    <li><strong>Rest timer vibration</strong> - Vibrates when rest ends.</li>
+    <li><strong>Rest timer vibration</strong> - Vibrates when rest ends with Badger on screen. On by default for new installs; if you installed earlier, your setting stays as it was.</li>
     <li><strong>Set timer sound</strong> - Plays a sound with the "Set complete" notification. You get that notification when a timed set ends without being announced aloud, for example with the phone locked on Android. It doesn't affect the voice.</li>
     <li><strong>Set timer voice</strong> - <strong>Female</strong>, <strong>Male</strong> or <strong>Off</strong>. Tap one to hear it. Off silences the spoken cues; you still get the "Set complete" notification when the phone is locked.</li>
   </ul>
@@ -167,7 +167,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Open it from <strong>You → Data &amp; backup → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
   <ul>
     <li><strong>Automatic</strong> - the iCloud switch and its status on iPhone, or the count of on-phone copies on Android, plus a manual <strong>Back up now</strong> for iCloud.</li>
-    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Undo last restore</strong> appears when a pre-restore snapshot exists, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself. A file that isn't a Badger backup is refused with a message, and nothing changes.</li>
+    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Restore previous data</strong> appears when Badger holds a copy from before the last restore or history delete, and brings back whatever was there, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself. A file that isn't a Badger backup is refused with a message, and nothing changes.</li>
     <li><strong>Extra</strong> - the Google Drive switch, <strong>Back up equipment photos</strong> (off by default, iCloud and Drive only), a manual Drive backup, and <strong>Save a backup file</strong> for a one-off export you send yourself.</li>
   </ul>
   <p><strong>Restore from backup</strong> replaces your current database with the copy you picked. <strong>All current data will be overwritten</strong> - back up first if you need to keep it. Badger checks a copy is intact before replacing anything, so a corrupted or incomplete one is rejected and your current data is left untouched.</p>
@@ -205,7 +205,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p><strong>Export debug logs</strong> is on <strong>You → Send feedback</strong>, in the <strong>Diagnostics</strong> section. It shares a text file of the app's recent activity (about the last 500 lines from this session) for reporting a bug. It holds no health or workout data.</p>
 
   <h3>Deleting data</h3>
-  <p><strong>Delete workout history</strong>, at the very bottom of <strong>Backup, import and export</strong>, permanently deletes every workout and set but keeps your exercises and routines. Badger asks you to confirm first.</p>
+  <p><strong>Delete workout history</strong>, at the very bottom of <strong>Backup, import and export</strong>, deletes every workout and set but keeps your exercises and routines. Badger asks you to confirm and says how many workouts will go.</p>
+  <p>Badger saves a copy on your phone first. To bring the history back, open <strong>Backup, import and export</strong> and tap <strong>Restore previous data</strong>. If the copy can't be made, nothing is deleted.</p>
 
   <h2 id="training-notes">Training notes</h2>
   <p><strong>You → Training notes</strong> is one free-text page for your own context: goals, injuries, training history, anything worth remembering. It saves as you type.</p>

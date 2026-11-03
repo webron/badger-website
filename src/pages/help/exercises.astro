@@ -161,7 +161,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>New category</strong> to name it and pick a color. A custom category works everywhere a built-in one does, except the muscle heatmap, since it has no muscle group.</li>
     <li>Tap the <strong>pencil icon</strong> to rename a category or change its color, built-in ones included.</li>
     <li>Drag a row's handle to reorder.</li>
-    <li>Tap the <strong>trash icon</strong> to delete. Only an empty category can be deleted; if it still holds exercises, Badger tells you how many so you can move or delete them first.</li>
+    <li>Tap the <strong>trash icon</strong> to delete. Only an empty category can be deleted; if it still holds exercises, Badger tells you how many so you can move or delete them first. Deleting an empty one offers <strong>Undo</strong>.</li>
   </ul>
 
   <h2 id="linking">Linked exercises</h2>
@@ -172,7 +172,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>Link exercise</strong> and pick the other exercise.</li>
   </ol>
   <p>Both exercises then show the same graphs, PRs, stats and history. A new best on either one counts as a PR on both.</p>
-  <p>To unlink, tap the linked exercise's chip (it has an <strong>×</strong>) and confirm. The two stop sharing history, and both stay in the library.</p>
+  <p>To unlink, tap the linked exercise's chip (it has an <strong>×</strong>). The two stop sharing history, and both stay in the library. The message reads <strong>(name) unlinked</strong>, with <strong>Undo</strong>.</p>
   <p id="merged-duplicates">Looking for <em>Lying Leg Curl</em> or <em>Good Morning (Legs)</em>? They're now <em>Leg Curl (Lying)</em> and <em>Good Morning</em>, and sets you logged under the old names are there, with your records and graphs.</p>
 
   <h2 id="hide-merge">Hide and merge exercises</h2>
@@ -246,7 +246,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The screen also shows the exercise's muscles.</p>
 
   <h2>Delete an exercise</h2>
-  <p>In the exercise library, open the <strong>⋮</strong> menu on the exercise's row and tap <strong>Delete</strong>, then confirm.</p>
+  <p>In the exercise library, open the <strong>⋮</strong> menu on the exercise's row and tap <strong>Delete</strong>, then confirm. A deleted library exercise can't be undone.</p>
   <p>An exercise that's logged in a workout or used in a routine can't be deleted. The dialog shows how many workouts and routines use it, and offers <strong>Hide</strong> to <a href="#hide">keep it out of the pickers</a> or <strong>Merge into...</strong> if it <a href="#merge">duplicates another exercise</a>.</p>
 </HelpLayout>
 

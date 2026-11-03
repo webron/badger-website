@@ -15,7 +15,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Go to <strong>You → Routines</strong>, tap <strong>+</strong> and enter a name.</li>
     <li>Tap the routine to open it, then tap <strong>Add day</strong>.</li>
     <li>Tap the day, then tap <strong>Add exercise</strong>. Tap each exercise you want for the day so it gets a check mark, then tap <strong>Add 3 exercises</strong> (the button counts your picks). They're added in the order you tapped them. Your picks stay checked while you search or switch category chips, and the <strong>Recent</strong> list at the top shows what you've logged lately. Each exercise starts with three empty sets. An exercise you added before this change, with no sets, starts its workout with three empty sets filled in from your last workout.</li>
-    <li>Tap an exercise row to <a href="#predefined-sets">plan its sets</a>: fill them in, or add and remove sets.</li>
+    <li>Tap an exercise row to <a href="#predefined-sets">plan its sets</a>: fill them in, or add and remove sets. Removing a planned set offers <strong>Undo</strong>.</li>
   </ol>
   <p>Have a plan written down? Your AI can turn it into a Badger routine. See <a href="/guides/ai/#prompts">Use your own AI</a>.</p>
   <p>To change an exercise later, open its <strong>⋮ menu</strong> and tap <strong>Replace exercise</strong>. If the exercise has a <a href="/help/progression/#rules">progression rule</a>, Badger asks <strong>Replace (exercise)?</strong> first, because the new exercise starts without the rule and without its training max. Tap <strong>Replace</strong> to go ahead or <strong>Cancel</strong> to keep it.</p>
@@ -164,7 +164,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The <strong>Notes</strong> section on the routine detail screen holds notes for the whole program: why you chose it, the current cycle, a target date. Tap it (or <strong>Add notes</strong>) to open the editor. Routine notes go with the routine when you share it as a <code>.badger</code> file.</p>
 
   <h3>Folders</h3>
-  <p>Tap the folder icon in the top bar of the routine list to create a folder. To move a routine into one, tap the routine's <strong>⋮</strong> and pick the folder. Routines outside any folder appear under "Other".</p>
+  <p>Tap the folder icon in the top bar of the routine list to create a folder. To move a routine into one, tap the routine's <strong>⋮</strong> and pick the folder. Routines outside any folder appear under "Other". Deleting a folder offers <strong>Undo</strong>.</p>
 
   <h2 id="progression">Progression</h2>
   <p>Progression rules, training maxes, percentage sets, waves and the overload suggestion are on the <a href="/help/progression/">Progression</a> page:</p>
@@ -194,7 +194,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>On the routine detail screen, open the exercise's <strong>⋮ menu</strong> and choose <strong>Manage alternatives…</strong>.</li>
     <li>Search for and add up to two alternatives. Changes save immediately.</li>
   </ol>
-  <p>Each alternative row's own <strong>⋮ menu</strong> can remove it (<strong>Remove alternative</strong>) or make it the default.</p>
+  <p>Each alternative row's own <strong>⋮ menu</strong> can remove it (<strong>Remove alternative</strong>, with <strong>Undo</strong>) or make it the default.</p>
   <p>To swap during the workout, open the training screen's <strong>⋮ menu</strong> and tap <strong>Switch to alternative…</strong>. The original is listed too, labeled <strong>(original)</strong>, so you can switch back. You can also pick an alternative before you start, from the swap icon on the routine log preview.</p>
   <p>A swap lasts for that workout only. The new exercise comes in with its own recent weights, your routine stays the same, and your history records what you actually did.</p>
 
@@ -229,8 +229,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Progress.</strong> A lift that already <a href="/help/progression/#progressing-together">progresses together</a> with other days keeps doing so on the copy. If only one of those days moves the weight, as in Madcow, the copy follows that day and doesn't move it. Any other lift with a rule starts its own progress on the copy.</li>
   </ul>
 
+  <h2 id="delete-a-day">Delete a day or an exercise</h2>
+  <p>Delete a day or an exercise from a day and it goes at once, with an <strong>Undo</strong> at the bottom of the screen. Undo brings back the slot with its progression rule, training max and progress. See <a href="/help/logging/#undo-deletes">Undo a delete</a>.</p>
+
   <h2 id="delete-a-routine">Delete a routine</h2>
-  <p>In the routine list, tap the routine's <strong>⋮</strong>, tap <strong>Delete</strong> and confirm. The same option is in the <strong>⋮</strong> menu inside the routine.</p>
+  <p>In the routine list, tap the routine's <strong>⋮</strong>, tap <strong>Delete</strong> and confirm. The same option is in the <strong>⋮</strong> menu inside the routine. The confirm lists what goes with it: the days, training maxes and progression rules. Tap <strong>Undo</strong> afterward to bring it all back.</p>
   <p>Workouts you logged from the routine stay in History. If you delete the active routine, no routine is active until you set another one.</p>
 
   <h2 id="create-from-history">Create a routine from your history</h2>
