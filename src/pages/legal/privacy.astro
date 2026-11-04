@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Privacy Policy" description="Badger privacy policy - what we store, what leaves your device, and your rights.">
   <h1>Privacy Policy</h1>
 
-  <p><strong>Last updated:</strong> 2026-10-28</p>
+  <p><strong>Last updated:</strong> 2026-11-04</p>
 
   <p>
     Badger is a local-first workout tracker. Your training data lives on your device
@@ -27,6 +27,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Body measurements and body-weight history, including any weigh-ins imported from Apple Health or Health Connect. Imported readings are saved in Badger's local database exactly like ones you type in, so they behave the same way everywhere else in the app - including in backups, except iCloud backups (see below).</li>
     <li>Gyms, machines, attachments, and their links to exercises.</li>
     <li>Photos you add to a machine or attachment. They are saved as ordinary image files in Badger's own storage on your device. They are included in a backup only when the <strong>Back up equipment photos</strong> setting is on - off by default (see below), and only in an iCloud or Drive backup; the copies Android keeps on your phone never include them, to keep those copies small. Backed-up photos are never sent to us either way. Deleting the machine or attachment, or removing the photo, deletes the file.</li>
+    <li>Progress photos you take or pick in the body tracker. They are saved as image files in Badger's own storage, not in your phone's photo library, and Badger removes location and other metadata from them when it saves them. You can lock them with Face ID, a fingerprint or your screen lock.</li>
     <li>All app settings, preferences, and the debug log ring buffer.</li>
     <li>The most recent crash report, if Badger terminated unexpectedly. Saved as a plain-text file (<code>crash_report.txt</code>) containing the exception, stack trace, and the last ~500 lines of the in-memory log buffer. Only the latest crash is kept - a new crash overwrites the previous file, and sending it via feedback (see below) deletes it.</li>
   </ul>
@@ -46,12 +47,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
       permission in iOS Settings. Anything Badger read from Apple Health (imported
       weigh-ins and end-of-set heart rates) is left out of these copies. After a restore
       from iCloud, Badger imports the last year of weigh-ins from Apple Health again; past heart rates
-      are not restored.</li>
+      are not restored. Progress photos go to iCloud only if you turn on <strong>Back up progress photos</strong>;
+      they are stored separately from your workout backups, one copy of each.</li>
     <li><strong>Android: your phone's own backup, if you have it turned on.</strong> Badger
       keeps up to five dated copies of your log in its own storage on the phone. If your
       phone's system backup is turned on (Android's <code>allowBackup</code>, a phone-wide
       setting Badger does not add a switch for), it carries that storage to your own Google
-      account along with your other apps' data. We have no access to it there either.</li>
+      account along with your other apps' data. We have no access to it there either. That
+      backup never carries progress photos; a direct transfer from your old phone to a new one does.</li>
   </ul>
   <p>
     A third backup, to your own Google Drive, is opt-in on either platform and described
@@ -63,9 +66,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Backup files</strong> - you tap <em>Save a backup file</em> in the Backup screen to open the system share sheet and save a <code>.workout_backup</code> file wherever you choose (local storage, your own Drive, email-to-self, etc.).</li>
     <li><strong>CSV exports</strong> - workout history CSV exports open the share sheet.</li>
     <li><strong>AI context copies</strong> - <em>Copy context for AI</em> assembles a plain-text summary of your training (your training notes, active program, recent sessions, records, gym equipment, and avoided exercises) on your device and shows it to you in full. Tapping Copy places it on your clipboard; tapping Share opens the system share sheet. Badger sends it nowhere - where it goes next is entirely your choice, and if you paste it into an AI service, that service's own privacy policy applies to it from that point. It excludes body measurements, any health data, and your workout, set, exercise and machine comments.</li>
+    <li><strong>Progress photo export and sharing</strong> - <em>Export progress photos</em> saves a .zip of your photos wherever you choose, and <em>Import photos from an export</em> reads one back. <em>Share comparison</em> sends one image of the comparison you are looking at through the share sheet.</li>
     <li><strong>Debug log exports</strong> - the last ~500 lines of in-memory logs can be exported as a plain-text file via the share sheet.</li>
     <li><strong>Feedback emails</strong> - the Send feedback screen opens your email client with a pre-filled draft to <code>feedback@badger.fit</code>. You review and send it from your own email app. If a crash occurred since the last launch, a toggle offers to attach the stored crash report; you can also attach diagnostic logs. Nothing is sent automatically - you always hand off to your mail app and press send.</li>
-    <li><strong>Google Drive backup (opt-in)</strong> - on either platform, turning on <em>Google Drive backup</em> in Settings signs you in to your Google account (using Google Sign-In) and uploads backup archives to a hidden <em>app-data</em> folder on your own Drive. The folder is private to Badger - it is not visible in the Drive UI and cannot be accessed by other apps. Badger requests only the <code>drive.appdata</code> scope (no access to your other Drive files). Backups contain your local SQLite database and a sanitized copy of your app settings (excluding any authentication tokens). Drive backup is the way to carry a log between an iPhone and an Android phone, since the two automatic backups above are each locked to their own platform. Photos you added to machines or attachments are <em>not</em> included by default, to keep backups small. A separate setting, <strong>Back up equipment photos</strong>, includes them; it is off unless you turn it on. Up to 5 rolling backups are kept, plus event backups before destructive actions. You can turn Drive backup off, delete all Drive backups, or revoke Badger's access from your Google account at any time. No data goes anywhere else.</li>
+    <li><strong>Google Drive backup (opt-in)</strong> - on either platform, turning on <em>Google Drive backup</em> in Settings signs you in to your Google account (using Google Sign-In) and uploads backup archives to a hidden <em>app-data</em> folder on your own Drive. The folder is private to Badger - it is not visible in the Drive UI and cannot be accessed by other apps. Badger requests only the <code>drive.appdata</code> scope (no access to your other Drive files). Backups contain your local SQLite database and a sanitized copy of your app settings (excluding any authentication tokens). Drive backup is the way to carry a log between an iPhone and an Android phone, since the two automatic backups above are each locked to their own platform. Photos you added to machines or attachments are <em>not</em> included by default, to keep backups small. A separate setting, <strong>Back up equipment photos</strong>, includes them; it is off unless you turn it on. Progress photos are included only when you turn on <strong>Back up progress photos</strong>, and are kept as one copy of each in the same private app-data folder. Up to 5 rolling backups are kept, plus event backups before destructive actions. You can turn Drive backup off, delete all Drive backups, or revoke Badger's access from your Google account at any time. No data goes anywhere else.</li>
   </ul>
 
   <h2>Apple Health and Health Connect (opt-in)</h2>
@@ -109,7 +113,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2>Device permissions</h2>
   <ul>
-    <li><strong>Camera and photos</strong> - requested only when you choose to add a photo to a machine or attachment, and only at that moment. Badger reads the single image you pick; it does not browse, index, or upload your photo library. Decline, and everything except equipment photos works exactly as before.</li>
+    <li><strong>Camera and photos</strong> - requested only when you choose to add a photo to a machine or attachment or take a progress photo, and only at that moment. Badger reads the single image you pick; it does not browse, index, or upload your photo library. Decline, and everything except equipment photos and the progress photo camera works exactly as before.</li>
+    <li><strong>Face ID or fingerprint</strong> - used only if you turn on <em>Lock progress photos</em>. The check happens on your phone, and Badger never sees your face or fingerprint.</li>
     <li><strong>Notifications</strong> - used for the rest timer, the set timer, the active-workout notification, and the workout reminders you schedule yourself. All of them are local notifications raised by the app on your own device; none involve a server.</li>
     <li><strong>Health data</strong> - requested only when you turn on one of the Apple Health / Health Connect switches described above, and only for the specific categories that switch needs. Decline, and everything else in Badger works exactly as before.</li>
   </ul>
@@ -183,12 +188,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Your rights</h2>
   <p>
     Deleting the app removes Badger's local data from the phone. Your iCloud backup, the copies
-    carried by Android's own backup, any Drive backups, and any files you exported stay in your
-    own account until you delete them; the Backup screen can turn off and delete each. Since we
+    carried by Android's own backup, any Drive backups, any progress photo backup copies, and any files you exported stay in your
+    own account until you delete them; the Backup screen can turn off and delete each workout backup. Since we
     never hold a copy, there's nothing for us to delete on our
     side. If you have emailed us feedback that included
     personal information and want it deleted from our mailbox, email
     <a href="mailto:privacy@badger.fit">privacy@badger.fit</a>.
+  </p>
+  <p>
+    Progress photos are handled separately. Deleting a progress photo deletes the file on your
+    phone, and, once the Undo message has gone, the copy in your iCloud or Google Drive photo backup
+    if <strong>Back up progress photos</strong> is on. Turning that setting off asks whether to keep or
+    delete the copies already there. <strong>Delete all backups</strong> on the Backup screen removes your
+    workout backups only and keeps your progress photos, on your phone and in the photo backup.
   </p>
 
   <h3>California residents (CCPA/CPRA)</h3>
