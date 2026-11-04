@@ -53,19 +53,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Set machine</strong> - Pick the machine and attachment. <strong>New machine…</strong> and <strong>New attachment…</strong> at the bottom of each picker add one on the spot.</li>
     <li><strong>Set bar</strong> - Pick the <a href="/help/gyms/#bars">bar</a> on a barbell exercise, at a gym that has bars. <strong>New bar…</strong> adds one.</li>
     <li><strong>1RM calculator</strong> and <strong>Plate calculator</strong> - Neither shows on cardio. The plate calculator opens with your current weight, and shows only on plate-loaded equipment: a barbell exercise, a plate-loaded machine, a plate calculator mode you set yourself, or an exercise with no equipment type. A cable, a dumbbell or a pin-stack machine never offers it. See <a href="/help/tools/">Tools</a>.</li>
+    <li><strong>Exercise settings</strong> - The first item. Opens the exercise's rest, weight increment, tempo, bar, notes, muscles and display. See <a href="/help/exercises/#exercise-settings">Exercise settings</a>.</li>
+    <li><strong>Set tempo</strong> - Shows when the exercise has no tempo yet. Opens the <a href="#tempo">tempo picker</a>.</li>
     <li><strong>Remove from workout</strong> - Take this exercise and its sets out of the workout. See <a href="#remove-exercise">Remove an exercise</a>.</li>
   </ul>
 
   <h3>Exercise notes</h3>
   <p>A notes card sits above the set input for an exercise that has notes or instructions. The info icon in the top bar shows or hides it. The card opens by itself when the exercise has notes of your own, and the first time you log an exercise that has instructions.</p>
-  <p>Long text is cut short: tap it to read the rest, and tap again to shorten it. To edit, tap the pencil on the card, which opens the exercise notes screen. For an exercise with neither notes nor instructions, the info icon opens that screen directly.</p>
+  <p>Long text is cut short: tap it to read the rest, and tap again to shorten it. To edit, tap the pencil on the card, which opens <a href="/help/exercises/#exercise-settings">Exercise settings</a> at the notes. For an exercise with neither notes nor instructions, the info icon opens Exercise settings directly.</p>
   <ul>
     <li><strong>NOTES</strong> - Your own reminders: form cues, seat settings.</li>
     <li><strong>INSTRUCTIONS</strong> - Built-in technique cues.</li>
     <li><strong>GRIP</strong> - The grip you've selected, when the machine uses grips.</li>
   </ul>
   <p>With a machine set, the notes you write are for that machine, so two leg presses can carry different seat heights.</p>
-  <p>The notes screen's heading reads <strong>Notes &middot; MachineName</strong>. Notes you wrote for the exercise in general appear in their own block, and the attachment's notes ("use the thick end") appear in the same card. Increment, rest, instructions and muscles apply to the exercise on every machine.</p>
+  <p>The notes heading reads <strong>Notes &middot; MachineName</strong>. Notes you wrote for the exercise in general appear in their own block, and the attachment's notes ("use the thick end") appear in the same card. Increment, rest, instructions and muscles apply to the exercise on every machine.</p>
 
   <h2 id="logging-a-set">Log a set</h2>
   <p>The Track tab shows the input fields at the top and your logged sets below. The fields follow the exercise type: weight and reps for a barbell lift, time for a plank. They start from the first working set of your last session of that exercise, and from zero if you've never done it.</p>
@@ -240,7 +242,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Just this workout</strong>: a rest you set for this exercise, kept until you finish the workout</li>
     <li><strong>This set</strong>: a rest planned on the set in a routine (<a href="/help/routines/#rest-per-set">Rest per set</a>)</li>
     <li><strong>The exercise in this routine</strong>: the routine's <strong>Rest between sets</strong></li>
-    <li><strong>The exercise default</strong>: the exercise's own rest, on its notes screen</li>
+    <li><strong>The exercise default</strong>: the exercise's own rest, in its Exercise settings</li>
     <li>The default in <a href="/help/settings/#rest-timer">Settings → Timers and sounds → Default rest time</a></li>
     <li>The last duration you used, then 1:30</li>
   </ol>
@@ -277,6 +279,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>An edit made inside a routine stays in that routine: the exercise's own 1:30 stays for every other routine. A free workout has no routine, so the exercise default is the only level that lasts.</p>
   <p>Saving to a set updates the next rest in this workout too. If you had set a rest for just this workout, saving to a lasting level replaces it, so the new number shows right away.</p>
   <p><strong>+30s</strong> and <strong>Skip</strong> on the running timer, and the presets in the timer sheet, change only the rest that is running. They save nothing.</p>
+
+  <h2 id="tempo">Tempo</h2>
+  <p>Tap the <strong>Tempo</strong> chip beside the Rest chip to set how fast you move: lower, hold at the bottom, lift, hold at the top, each 0 to 30 seconds. <strong>3-1-X-0</strong> is a 3-second lower, a 1-second hold, a fast lift and no hold at the top. With no tempo there is no chip: open the ⋮ menu and tap <strong>Set tempo</strong>.</p>
+  <ul>
+    <li>Set each phase with its stepper. Turn on <strong>Fast (X)</strong> on the lift to move as fast as you can.</li>
+    <li>Tap a preset to fill all four: <strong>Steady</strong> (2-0-2-0), <strong>Slow lower</strong> (3-0-1-0), <strong>Slower lower</strong> (4-0-1-0), <strong>Pause, fast up</strong> (3-1-X-0), <strong>Paused</strong> (3-2-1-0) and <strong>Fast up</strong> (2-0-X-0).</li>
+    <li>A line under the steppers says the tempo in words.</li>
+    <li>Pick where to <strong>Save to</strong>: in a routine workout, <strong>&lt;exercise&gt; in this routine</strong>, <strong>&lt;exercise&gt; default</strong> or <strong>Just this workout</strong>. In a free workout, <strong>&lt;exercise&gt; default</strong> or <strong>Just this workout</strong>.</li>
+    <li><strong>Remove tempo</strong> clears it. Tap <strong>Undo</strong> on the message to bring it back.</li>
+  </ul>
+  <p>The routine's tempo for the exercise applies first, then the exercise's default. Either one is copied into the workout when you add the exercise, so <a href="/help/history/#workout-details">history</a> shows the tempo you used that day. Swap or replace an exercise mid-workout and the new exercise brings its own default.</p>
+  <p>A tempo typed in an older version that isn't four phases is kept as written and shown in italics.</p>
 
   <h2 id="set-timer">Set timer (timed exercises)</h2>
   <p>A timed exercise (a plank, a carry) gets a timer for the set itself, started from the training screen. It keeps running when you lock the phone or switch apps.</p>

@@ -189,11 +189,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Drop sets, myo-reps and rest-pause add three columns, <code>set_style</code>, <code>steps</code> and <code>steps_volume</code>; see <a href="/help/set-types/#export">CSV export</a>.</p>
   <p>The next column, <code>session_effort</code>, is the workout's <a href="/help/history/#session-effort">session effort</a>. It repeats on every set row of that workout and is blank when you didn't rate it.</p>
   <p>The two columns after it come from the <a href="/help/routines/#energy-check-in">energy check-in</a>. <code>readiness</code> reads <code>low</code>, <code>usual</code> or <code>high</code> on every set row of a workout where you answered, and is blank otherwise. <code>eased_percent</code> reads <code>90</code> on the sets of a lift you started on a lighter day.</p>
+  <p>The last column, <code>tempo</code>, holds the exercise's <a href="/help/logging/#tempo">tempo</a> for that workout, such as <code>3-1-X-0</code>. It is blank when there was none.</p>
   <p>It also shares a second CSV with your <a href="/help/goals/">goals</a>.</p>
   <p>The file includes sets you never completed, such as the rest of a routine workout you started and left. To count only real training, filter on <code>is_complete</code>; <code>is_skipped</code> marks skipped sets. If you're giving the file to an AI, <a href={`/guides/ai/`}>Use your own AI</a> has a prompt that already explains this.</p>
 
   <h3 id="ai-context">Copying your context for an AI</h3>
-  <p><strong>Copy context for AI</strong> puts together a short plain-text briefing on your training: your <a href={`#training-notes`}>training notes</a>, your active program and its current targets, your last ten sessions, your records, the equipment at your current gym, and anything you've marked as avoided.</p>
+  <p><strong>Copy context for AI</strong> puts together a short plain-text briefing on your training: your <a href={`#training-notes`}>training notes</a>, your active program and its current targets, your last ten sessions (with each exercise's tempo), your records, the equipment at your current gym, and anything you've marked as avoided.</p>
   <p>It ends with instructions telling the AI how to read it, including how to write a routine back as a <a href={`/badger-format/`}><code>.badger</code> file</a>.</p>
   <p>Read it, then tap <strong>Copy</strong> or <strong>Share</strong>. Body measurements, health data, workout and set comments, and exercise notes aren't included.</p>
   <p>The briefing is trimmed to fit a chat window. If you train a lot, older sessions go first, then equipment, then records, and your notes last. Anything you've marked as avoided and the closing instructions always stay. Empty sections are left out.</p>
