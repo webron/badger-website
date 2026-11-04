@@ -2,7 +2,7 @@
 import HelpLayout from '../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Glossary" description="Plain-English definitions of the training terms and Badger's own words: set, rep, warm-up, PR, RPE, RIR, 1RM, MEV, MRV, AMRAP, training max, deload, driver set, waved days, stages and more.">
+<HelpLayout title="Glossary" description="Plain-English definitions of the training terms and Badger's own words: set, rep, warm-up, drop set, myo-reps, rest-pause, PR, RPE, RIR, 1RM, MEV, MRV, AMRAP, training max, deload, driver set, waved days, stages and more.">
   <div class="glossary">
   <h1>Glossary</h1>
 
@@ -19,6 +19,9 @@ import HelpLayout from '../layouts/HelpLayout.astro';
   <h3>Compound lift</h3>
   <p>An exercise that works several joints and large muscle groups: squat, deadlift, bench press, overhead press, row. The opposite is an <em>isolation exercise</em> (curls, extensions), which focuses on one muscle.</p>
 
+  <h3 id="drop-set">Drop set</h3>
+  <p>A set where you lower the weight right after your last rep and keep going, once or several times, without resting. In Badger, choose <strong>Drop set</strong> from the Type chip and add each drop on its own line. See <a href="/help/set-types/#drop-sets">drop sets</a>.</p>
+
   <h3>Failure</h3>
   <p>The point where you can't complete another rep with good form. Training to failure (RIR 0) is a strong stimulus but adds fatigue and injury risk, so most programs stop 1 to 3 reps short. In Badger, the <strong>To failure</strong> chip records it in one tap. See <a href="/help/logging/#to-failure">to failure</a>.</p>
 
@@ -31,11 +34,17 @@ import HelpLayout from '../layouts/HelpLayout.astro';
   <h3 id="mrv">MRV (maximum recoverable volume)</h3>
   <p>The most hard sets per week for a muscle group that you can recover from before the next session. Above it, extra sets cost you more than they give. The Volume card calls a group over its MRV <strong>Above range</strong>, and anything between MEV and MRV <strong>In range</strong>.</p>
 
+  <h3 id="myo-reps">Myo-reps</h3>
+  <p>One hard activation set near failure, then several short mini-sets of a few reps at the same weight, each after a pause of about 15 seconds. Badger starts the pause for you. See <a href="/help/set-types/#myo-reps">myo-reps</a>.</p>
+
   <h3>PR (personal record)</h3>
   <p>Your best-ever performance on an exercise. Badger marks a new one as you log it, and what counts as a record depends on the exercise type. See <a href="/help/progress/#prs">personal records</a>.</p>
 
   <h3 id="rep">Rep (repetition)</h3>
   <p>One full movement of an exercise: a squat down and back up, a curl up and back down. A set is a group of reps done in a row. "8 reps" means you did the movement eight times without stopping to rest.</p>
+
+  <h3 id="rest-pause">Rest-pause</h3>
+  <p>A heavy first bout near failure, a short pause, then another bout or two at the same weight. Badger counts the bouts as one set. See <a href="/help/set-types/#rest-pause">rest-pause</a>.</p>
 
   <h3>RIR (reps in reserve)</h3>
   <p>How many more reps you could have done before failure. RIR counts reps left, where RPE counts effort: RIR 2 is roughly RPE 8, and RIR 0 is RPE 10.</p>
