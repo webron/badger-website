@@ -142,7 +142,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Records are kept separately per <a href="/help/gyms/#bar-prs">bar</a>. <a href="#left-right-counts">Left and right work</a> has its own records. While an <a href="/help/gyms/#accessories-and-records">accessory</a> is attached to an exercise, every set of it stays out of records; clear the accessories and those sets count again. An accessory never changes a weight, the plate math or the stepper. What counts as a best is explained under <a href="/help/progress/#prs">Personal records</a>.</p>
 
   <h2 id="set-details">Warmups, RPE and to failure</h2>
-  <p>The <strong>Set details</strong> section under the main fields holds the warmup toggle, the <a href="#left-right">Left and right</a> chip, the RIR or RPE numbers and the <strong>To failure</strong> chip. It starts closed. Tap its header to open or close it; it stays that way for every exercise until you change it. When it's closed, the header lists anything that's on, for example "Warm-up" or "RPE 8".</p>
+  <p>The <strong>Set details</strong> section under the main fields holds the warmup toggle, the <a href="/help/set-types/">Type</a> chip, the <a href="#left-right">Left and right</a> chip, the RIR or RPE numbers and the <strong>To failure</strong> chip. It starts closed. Tap its header to open or close it; it stays that way for every exercise until you change it. When it's closed, the header lists anything that's on, for example "Warm-up" or "RPE 8".</p>
 
   <h3 id="set-types">Warmup sets</h3>
   <p>Turn on the <strong>warmup</strong> toggle before you log a set to mark it as a warmup. Warmups show a "W" badge in place of a set number, and are left out of volume, records and progress graphs.</p>
@@ -177,6 +177,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>If you're newer to lifting, RIR is usually easier, since it's a question about reps you've just counted. RPE can tell a hard set from an all-out one, where RIR reads 0 for both. Go with your honest read; most people's scale settles after a month or two.</p>
   <p>The fields are hidden while the warmup toggle is on. Logged values show as small badges on each set row, and you can add or change them later by tapping a past set in your history. Logged RIR also feeds the RPE/RIR trigger of <a href="/help/tools/#deload">deload detection</a>, when that trigger is on.</p>
   <p>A set marked to failure counts as RIR 0 for deload detection.</p>
+
+  <p>For drop sets, myo-reps and rest-pause, use the <strong>Type</strong> chip beside the warmup toggle. See <a href="/help/set-types/">Drop sets, myo-reps and rest-pause</a>.</p>
 
   <h3 id="to-failure">Mark a set to failure</h3>
   <p>Tap the <strong>To failure</strong> chip after the RIR or RPE numbers when you tried a rep and it failed. Tap it again to clear it.</p>
