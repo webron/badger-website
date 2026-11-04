@@ -24,14 +24,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ol>
     <li>Choose <strong>Drop set</strong> from the Type chip. It stays greyed out until the top weight box has a weight (&ldquo;Enter a top weight first&rdquo;).</li>
     <li>Type the top weight and reps in the normal boxes.</li>
-    <li>Tap <strong>+ Add drop (&minus;20%)</strong>. A line appears (<strong>DROP 1</strong>) with a weight 20% lower, rounded to your stepper increment, and a reps box.</li>
+    <li>Tap <strong>+ Add drop</strong>. A line appears (<strong>DROP 1</strong>) with a suggested weight and a reps box. The button reads <strong>+ Add drop (as last time)</strong> when the suggestion comes from an earlier drop set, and <strong>+ Add drop (&minus;20%)</strong> when it takes 20% off the step above.</li>
     <li>Tap the weight or reps box on that line to change it. Tap <strong>+ Add drop</strong> again for the next drop, or the x on a line to remove it.</li>
     <li>Save the set once, after the last drop.</li>
   </ol>
+  <p>As last time repeats the amount you stripped at each step in your latest drop set on the exercise, this workout first. With no earlier drop set, each drop is 20% under the step above. Weights snap to your rack, the machine's steps or the exercise increment. A heavier top weight strips the same amounts. Type over any suggestion.</p>
   <p>There is no pause between drops, and the rest timer starts when you save. A drop set with no drops left saves as a straight set. Save and Update ask for a top weight first, since every drop is measured from it.</p>
 
   <h3 id="add-drop-later">Add a drop to a set you already saved</h3>
-  <p>Tap <strong>+ Drop on set 3</strong> beside <strong>Repeat last</strong>, under the set list, when you did the drops and logged the top set first. It reopens that set as a drop set, adds a line at -20% and puts the cursor in its reps box. Type the reps and update the set.</p>
+  <p>Tap <strong>+ Drop on set 3</strong> beside <strong>Repeat last</strong>, under the set list, when you did the drops and logged the top set first. It reopens that set as a drop set, adds a line with the same suggested weight and puts the cursor in its reps box. Type the reps and update the set.</p>
   <p>A running rest timer carries on as it is.</p>
 
   <h2 id="myo-reps">Log myo-reps</h2>
@@ -78,7 +79,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="in-routines">Plan them in a routine</h2>
   <p>A planned set can carry a type, and the set arrives typed when you start the workout. In the routine editor, tap <strong>+ Set type</strong> on the planned set and choose <strong>Straight</strong>, <strong>Drop set</strong>, <strong>Myo-reps</strong> or <strong>Rest-pause</strong>.</p>
-  <p>A drop set takes a number of drops (<strong>Drops</strong>) and how much each one drops by (<strong>Drop by</strong>).</p>
+  <p>A drop set takes a number of drops (<strong>Drops</strong>) and how much each one drops by (<strong>Drop by</strong>). A planned drop percent replaces the suggestion.</p>
   <p>Myo-reps and rest-pause take an upper number of mini-sets or bouts (<strong>Up to</strong>) and an optional <strong>Pause</strong>. The set then shows a chip such as <strong>Drop set &times;2</strong> or <strong>Myo-reps, up to 4</strong>, and the routine day lists it as <strong>Drop &times;2</strong>, <strong>Myo: up to 4</strong> or <strong>Rest-pause: up to 2</strong>.</p>
   <p>See <a href="/help/routines/#predefined-sets">Plan the sets</a>. You still log the reps after each bout. The plan only sets the type and how many to expect.</p>
 
