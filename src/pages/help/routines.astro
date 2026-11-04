@@ -30,6 +30,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ol>
   <p>The preview also shows an estimated duration. During a <a href="/help/tools/#deload">deload week</a>, a deload bar at the top shows the reductions, with a toggle to use full weights for this workout. An exercise with a progression rule shows the weight its rule proposes; see <a href="/help/progression/#when-a-rule-acts">What the routine log preview shows</a>.</p>
 
+  <h3 id="energy-check-in">Energy check-in and lighter days</h3>
+  <p>With <strong>Energy check-in</strong> on, the preview asks <strong>How is your energy today?</strong> before you start. Tap <strong>Low</strong>, <strong>Usual</strong> or <strong>High</strong>, compared with a usual training day, or tap <strong>Not today</strong> to skip. It's off until you turn it on in <a href="/help/settings/#coaching">Settings → Coaching</a>.</p>
+  <p>Usual and High change nothing. <strong>Low</strong> offers a lighter day:</p>
+  <ul>
+    <li>Each lift's working weight drops to 90%, rounded to a load you can make. Sets and reps stay as planned.</li>
+    <li>A <strong>90%</strong> tag on a lift shows what was reduced. Tap it to put that lift back to its full weight. <strong>Use full weights</strong> in the bar at the top does it for every lift.</li>
+    <li>Assisted exercises, where less weight is harder, keep their weight.</li>
+    <li>During a <a href="/help/tools/#deload">deload week</a> or a comeback week, the weights are already lighter, so there's no offer.</li>
+  </ul>
+  <p>A lighter day doesn't change your program. It isn't a miss, and your rule's weight stays where it was: the next preview reads <em>Holding: last session was a lighter day</em> and judges you against your full weight.</p>
+  <p>Your answer is saved with the workout and shows on the summary under <a href="/help/history/#how-it-felt">How it felt</a>.</p>
+
   <h3>Which day comes next</h3>
   <p>Only one routine is active at a time, and it sits at the top of the routine list with an accent border. On an alternating program (A/B days not tied to weekdays), the Today screen highlights the next day in the sequence and moves it to the top once you finish the one before.</p>
   <p>You can still start any day. If the days are assigned to weekdays, the Today screen highlights today's.</p>
@@ -97,7 +109,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Pick one: setting RPE, RIR or To failure clears the other two.</li>
     <li>Targets are whole numbers, matching how you log RPE. A half-step target in an imported file rounds up.</li>
     <li>Warmups can't have a target.</li>
-    <li>Badger shows the target beside what you log and doesn't compare the two.</li>
+    <li>The target is a guide while you log. The one place Badger compares it with what you logged is <a href="/help/progression/#hold-after-all-out-set">Hold after an all-out set</a>, if you turn it on.</li>
   </ul>
   <h4 id="failure-target">To failure</h4>
   <p>Use the <strong>To failure</strong> chip when the program says to keep going until a rep fails, for example "8-10, to failure". It works with any rep target: an exact number, a range, or an AMRAP. The training screen shows <em>Plan 8-10 to failure</em>.</p>
