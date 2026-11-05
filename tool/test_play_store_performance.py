@@ -55,12 +55,19 @@ class PlayHarness:
     def __init__(self, files: dict[str, list[dict]], today: date, days: int):
         self.files, self.today, self.days = files, today, days
         self.fetched: list[str] = []
+        # What the bucket listing returns; defaults to every object we hold.
+        self.listing = list(files)
 
     def fetch(self, bucket, name, token):
         self.fetched.append(name)
         if name not in self.files:
             raise not_found(name)
         return name  # _play_csv is patched to look the rows up by this
+
+    def list_objects(self, bucket, prefix, token):
+        if isinstance(self.listing, Exception):
+            raise self.listing
+        return [n for n in self.listing if n.startswith(prefix)]
 
     def run(self) -> dict:
         from datetime import timedelta
@@ -71,6 +78,7 @@ class PlayHarness:
                 mock.patch.object(src.os.path, "exists", return_value=True), \
                 mock.patch.object(src, "utc_window", return_value=window), \
                 mock.patch.object(src, "_gcs_object", side_effect=self.fetch), \
+                mock.patch.object(src, "_gcs_list", side_effect=self.list_objects), \
                 mock.patch.object(src, "_play_csv", side_effect=lambda n: self.files[n]):
             return src.play(self.days)
 
@@ -182,6 +190,56 @@ class TrafficSourceFiles(unittest.TestCase):
         h = PlayHarness({NEW % (PKG, "202610"): [new_row("2026-10-01", "Other", 1, 2)]},
                         today=date(2026, 10, 11), days=10)
         self.assertEqual(h.run()["missing"], [f"installs_{PKG}_202610_overview.csv"])
+
+
+class UnknownPrefixDiscovery(unittest.TestCase):
+    """If Google renames the file again, the listing finds it."""
+
+    FUTURE = "stats/store_performance/listing_performance_%s_%s_traffic_source.csv"
+
+    def test_names_put_known_patterns_first_then_listed_ones(self):
+        listing = [self.FUTURE % (PKG, "202610"),
+                   "stats/store_performance/store_performance_%s_202610_country.csv" % PKG,
+                   NEW % (PKG, "202610"), OLD % (PKG, "202609"),
+                   self.FUTURE % (PKG, "202609")]
+        self.assertEqual(
+            src._traffic_source_names("202610", listing),
+            [NEW % (PKG, "202610"), OLD % (PKG, "202610"), self.FUTURE % (PKG, "202610")])
+
+    def test_names_without_a_listing_are_the_two_known_ones(self):
+        self.assertEqual(src._traffic_source_names("202610"),
+                         [NEW % (PKG, "202610"), OLD % (PKG, "202610")])
+
+    def test_reads_a_file_under_an_unknown_prefix(self):
+        h = PlayHarness({
+            self.FUTURE % (PKG, "202610"): [new_row("2026-10-01", "Other", 4, 8)],
+            INSTALLS % (PKG, "202610"): [install_row("2026-10-02")],
+        }, today=date(2026, 10, 11), days=11)
+        p = h.run()
+        self.assertEqual(p["listing_acquisitions"], 4)
+        self.assertEqual(p["listing_visitors"], 8)
+        self.assertEqual(p["missing"], [])
+
+    def test_a_failed_listing_does_not_break_the_known_names(self):
+        h = PlayHarness({
+            NEW % (PKG, "202610"): [new_row("2026-10-01", "Other", 4, 8)],
+            INSTALLS % (PKG, "202610"): [install_row("2026-10-02")],
+        }, today=date(2026, 10, 11), days=11)
+        h.listing = TimeoutError("slow")
+        p = h.run()
+        self.assertEqual(p["listing_acquisitions"], 4)
+        self.assertEqual(p["missing"], [])
+
+    def test_old_and_new_names_in_one_window_with_a_listing(self):
+        h = PlayHarness({
+            OLD % (PKG, "202607"): [old_row("2026-07-31", "Other", 2)],
+            NEW % (PKG, "202608"): [new_row("2026-08-01", "Other", 3, 6)],
+            INSTALLS % (PKG, "202607"): [install_row("2026-07-31")],
+            INSTALLS % (PKG, "202608"): [install_row("2026-08-01")],
+        }, today=date(2026, 8, 5), days=10)
+        p = h.run()
+        self.assertEqual(p["listing_acquisitions"], 5)
+        self.assertEqual(p["missing"], [])
 
 
 class MonthIteration(unittest.TestCase):
