@@ -31,7 +31,7 @@
  * within a couple of pixels of that, which is why the pair reads as balanced
  * despite the different box heights.
  */
-import { APP_STORE_URL, PLAY_URL } from '../store-links';
+import { appStoreUrl, campaignFor, playUrl } from '../store-links';
 
 interface Props {
   /** Only the hero instance takes the #download target the header links to. */
@@ -42,10 +42,12 @@ interface Props {
 
 const { id, lazy = false } = Astro.props;
 const loading = lazy ? 'lazy' : undefined;
+// Each link carries the page it sits on, so the stores can report which page sent an install.
+const campaign = campaignFor(Astro.url.pathname);
 ---
 
 <div class="store-badges" id={id}>
-  <a class="badge-apple" href={APP_STORE_URL} data-store-event="store-appstore">
+  <a class="badge-apple" href={appStoreUrl(campaign)} data-store-event="store-appstore">
     <!-- Apple's artwork, unmodified. Intrinsic 119.66407x40; the width and
          height attributes let the browser reserve the box before the SVG
          arrives, which is what keeps CLS at 0. -->
@@ -58,7 +60,7 @@ const loading = lazy ? 'lazy' : undefined;
     />
   </a>
 
-  <a class="badge-play" href={PLAY_URL} data-store-event="store-play">
+  <a class="badge-play" href={playUrl(campaign)} data-store-event="store-play">
     <!-- Intrinsic 646x250. The attributes are what let the browser reserve the
          box before the PNG arrives, which is what keeps CLS at 0. -->
     <img
