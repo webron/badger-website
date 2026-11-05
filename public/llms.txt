@@ -31,6 +31,7 @@ A .badger file is a single JSON text file you can read in any text editor. It ho
 - [nSuns 531LP in Badger](https://badger.fit/guides/nsuns-app/): The nSuns routine with nine sets off a training max, a 1+ set that sets the weekly increase, and what you still decide.
 - [Madcow 5x5 in Badger](https://badger.fit/guides/madcow-app/): The Madcow routine with a medium, light and heavy day built from one top set per lift, moved once a week.
 - [Starting Strength in Badger](https://badger.fit/guides/starting-strength-app/): The Starting Strength routine with alternating A and B days, weight added each session, and the stall rule.
+- [5/3/1 calculator](https://badger.fit/tools/531-calculator/): Set weights for the four-week 5/3/1 wave and Boring But Big from a training max or a recent best set, with the next cycle's max.
 - [Use your own AI](https://badger.fit/guides/ai/): How to hand an AI your CSV export or a routine file, prompts to start from, and how to import the routine it writes back.
 - [Exporting data](https://badger.fit/help/settings/#export): What the CSV export contains and how to read its columns.
 
