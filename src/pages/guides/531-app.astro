@@ -1,0 +1,166 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * DRAFT (marketing research 2026-11-04, branch site/program-pages). Not on main.
+ *
+ * Program landing page for the 5/3/1 Boring But Big routine. Every program
+ * fact was read from public/programs/531-bbb.badger (exported by the app,
+ * app_version 1.1.15 on 2026-10-23). Re-check against that file whenever the
+ * gallery is regenerated.
+ *
+ * Trademark hygiene as on the 5x5 page: compatibility, never affiliation.
+ */
+
+const description =
+  'Run 5/3/1 Boring But Big in Badger: a training max per lift, every set as a percentage of it, the four-week wave, and a training max that rises after each cycle. What it does and what you decide.';
+
+const faq = [
+  {
+    q: 'Is there a 5/3/1 app that does the percentages for me?',
+    a: 'Yes. Badger keeps a training max per lift, writes every working set as a percentage of it, and rounds each load to plates your gym has. You set the four training maxes once before the first workout.',
+  },
+  {
+    q: 'Does Badger raise my training max after a cycle?',
+    a: 'Yes. After the four-week cycle it adds 2.5 kg to press and bench and 5 kg to squat and deadlift, unless a plus set fell short of the minimum. In that case the training max holds and the preview says so.',
+  },
+  {
+    q: 'Does it include the Boring But Big sets?',
+    a: 'Yes. After the main lift each day, the routine has five sets of ten of the same lift at 60% of the training max, plus accessories.',
+  },
+  {
+    q: 'Does it work in pounds?',
+    a: 'Yes. Weights can be logged in kilograms or pounds, and per exercise if you want.',
+  },
+  {
+    q: 'What does Badger cost?',
+    a: 'Nothing. There is no account and no cap on routines or history.',
+  },
+];
+---
+
+<HelpLayout title="5/3/1 app and tracker" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="5/3/1 Boring But Big in Badger"
+    description={description}
+    dateModified="2026-11-04"
+    about={['5/3/1', 'Boring But Big']}
+    breadcrumb={[{ name: 'Guides', url: '/guides/' }]}
+  />
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    })}
+  />
+
+  <h1>5/3/1 Boring But Big in Badger</h1>
+
+  <p>
+    Badger runs the 5/3/1 wave from a training max and moves that number up after each cycle. You
+    set the four maxes once. This page covers what the routine contains, what you still decide, and
+    how to bring your history across.
+  </p>
+
+  <h2 id="whats-in-the-box">What the routine contains</h2>
+
+  <ul>
+    <li>
+      <strong>Four days, one main lift each.</strong> Press day, deadlift day, bench day and squat
+      day, set for Monday, Wednesday, Thursday and Saturday. You can move them.
+    </li>
+    <li>
+      <strong>The four-week wave.</strong> Week 1 is 65, 75 and 85% for fives. Week 2 is 70, 80 and
+      90% for threes. Week 3 is 75, 85 and 95% for 5, 3 and 1. Week 4 is the light week at 40, 50
+      and 60%. The top set of weeks 1 to 3 is a plus set: take it as far as you can.
+    </li>
+    <li>
+      <strong>Boring But Big.</strong> After the main lift, five sets of ten of the same lift at 60%
+      of the training max, then accessories such as lateral raises, curls, leg curls and rows.
+    </li>
+    <li>
+      <strong>Loads your plates can make.</strong> Each percentage is turned into a weight using the
+      bar and plates you have set up, and the plate calculator shows what goes on each side.
+    </li>
+    <li>
+      <strong>The training max moves itself.</strong> After the four weeks it adds 2.5 kg to press
+      and bench and 5 kg to squat and deadlift. If a plus set missed the minimum, the max holds for
+      that cycle and the preview says why.
+    </li>
+  </ul>
+
+  <h2 id="what-you-decide">What you still decide</h2>
+
+  <ul>
+    <li>
+      <strong>The training maxes.</strong> Set one for each of the four lifts before your first
+      workout. The usual advice is 85 to 90% of a recent best, and the number is yours to pick. See
+      <a href="/help/progression/#training-max">training max</a>.
+    </li>
+    <li>
+      <strong>Which week you are on.</strong> Starting mid-cycle or coming back from a break? Set the
+      week by hand.
+    </li>
+    <li>
+      <strong>Every weight.</strong> The proposal is a starting point. Type over it and the rule
+      keeps running.
+    </li>
+  </ul>
+
+  <div class="callout">
+    <span class="caps">The short version</span>
+    <p>
+      Set four training maxes, start week 1, and Badger shows the weight for every set, then raises
+      the maxes when the cycle ends.
+    </p>
+  </div>
+
+  <h2 id="get-it">Get the routine</h2>
+
+  <p>
+    In the app, go to <strong>You &rarr; Routines</strong> and open the Intermediate Programs folder.
+    Or download <code>531-bbb.badger</code> from the <a href="/programs/">programs page</a> and open
+    it on your phone. nSuns 531LP ships the same way if you want a higher-volume version.
+  </p>
+
+  <h2 id="import">Bringing your history over</h2>
+
+  <p>
+    Export a CSV from Strong, Hevy, FitNotes or StrongLifts, then use <strong>Settings &rarr; Backup,
+    import and export &rarr; Import from another app</strong>. The details are in
+    <a href="/guides/switching/">switching from another app</a>.
+  </p>
+
+  <h2 id="questions">Questions</h2>
+
+  {faq.map((f) => (
+    <>
+      <h3>{f.q}</h3>
+      <p>{f.a}</p>
+    </>
+  ))}
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    5/3/1 is the work of Jim Wendler. Badger is not affiliated with, endorsed by or connected to him
+    or to his publisher. This page describes a routine written for Badger from the publicly known
+    shape of the program.
+  </p>
+</HelpLayout>
+
+<style>
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>
