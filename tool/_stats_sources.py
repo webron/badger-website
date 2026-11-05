@@ -334,16 +334,25 @@ def _months_between(start: date, end: date) -> list[str]:
     return out
 
 
-def _traffic_source_names(month: str) -> list[str]:
+def _traffic_source_names(month: str, listed: list[str] | tuple[str, ...] = ()) -> list[str]:
     """Candidate object names for a month's traffic-source report, newest first.
 
     Google stopped writing `total_store_performance_*` after 2026-08 and now
     writes `store_performance_*` (which also carries listing visitors). August
     exists under both names; the newer one is finer-grained, so it wins and the
     old one is only a fallback for months that predate it.
+
+    `listed` is the bucket's own listing of stats/store_performance/. Any other
+    object that ends in this month's traffic-source suffix is tried after the two
+    known names, so the next time Google changes the prefix the report still finds
+    the file instead of going quiet. The known names stay first and keep their
+    order, which is also what the "missing" note reports.
     """
     base = f"stats/store_performance/%s_{PLAY_PACKAGE}_{month}_traffic_source.csv"
-    return [base % "store_performance", base % "total_store_performance"]
+    names = [base % "store_performance", base % "total_store_performance"]
+    suffix = f"_{PLAY_PACKAGE}_{month}_traffic_source.csv"
+    names.extend(n for n in sorted(listed) if n.endswith(suffix) and n not in names)
+    return names
 
 
 def _acquisitions(row: dict) -> int:
@@ -391,6 +400,11 @@ def play(days: int) -> dict:
     start, today = utc_window(days)
     months = _months_between(start, today)
 
+    try:
+        listed = _gcs_list(PLAY_BUCKET, "stats/store_performance/", token)
+    except Exception:  # noqa: BLE001 - the two known names still work without it
+        listed = []
+
     installs: list[dict] = []
     sources: list[dict] = []
     missing = []
@@ -398,7 +412,7 @@ def play(days: int) -> dict:
         # Each entry is the object names to try, in order; the first that exists wins.
         for names, sink in (
             ([f"stats/installs/installs_{PLAY_PACKAGE}_{month}_overview.csv"], installs),
-            (_traffic_source_names(month), sources),
+            (_traffic_source_names(month, listed), sources),
         ):
             for name in names:
                 try:
