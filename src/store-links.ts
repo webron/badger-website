@@ -34,7 +34,7 @@ export const TESTFLIGHT_URL = 'https://testflight.apple.com/join/wqxnbujx';
  * Membership details). Empty until Ron supplies it: Apple ignores a campaign
  * token without it, so `appStoreUrl` adds nothing while this is empty.
  */
-export const APPLE_PROVIDER_TOKEN = '';
+export const APPLE_PROVIDER_TOKEN = '129069787';
 
 /**
  * A page path as a short campaign name: "/" is "home", "/guides/gzclp-app/"
