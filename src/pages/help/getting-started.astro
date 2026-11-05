@@ -113,8 +113,14 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
 
   <h2 id="home-screen-widget">Home-screen and lock-screen widgets</h2>
   <p>The <strong>Journal</strong> widget shows this week's attendance (a dot for each day you trained), your last entry and, if you follow a routine, the next day to train. With nothing logged yet, it invites you to start a workout. Tap it to open the app.</p>
-  <h3>Android</h3>
-  <p>Long-press an empty spot on your home screen, tap <strong>Widgets</strong>, find Badger, and drag the <strong>Journal</strong> widget into place. It starts at about 4×2 and resizes freely.</p>
+  <h3 id="android-widget">Android</h3>
+  <p>Long-press an empty spot on your home screen, tap <strong>Widgets</strong>, find Badger, and drag a <strong>Journal</strong> widget into place. It comes in two sizes. The 4×2 widget shows your week and last entry beside the next day to train. The 2×2 widget shows your week and a button. Both resize freely.</p>
+  <p>Both sizes have one button, and it changes with what you are doing:</p>
+  <ul>
+    <li><strong>Start</strong> opens the next day of your routine, ready to begin. If your routine puts two days on the same weekday, Start moves to the second one after you finish the first.</li>
+    <li><strong>Resume</strong> appears while a workout is in progress and takes you back to it.</li>
+    <li><strong>New workout</strong> appears when you don't follow a routine and opens the exercise list for a new workout.</li>
+  </ul>
   <h3 id="iphone-widgets">iPhone</h3>
   <p>Touch and hold an empty spot on your Home Screen, tap <strong>Edit</strong>, then <strong>Add Widget</strong>, and search for Badger. The small size shows your week and the next day to train. The medium size adds your last entry.</p>
   <p>For the Lock Screen, touch and hold it, tap <strong>Customize</strong>, choose the Lock Screen, and tap the widget area below the time. Three shapes are offered:</p>
@@ -123,8 +129,9 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
     <li><strong>Rectangular</strong> - your week, your last entry and the next day.</li>
     <li><strong>Above the time</strong> - the next day to train, or this week's count when you don't follow a routine.</li>
   </ul>
-  <p>While your active routine is a program that runs in weeks, such as 5/3/1, the widget adds a line under the rest: <strong>5/3/1 BBB · Week 2 of 4 · cycle 4</strong>. Android shows it at every size, and iPhone shows it on the medium size when there is room. A program already running counts from cycle 1.</p>
-  <p>The widget refreshes when you open Badger and after you finish a workout. It follows your light or dark theme and your accent color. It turns to the new day at midnight and starts a fresh week on the first day of the week you chose in Settings → Display and behavior, even if you have not opened Badger for days.</p>
+  <p>While your active routine is a program that runs in weeks, such as 5/3/1, the widget adds a line under the rest: <strong>5/3/1 BBB · Week 2 of 4 · cycle 4</strong>. Android shows it on the 4×2 size, and iPhone shows it on the medium size when there is room. A program already running counts from cycle 1.</p>
+  <p>The widget refreshes when you open Badger, when you leave it and after you finish a workout. It follows your light or dark theme and your accent color.</p>
+  <p>It turns to the new day at midnight and starts a fresh week on the first day of the week you chose in Settings → Display and behavior, even if you have not opened Badger for days.</p>
 
   <h2>Key terms</h2>
   <ul>
