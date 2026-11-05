@@ -1,4 +1,5 @@
 ---
+import HelpClip from '../../components/HelpClip.astro';
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
@@ -64,6 +65,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="logging-a-set">Log a set</h2>
   <p>The Track tab shows the input fields at the top and your logged sets below. The fields follow the exercise type: weight and reps for a barbell lift, time for a plank. They start from the first working set of your last session of that exercise, and from zero if you've never done it.</p>
+  <HelpClip id="log-a-set" alt="Logging a set in Badger: the weight and reps are set with the plus and minus buttons, Save set logs it, and Repeat last copies it for the next set." />
   <ol>
     <li>Enter the weight and reps (or time, distance) with the <strong>+/−</strong> buttons, or tap a field and type. Hold a button to keep counting; it speeds up the longer you hold.</li>
     <li>Tap <strong>Save set</strong>.</li>
@@ -212,6 +214,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="rest-timer">Rest timer</h2>
   <p>The rest timer shows as a chip near the top of the training screen. It counts down after you save a set, then plays a sound, vibrates, or both (set this in Settings → Timers and sounds). It doesn't start after the last working set of your last exercise, or on its own after a cardio exercise (one in the Cardio category, or one logged as Distance + Time or Distance only). Tap the chip to start one by hand.</p>
+  <HelpClip id="rest-timer" alt="The rest timer in Badger: it starts when a set is saved, and tapping it opens the sheet with Stop, +30s and Restart." />
   <p>The first time a rest or set timer runs, Badger asks to send notifications. Tap <strong>Allow</strong> to get an alert when a timer ends with the phone locked, or <strong>Not now</strong> to skip it.</p>
   <p>Tap the chip to open the rest timer sheet:</p>
   <ul>

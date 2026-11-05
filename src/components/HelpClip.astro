@@ -1,0 +1,189 @@
+---
+/**
+ * A short, muted, looping clip of the app for a help page.
+ *
+ * The clips are recorded from scripted flows in the app repo (badger-fit
+ * tools/video/, one folder per clip) on the seeded demo dataset, so a clip is
+ * re-recorded from its script when the app changes, never edited by hand.
+ * `tools/video/video.py stale <range>` there lists the clips a release touched.
+ *
+ * Files live in /assets/help-video/<id>.{webm,mp4,vtt,jpg}. Nothing downloads
+ * until the clip nears the viewport (preload="none" plus the observer below),
+ * and it pauses when it scrolls away. With reduced motion requested it never
+ * autoplays; the button starts it.
+ */
+interface Props {
+  id: string;
+  alt: string;
+  width?: number;
+  height?: number;
+}
+const { id, alt, width = 540, height = 1088 } = Astro.props;
+const base = `/assets/help-video/${id}`;
+---
+
+<figure class="help-clip">
+  <div class="clip-frame">
+    <video
+      data-help-clip
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster={`${base}.jpg`}
+      width={width}
+      height={height}
+      aria-label={alt}
+    >
+      <source src={`${base}.webm`} type="video/webm" />
+      <source src={`${base}.mp4`} type="video/mp4" />
+      <track kind="captions" src={`${base}.vtt`} srclang="en" label="English" default />
+    </video>
+    <p class="clip-caption" data-help-clip-caption aria-hidden="true"></p>
+    <button type="button" class="clip-toggle" data-help-clip-toggle aria-label="Pause video">
+      <span aria-hidden="true" class="icon-pause">❚❚</span>
+      <span aria-hidden="true" class="icon-play">▶</span>
+    </button>
+  </div>
+</figure>
+
+<script is:inline>
+  (function () {
+    if (window.__helpClipsWired) return;
+    window.__helpClipsWired = true;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function setState(video, playing) {
+      var btn = video.parentElement.querySelector('[data-help-clip-toggle]');
+      if (!btn) return;
+      btn.classList.toggle('is-paused', !playing);
+      btn.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
+    }
+
+    function wire() {
+      var videos = document.querySelectorAll('video[data-help-clip]');
+      videos.forEach(function (video) {
+        // The cues are drawn in our own caption strip: the browser's native cue
+        // box wraps badly in a 240px frame. Without script the native one shows.
+        var track = video.textTracks && video.textTracks[0];
+        var caption = video.parentElement.querySelector('[data-help-clip-caption]');
+        if (track && caption) {
+          track.mode = 'hidden';
+          track.addEventListener('cuechange', function () {
+            var cue = track.activeCues && track.activeCues[0];
+            caption.textContent = cue ? cue.text : '';
+            caption.classList.toggle('is-empty', !cue);
+          });
+        }
+        video.addEventListener('play', function () { setState(video, true); });
+        video.addEventListener('pause', function () { setState(video, false); });
+        setState(video, false);
+        var btn = video.parentElement.querySelector('[data-help-clip-toggle]');
+        btn.addEventListener('click', function () {
+          video.dataset.userPaused = video.paused ? '' : '1';
+          if (video.paused) video.play(); else video.pause();
+        });
+      });
+      if (reduce || !('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var v = e.target;
+          if (e.isIntersecting) {
+            if (v.dataset.userPaused !== '1') v.play().catch(function () {});
+          } else if (!v.paused) {
+            v.pause();
+          }
+        });
+      }, { rootMargin: '200px 0px', threshold: 0.25 });
+      videos.forEach(function (v) { io.observe(v); });
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+    else wire();
+  })();
+</script>
+
+<style>
+  .help-clip {
+    margin: 1.25rem 0 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* The same frame as the homepage phones: an ink border, radius 26, no device
+     cosplay. The clip has the phone's own status and gesture bars cropped off. */
+  .clip-frame {
+    position: relative;
+    width: 240px;
+    max-width: 70vw;
+    border: 1.5px solid var(--ink);
+    border-radius: 26px;
+    overflow: hidden;
+    background: var(--bg);
+    box-shadow: 0 10px 34px rgba(38, 34, 25, 0.14);
+  }
+
+  video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  video::cue {
+    font-size: 13px;
+    background: rgba(20, 18, 14, 0.82);
+    color: #fff;
+  }
+
+  .clip-caption {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 34px;
+    margin: 0;
+    padding: 7px 10px;
+    border-radius: 10px;
+    background: rgba(20, 18, 14, 0.84);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.35;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .clip-caption:empty,
+  .clip-caption.is-empty {
+    display: none;
+  }
+
+  .clip-toggle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(20, 18, 14, 0.55);
+    color: #fff;
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+
+  .clip-toggle:focus-visible {
+    outline: 2px solid var(--accent, #2e7e90);
+    outline-offset: 2px;
+  }
+
+  .clip-toggle .icon-play,
+  .clip-toggle.is-paused .icon-pause {
+    display: none;
+  }
+
+  .clip-toggle.is-paused .icon-play {
+    display: inline;
+  }
+</style>
