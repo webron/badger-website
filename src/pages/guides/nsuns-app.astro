@@ -1,0 +1,175 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * Program landing page, published 2026-11-05, same shape as gzclp-app.astro.
+ * Every program fact below was read from public/programs/nsuns-531lp.badger (exported by
+ * the app, app_version 1.1.15 on 2026-10-23), not from memory. Re-check it
+ * against that file whenever the gallery is regenerated.
+ *
+ * The page names no author: neither the .badger file nor any page on this site
+ * names one. Compatibility only, never affiliation.
+ */
+
+const description =
+  'Run nSuns 531LP in Badger: nine sets off a training max on the first lift, a 1+ set that sets the weekly increase, and eight sets on the second lift. What the routine does and what you decide.';
+
+const faq = [
+  {
+    q: 'Is there an nSuns app that does the percentages for me?',
+    a: 'Yes. Badger ships nSuns 531LP with every working set written as a percentage of a training max, and each load is rounded to plates your gym has. You set a training max for each lift before the first session.',
+  },
+  {
+    q: 'How does the training max go up in nSuns?',
+    a: 'The first lift each day has a 1+ set that drives progression. Log 0 or 1 reps and the training max holds. Log 2 or 3 and it adds 2.5 kg, 4 or 5 adds 5 kg, and 6 or more adds 7.5 kg. The next session shows the rule that fired.',
+  },
+  {
+    q: 'Does the Badger nSuns template include the second lift each day?',
+    a: 'Yes. Each day has a second lift with eight sets, six of them at 70%. When every set is met, its training max adds 2.5 kg, or 5 kg for sumo deadlift and back squat.',
+  },
+  {
+    q: 'How do I get the nSuns routine?',
+    a: 'It is in the app under You, Routines, in the Intermediate folder. You can also download nsuns-531lp.badger from the programs page and open it on your phone.',
+  },
+  {
+    q: 'What does Badger cost?',
+    a: 'Nothing. There is no account and no cap on routines or history.',
+  },
+];
+---
+
+<HelpLayout title="nSuns 531LP app and tracker" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="nSuns 531LP in Badger"
+    description={description}
+    dateModified="2026-11-05"
+    about={['nSuns 531LP', '5/3/1']}
+    breadcrumb={[{ name: 'Guides', url: '/guides/' }]}
+  />
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    })}
+  />
+
+  <h1>nSuns 531LP in Badger</h1>
+
+  <p>
+    Badger runs nSuns 531LP from a training max and moves that number up from your reps on the 1+
+    set. This page covers what the routine contains, what you still decide, and how to bring your
+    history across.
+  </p>
+
+  <h2 id="whats-in-the-box">What the routine contains</h2>
+
+  <ul>
+    <li>
+      <strong>Four days, two main lifts each.</strong> Monday is bench, then overhead press. Tuesday
+      is squat, then sumo deadlift. Thursday is overhead press, then incline bench. Friday is
+      deadlift, then back squat. You can move the days.
+    </li>
+    <li>
+      <strong>Nine sets on the first lift.</strong> 75% for 5, 85% for 3, then 95% for a 1+ set.
+      After that come 90% for 3, 85% for 3, 80% for 3, 75% for 5, 70% for 5 and 65% for a 5+ set.
+      Both plus sets are take-it-as-far-as-you-can sets, and the 95% set is the one that drives
+      progression.
+    </li>
+    <li>
+      <strong>The first lift sets the increase.</strong> Log 0 or 1 reps on the 1+ set and the
+      training max holds. Log 2 or 3 and it adds 2.5 kg, 4 or 5 adds 5 kg, and 6 or more adds 7.5
+      kg. The check runs once a week.
+    </li>
+    <li>
+      <strong>Eight sets on the second lift.</strong> 50% for 6, 60% for 5, 70% for 3, then 70% for
+      5, 7, 4, 6 and 8. When every set is met, its training max adds 2.5 kg. For sumo deadlift and
+      back squat it adds 5 kg.
+    </li>
+    <li>
+      <strong>Accessories.</strong> Three sets of ten each. Monday has chin-ups and barbell curls,
+      Tuesday leg press and standing calf raises, Thursday lat pulldown and dumbbell lateral
+      raises, and Friday face pulls and cable tricep pushdowns.
+    </li>
+  </ul>
+
+  <h2 id="what-you-decide">What you still decide</h2>
+
+  <ul>
+    <li>
+      <strong>The training maxes.</strong> Set one for each lift before your first session. Enter a
+      one-rep max and Badger stores 90% of it, or type a training max directly. See
+      <a href="/help/progression/#training-max">training max</a>.
+    </li>
+    <li>
+      <strong>Your reps on the 1+ set.</strong> Log the number you got. The
+      <a href="/help/progression/#driver-set">driver set</a> reads it, so a 1+ taken to 5 and one
+      stopped at 1 lead to different weeks.
+    </li>
+    <li>
+      <strong>Every weight.</strong> The proposal is a starting point. Type over it and the rule
+      keeps running. See <a href="/help/progression/#rules">progression rules</a>.
+    </li>
+    <li>
+      <strong>Accessories.</strong> The accessory slots are a starting point. Swap them in the
+      routine editor.
+    </li>
+  </ul>
+
+  <div class="callout">
+    <span class="caps">The short version</span>
+    <p>
+      Set your training maxes and train. Log your reps on the 1+ set and Badger works out the next
+      week's numbers.
+    </p>
+  </div>
+
+  <h2 id="get-it">Get the routine</h2>
+
+  <p>
+    In the app, go to <strong>You &rarr; Routines</strong> and open the Intermediate folder. Or download
+    <code>nsuns-531lp.badger</code> from the <a href="/programs/">programs page</a> and open it on your phone.
+    The file is plain text you can read first; the <a href="/badger-format/">format is documented</a>.
+  </p>
+
+  <h2 id="import">Bringing your history over</h2>
+
+  <p>
+    Export a CSV from Strong, Hevy, FitNotes or StrongLifts, then use <strong>Settings &rarr; Backup,
+    import and export &rarr; Import from another app</strong>. Steps and what each importer carries
+    are in <a href="/guides/switching/">switching from another app</a>. Import the history first, set
+    the nSuns 531LP routine active after.
+  </p>
+
+  <h2 id="questions">Questions</h2>
+
+  {faq.map((f) => (
+    <>
+      <h3>{f.q}</h3>
+      <p>{f.a}</p>
+    </>
+  ))}
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    nSuns 531LP is a published training program. Badger is not affiliated with, endorsed by or
+    connected to its authors. This page describes a routine written for Badger from the publicly
+    known shape of the program.
+  </p>
+</HelpLayout>
+
+<style>
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>

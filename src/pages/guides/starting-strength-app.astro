@@ -1,0 +1,168 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * Program landing page, published 2026-11-05, same shape as gzclp-app.astro.
+ * Every program fact below was read from public/programs/starting-strength.badger (exported by
+ * the app, app_version 1.1.15 on 2026-10-23), not from memory. Re-check it
+ * against that file whenever the gallery is regenerated.
+ *
+ * The .badger file's own routine notes name Mark Rippetoe as the program's
+ * author, so the fine print does too. Compatibility only, never affiliation.
+ */
+
+const description =
+  'Run Starting Strength in Badger: alternating A and B days, three sets of five, and a rule on each lift that adds weight every session and handles a stall. What it contains and what you decide.';
+
+const faq = [
+  {
+    q: 'Is there a Starting Strength app that adds the weight for me?',
+    a: 'Yes. Badger ships Starting Strength with a progression rule on each lift. Hit every set and the next session proposes 5 kg more for squat and deadlift, or 2.5 kg more for bench, press and row. You can type over any proposed weight.',
+  },
+  {
+    q: 'What happens when I stall in Starting Strength?',
+    a: 'After three misses in a row on a lift, its weight drops 10% and its step halves. Until then a miss holds the weight where it is.',
+  },
+  {
+    q: 'What are Workout A and Workout B in Badger?',
+    a: 'Workout A is squat, bench press and deadlift. Workout B is squat, overhead press and barbell row. You alternate them across the three training days each week.',
+  },
+  {
+    q: 'How do I get the Starting Strength routine?',
+    a: 'It is in the app under You, Routines, in the Beginner folder. You can also download starting-strength.badger from the programs page and open it on your phone.',
+  },
+  {
+    q: 'What does Badger cost?',
+    a: 'Nothing. There is no account and no cap on routines or history.',
+  },
+];
+---
+
+<HelpLayout title="Starting Strength app and tracker" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="Starting Strength in Badger"
+    description={description}
+    dateModified="2026-11-05"
+    about={['Starting Strength', 'Linear progression']}
+    breadcrumb={[{ name: 'Guides', url: '/guides/' }]}
+  />
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    })}
+  />
+
+  <h1>Starting Strength in Badger</h1>
+
+  <p>
+    Badger runs Starting Strength and adds the weight for you each session. Hit your sets and the
+    next workout proposes the heavier number, with the rule shown above the sets. This page covers
+    what the routine contains, what you still decide, and how to bring your history across.
+  </p>
+
+  <h2 id="whats-in-the-box">What the routine contains</h2>
+
+  <ul>
+    <li>
+      <strong>Two alternating days.</strong> Workout A and Workout B, three days a week. The days
+      are not pinned to weekdays, so you pick which ones.
+    </li>
+    <li>
+      <strong>Workout A.</strong> Squat for three sets of five, bench press for three sets of five
+      and deadlift for one set of five.
+    </li>
+    <li>
+      <strong>Workout B.</strong> Squat for three sets of five, overhead press for three sets of
+      five and barbell row for three sets of five.
+    </li>
+    <li>
+      <strong>Weight added each session.</strong> When every set is met, squat and deadlift add 5
+      kg and bench, press and row add 2.5 kg.
+    </li>
+    <li>
+      <strong>Stalls.</strong> After three misses in a row on a lift, its weight drops 10% and its
+      step halves. Until then a miss holds the weight where it is.
+    </li>
+    <li>
+      <strong>Squat is one lift on both days.</strong> Workout A and Workout B share one weight and
+      one miss count for it. See
+      <a href="/help/progression/#progressing-together">lifts that progress together</a>.
+    </li>
+  </ul>
+
+  <h2 id="what-you-decide">What you still decide</h2>
+
+  <ul>
+    <li>
+      <strong>Starting weights.</strong> The routine carries the rep scheme only. Enter what you
+      lift in the first session; after that Badger proposes each weight from the last one.
+    </li>
+    <li>
+      <strong>Every proposal is editable.</strong> The preview shows the weight and the reason. Type
+      your own weight and the rule keeps running. See
+      <a href="/help/progression/#rules">progression rules</a>.
+    </li>
+    <li>
+      <strong>Which days.</strong> Pick the three weekdays that suit you and alternate A and B.
+    </li>
+  </ul>
+
+  <div class="callout">
+    <span class="caps">The short version</span>
+    <p>
+      Open the routine, enter your starting weights, and alternate A and B. Badger proposes each
+      next weight and handles the stall rule.
+    </p>
+  </div>
+
+  <h2 id="get-it">Get the routine</h2>
+
+  <p>
+    In the app, go to <strong>You &rarr; Routines</strong> and open the Beginner folder. Or download
+    <code>starting-strength.badger</code> from the <a href="/programs/">programs page</a> and open it on your phone.
+    The file is plain text you can read first; the <a href="/badger-format/">format is documented</a>.
+  </p>
+
+  <h2 id="import">Bringing your history over</h2>
+
+  <p>
+    Export a CSV from Strong, Hevy, FitNotes or StrongLifts, then use <strong>Settings &rarr; Backup,
+    import and export &rarr; Import from another app</strong>. Steps and what each importer carries
+    are in <a href="/guides/switching/">switching from another app</a>. Import the history first, set
+    the Starting Strength routine active after.
+  </p>
+
+  <h2 id="questions">Questions</h2>
+
+  {faq.map((f) => (
+    <>
+      <h3>{f.q}</h3>
+      <p>{f.a}</p>
+    </>
+  ))}
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    Starting Strength is Mark Rippetoe's program. Badger is not affiliated with, endorsed by or
+    connected to him. This page describes a routine written for Badger from the publicly known
+    shape of the program.
+  </p>
+</HelpLayout>
+
+<style>
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>
