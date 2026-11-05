@@ -26,6 +26,8 @@ A .badger file is a single JSON text file you can read in any text editor. It ho
 
 ## Using an AI with Badger
 
+- [GZCLP in Badger](https://badger.fit/guides/gzclp-app/): The GZCLP routine with its T1 and T2 stage ladders written as rules, what it contains and what you still decide.
+- [5/3/1 Boring But Big in Badger](https://badger.fit/guides/531-app/): The 5/3/1 wave from a training max, the Boring But Big sets, and how the training max rises after each cycle.
 - [Use your own AI](https://badger.fit/guides/ai/): How to hand an AI your CSV export or a routine file, prompts to start from, and how to import the routine it writes back.
 - [Exporting data](https://badger.fit/help/settings/#export): What the CSV export contains and how to read its columns.
 

@@ -1,0 +1,170 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * DRAFT (marketing research 2026-11-04, branch site/program-pages). Not on main.
+ *
+ * Program landing page, same shape as stronglifts-5x5-tracker.astro: what the
+ * built-in routine does, what the lifter still decides, how history comes over.
+ * Every program fact below was read from public/programs/gzclp.badger (exported
+ * by the app, app_version 1.1.15 on 2026-10-23), not from memory. Re-check it
+ * against that file whenever the gallery is regenerated.
+ *
+ * GZCLP is Cody Lefever's program. The page describes compatibility and says
+ * nothing about affiliation, as the 5x5 page does.
+ */
+
+const description =
+  'Run GZCLP in Badger: the T1, T2 and T3 stage ladders are written as rules, so a missed lift moves to its next stage and says so. What the template does and what you still decide.';
+
+const faq = [
+  {
+    q: 'Is there a GZCLP app that moves the stages for me?',
+    a: 'Yes. Badger ships GZCLP with the T1 and T2 stage ladders written as progression rules. When you miss a lift, the next session proposes the next stage (for T1, 5x3, then 6x2, then 10x1) and shows the line that fired. You can type over any proposed weight.',
+  },
+  {
+    q: 'Does the Badger GZCLP template include the AMRAP sets?',
+    a: 'Yes. The last set of every T1 stage, and of T3, is marked as a set to take as far as you can. On T3 the weight goes up once that set reaches 25 reps.',
+  },
+  {
+    q: 'How do I get the GZCLP routine?',
+    a: 'It is in the app under You, Routines, in the Intermediate Programs folder. You can also download gzclp.badger from the programs page and open it on your phone.',
+  },
+  {
+    q: 'Can I bring my history from Strong, Hevy or FitNotes?',
+    a: 'Yes. Badger imports CSV exports from Strong, Hevy, FitNotes and StrongLifts, then you set the GZCLP routine active.',
+  },
+  {
+    q: 'What does Badger cost?',
+    a: 'Nothing. There is no account and no cap on routines or history.',
+  },
+];
+---
+
+<HelpLayout title="GZCLP app and tracker" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="GZCLP in Badger"
+    description={description}
+    dateModified="2026-11-04"
+    about={['GZCLP', 'Linear progression']}
+    breadcrumb={[{ name: 'Guides', url: '/guides/' }]}
+  />
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    })}
+  />
+
+  <h1>GZCLP in Badger</h1>
+
+  <p>
+    Badger runs GZCLP and keeps the stage bookkeeping for you. Miss a lift and the next session
+    proposes the next stage, with the rule that fired shown above the sets. This page covers what
+    the built-in routine contains, what you still decide, and how to bring your history across.
+  </p>
+
+  <h2 id="whats-in-the-box">What the GZCLP routine contains</h2>
+
+  <ul>
+    <li>
+      <strong>Four days, three tiers each.</strong> Day 1 is squat (T1), bench (T2) and lat
+      pulldown (T3). Day 2 is overhead press, deadlift and dumbbell row. Day 3 is bench, squat and
+      lat pulldown. Day 4 is deadlift, overhead press and dumbbell row. The days are set for Monday,
+      Tuesday, Thursday and Friday, and you can move them.
+    </li>
+    <li>
+      <strong>T1 stages.</strong> Five sets of three, then six sets of two, then ten sets of one.
+      The last set of each stage is an as-many-as-you-can set. Miss any set and the lift moves to
+      the next stage. Missing at the last stage restarts it at 5x3 with 10% off the weight.
+    </li>
+    <li>
+      <strong>T2 stages.</strong> Three sets of ten, then three of eight, then three of six, with
+      the same move-on-a-miss rule.
+    </li>
+    <li>
+      <strong>T3.</strong> Three sets of fifteen with the last set as many as you can. The weight
+      goes up when that set reaches 25 reps.
+    </li>
+    <li>
+      <strong>Step sizes.</strong> The routine adds 5 kg to squat and deadlift and 2.5 kg to bench
+      and press when every set is met. Tap any number in a rule to change it.
+    </li>
+  </ul>
+
+  <h2 id="what-you-decide">What you still decide</h2>
+
+  <ul>
+    <li>
+      <strong>Starting weights.</strong> The routine carries the rep scheme only. Enter what you
+      lift in the first session; after that Badger proposes each weight from the last one.
+    </li>
+    <li>
+      <strong>Every proposal is editable.</strong> The preview shows the weight and the reason, for
+      example the stage a lift is on. Type your own weight and the rule keeps running. See
+      <a href="/help/progression/#rules">progression rules</a>.
+    </li>
+    <li>
+      <strong>Accessories.</strong> The T3 slots are a starting point. Swap them in the routine
+      editor.
+    </li>
+  </ul>
+
+  <div class="callout">
+    <span class="caps">The short version</span>
+    <p>
+      Open the routine, enter your starting weights, and train. Badger tracks each lift's stage and
+      proposes the next session.
+    </p>
+  </div>
+
+  <h2 id="get-it">Get the routine</h2>
+
+  <p>
+    In the app, go to <strong>You &rarr; Routines</strong> and open the Intermediate Programs folder.
+    Or download <code>gzclp.badger</code> from the <a href="/programs/">programs page</a> and open it
+    on your phone. The file is plain text you can read first; the
+    <a href="/badger-format/">format is documented</a>.
+  </p>
+
+  <h2 id="import">Bringing your history over</h2>
+
+  <p>
+    Export a CSV from Strong, Hevy, FitNotes or StrongLifts, then use <strong>Settings &rarr; Backup,
+    import and export &rarr; Import from another app</strong>. Steps and what each importer carries
+    are in <a href="/guides/switching/">switching from another app</a>. Import the history first, set
+    the GZCLP routine active after.
+  </p>
+
+  <h2 id="questions">Questions</h2>
+
+  {faq.map((f) => (
+    <>
+      <h3>{f.q}</h3>
+      <p>{f.a}</p>
+    </>
+  ))}
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    GZCLP was created by Cody Lefever. Badger is not affiliated with, endorsed by or connected to him.
+    This page describes a routine written for Badger from the publicly known shape of the program.
+  </p>
+</HelpLayout>
+
+<style>
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>
