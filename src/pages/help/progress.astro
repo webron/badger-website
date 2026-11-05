@@ -140,6 +140,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Your estimated 1RM trend is flat or falling (rising less than 0.5% per session).</li>
     <li>The sessions it looks at span at least 3 weeks.</li>
   </ul>
+  <h3 id="plateau-effort">When you log effort</h3>
+  <p>If at least half of those sessions have an <a href="/help/logging/#rpe-rir">RIR or RPE</a> on their best set, and they average 3 or more reps in reserve, there's no plateau banner. You still had reps left, so a flat line doesn't show that you've stopped getting stronger, and a deload wouldn't help.</p>
+  <ul>
+    <li>A set marked <a href="/help/logging/#to-failure">To failure</a> counts as 0 reps in reserve.</li>
+    <li>An RPE counts as 10 minus the RPE, so RPE 8 is 2 in reserve.</li>
+    <li>Deload workouts don't count.</li>
+  </ul>
+  <p>If you don't log effort, plateau detection works as above.</p>
   <p>The banner says how long the stall has lasted and suggests three things:</p>
   <ul>
     <li>A deload week, with a shortcut to your deload settings.</li>
