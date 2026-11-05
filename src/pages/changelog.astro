@@ -25,6 +25,81 @@ import Footer from '../components/Footer.astro';
 // card is an eight-line cut of it.
 const releases = [
   {
+    version: '1.1.17',
+    date: 'November 2026',
+    headline: 'Progress photos, drop sets, and finishing on your terms',
+    groups: [
+      {
+        title: 'Progress photos',
+        items: [
+          'Turn on Photos in Body, What do you track?, and check in with a front, side and back photo. Badger\'s camera shows your last photo of that pose as an overlay, with guide lines and a timer.',
+          'Compare two check-ins side by side, with a slider or as a timeline, and share the comparison as an image. Weight and waist from the same days show beside them.',
+          'Lock photos with Face ID or your fingerprint. A locked photo screen is hidden in the app switcher.',
+          'Photos stay on your phone. Back them up to iCloud or Google Drive if you want, or export them as a zip and import them again.',
+        ],
+      },
+      {
+        title: 'Logging',
+        items: [
+          'Drop sets, myo-reps and rest-pause. Pick a set\'s Type next to Warm-up, add drops with + Drop, and rest-pause gets its own pause timer. Routines can plan them too.',
+          'Set a tempo from the Tempo chip beside Rest. It shows in routines, on the summary and in the CSV export.',
+          'A floating rest bar shows the countdown with -15, +15 and Skip, and names the next set. Skip offers Undo for a few seconds.',
+          'When you tick the last planned set, Badger asks Finish workout or Not yet. Settings, Finishing a workout, chooses whether it asks, finishes at once or keeps going. Resume brings back a workout you ended.',
+          'Set a total-reps target for an exercise, such as 30 pull-ups, and watch the count go up.',
+          'Move a finished workout to another day with Change date on its summary.',
+          'Exercise settings collects an exercise\'s rest, increment, tempo, weights, notes and muscles in one place.',
+          'Fourteen more kettlebell lifts.',
+        ],
+      },
+      {
+        title: 'Effort and progression',
+        items: [
+          'An energy check-in before a routine: Low offers lighter weights for the day. Off by default, in Settings, Coaching.',
+          'Hold after an all-out set keeps the next weight where it is when you went to failure. Off by default.',
+          'The summary shows How it felt, and History marks a session you started on low energy.',
+          'Plateau detection leaves a lift alone when your logged effort shows you had reps to spare.',
+          'A routine slot can plan total reps, and raise the target each time you reach it.',
+        ],
+      },
+      {
+        title: 'Routines',
+        items: [
+          'Archive a routine you are not running. Archived routines sit in their own section with Restore and Delete.',
+          'History\'s You repeat a workout card builds one day for each different workout you repeat.',
+        ],
+      },
+      {
+        title: 'Progress',
+        items: [
+          'Pick 3M, 1Y or All on a progress chart and on the Graph tab in a workout. Tap or drag along the line to read a session.',
+          'Records, Year in review and History load faster with years of data.',
+        ],
+      },
+      {
+        title: 'Undo, import and backup',
+        items: [
+          'Undo after deleting a set, a day, a rule, a folder, a goal, a measurement, a library exercise or equipment. A workout or a routine asks first, then offers Undo.',
+          'Importing from Strong, Hevy, StrongLifts or FitNotes again skips workouts Badger already has. Undo import takes back the last import.',
+          'A banner on Today says when your newest backup is more than a week old. Restore offers monthly and quarterly copies.',
+          'Undo last restore is now called Restore previous data.',
+        ],
+      },
+      {
+        title: 'Widget',
+        items: [
+          'The Android widget has a button to start, resume or begin a new workout, and a new 2x2 size.',
+        ],
+      },
+      {
+        title: 'Also',
+        items: [
+          'Large text, screen readers, touch targets and contrast work better on the newest screens.',
+          'Fixes: a finished workout no longer flashes PLANNED WORKOUT; a workout with no sets no longer goes to Apple Health or Health Connect; Undo keeps a set\'s to-failure mark and distance unit; the activity heatmap skips warm-ups; a FitNotes re-import no longer copies body measurements twice.',
+        ],
+      },
+    ],
+  },
+  {
     version: '1.1.16',
     date: 'October 2026',
     headline: 'Goals, records, and your year in review',
