@@ -1,0 +1,444 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+import programFile from '../../../public/programs/531-bbb.badger?raw';
+import { extractProgram, LIFTS } from '../../lib/531.js';
+
+/**
+ * 5/3/1 calculator, 2026-11-05.
+ *
+ * Static page, no server. Every program number below (the weekly percentages,
+ * the reps, the Boring But Big sets, the training-max steps) is read from
+ * public/programs/531-bbb.badger at build time by src/lib/531.js and handed to
+ * the browser script as JSON, so the page cannot disagree with the routine
+ * Badger ships. The arithmetic lives in src/lib/531.js and is covered by
+ * src/lib/531.test.js (`node --test src/lib/`).
+ *
+ * 5/3/1 is Jim Wendler's work. The page says nothing about affiliation, as
+ * guides/531-app.astro does not.
+ */
+
+const program = extractProgram(JSON.parse(programFile));
+const lifts = LIFTS.filter((l) => program[l.key]);
+
+// The page prints one wave table. Fail the build if the four lifts ever stop
+// sharing a wave, rather than quietly showing the wrong one.
+const waveOf = (k: string) => JSON.stringify(program[k].weeks);
+for (const l of lifts) {
+  if (waveOf(l.key) !== waveOf(lifts[0].key)) throw new Error(`531-bbb.badger: ${l.key} wave differs from ${lifts[0].key}`);
+}
+const wave: { reps: number; percent: number; plus: boolean }[][] = program[lifts[0].key].weeks;
+const bbb = program[lifts[0].key].bbb;
+const upper = program.bench.step; // press and bench share a step in the file
+const lower = program.squat.step; // squat and deadlift share a step in the file
+
+const pct = (p: number) => `${p}%`;
+const setLabel = (s: { reps: number; plus: boolean }) => `${s.reps}${s.plus ? '+' : ''}`;
+const waveText = wave
+  .slice(0, 3)
+  .map((w, i) => `Week ${i + 1} is ${w.map((s) => s.percent).join(', ')}%`)
+  .join('. ');
+
+const description =
+  '5/3/1 calculator: enter a training max, or a recent best set, and get the weight of every set in the four-week wave, the Boring But Big sets and next cycle\'s training max.';
+
+const faq = [
+  {
+    q: 'What is a 5/3/1 training max?',
+    a: 'It is the number every percentage in the wave is taken from. The usual advice is 85 to 90% of a recent best, not the true max, so the plus sets leave room to add reps. This calculator takes a training max directly, or works one out from a recent best set.',
+  },
+  {
+    q: 'How do I work out a 5/3/1 training max from a set?',
+    a: 'Estimate a one-rep max with the Epley formula, weight times one plus reps divided by 30, then take 85 or 90% of it. A set of 100 kg for 5 reps gives an estimated max of 116.7 kg and a training max of 105 kg at 90%. The calculator rounds the result to the loading step you pick.',
+  },
+  {
+    q: 'How much does the training max go up each cycle?',
+    a: `In the Badger routine it adds ${upper.amount} ${upper.unit} to bench and press and ${lower.amount} ${lower.unit} to squat and deadlift after each four-week cycle. In pounds the calculator uses 5 lb and 10 lb, the same steps rounded to a pound plate.`,
+  },
+  {
+    q: 'What are the Boring But Big sets?',
+    a: `After the main sets, ${bbb.sets} sets of ${bbb.reps} of the same lift at ${bbb.percent}% of the training max. The calculator prints that weight under each lift.`,
+  },
+];
+---
+
+<HelpLayout title="5/3/1 calculator" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="5/3/1 calculator"
+    description={description}
+    dateModified="2026-11-05"
+    about={['5/3/1', 'Boring But Big']}
+    breadcrumb={[{ name: 'Guides', url: '/guides/' }]}
+  />
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    })}
+  />
+
+  <h1>5/3/1 calculator</h1>
+
+  <p>
+    Enter a training max for each lift, or a recent best set, and get the weight of every set in
+    the four-week wave, the Boring But Big sets, and the training max for the next cycle. It runs
+    in your browser and nothing is sent anywhere.
+  </p>
+
+  <noscript>
+    <div class="callout warning">
+      <p>
+        <strong>The weights need JavaScript.</strong> The wave percentages are in the table
+        <a href="#how">further down</a>; multiply them by your training max by hand.
+      </p>
+    </div>
+  </noscript>
+
+  <div id="calc" hidden>
+    <div class="calc-settings">
+      <div class="calc-field">
+        <label for="calc-unit">Unit</label>
+        <select id="calc-unit">
+          <option value="kg" selected>kg</option>
+          <option value="lb">lb</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label for="calc-round">Round weights to</label>
+        <select id="calc-round"></select>
+      </div>
+      <div class="calc-field">
+        <label for="calc-pct">Percent of estimated max</label>
+        <select id="calc-pct">
+          <option value="85">85%</option>
+          <option value="90" selected>90%</option>
+        </select>
+      </div>
+    </div>
+    <p class="calc-hint">
+      The percent only applies to lifts where you enter a recent best set.
+    </p>
+
+    {lifts.map((l) => (
+      <section class="calc-lift" data-lift={l.key} aria-labelledby={`h-${l.key}`}>
+        <h2 id={`h-${l.key}`}>{l.label}</h2>
+        <div class="calc-inputs">
+          <div class="calc-field">
+            <label for={`mode-${l.key}`}>Start from</label>
+            <select id={`mode-${l.key}`} data-role="mode">
+              <option value="tm" selected>A training max</option>
+              <option value="set">A recent best set</option>
+            </select>
+          </div>
+          <div class="calc-field" data-show="tm">
+            <label for={`tm-${l.key}`}>Training max (<span class="u">kg</span>)</label>
+            <input id={`tm-${l.key}`} data-role="tm" type="number" inputmode="decimal" min="0" step="any" />
+          </div>
+          <div class="calc-field" data-show="set" hidden>
+            <label for={`w-${l.key}`}>Weight (<span class="u">kg</span>)</label>
+            <input id={`w-${l.key}`} data-role="w" type="number" inputmode="decimal" min="0" step="any" />
+          </div>
+          <div class="calc-field" data-show="set" hidden>
+            <label for={`r-${l.key}`}>Reps (1 to 12)</label>
+            <input id={`r-${l.key}`} data-role="r" type="number" inputmode="numeric" min="1" max="12" step="1" />
+          </div>
+        </div>
+        <div class="calc-out" data-role="out" aria-live="polite"></div>
+      </section>
+    ))}
+  </div>
+
+  <h2 id="how">How the numbers are worked out</h2>
+
+  <p>
+    Each set is a percentage of the training max, rounded to the nearest step you choose. At a
+    training max of 100 kg and 2.5 kg steps, every weight equals its percentage.
+  </p>
+
+  <ul>
+    <li>
+      <strong>The wave.</strong> {waveText}. Week 4 is the light week at
+      {wave[3].map((s) => ` ${s.percent}`).join(',')}%. A plus after the reps means take that set as
+      far as you can.
+    </li>
+    <li>
+      <strong>From a best set.</strong> The estimated max is the weight times one plus reps divided
+      by 30 (the Epley formula). The training max is 85 or 90% of that, rounded to your step. A
+      single rep counts as the weight itself. Estimates get shakier past about 10 reps.
+    </li>
+    <li>
+      <strong>Rounding.</strong> Every set weight is rounded to the nearest multiple of the step, so
+      it can be loaded with the plates you have. Halves round up.
+    </li>
+    <li>
+      <strong>Boring But Big.</strong> {bbb.sets} sets of {bbb.reps} at {bbb.percent}% of the
+      training max, after the main sets.
+    </li>
+    <li>
+      <strong>Next cycle.</strong> Add {upper.amount} {upper.unit} to bench and press and {lower.amount}
+      {lower.unit} to squat and deadlift. The file states the steps in {upper.unit}; in pounds the
+      calculator uses 5 lb and 10 lb. If a plus set fell short of its minimum, hold the max instead.
+    </li>
+  </ul>
+
+  <table class="wave-table">
+    <thead>
+      <tr>
+        <th scope="col">Week</th>
+        <th scope="col">Set 1</th>
+        <th scope="col">Set 2</th>
+        <th scope="col">Set 3</th>
+      </tr>
+    </thead>
+    <tbody>
+      {wave.map((w, i) => (
+        <tr>
+          <th scope="row">Week {i + 1}</th>
+          {w.map((s) => (
+            <td>{pct(s.percent)} x {setLabel(s)}</td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2 id="questions">Questions</h2>
+
+  {faq.map((f) => (
+    <>
+      <h3>{f.q}</h3>
+      <p>{f.a}</p>
+    </>
+  ))}
+
+  <div class="callout">
+    <span class="caps">Skip the arithmetic</span>
+    <p>
+      Badger does this for you and raises the max after each cycle. See
+      <a href="/guides/531-app/">5/3/1 Boring But Big in Badger</a>.
+    </p>
+  </div>
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    5/3/1 is the work of Jim Wendler. Badger is not affiliated with, endorsed by or connected to him
+    or to his publisher. This calculator works from the publicly known shape of the program.
+  </p>
+
+  <script id="program-data" type="application/json" is:inline set:html={JSON.stringify(program)} />
+</HelpLayout>
+
+<script>
+  import { LIFTS, buildCycle, trainingMaxFromSet, epley1RM, nextTrainingMax, formatWeight } from '../../lib/531.js';
+
+  const program = JSON.parse(document.getElementById('program-data')!.textContent || '{}');
+  const calc = document.getElementById('calc') as HTMLElement;
+  const unitSel = document.getElementById('calc-unit') as HTMLSelectElement;
+  const roundSel = document.getElementById('calc-round') as HTMLSelectElement;
+  const pctSel = document.getElementById('calc-pct') as HTMLSelectElement;
+  const STEPS: Record<string, { values: number[]; def: number }> = {
+    kg: { values: [1.25, 2.5, 5], def: 2.5 },
+    lb: { values: [2.5, 5], def: 5 },
+  };
+
+  function fillRounding() {
+    const { values, def } = STEPS[unitSel.value];
+    roundSel.innerHTML = values
+      .map((v) => `<option value="${v}"${v === def ? ' selected' : ''}>${v} ${unitSel.value}</option>`)
+      .join('');
+  }
+
+  function num(el: HTMLInputElement | null): number {
+    return el && el.value.trim() !== '' ? Number(el.value) : NaN;
+  }
+
+  function renderLift(section: HTMLElement) {
+    const key = section.dataset.lift!;
+    const lift = program[key];
+    const unit = unitSel.value;
+    const step = Number(roundSel.value);
+    const pctVal = Number(pctSel.value);
+    const q = (role: string) => section.querySelector(`[data-role="${role}"]`) as HTMLInputElement;
+    const out = q('out') as unknown as HTMLElement;
+    const mode = q('mode').value;
+
+    section.querySelectorAll<HTMLElement>('[data-show]').forEach((el) => {
+      el.hidden = el.dataset.show !== mode;
+    });
+    section.querySelectorAll('.u').forEach((el) => (el.textContent = unit));
+
+    let tm = NaN;
+    let how = '';
+    if (mode === 'tm') {
+      tm = num(q('tm'));
+      if (tm > 0) how = 'The number you entered.';
+    } else {
+      const w = num(q('w'));
+      const r = num(q('r'));
+      if (w > 0 && Number.isInteger(r) && r >= 1 && r <= 12) {
+        const est = epley1RM(w, r);
+        tm = trainingMaxFromSet(w, r, pctVal, step);
+        how = `Estimated max ${formatWeight(est)} ${unit} (Epley), times ${pctVal}%, rounded to ${step} ${unit}.`;
+      }
+    }
+
+    if (!(tm > 0)) {
+      out.innerHTML = '';
+      return;
+    }
+
+    const cycle = buildCycle(lift, tm, step);
+    const rows = cycle.weeks
+      .map((sets, i) => {
+        const cells = sets
+          .map(
+            (s) =>
+              `<td><span class="calc-w">${formatWeight(s.weight)} x ${s.reps}${s.plus ? '+' : ''}</span><span class="calc-p">${s.percent}%</span></td>`,
+          )
+          .join('');
+        return `<tr><th scope="row">Week ${i + 1}</th>${cells}</tr>`;
+      })
+      .join('');
+    const next = nextTrainingMax(tm, lift, unit);
+
+    out.innerHTML =
+      `<p class="calc-used">Training max used: <strong>${formatWeight(tm)} ${unit}</strong> <span>${how}</span></p>` +
+      `<div class="calc-scroll" role="region" tabindex="0" aria-label="${lift.label} weights by week">` +
+      `<table class="calc-table"><thead><tr><th scope="col">Week</th><th scope="col">Set 1</th><th scope="col">Set 2</th><th scope="col">Set 3</th></tr></thead><tbody>${rows}</tbody></table></div>` +
+      `<p class="calc-note">Weights in ${unit}, sets x reps. A plus is a set to take as far as you can.</p>` +
+      `<p class="calc-bbb"><strong>Boring But Big:</strong> ${cycle.bbb.sets} x ${cycle.bbb.reps} at ${formatWeight(cycle.bbb.weight)} ${unit} (${cycle.bbb.percent}%).</p>` +
+      `<p class="calc-next"><strong>Next cycle training max:</strong> ${formatWeight(next)} ${unit} (plus ${formatWeight(next - tm)} ${unit}). Hold it instead if a plus set missed its reps.</p>`;
+  }
+
+  function renderAll() {
+    calc.querySelectorAll<HTMLElement>('.calc-lift').forEach(renderLift);
+  }
+
+  unitSel.addEventListener('change', () => {
+    fillRounding();
+    renderAll();
+  });
+  calc.addEventListener('input', renderAll);
+  calc.addEventListener('change', renderAll);
+
+  fillRounding();
+  renderAll();
+  calc.hidden = false;
+</script>
+
+<style is:global>
+  .calc-settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 20px 0 6px;
+  }
+  .calc-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  .calc-field[hidden] {
+    display: none;
+  }
+  .calc-field label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .calc-field select,
+  .calc-field input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 10px;
+    font: inherit;
+    font-size: 16px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--text-muted);
+    border-radius: 6px;
+  }
+  .calc-field select:focus,
+  .calc-field input:focus {
+    outline: 2px solid var(--accent-ink);
+    outline-offset: 1px;
+    border-color: var(--accent-ink);
+  }
+  .prose .calc-hint {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin: 0 0 8px;
+  }
+  .calc-lift {
+    margin: 0 0 8px;
+  }
+  .prose .calc-lift h2 {
+    margin-top: 28px;
+  }
+  .calc-out:empty {
+    display: none;
+  }
+  .prose .calc-used {
+    margin: 16px 0 10px;
+    color: var(--text);
+  }
+  .prose .calc-used span {
+    display: block;
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  .calc-scroll {
+    overflow-x: auto;
+  }
+  .calc-scroll:focus-visible {
+    outline: 2px solid var(--accent-ink);
+  }
+  .prose .calc-table td,
+  .prose .calc-table th {
+    padding-right: 0.5rem;
+  }
+  .prose .calc-table tbody th,
+  .prose .wave-table tbody th {
+    border-bottom: 1px solid var(--hair);
+    font-size: 0.75rem;
+    vertical-align: top;
+    padding-top: 0.55rem;
+  }
+  .calc-w {
+    display: block;
+    color: var(--text);
+    font-weight: 600;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .calc-p {
+    display: block;
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+  .prose .calc-note {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .prose .calc-bbb,
+  .prose .calc-next {
+    margin-bottom: 6px;
+  }
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>
