@@ -1,0 +1,167 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * Program landing page, published 2026-11-05, same shape as gzclp-app.astro.
+ * Every program fact below was read from public/programs/madcow-5x5.badger (exported by
+ * the app, app_version 1.1.15 on 2026-10-23), not from memory. Re-check it
+ * against that file whenever the gallery is regenerated.
+ *
+ * The page names no author: neither the .badger file nor any page on this site
+ * names one. Compatibility only, never affiliation.
+ */
+
+const description =
+  'Run Madcow 5x5 in Badger: a medium, a light and a heavy day, every set a percentage of the lift\'s top set, and one weekly rule that moves the whole week. What it contains and what you decide.';
+
+const faq = [
+  {
+    q: 'Is there a Madcow 5x5 app that keeps the percentages straight?',
+    a: 'Yes. Badger ships Madcow 5x5 with every set written as a percentage of the lift\'s top set. All the days of a lift share one number, so the whole week moves together when that number does.',
+  },
+  {
+    q: 'Which day moves the weight in Madcow?',
+    a: 'Friday moves squat, bench and row, and Wednesday moves press and deadlift. Hit every set and the top set adds 2.5 kg for squat and deadlift, or 1.25 kg for bench, row and press. The other days take their percentages from it.',
+  },
+  {
+    q: 'What happens when I miss in Madcow?',
+    a: 'Miss twice in a row and the weight drops 10%. A single miss holds the weight where it is.',
+  },
+  {
+    q: 'How do I get the Madcow routine?',
+    a: 'It is in the app under You, Routines, in the Intermediate Programs folder. You can also download madcow-5x5.badger from the programs page and open it on your phone.',
+  },
+  {
+    q: 'What does Badger cost?',
+    a: 'Nothing. There is no account and no cap on routines or history.',
+  },
+];
+---
+
+<HelpLayout title="Madcow 5x5 app and tracker" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="Madcow 5x5 in Badger"
+    description={description}
+    dateModified="2026-11-05"
+    about={['Madcow 5x5', 'Weekly progression']}
+    breadcrumb={[{ name: 'Guides', url: '/guides/' }]}
+  />
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    })}
+  />
+
+  <h1>Madcow 5x5 in Badger</h1>
+
+  <p>
+    Badger runs Madcow 5x5 as a weekly ramp off each lift's top set. This page covers what the
+    routine contains, what you still decide, and how to bring your history across.
+  </p>
+
+  <h2 id="whats-in-the-box">What the routine contains</h2>
+
+  <ul>
+    <li>
+      <strong>Three days.</strong> Monday is the medium day, Wednesday the light day and Friday the
+      heavy day. You can move them.
+    </li>
+    <li>
+      <strong>Monday.</strong> Squat, bench and barbell row, five sets of five each. The sets ramp
+      from 50% to 62.5%, 75%, 87.5% and 100% of the lift's top set.
+    </li>
+    <li>
+      <strong>Wednesday.</strong> Squat is four sets of five at 50%, 62.5%, 75% and 75%. Overhead
+      press and deadlift are four sets of five at 62.5%, 75%, 87.5% and 100%.
+    </li>
+    <li>
+      <strong>Friday.</strong> Squat, bench and row go 50%, 62.5%, 75% and 87.5% for five each,
+      then one set of 3 at 100%, then one set of 8 at 77.5%. The triple is the set that drives
+      progression.
+    </li>
+    <li>
+      <strong>One number per lift, moved weekly.</strong> Friday moves squat, bench and row.
+      Wednesday moves press and deadlift. When every set is met, the top set adds 2.5 kg for squat
+      and deadlift, or 1.25 kg for bench, row and press. Miss twice in a row and it drops 10%.
+      Otherwise it holds. See <a href="/help/progression/#progressing-together">lifts that
+      progress together</a>.
+    </li>
+  </ul>
+
+  <h2 id="what-you-decide">What you still decide</h2>
+
+  <ul>
+    <li>
+      <strong>Starting top sets.</strong> Every percentage needs a top set to work from. Your first
+      session shows your last logged weights tagged "prev" if you have any, and nothing if you do
+      not. Type what you lift and every session after that fills itself in.
+    </li>
+    <li>
+      <strong>Every weight.</strong> The proposal is a starting point. Type over it and the rule
+      keeps running. See <a href="/help/progression/#rules">progression rules</a>.
+    </li>
+    <li>
+      <strong>Which days.</strong> Monday, Wednesday and Friday are the defaults. Move them to fit
+      your week.
+    </li>
+  </ul>
+
+  <div class="callout">
+    <span class="caps">The short version</span>
+    <p>
+      Enter your first top sets and train. Badger fills every other set in as a percentage and moves
+      the top set once a week.
+    </p>
+  </div>
+
+  <h2 id="get-it">Get the routine</h2>
+
+  <p>
+    In the app, go to <strong>You &rarr; Routines</strong> and open the Intermediate Programs folder. Or download
+    <code>madcow-5x5.badger</code> from the <a href="/programs/">programs page</a> and open it on your phone.
+    The file is plain text you can read first; the <a href="/badger-format/">format is documented</a>.
+  </p>
+
+  <h2 id="import">Bringing your history over</h2>
+
+  <p>
+    Export a CSV from Strong, Hevy, FitNotes or StrongLifts, then use <strong>Settings &rarr; Backup,
+    import and export &rarr; Import from another app</strong>. Steps and what each importer carries
+    are in <a href="/guides/switching/">switching from another app</a>. Import the history first, set
+    the Madcow 5x5 routine active after.
+  </p>
+
+  <h2 id="questions">Questions</h2>
+
+  {faq.map((f) => (
+    <>
+      <h3>{f.q}</h3>
+      <p>{f.a}</p>
+    </>
+  ))}
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    Madcow 5x5 is a published training program. Badger is not affiliated with, endorsed by or
+    connected to its authors. This page describes a routine written for Badger from the publicly
+    known shape of the program.
+  </p>
+</HelpLayout>
+
+<style>
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>
