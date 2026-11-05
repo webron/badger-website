@@ -2,7 +2,7 @@
 import HelpLayout from '../../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Body tracking" description="Track body weight and measurements in Badger, and connect Apple Health or Health Connect.">
+<HelpLayout title="Body tracking" description="Track body weight, measurements and progress photos in Badger, and connect Apple Health or Health Connect.">
   <h1>Body tracking</h1>
 
   <p>Log body weight and tape measurements alongside your training. Open it from <strong>You &rarr; Body</strong>. Once you've logged a measurement, a small <strong>Body</strong> section appears at the bottom of Progress &rarr; Overview with your latest reading and its trend.</p>
@@ -17,7 +17,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="logging">Log a measurement</h2>
   <p>Tap the <strong>+</strong> on a row of the Body screen and type the number. The date starts on today; change it if you're catching up on an earlier reading.</p>
-  <p>Tap the row itself to open that measurement's page, with your latest reading, the trend and every entry. Tap an entry to edit it, or its <span aria-hidden="true">&times;</span> to delete it.</p>
+  <p>Tap the row itself to open that measurement's page, with your latest reading, the trend and every entry. Tap an entry to edit it, or its <span aria-hidden="true">&times;</span> to delete it. <strong>Undo</strong> on the message at the bottom brings it back.</p>
 
   <h2 id="trend">Read the trend</h2>
   <p>Watch the solid accent line: it's a <strong>7-day average</strong>. The faint line with dots is exactly what you logged.</p>
@@ -28,6 +28,76 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="units">Units</h2>
   <p>Measurements follow your lifting unit: kilograms and centimeters, or pounds and inches. Change it and everything switches to the new unit.</p>
   <p>Each entry keeps the unit you typed it in, and switching only changes how it's shown. A weigh-in logged as 81.4 kg stays 81.4 kg, and shows as 179.5 lbs when the app is set to pounds.</p>
+
+  <hr />
+
+  <h2 id="progress-photos">Progress photos</h2>
+  <p>Take a front, side and back photo every few weeks and hold any two dates against each other. Photos stay on your phone, in Badger's own storage and not in your phone's photo library.</p>
+  <p>To turn it on, open <strong>What do you track?</strong> and switch on <strong>Progress photos</strong>. A <strong>Photos</strong> section appears on the Body screen, with <strong>Check in</strong> and <strong>Compare</strong>.</p>
+
+  <h3 id="photos-check-in">Check in</h3>
+  <p>A check-in is one date with up to three photos: front, side and back. Skip any you like. Tap <strong>Check in</strong>, tap a tile to take that photo, and tap <strong>Save check-in</strong>. The date starts on today and you can change it.</p>
+  <p>The check-in also shows the body weight and waist you logged that day. Tap <strong>+ Log</strong> beside either to add one. Photos you took are not saved until you tap Save check-in, and leaving first asks whether to discard them.</p>
+  <p>Badger shrinks each photo to a JPEG about 1600 pixels on its long edge and removes the location and other hidden details. The original is not kept.</p>
+
+  <h3 id="photos-overlay">Badger's camera and the Overlay</h3>
+  <p>The camera shows your last photo of the same pose faintly over the live view, so you can line up your shoulders and hips with it. That faint copy is the <strong>Overlay</strong>. The pill at the top says which photo it is, for example <em>Front &middot; Oct 20 photo overlaid</em>. Tap the <strong>Overlay</strong> chip to turn it off.</p>
+  <ul>
+    <li><strong>Guide lines</strong> mark shoulder and hip height.</li>
+    <li><strong>Timer</strong> counts down 3 or 10 seconds before the photo, so you can step back.</li>
+    <li><strong>Library</strong> picks a photo you already have instead.</li>
+    <li>The camera switch flips between the front and back camera.</li>
+    <li>After each photo, <strong>Retake</strong> or <strong>Use photo</strong>.</li>
+  </ul>
+  <p>On Android, Badger explains why it needs the camera before your phone asks. If you say no to the camera, you can still pick photos from your library.</p>
+
+  <h3 id="photos-tips">Tips for photos you can compare</h3>
+  <p>The first time the camera opens, it shows four tips. They are behind the <strong>Tips</strong> chip afterward.</p>
+  <ul>
+    <li>Same spot, same time of day.</li>
+    <li>Face a window and avoid light from above.</li>
+    <li>Phone at chest height, about 2 m away.</li>
+    <li>Use the 10 second timer and stand still.</li>
+  </ul>
+
+  <h3 id="photos-past">Add past photos</h3>
+  <p>Open the menu on the <strong>Photos</strong> screen (<strong>All check-ins</strong> on the Body screen) and tap <strong>Add past photos</strong>. Pick as many as you like. Each photo takes the date it was taken, or today if it has none, and you can change the date and the pose before you save.</p>
+  <p>A check-in holds one photo per pose. If two picks share a date and pose, the list says so, and only one shows in the check-in.</p>
+
+  <h3 id="photos-view">Look back</h3>
+  <p>The Photos screen lists every check-in, newest first. Tap a photo to see it full screen with the weight and waist from that time. Pinch or double tap to zoom in, and double tap again to zoom back out. Its menu has <strong>Compare with...</strong>, <strong>Change date or pose</strong> and <strong>Delete photo</strong>.</p>
+
+  <h3 id="photos-compare">Compare and share</h3>
+  <p>Tap <strong>Compare</strong> on the Body screen, pick a pose, and Badger opens on your first check-in against your latest. Tap either date to choose another. There are three views:</p>
+  <ul>
+    <li><strong>Side by side</strong> puts the two photos next to each other.</li>
+    <li><strong>Slider</strong> lays one over the other; drag to wipe between the two dates.</li>
+    <li><strong>Timeline</strong> moves through every check-in of that pose.</li>
+  </ul>
+  <p>Under each date you see the body weight and waist you logged within 3 days of it, and a line with how much each changed.</p>
+  <p>On <strong>Side by side</strong>, tap <strong>Share comparison</strong> for one image with both photos, the dates and the readings. Your phone's share sheet opens, and nothing is sent until you pick where it goes. Both photos need to be on your phone to share.</p>
+
+  <h3 id="photos-lock">Lock your photos</h3>
+  <p>Turn on <strong>Lock progress photos</strong> from the Photos screen menu and Badger asks for Face ID, Touch ID, your fingerprint or your screen lock before it shows a photo. It locks the Photos screen, the viewer, Compare and the Body thumbnails, which show a plain locked tile. The lock comes back whenever you leave Badger.</p>
+  <p>Badger offers the lock once after your first photo. It stays off until you turn it on.</p>
+  <p>With the lock on, a photo screen is hidden when you open the app switcher: blurred on iPhone, and left out of the recent apps preview on Android 13 and later. Screenshots still work.</p>
+
+  <h3 id="photos-backup">Back up your photos</h3>
+  <p>Photos are only on this phone until you back them up. After your first photo Badger asks where to keep them: <strong>Only on this phone</strong> or <strong>This phone and my iCloud</strong> (<strong>Google Drive</strong> on Android). You can change this on the <a href="/help/settings/#data">Backup</a> screen with <strong>Back up progress photos</strong>.</p>
+  <ul>
+    <li>Each photo is stored once, in your own iCloud on iPhone or in Badger's private app-data folder on your Google Drive. It is kept apart from your workout backups, so those stay small.</li>
+    <li>Android's own backup to your Google account does not carry progress photos.</li>
+    <li>Turning <strong>Back up progress photos</strong> off asks whether to keep the copies or delete them.</li>
+    <li>Until you back up, the Body screen shows <em>Photos are only on this phone</em>. Tap <strong>Hide</strong> to stop seeing it.</li>
+  </ul>
+  <p>Restoring on a new phone brings your photos back from that backup. A photo that has not arrived yet shows <em>Not on this phone</em>.</p>
+
+  <h3 id="photos-export">Export and import</h3>
+  <p><strong>Export progress photos</strong> saves a .zip file with your photos as JPEGs and a <code>manifest.json</code> listing each one's date and pose. It is on the <a href="/help/settings/#data">Backup, import and export</a> page. <strong>Import photos from an export</strong> reads one back, from the same page or the Photos screen menu. A photo you already have is skipped.</p>
+
+  <h3 id="photos-delete">Delete photos</h3>
+  <p>Delete one photo from its menu, or a whole check-in from its row. Both can be undone from the message at the bottom. <strong>Delete all photos</strong> on the Photos screen menu asks first, then offers <strong>Undo</strong> as well.</p>
+  <p>While <strong>Back up progress photos</strong> is on, deleting a photo also removes its copy in your iCloud or Google Drive once the Undo message has gone. <strong>Delete all backups</strong> on the Backup screen deletes your workout backups and keeps your progress photos.</p>
 
   <hr />
 

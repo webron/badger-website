@@ -50,7 +50,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>In the <strong>Progression</strong> section at the top, tap <strong>Linear</strong> or <strong>Double progression</strong>. Badger writes a starting sentence.</li>
     <li>Tap any number in the sentence (the increment, the percentage, the number of misses, the rep threshold) and type a new value.</li>
   </ol>
-  <p>The sentence stays exactly as you leave it. To add a reminder for yourself ("only while I'm eating enough"), use <strong>Notes</strong>; the rule runs the same either way. To remove the rule, tap <strong>None</strong> and confirm.</p>
+  <p>The sentence stays exactly as you leave it. To add a reminder for yourself ("only while I'm eating enough"), use <strong>Notes</strong>; the rule runs the same either way. To remove the rule, tap <strong>None</strong>. A message offers <strong>Undo</strong>.</p>
   <p id="assisted-lifts">On an assisted exercise, like an assisted pull-up, the weight is help, so less is better. Linear and Double progression then work the other way: the sentence reads <em>drop 2.5 kg</em> when you hit the plan, and <em>add</em> after repeated misses. GZCLP and 5/3/1 aren't offered there.</p>
 
   <h3 id="set-up-progression">Add rules to a routine you already have</h3>
@@ -82,7 +82,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Miss the minimum once and a 5/3/1 training max holds for that whole cycle.</strong> 5/3/1 only raises it at a cycle boundary, so a week 1 shortfall still counts three weeks later. The preview says <em>Holding: the plan's minimum was missed this cycle</em>. Setting the week by hand clears it.</li>
     <li><strong>A <a href="/help/tools/#deload">deload week</a> pauses a rule's count without resetting it.</strong> It doesn't advance a cycle, and misses you'd already built up are still there afterward.</li>
     <li>A deload week written into the program, such as 5/3/1's fourth week, is an ordinary week and counts.</li>
+    <li><strong>A <a href="/help/routines/#energy-check-in">lighter day</a> holds the weight for one session and never counts as a miss.</strong> The preview reads <em>Holding: last session was a lighter day</em>, and the next session is judged against your full weight.</li>
   </ul>
+
+  <h3 id="hold-after-all-out-set">Hold after an all-out set</h3>
+  <p><strong>When a rule would add weight but last session's top set went all out, the preview holds the weight instead.</strong> It's off until you turn on <strong>Hold after an all-out set</strong> in <a href="/help/settings/#coaching">Settings → Coaching</a>.</p>
+  <ul>
+    <li>The top set is the <a href="#driver-set">driver set</a>, or on a rule without one, the last straight working set. Drop sets, myo-reps and rest-pause sets are skipped.</li>
+    <li>All out means a set marked <a href="/help/logging/#to-failure">To failure</a>, RIR 0 or RPE 10. If the plan sets an <a href="/help/routines/#intensity-targets">effort target</a>, such as RIR 2, a set logged harder than the target counts too.</li>
+    <li>A set the plan asked to take to failure, either a <strong>To failure</strong> target or an open-topped one like 5+, never holds.</li>
+    <li>The held row says why, with an <strong>Add</strong> button for the increase, for example <strong>Add 2.5 kg</strong>. Tap it to take the weight the rule proposed.</li>
+    <li>After two holds in a row on a lift, the next increase goes through.</li>
+  </ul>
+  <p>The rule still counts the session as met, so a streak or stage keeps its place. Only the added weight waits. It also applies to the <a href="#progressive-overload">overload suggestion</a>: with the setting on, the add-weight line holds after an all-out set. The <strong>Work toward</strong> line isn't affected.</p>
 
   <h2 id="training-max">Training max</h2>
   <p>A training max is a number per lift, set a little below your real one-rep max, that programs such as 5/3/1 and nSuns take their percentages from. It's never loaded on the bar.</p>
@@ -206,6 +218,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>The suggestion is your last session's heaviest weight plus the exercise's increment, rounded to a weight your equipment can make. With a machine set, the machine's step is used.</li>
     <li>It reads history for the machine you have set. Switch machines and the suggestion comes from that machine's history.</li>
     <li>Tap × to dismiss it for this session.</li>
+    <li>With <a href="#hold-after-all-out-set">Hold after an all-out set</a> on, the suggestion keeps your weight when your last top set went all out.</li>
     <li>After eight weeks or more away from an exercise, the sessions before the break don't count. The suggestion comes back once you've done the usual number of sessions since.</li>
   </ul>
 

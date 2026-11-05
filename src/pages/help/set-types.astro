@@ -1,0 +1,92 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+---
+
+<HelpLayout title="Drop sets, myo-reps and rest-pause" description="How to log drop sets, myo-reps and rest-pause in Badger: pick the set type, add each drop, mini-set or bout, use the 15 second pause timer, and see how each one counts toward volume and records.">
+  <h1>Drop sets, myo-reps and rest-pause</h1>
+
+  <p>Badger logs a drop set, a myo-reps set or a rest-pause set as one set with its extra bouts attached. Pick the type before you save the set, or add a drop to a set you already saved.</p>
+
+  <hr />
+
+  <h2 id="pick-type">Pick a set type</h2>
+  <p>Open <strong>Set details</strong> and tap the <strong>Type</strong> chip beside <strong>Warm-up</strong>. It reads <strong>Type: Straight</strong> until you use it, and opens the <strong>Set type</strong> sheet with four choices: <strong>Straight</strong>, <strong>Drop set</strong>, <strong>Myo-reps</strong> and <strong>Rest-pause</strong>. Each has a line under it saying what it does.</p>
+  <p>Which choices you see depends on the exercise:</p>
+  <ul>
+    <li><strong>Weight and reps</strong> exercises offer all three.</li>
+    <li><strong>Reps-only</strong> (bodyweight) exercises offer myo-reps and rest-pause. There is no weight to drop.</li>
+    <li><strong>Timed and distance</strong> exercises offer none.</li>
+  </ul>
+  <p>The chip hides while <a href="/help/logging/#left-right">Left and right</a> is on for the set. A warm-up turns the type off, and a type turns the warm-up off. <a href="/help/logging/#to-failure">To failure</a> works with any of them.</p>
+
+  <h2 id="drop-sets">Log a drop set</h2>
+  <p>Enter the top weight and reps as usual, then add each drop on its own line underneath.</p>
+  <ol>
+    <li>Choose <strong>Drop set</strong> from the Type chip. It stays greyed out until the top weight box has a weight (&ldquo;Enter a top weight first&rdquo;).</li>
+    <li>Type the top weight and reps in the normal boxes.</li>
+    <li>Tap <strong>+ Add drop</strong>. A line appears (<strong>DROP 1</strong>) with a suggested weight and a reps box. The button reads <strong>+ Add drop (as last time)</strong> when the suggestion comes from an earlier drop set, and <strong>+ Add drop (&minus;20%)</strong> when it takes 20% off the step above.</li>
+    <li>Tap the weight or reps box on that line to change it. Tap <strong>+ Add drop</strong> again for the next drop, or the x on a line to remove it.</li>
+    <li>Save the set once, after the last drop.</li>
+  </ol>
+  <p>As last time repeats the amount you stripped at each step in your latest drop set on the exercise, this workout first. With no earlier drop set, each drop is 20% under the step above. Weights snap to your rack, the machine's steps or the exercise increment. A heavier top weight strips the same amounts. Type over any suggestion.</p>
+  <p>There is no pause between drops, and the rest timer starts when you save. A drop set with no drops left saves as a straight set. Save and Update ask for a top weight first, since every drop is measured from it.</p>
+
+  <h3 id="add-drop-later">Add a drop to a set you already saved</h3>
+  <p>Tap <strong>+ Drop on set 3</strong> beside <strong>Repeat last</strong>, under the set list, when you did the drops and logged the top set first. It reopens that set as a drop set, adds a line with the same suggested weight and puts the cursor in its reps box. Type the reps and update the set.</p>
+  <p>A running rest timer carries on as it is.</p>
+
+  <h2 id="myo-reps">Log myo-reps</h2>
+  <p>Log the activation set, then add a mini-set after each short pause. The weight stays the same for all of them.</p>
+  <ol>
+    <li>Choose <strong>Myo-reps</strong> from the Type chip.</li>
+    <li>Type the weight and the reps of your activation set in the normal boxes.</li>
+    <li>Tap <strong>+ Mini-set</strong> when you start your pause. A small reps box appears on the <strong>MINI-SETS</strong> line, filled with the last count, and a <strong>PAUSE</strong> of 15 seconds starts on the rest bar.</li>
+    <li>After the mini-set, change the count if it differs. Repeat for the next one.</li>
+    <li>Save the set after the last mini-set.</li>
+  </ol>
+  <p>The full rest timer starts when you save. You can also save a myo-reps set with no mini-sets yet.</p>
+
+  <h3 id="pause-length">Change the pause</h3>
+  <p>Tap <strong>-5</strong> or <strong>+5</strong> on the rest bar to change the pause that is running. The length you end on is kept for that exercise and starts the next pause, anywhere from 5 to 60 seconds. A routine can set its own pause on a planned set.</p>
+
+  <h2 id="rest-pause">Log rest-pause</h2>
+  <p>Rest-pause works like myo-reps, with bouts in place of mini-sets: one weight, a first bout, then short pauses and more reps.</p>
+  <ol>
+    <li>Choose <strong>Rest-pause</strong> from the Type chip.</li>
+    <li>Type the weight and the reps of your first bout.</li>
+    <li>Tap <strong>+ Bout</strong> at the start of each pause. A reps box appears on the <strong>BOUTS</strong> line and the same 15 second pause starts, with <strong>-5</strong> and <strong>+5</strong> to adjust it.</li>
+    <li>Fix the count after the bout if it differs, and save the set after the last one.</li>
+  </ol>
+
+  <h2 id="how-it-counts">How each type counts</h2>
+  <p>A typed set is one set in every set count, and its first bout is what your records see.</p>
+  <ul>
+    <li><strong>Set counts:</strong> one set, in the workout summary, weekly sets and the muscle balance.</li>
+    <li><strong>Records, estimated 1RM, goals and progression:</strong> the first bout only. That is the top weight of a drop set, the activation set of myo-reps and the first bout of rest-pause. A drop never takes a record at its lighter weight.</li>
+    <li><strong>Volume:</strong> every bout, including each drop at its own weight.</li>
+    <li><strong>Total-reps target:</strong> every bout. See <a href="/help/logging/#rep-target">Total rep target</a>.</li>
+    <li><strong>Rest:</strong> one full rest after the set. Myo-reps and rest-pause add a short pause between bouts.</li>
+  </ul>
+
+  <h3 id="how-it-reads">How a typed set reads</h3>
+  <p>The set list and your history show the first bout on the first line, as for any set (<strong>140 lbs &times; 10</strong>). A second, muted line starts with the type:</p>
+  <ul>
+    <li><strong>DROP 110 &times; 8 &rarr; 80 &times; 7</strong> for a drop set, with each drop's weight and reps.</li>
+    <li><strong>MYO +5 +4 +4 +3</strong> for myo-reps, with the reps of each mini-set.</li>
+    <li><strong>REST-PAUSE +2 +1</strong> for rest-pause, with the reps of each bout.</li>
+  </ul>
+  <p>The set keeps its plain number badge. On a <a href="/help/history/#share">share card</a> it reads like <strong>140 &times; 10 + 2 drops</strong>.</p>
+
+  <h2 id="in-routines">Plan them in a routine</h2>
+  <p>A planned set can carry a type, and the set arrives typed when you start the workout. In the routine editor, tap <strong>+ Set type</strong> on the planned set and choose <strong>Straight</strong>, <strong>Drop set</strong>, <strong>Myo-reps</strong> or <strong>Rest-pause</strong>.</p>
+  <p>A drop set takes a number of drops (<strong>Drops</strong>) and how much each one drops by (<strong>Drop by</strong>). A planned drop percent replaces the suggestion.</p>
+  <p>Myo-reps and rest-pause take an upper number of mini-sets or bouts (<strong>Up to</strong>) and an optional <strong>Pause</strong>. The set then shows a chip such as <strong>Drop set &times;2</strong> or <strong>Myo-reps, up to 4</strong>, and the routine day lists it as <strong>Drop &times;2</strong>, <strong>Myo: up to 4</strong> or <strong>Rest-pause: up to 2</strong>.</p>
+  <p>See <a href="/help/routines/#predefined-sets">Plan the sets</a>. You still log the reps after each bout. The plan only sets the type and how many to expect.</p>
+
+  <h2 id="importing">Import drop sets from Strong and Hevy</h2>
+  <p>Drop-set rows in a Strong or Hevy file join the set above them as drops. In Strong a drop set is a <code>D</code> in <strong>Set Order</strong>, and in Hevy it is a set of type <code>dropset</code>. Each one arrives as a single drop set with its drops on the second line.</p>
+  <p>Workouts you imported before this version keep their drop sets as separate sets. Neither app exports myo-reps or rest-pause. See <a href="/help/getting-started/#importing">Import from another app</a>.</p>
+
+  <h2 id="export">CSV export</h2>
+  <p>The CSV export keeps one line per set, and a typed set gets three extra columns: <code>set_style</code> (<code>drop</code>, <code>myo</code> or <code>rest_pause</code>), <code>steps</code> and <code>steps_volume</code>. <code>steps</code> lists the extra bouts, such as <code>110x8;80x7</code> for a drop set or <code>5;4;4</code> for myo-reps. Add <code>steps_volume</code> to weight &times; reps for the set's full volume. See <a href="/help/settings/#export">Export</a>.</p>
+</HelpLayout>

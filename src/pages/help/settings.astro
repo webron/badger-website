@@ -54,7 +54,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Default rest time</strong> - Rest after a working set when nothing nearer sets one: this workout, the set, the routine and the exercise all come first (30s-300s). See <a href={`/help/logging/#rest-ladder`}>How long the rest is</a>.</li>
     <li><strong>Default warm-up rest</strong> - Rest after a warmup set when this workout, the set and the exercise's warm-up rest don't set one (15s-120s). Without it Badger uses 1:00.</li>
-    <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set. Never after a cardio set.</li>
+    <li><strong>Rest timer auto-start</strong> - Starts the rest timer when you log a working set. Never after a cardio set. The countdown shows on the <a href={`/help/logging/#rest-card`}>rest card</a> at the bottom of the training screen.</li>
   </ul>
 
   <h3 id="set-timer">Set timer</h3>
@@ -67,13 +67,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="workout-timer">Workout timer</h3>
   <ul>
     <li><strong>Workout timer auto-start</strong> - Starts the workout clock when you complete your first set.</li>
-    <li><strong>Workout timer auto-stop</strong> - Stops it when you complete the last set of the session.</li>
   </ul>
+  <p>What the last planned set does is under <a href={`#finishing`}>Finishing a workout</a>.</p>
 
   <h3 id="sounds">Sounds and vibration</h3>
   <ul>
     <li id="rest-timer-sound"><strong>Rest timer sound</strong> - One picker for the sound that plays when rest ends: <strong>Off</strong>, <strong>Chime</strong>, <strong>Bell</strong> or <strong>Beep</strong>.</li>
-    <li><strong>Rest timer vibration</strong> - Vibrates when rest ends.</li>
+    <li><strong>Rest timer vibration</strong> - Vibrates when rest ends with Badger on screen. On by default for new installs; if you installed earlier, your setting stays as it was.</li>
     <li><strong>Set timer sound</strong> - Plays a sound with the "Set complete" notification. You get that notification when a timed set ends without being announced aloud, for example with the phone locked on Android. It doesn't affect the voice.</li>
     <li><strong>Set timer voice</strong> - <strong>Female</strong>, <strong>Male</strong> or <strong>Off</strong>. Tap one to hear it. Off silences the spoken cues; you still get the "Set complete" notification when the phone is locked.</li>
   </ul>
@@ -85,6 +85,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Progressive overload trigger</strong> - How many sessions in a row with every set complete before Badger suggests more weight (1-10).</li>
     <li><strong>Auto-progress routine weights</strong> - Offers to write heavier weights you hit back into the routine. See <a href={`/help/progression/#auto-progress`}>Auto-progress routine weights</a>.</li>
+    <li id="energy-check-in"><strong>Energy check-in</strong> - Off by default. Before a routine workout, the preview asks <em>How is your energy today?</em> and offers a lighter day when you answer Low. See <a href={`/help/routines/#energy-check-in`}>Energy check-in and lighter days</a>.</li>
+    <li id="hold-after-all-out-set"><strong>Hold after an all-out set</strong> - Off by default. When a progression rule would add weight after a set that went to failure, the preview holds the weight and offers a button to add it. See <a href={`/help/progression/#hold-after-all-out-set`}>Hold after an all-out set</a>.</li>
     <li><strong>Plateau detection</strong> - Opens its settings. See <a href={`/help/progress/#plateau-detection`}>Plateau detection</a>.</li>
     <li><strong>Deload</strong> - Opens the deload settings. See <a href={`/help/tools/#deload`}>Deload</a>.</li>
   </ul>
@@ -97,6 +99,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="finishing">Finishing a workout</h2>
   <p><strong>Settings → Finishing a workout</strong></p>
+  <p id="after-last-planned-set"><strong>After the last planned set</strong> - What happens when you tick the last planned set of a routine workout. See <a href="/help/logging/#plan-done">When the plan is done</a>.</p>
+  <ul>
+    <li><strong>Ask</strong> (the default) - A <strong>Plan done</strong> card offers <strong>Finish workout</strong> and <strong>Not yet</strong>.</li>
+    <li><strong>Finish at once</strong> - The workout ends and the summary sheet opens. <strong>Resume</strong> is on it.</li>
+    <li><strong>Keep going</strong> - Nothing is asked. Tap <strong>Finish</strong> in the bar at the bottom when you're done.</li>
+  </ul>
+  <p>If you had turned off <strong>Workout timer auto-stop</strong> in an earlier version, this starts on <strong>Keep going</strong>.</p>
   <p>Choose what the completion sheet shows when you finish a session. Each is a switch under <strong>Summary shows</strong>:</p>
   <ul>
     <li><strong>Total volume</strong></li>
@@ -152,7 +161,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Your workout data is stored locally in a SQLite database, and Badger keeps it backed up in three places:</p>
   <ul>
     <li><strong>iPhone: iCloud, on by default.</strong> Your own private iCloud database - Badger's developer cannot read it. Turn it off on the Backup screen or in iOS Settings. Weigh-ins and heart rates read from Apple Health stay out of it: after a restore, opening Body brings back the last year of weigh-ins from Apple Health. Past heart rates are not restored.</li>
-    <li><strong>Android: on-phone copies, carried by Android's own backup.</strong> Badger keeps five dated copies on your phone. If your phone's own backup is turned on, Android carries those copies to your Google account for you - see <a href={`#android-backup-setting`}>where to check that setting</a> below.</li>
+    <li><strong>Android: on-phone copies, carried by Android's own backup.</strong> Badger keeps five recent copies on your phone, plus older ones (see below). If your phone's own backup is turned on, Android carries those copies to your Google account for you - see <a href={`#android-backup-setting`}>where to check that setting</a> below.</li>
     <li><strong>Google Drive, an optional extra on either platform.</strong> Backs up after every workout and is the way to move a log between an iPhone and an Android phone, since the other two are locked to their own platform.</li>
   </ul>
 
@@ -160,9 +169,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Open it from <strong>You → Data &amp; backup → Backup</strong> (the old Cloud backup screen redirects here). It has three sections:</p>
   <ul>
     <li><strong>Automatic</strong> - the iCloud switch and its status on iPhone, or the count of on-phone copies on Android, plus a manual <strong>Back up now</strong> for iCloud.</li>
-    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Undo last restore</strong> appears when a pre-restore snapshot exists, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself. A file that isn't a Badger backup is refused with a message, and nothing changes.</li>
+    <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Restore previous data</strong> appears when Badger holds a copy from before the last restore, history delete or undone import, and brings back whatever was there, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself. A file that isn't a Badger backup is refused with a message, and nothing changes.</li>
     <li><strong>Extra</strong> - the Google Drive switch, <strong>Back up equipment photos</strong> (off by default, iCloud and Drive only), a manual Drive backup, and <strong>Save a backup file</strong> for a one-off export you send yourself.</li>
   </ul>
+  <p id="older-copies"><strong>Older copies.</strong> Besides the five most recent copies, every destination keeps one copy about a month old and one about 3 months old. They're listed under <strong>Restore a copy</strong> as <strong>Monthly copy</strong> and <strong>Quarterly copy</strong>, with their dates. Use them when a mistake went unnoticed for a few weeks.</p>
+  <p id="stale-backup"><strong>When a backup is out of date.</strong> If your last backup is more than a week old and you've logged since, Today shows <strong>Your backup is out of date</strong>, with <strong>Back up now</strong>. The Backup screen shows the same card. If you haven't trained since the last backup, there's nothing to warn about, and no banner shows.</p>
   <p><strong>Restore from backup</strong> replaces your current database with the copy you picked. <strong>All current data will be overwritten</strong> - back up first if you need to keep it. Badger checks a copy is intact before replacing anything, so a corrupted or incomplete one is rejected and your current data is left untouched.</p>
   <p><strong>Undo last restore</strong> (also <strong>Restore previous data</strong>, a row that appears on this page after a restore) puts your log back as it was before the restore, and your settings with it: units, plate sets and the rest the restore replaced.</p>
 
@@ -174,13 +185,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="export">Exporting data</h3>
   <p><strong>Export workout data</strong> makes a CSV file with one row per set (date, exercise, weight, reps, duration, warmup flag, RPE, RIR and more) and opens the share sheet. Five columns after those cover <a href="/help/logging/#left-right">left and right sets</a>: <code>is_unilateral</code>, <code>reps_left</code>, <code>reps_right</code>, <code>duration_left_seconds</code> and <code>duration_right_seconds</code>. On those rows, <code>reps</code> and <code>duration_seconds</code> hold the better arm.</p>
-  <p>The last two columns are <code>is_failure</code> and <code>distance_unit</code>. <code>is_failure</code> reads <code>true</code> on a set you marked <a href="/help/logging/#to-failure">To failure</a>, and its <code>rir</code> is blank. <code>distance_unit</code> reads <code>km</code> or <code>mi</code> and is blank when the set has no distance. The <code>distance</code> column holds the number as you typed it, so read the two together.</p>
-  <p>The very last column, <code>session_effort</code>, is the workout's <a href="/help/history/#session-effort">session effort</a>. It repeats on every set row of that workout and is blank when you didn't rate it.</p>
+  <p>The next two columns are <code>is_failure</code> and <code>distance_unit</code>. <code>is_failure</code> reads <code>true</code> on a set you marked <a href="/help/logging/#to-failure">To failure</a>, and its <code>rir</code> is blank. <code>distance_unit</code> reads <code>km</code> or <code>mi</code> and is blank when the set has no distance. The <code>distance</code> column holds the number as you typed it, so read the two together.</p>
+  <p>The next column, <code>session_effort</code>, is the workout's <a href="/help/history/#session-effort">session effort</a>. It repeats on every set row of that workout and is blank when you didn't rate it.</p>
+  <p>Drop sets, myo-reps and rest-pause add the three columns after it, <code>set_style</code>, <code>steps</code> and <code>steps_volume</code>; see <a href="/help/set-types/#export">CSV export</a>.</p>
+  <p>The next two come from the <a href="/help/routines/#energy-check-in">energy check-in</a>. <code>readiness</code> reads <code>low</code>, <code>usual</code> or <code>high</code> on every set row of a workout where you answered, and is blank otherwise. <code>eased_percent</code> reads <code>90</code> on the sets of a lift you started on a lighter day.</p>
+  <p>The last column, <code>tempo</code>, holds the exercise's <a href="/help/logging/#tempo">tempo</a> for that workout, such as <code>3-1-X-0</code>. It is blank when there was none.</p>
   <p>It also shares a second CSV with your <a href="/help/goals/">goals</a>.</p>
   <p>The file includes sets you never completed, such as the rest of a routine workout you started and left. To count only real training, filter on <code>is_complete</code>; <code>is_skipped</code> marks skipped sets. If you're giving the file to an AI, <a href={`/guides/ai/`}>Use your own AI</a> has a prompt that already explains this.</p>
 
   <h3 id="ai-context">Copying your context for an AI</h3>
-  <p><strong>Copy context for AI</strong> puts together a short plain-text briefing on your training: your <a href={`#training-notes`}>training notes</a>, your active program and its current targets, your last ten sessions, your records, the equipment at your current gym, and anything you've marked as avoided.</p>
+  <p><strong>Copy context for AI</strong> puts together a short plain-text briefing on your training: your <a href={`#training-notes`}>training notes</a>, your active program and its current targets, your last ten sessions (with each exercise's tempo), your records, the equipment at your current gym, and anything you've marked as avoided.</p>
   <p>It ends with instructions telling the AI how to read it, including how to write a routine back as a <a href={`/badger-format/`}><code>.badger</code> file</a>.</p>
   <p>Read it, then tap <strong>Copy</strong> or <strong>Share</strong>. Body measurements, health data, workout and set comments, and exercise notes aren't included.</p>
   <p>The briefing is trimmed to fit a chat window. If you train a lot, older sessions go first, then equipment, then records, and your notes last. Anything you've marked as avoided and the closing instructions always stay. Empty sections are left out.</p>
@@ -192,13 +206,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Strong and FitNotes previews have a <strong>Weight unit in this file</strong> choice. Every import first saves a safety copy of your log, and asks before importing anyway if it can't.</p>
   <p>The preview shows the date range of the file. Close name matches are listed apart from sure ones, and <strong>Keep my exercise names</strong> adds every name as its own exercise.</p>
   <p>If you see "file is too large" (the limit is 10&nbsp;MB), the file is probably damaged. Export it again from the other app.</p>
-  <p><strong>Don't import the same file twice.</strong> A second import adds the workouts again instead of replacing them. The preview warns you when some of the dates already have workouts.</p>
+  <p>Importing the same file again skips what Badger already has, unless you turn on <strong>Import them anyway</strong>. See <a href={`/help/getting-started/#importing-again`}>Importing the same file again</a>.</p>
+  <p><strong>Undo last import</strong> appears under <strong>Import from another app</strong> for 30 days after an import, or until the next one. It removes what that import added and keeps anything you changed since. See <a href={`/help/getting-started/#undo-import`}>Undo an import</a>.</p>
 
   <h3 id="debug-logs">Debug logs</h3>
   <p><strong>Export debug logs</strong> is on <strong>You → Send feedback</strong>, in the <strong>Diagnostics</strong> section. It shares a text file of the app's recent activity (about the last 500 lines from this session) for reporting a bug. It holds no health or workout data.</p>
 
   <h3>Deleting data</h3>
-  <p><strong>Delete workout history</strong>, at the very bottom of <strong>Backup, import and export</strong>, permanently deletes every workout and set but keeps your exercises and routines. Badger asks you to confirm first.</p>
+  <p><strong>Delete workout history</strong>, at the very bottom of <strong>Backup, import and export</strong>, deletes every workout and set but keeps your exercises and routines. Badger asks you to confirm and says how many workouts will go.</p>
+  <p>Badger saves a copy on your phone first. To bring the history back, open <strong>Backup, import and export</strong> and tap <strong>Restore previous data</strong>. If the copy can't be made, nothing is deleted.</p>
 
   <h2 id="training-notes">Training notes</h2>
   <p><strong>You → Training notes</strong> is one free-text page for your own context: goals, injuries, training history, anything worth remembering. It saves as you type.</p>

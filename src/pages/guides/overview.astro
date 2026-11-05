@@ -14,18 +14,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/logging/#logging-mode">Log as you go, or plan then tick</a></strong> - one tap per set, or plan your sets and tick each one when it's done. Badger asks the first time.</li>
     <li><strong><a href="/help/logging/#duration-entry">Typing a duration</a></strong> - type 2, 0, 0, 0 and it reads 20:00, like a microwave.</li>
     <li><strong><a href="/help/logging/#set-types">Warm-up and working sets</a></strong> - mark any set as a warm-up so it stays out of your records.</li>
-    <li><strong><a href="/help/logging/#rest-timer">Rest timer</a></strong> - starts on its own after a set (not after cardio), with custom durations, a choice of sound (Off, Chime, Bell or Beep), and vibration.</li>
+    <li><strong><a href="/help/logging/#rest-card">Rest timer</a></strong> - starts on its own after a set (not after cardio) and counts down on a card at the bottom of the training screen, with -15, +15, Skip and Undo, custom durations, sound, and vibration.</li>
     <li><strong><a href="/help/routines/#rest-per-set">Rest per set</a></strong> - give a routine set its own rest (5:00 after the top set, 2:00 after back-offs), and change it mid-workout where it came from.</li>
     <li><strong><a href="/help/logging/#finishing">End a workout</a></strong> - End beside the timer, a check for sets you forgot to tick, and a forgotten workout closed at its last set.</li>
+    <li><strong><a href="/help/logging/#plan-done">Finish or Not yet</a></strong> - the last planned set asks before it ends the workout, Finish stays in the bottom bar, and Resume takes back an end you didn't mean.</li>
     <li><strong><a href="/help/logging/#set-timer">Set timer</a></strong> - a stopwatch or a countdown for planks, carries, and anything else measured in seconds (Stop fills in the time you held), spoken aloud in a male or female voice while it runs, including with an iPhone's screen locked. Rest starts on its own when it ends.</li>
     <li><strong><a href="/help/logging/#lock-screen">Workout on the lock screen</a></strong> - your current set, rest countdown and elapsed time on the lock screen: a Live Activity on iPhone, a notification on Android. Rest buttons, and Set done when a set is waiting to be ticked (iPhone needs iOS 17 or later for the buttons).</li>
     <li><strong><a href="/help/logging/#supersets">Supersets</a></strong> - group exercises you alternate between, with automatic advancing.</li>
     <li><strong><a href="/help/logging/#left-right">Left and right sets</a></strong> - log each arm or leg separately on one-arm exercises, with a record for each.</li>
+    <li><strong><a href="/help/set-types/">Drop sets, myo-reps and rest-pause</a></strong> - mark a set with a Type chip, add each drop, mini-set or bout, and get a 15 second pause timer. The set counts once, its first bout sets your records and every bout counts toward volume.</li>
     <li><strong><a href="/help/logging/#rpe-rir">RPE and RIR</a></strong> - record how hard each set felt in one tap, on RIR or RPE. Your answer carries to the next set. Tap the (i) in the app for a plain-language explainer.</li>
     <li><strong><a href="/help/logging/#set-details">Compact set recorder</a></strong> - collapse the set details down to weight, reps, and done.</li>
     <li><strong><a href="/help/logging/">Per-set comments</a></strong> - jot a form cue or note an odd rep on a single set.</li>
     <li><strong><a href="/help/logging/#plan-reference">Plan vs last</a></strong> - your target and last session's numbers, right above the recorder, and on each set you have not done yet.</li>
     <li><strong><a href="/help/logging/#amrap">AMRAP and to failure</a></strong> - what "8+" means in a plan, and what the To failure chip records afterward (a failed rep, kept apart from RIR 0).</li>
+    <li><strong><a href="/help/logging/#rep-target">Total rep target</a></strong> - aim for 30 pull-ups in as many sets as it takes, with a running count, and plan it in a routine that raises the target when you reach it.</li>
     <li><strong><a href="/help/logging/#missed-vs-skipped">Missed vs skipped</a></strong> - a short set still counts; a skipped one doesn't.</li>
     <li><strong><a href="/help/logging/">Repeat last set</a></strong> - copy your previous set in one tap.</li>
     <li><strong><a href="/help/logging/#logging-a-set">Hold to repeat</a></strong> - hold a + or - button to keep counting, faster the longer you hold.</li>
@@ -40,7 +43,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2>Exercises</h2>
   <ul>
     <li><strong><a href="/help/exercises/">Over 360 built-in exercises</a></strong> - across eight categories, including machine, cable, and unilateral variants.</li>
-    <li><strong><a href="/help/exercises/#kettlebell">Kettlebell lifts</a></strong> - goblet squat, Turkish get-up, single-arm row, press, windmill, farmer's carry and more, beside the swing, snatch and clean.</li>
+    <li><strong><a href="/help/exercises/#kettlebell">Kettlebell lifts</a></strong> - 27 of them: swings, cleans and snatches, presses, squats, deadlifts, rows, the Turkish get-up, windmill and farmer's carry.</li>
     <li><strong><a href="/help/exercises/#library">A-Z exercise index</a></strong> - the whole library in one alphabetical list, with a letter strip to jump down it.</li>
     <li><strong><a href="/help/exercises/#search-filter">Search and filter</a></strong> - by name, category chip, muscle group, or equipment type, in any combination.</li>
     <li><strong><a href="/help/exercises/#other-languages">Search in German, French or Spanish</a></strong> - the most common lifts also answer to their names in those languages.</li>
@@ -54,7 +57,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/exercises/#hide">Hide an exercise</a></strong> - keep it out of every picker and suggestion while its history, records and routines stay put.</li>
     <li><strong><a href="/help/exercises/#merge">Merge two exercises</a></strong> - fold a duplicate into the one that stays, with a safety copy first and an Undo that lasts.</li>
     <li><strong><a href="/help/exercises/#categories">Manage categories</a></strong> - create, rename, recolor, and reorder the categories that group the library.</li>
-    <li><strong><a href="/help/exercises/">Per-exercise settings</a></strong> - default increment, rest, bar weight, tempo, and notes.</li>
+    <li><strong><a href="/help/logging/#tempo">Tempo</a></strong> - set lower, hold, lift and hold with steppers or a preset, on the training screen, in a routine or as the exercise default.</li>
+    <li><strong><a href="/help/exercises/#exercise-settings">Per-exercise settings</a></strong> - default increment, rest, bar weight, tempo, and notes, all in Exercise settings.</li>
   </ul>
 
   <h2>Routines</h2>
@@ -71,8 +75,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/routines/#swap-exercise">Swap exercise</a></strong> - suggests substitutes on the spot when nothing is pre-set, matched by muscle and what your gym has.</li>
     <li><strong><a href="/help/routines/#rep-ranges">Rep ranges</a></strong> - set a target of "8-10" instead of a single number.</li>
     <li><strong><a href="/help/routines/#amrap-targets">AMRAP targets</a></strong> - an open-topped set written "8+": at least 8, then as many as you can. "1+" is a set to failure.</li>
-    <li><strong><a href="/help/routines/#intensity-targets">Intensity targets</a></strong> - prescribe a set at RPE 8, 2 RIR or to failure, shown while you log it as a guide. Badger never grades the logged set against the target.</li>
+    <li><strong><a href="/help/routines/#intensity-targets">Intensity targets</a></strong> - prescribe a set at RPE 8, 2 RIR or to failure, shown while you log it as a guide. With Hold after an all-out set on, a set logged harder than the target holds your weight.</li>
     <li><strong><a href="/help/routines/">Routine folders</a></strong> - group related routines together.</li>
+    <li><strong><a href="/help/routines/#archive-a-routine">Archive routines</a></strong> - move routines you no longer use out of the list, and restore them with their progress intact.</li>
     <li><strong><a href="/help/routines/">Routine from past workouts</a></strong> - turn sessions you already logged into a reusable routine.</li>
     <li><strong><a href="/help/routines/#routine-notes">Routine notes</a></strong> - program-level context on the routine itself; travels with a shared routine.</li>
     <li><strong><a href="/help/routines/#sharing">Share a routine as an image</a></strong> - a card of the whole program, or of one day with its sets, reps and progression rules. Your weights stay off unless you turn them on.</li>
@@ -99,7 +104,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/progression/#adjust-training-maxes">Adjust the next cycle's training maxes</a></strong> - change a lift's number before the new cycle starts.</li>
     <li><strong><a href="/help/progression/#past-cycles">Past cycles</a></strong> - a Cycles list on the routine, each row opening that cycle's saved page.</li>
     <li><strong><a href="/help/progression/#rotating-exercises">Rotate the exercise by week</a></strong> - a board press one week and a good morning the next, written as two exercises in the same day.</li>
-    <li><strong><a href="/help/tools/#deload">Deload weeks</a></strong> - detect a due-for-lighter week and reduce weights and sets; start or end one manually, or skip a single workout.</li>
+    <li><strong><a href="/help/routines/#energy-check-in">Energy check-in</a></strong> - answer Low, Usual or High before a routine workout; Low offers a lighter day at 90% that never counts as a miss.</li>
+    <li><strong><a href="/help/progression/#hold-after-all-out-set">Hold after an all-out set</a></strong> - when a set went to failure, the preview holds the weight instead of adding, with one tap to add it anyway.</li>
+    <li><strong><a href="/help/tools/#deload">Deload weeks</a></strong> - detect a due-for-lighter week from time, effort, low energy or a stall, and reduce weights and sets; start or end one manually, or skip a single workout.</li>
     <li><strong><a href="/help/getting-started/#coming-back">Coming back after a break</a></strong> - after six weeks off, an offer to start with a lighter week at 60%.</li>
   </ul>
 
@@ -108,6 +115,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/progress/#prs">Personal records</a></strong> - PRs are detected and tracked for every exercise type: heaviest, most reps, farthest, or best time. Your first session of an exercise sets starting numbers, not records.</li>
     <li><strong><a href="/help/progress/#records-list">All your records</a></strong> - every record you have set, newest first with the best it beat, and your top record for each lift, by year.</li>
     <li><strong><a href="/help/progress/#graphs">Progress graphs</a></strong> - estimated 1RM, max weight, and volume over time.</li>
+    <li><strong><a href="/help/progress/#chart-range">Graph range and session readout</a></strong> - the last 3 months, the last year or all time, and tap a point to see the set behind it.</li>
     <li><strong><a href="/help/progress/#pace">Pace and speed graphs</a></strong> - best pace for walking, running and rowing, and best speed for bikes, worked out from the distance and time you log.</li>
     <li><strong><a href="/help/progress/#compare">Compare two exercises</a></strong> - draw a second exercise's history on the same graph, as a dashed line.</li>
     <li><strong><a href="/help/goals/">Goals per lift</a></strong> - set a target such as 100 kg × 1 or a 2:00 plank, see what is left on the chart, and get a GOAL flag on the set that reaches it.</li>
@@ -126,6 +134,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/body/">Body tracking</a></strong> - body weight and tape measurements, with a 7-day average trend. Quiet by default: only body weight is on, and the rest are opt-in.</li>
     <li><strong><a href="/help/body/#health">Apple Health and Health Connect</a></strong> - opt in to save finished workouts as sessions, and to bring your weigh-ins in. Badger offers it once on a workout summary.</li>
     <li><strong><a href="/help/body/#heart-rate">Heart rate on your sets</a></strong> - opt in and your watch's end-of-set heart rate turns up on each set, with exertion trends per session and per exercise.</li>
+    <li><strong><a href="/help/body/#progress-photos">Progress photos</a></strong> - front, side and back check-ins from Badger's camera with an Overlay of your last photo, side-by-side and slider comparisons you can share, an optional lock, and photos that stay on your phone unless you back them up.</li>
   </ul>
 
   <h2>Equipment and gyms</h2>
@@ -169,17 +178,20 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/history/#search">Journal search</a></strong> - find any note you have written, across workouts, exercises, machines, and routines.</li>
     <li><strong><a href="/help/history/#pace">Session pace</a></strong> - how long each exercise took and how long you rested, worked out from your own log.</li>
     <li><strong><a href="/help/logging/#today-screen">Repeat your last workout</a></strong> - Today names your last workout and repeats it in two taps.</li>
+    <li><strong><a href="/help/history/#how-it-felt">How it felt</a></strong> - the summary gathers your energy check-in, any lighter lifts and your session effort in one place.</li>
     <li><strong><a href="/help/history/#session-effort">Session effort</a></strong> - rate how hard a whole workout felt, 1 to 10, when you finish it or later from its summary.</li>
     <li><strong><a href="/help/history/#compared-with-last-time">Compared with last time</a></strong> - a workout's summary marks each exercise stronger, about the same or lighter than last time.</li>
     <li><strong><a href="/help/logging/#today-screen">One year ago</a></strong> - a quiet line on Today when you trained on this date last year.</li>
     <li><strong><a href="/help/history/">Copy a workout</a></strong> - replicate a past session onto today.</li>
     <li><strong><a href="/help/history/">Log a past workout</a></strong> - backdate a session you forgot to record.</li>
+    <li><strong><a href="/help/history/#change-date">Change a workout's date</a></strong> - move a workout logged on the wrong day, with its times kept.</li>
     <li><strong><a href="/help/history/#share">Share as an image</a></strong> - post a card that leads with the session's standout set, or with the record you just set.</li>
   </ul>
 
   <h2>Your data</h2>
   <ul>
     <li><strong><a href="/help/settings/#importing">Import</a></strong> - bring history from FitNotes, Strong, Hevy, or StrongLifts, all from one Import from another app row. A FitNotes backup brings your routines too.</li>
+    <li><strong><a href="/help/getting-started/#undo-import">Undo an import</a></strong> - take back the last import within 30 days, keeping anything you changed since. Importing a file again skips what Badger already has.</li>
     <li><strong><a href="/help/settings/#export">Export to CSV</a></strong> - your full per-set history as a spreadsheet.</li>
     <li><strong><a href="/help/settings/#debug-logs">Debug logs</a></strong> - share a text file of recent app activity from You → Send feedback when you report a bug.</li>
     <li><strong><a href="/help/settings/#ai-context">Copy context for AI</a></strong> - your program, recent training, records, equipment and constraints as text to paste into any AI.</li>
@@ -190,7 +202,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong><a href="/help/settings/#workout-reminders">Workout reminders</a></strong> - a notification on your training days, from your active program's schedule or weekdays you pick, naming your last workout.</li>
     <li><strong><a href="/help/settings/#hints">Hints</a></strong> - one-time tips at the moment a feature would help, with a switch to turn them off.</li>
     <li><strong><a href="/help/settings/#app">Themes and accent</a></strong> - dark, light, or system, with a custom accent color.</li>
-    <li><strong><a href="/help/getting-started/#home-screen-widget">Home-screen and lock-screen widgets</a></strong> - your week strip, last entry, next routine day and, on a 5/3/1-style program, its week and cycle on the home screen, and on the iPhone Lock Screen.</li>
+    <li><strong><a href="/help/getting-started/#home-screen-widget">Home-screen and lock-screen widgets</a></strong> - your week strip, last entry, next routine day and, on a 5/3/1-style program, its week and cycle on the home screen, and on the iPhone Lock Screen. On Android, a button starts your next routine day or resumes your workout.</li>
   </ul>
 
   <p>Nothing here needs an account. Your log stays out of our hands whether it sits on your phone or backs up to your own iCloud or Google account.</p>

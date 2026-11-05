@@ -15,7 +15,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Letter headings divide the list. Tap a letter in the strip down the right edge to jump to it, or drag your thumb along the strip to scrub through.</p>
 
   <h3 id="kettlebell">Kettlebell lifts</h3>
-  <p>Filter by kettlebell to find the kettlebell lifts: goblet squat, front squat, deadlift, thruster, single-arm row, press, halo, Turkish get-up, windmill and farmer's carry, plus the swing, snatch and clean. The row, press, get-up and windmill can be logged <a href="/help/logging/#left-right">left and right</a>. The farmer's carry logs weight and distance.</p>
+  <p>Filter by kettlebell, or type "kb" in the search box, to find the kettlebell lifts:</p>
+  <ul>
+    <li><strong>Swings and pulls</strong> - swing, single-arm swing, clean, snatch, high pull.</li>
+    <li><strong>Presses</strong> - press, push press, clean and press, bottoms-up press, floor press.</li>
+    <li><strong>Legs</strong> - goblet squat, front squat, Cossack squat, reverse lunge, deadlift, sumo deadlift, single-leg deadlift, thruster.</li>
+    <li><strong>Upper body</strong> - single-arm row, gorilla row, curl, overhead tricep extension, halo.</li>
+    <li><strong>Core and carries</strong> - Turkish get-up, windmill, Russian twist, farmer's carry.</li>
+  </ul>
+  <p>The one-arm lifts can be logged <a href="/help/logging/#left-right">left and right</a>: the single-arm swing and row, the presses, the high pull, the single-leg deadlift, the get-up and the windmill. The farmer's carry logs weight and distance. "tgu" finds the Turkish get-up.</p>
 
   <h2 id="search-filter">Search and filter</h2>
   <p>Type in the search box at the top to narrow the list as you type.</p>
@@ -62,7 +70,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>The record key</strong> at the top, beside the illustration, shows your best set and the estimated one-rep max it works out to. Tap it for the full progress screen, with the graph and the rest of your records.</li>
     <li><strong>Muscles worked</strong> opens to an anatomy diagram of the primary and secondary muscles.</li>
     <li><strong>Notes &amp; instructions</strong> shows your notes for the exercise and the built-in technique cues. Tap it once it's open to edit your notes. It appears only when there's something to show.</li>
-    <li>The <strong>pencil</strong> in the top bar opens the edit screen.</li>
+    <li>The <strong>pencil</strong> in the top bar opens the edit screen. <strong>⋮ → Exercise settings</strong> opens the exercise's <a href="#exercise-settings">settings</a>.</li>
   </ul>
 
   <h2 id="creating">Create an exercise</h2>
@@ -161,7 +169,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>New category</strong> to name it and pick a color. A custom category works everywhere a built-in one does, except the muscle heatmap, since it has no muscle group.</li>
     <li>Tap the <strong>pencil icon</strong> to rename a category or change its color, built-in ones included.</li>
     <li>Drag a row's handle to reorder.</li>
-    <li>Tap the <strong>trash icon</strong> to delete. Only an empty category can be deleted; if it still holds exercises, Badger tells you how many so you can move or delete them first.</li>
+    <li>Tap the <strong>trash icon</strong> to delete. Only an empty category can be deleted; if it still holds exercises, Badger tells you how many so you can move or delete them first. Deleting an empty one offers <strong>Undo</strong>.</li>
   </ul>
 
   <h2 id="linking">Linked exercises</h2>
@@ -172,7 +180,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>Link exercise</strong> and pick the other exercise.</li>
   </ol>
   <p>Both exercises then show the same graphs, PRs, stats and history. A new best on either one counts as a PR on both.</p>
-  <p>To unlink, tap the linked exercise's chip (it has an <strong>×</strong>) and confirm. The two stop sharing history, and both stay in the library.</p>
+  <p>To unlink, tap the linked exercise's chip (it has an <strong>×</strong>). The two stop sharing history, and both stay in the library. The message reads <strong>(name) unlinked</strong>, with <strong>Undo</strong>.</p>
   <p id="merged-duplicates">Looking for <em>Lying Leg Curl</em> or <em>Good Morning (Legs)</em>? They're now <em>Leg Curl (Lying)</em> and <em>Good Morning</em>, and sets you logged under the old names are there, with your records and graphs.</p>
 
   <h2 id="hide-merge">Hide and merge exercises</h2>
@@ -234,19 +242,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h4>Importing again</h4>
   <p>Import the same Strong, Hevy, FitNotes or StrongLifts file again, or an old .badger routine, and the merged name lands on the exercise that stayed. The duplicate does not come back.</p>
 
-  <h2>Changing exercise settings mid-workout</h2>
-  <p>On the training screen, tap the info icon in the top bar (or the pencil on the notes card, when it's showing) to open the exercise notes screen. Changes there apply to the exercise from now on, in every workout:</p>
+  <h2 id="exercise-settings">Exercise settings</h2>
+  <p>Open <strong>Exercise settings</strong> from the first item in the ⋮ menu on the training screen or on the exercise's page. The pencil on the notes card opens it at the notes. Changes apply to the exercise from now on, in every workout. The sections, in order:</p>
   <ul>
-    <li>Notes and instructions</li>
-    <li>Default weight increment</li>
-    <li>Default rest times (working and warmup)</li>
-    <li>Bar weight for the plate calculator</li>
-    <li>Tempo (for example "3-1-2-0")</li>
+    <li><strong>Logging</strong> - rest (working and warm-up), weight increment and <a href="/help/logging/#tempo">tempo</a>.</li>
+    <li><strong>Weights</strong> - the bar or starting weight, per side, and the plate calculator mode.</li>
+    <li><strong>Notes and instructions</strong> - your notes and the built-in technique cues.</li>
+    <li><strong>Muscles</strong> - the muscles the exercise works.</li>
+    <li><strong>Display</strong> - how the exercise shows up.</li>
   </ul>
-  <p>The screen also shows the exercise's muscles.</p>
 
   <h2>Delete an exercise</h2>
-  <p>In the exercise library, open the <strong>⋮</strong> menu on the exercise's row and tap <strong>Delete</strong>, then confirm.</p>
+  <p>In the exercise library, open the <strong>⋮</strong> menu on the exercise's row and tap <strong>Delete</strong>, then confirm. Tap <strong>Undo</strong> on the message to bring it back with its goals, links and notes.</p>
   <p>An exercise that's logged in a workout or used in a routine can't be deleted. The dialog shows how many workouts and routines use it, and offers <strong>Hide</strong> to <a href="#hide">keep it out of the pickers</a> or <strong>Merge into...</strong> if it <a href="#merge">duplicates another exercise</a>.</p>
 </HelpLayout>
 

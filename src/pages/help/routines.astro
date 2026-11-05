@@ -15,7 +15,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Go to <strong>You → Routines</strong>, tap <strong>+</strong> and enter a name.</li>
     <li>Tap the routine to open it, then tap <strong>Add day</strong>.</li>
     <li>Tap the day, then tap <strong>Add exercise</strong>. Tap each exercise you want for the day so it gets a check mark, then tap <strong>Add 3 exercises</strong> (the button counts your picks). They're added in the order you tapped them. Your picks stay checked while you search or switch category chips, and the <strong>Recent</strong> list at the top shows what you've logged lately. Each exercise starts with three empty sets. An exercise you added before this change, with no sets, starts its workout with three empty sets filled in from your last workout.</li>
-    <li>Tap an exercise row to <a href="#predefined-sets">plan its sets</a>: fill them in, or add and remove sets.</li>
+    <li>Tap an exercise row to <a href="#predefined-sets">plan its sets</a>: fill them in, or add and remove sets. Removing a planned set offers <strong>Undo</strong>.</li>
   </ol>
   <p>Have a plan written down? Your AI can turn it into a Badger routine. See <a href="/guides/ai/#prompts">Use your own AI</a>.</p>
   <p>To change an exercise later, open its <strong>⋮ menu</strong> and tap <strong>Replace exercise</strong>. If the exercise has a <a href="/help/progression/#rules">progression rule</a>, Badger asks <strong>Replace (exercise)?</strong> first, because the new exercise starts without the rule and without its training max. Tap <strong>Replace</strong> to go ahead or <strong>Cancel</strong> to keep it.</p>
@@ -29,6 +29,18 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap <strong>Start</strong>.</li>
   </ol>
   <p>The preview also shows an estimated duration. During a <a href="/help/tools/#deload">deload week</a>, a deload bar at the top shows the reductions, with a toggle to use full weights for this workout. An exercise with a progression rule shows the weight its rule proposes; see <a href="/help/progression/#when-a-rule-acts">What the routine log preview shows</a>.</p>
+
+  <h3 id="energy-check-in">Energy check-in and lighter days</h3>
+  <p>With <strong>Energy check-in</strong> on, the preview asks <strong>How is your energy today?</strong> before you start. Tap <strong>Low</strong>, <strong>Usual</strong> or <strong>High</strong>, compared with a usual training day, or tap <strong>Not today</strong> to skip. It's off until you turn it on in <a href="/help/settings/#coaching">Settings → Coaching</a>.</p>
+  <p>Usual and High change nothing. <strong>Low</strong> offers a lighter day:</p>
+  <ul>
+    <li>Each lift's working weight drops to 90%, rounded to a load you can make. Sets and reps stay as planned.</li>
+    <li>A <strong>90%</strong> tag on a lift shows what was reduced. Tap it to put that lift back to its full weight. <strong>Use full weights</strong> in the bar at the top does it for every lift.</li>
+    <li>Assisted exercises, where less weight is harder, keep their weight.</li>
+    <li>During a <a href="/help/tools/#deload">deload week</a> or a comeback week, the weights are already lighter, so there's no offer.</li>
+  </ul>
+  <p>A lighter day doesn't change your program. It isn't a miss, and your rule's weight stays where it was: the next preview reads <em>Holding: last session was a lighter day</em> and judges you against your full weight.</p>
+  <p>Your answer is saved with the workout and shows on the summary under <a href="/help/history/#how-it-felt">How it felt</a>.</p>
 
   <h3>Which day comes next</h3>
   <p>Only one routine is active at a time, and it sits at the top of the routine list with an accent border. On an alternating program (A/B days not tied to weekdays), the Today screen highlights the next day in the sequence and moves it to the top once you finish the one before.</p>
@@ -68,6 +80,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Warmup flag</strong> - Marks the set as a warmup.</li>
     <li><strong>Left and right</strong> - Plans the set for each arm. See <a href="#left-right-plan">Left and right in a routine</a>.</li>
     <li><strong>Rest time</strong> - How long to rest after this set. See <a href="#rest-per-set">Rest per set</a>.</li>
+    <li><strong>Set type</strong> - Makes the set a drop set, myo-reps or rest-pause. See <a href="/help/set-types/#in-routines">Plan them in a routine</a>.</li>
     <li><strong>RPE, RIR or To failure</strong> - How hard the set should feel. See <a href="#intensity-targets">Intensity targets</a>.</li>
     <li><strong>Percentage</strong>, <strong>driver</strong> and <strong>week</strong> - Progression controls, shown when the exercise has a rule or the day is waved. See <a href="/help/progression/">Progression</a>.</li>
   </ul>
@@ -96,7 +109,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Pick one: setting RPE, RIR or To failure clears the other two.</li>
     <li>Targets are whole numbers, matching how you log RPE. A half-step target in an imported file rounds up.</li>
     <li>Warmups can't have a target.</li>
-    <li>Badger shows the target beside what you log and doesn't compare the two.</li>
+    <li>The target is a guide while you log. The one place Badger compares it with what you logged is <a href="/help/progression/#hold-after-all-out-set">Hold after an all-out set</a>, if you turn it on.</li>
   </ul>
   <h4 id="failure-target">To failure</h4>
   <p>Use the <strong>To failure</strong> chip when the program says to keep going until a rep fails, for example "8-10, to failure". It works with any rep target: an exact number, a range, or an AMRAP. The training screen shows <em>Plan 8-10 to failure</em>.</p>
@@ -110,6 +123,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Starting the workout carries the mark onto the sets you log, and the last-session values fill the left and right fields.</li>
     <li>A left and right set meets the plan only when both arms do. <a href="/help/progression/">Progression rules</a> judge the weaker arm.</li>
   </ul>
+
+  <h3 id="rep-target-plan">Plan by total reps</h3>
+  <p>For work like pull-ups, plan one number of reps instead of a list of sets. Open the exercise in a routine day and tap <strong>Plan by total reps instead</strong>. The set list becomes a single number: <em>Any number of sets. Warm-ups don't count.</em> Tap <strong>Plan by sets instead</strong> to switch back.</p>
+  <p>Starting the workout carries the target in, and you count it down as described under <a href="/help/logging/#rep-target">Total rep target</a>.</p>
+  <h4 id="rep-target-raise">Raise the target when you reach it</h4>
+  <p>In the exercise's <strong>Progression</strong> section, turn on <strong>Raise the target when you reach it</strong> and set <strong>Add N rep(s) each time</strong>. After a workout where you reached the target, the next one asks for that many more. Miss it and the next workout asks for the same number again.</p>
 
   <h3 id="rest-per-set">Rest per set</h3>
   <p>Tap <strong>+ Rest time</strong> beside <strong>+ rep range</strong> and <strong>+ Effort target</strong> on a set to give it its own rest. The set then shows a <strong>Rest: 5:00</strong> chip. Type the time (5, 0, 0 reads 5:00) or pick a preset.</p>
@@ -131,7 +150,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li>Weight increment override</li>
     <li>Notes override</li>
-    <li>Tempo</li>
+    <li>Tempo: tap the <strong>Tempo</strong> row to open the <a href="/help/logging/#tempo">tempo picker</a>. The routine page and the log preview show it on the exercise's line.</li>
     <li>Default machine and attachment</li>
     <li>Default bar</li>
     <li>Default grip type (when the machine has grip types)</li>
@@ -158,7 +177,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The <strong>Notes</strong> section on the routine detail screen holds notes for the whole program: why you chose it, the current cycle, a target date. Tap it (or <strong>Add notes</strong>) to open the editor. Routine notes go with the routine when you share it as a <code>.badger</code> file.</p>
 
   <h3>Folders</h3>
-  <p>Tap the folder icon in the top bar of the routine list to create a folder. To move a routine into one, tap the routine's <strong>⋮</strong> and pick the folder. Routines outside any folder appear under "Other".</p>
+  <p>Tap the folder icon in the top bar of the routine list to create a folder. To move a routine into one, tap the routine's <strong>⋮</strong> and pick the folder. Routines outside any folder appear under "Other". Deleting a folder offers <strong>Undo</strong>.</p>
 
   <h2 id="progression">Progression</h2>
   <p>Progression rules, training maxes, percentage sets, waves and the overload suggestion are on the <a href="/help/progression/">Progression</a> page:</p>
@@ -188,7 +207,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>On the routine detail screen, open the exercise's <strong>⋮ menu</strong> and choose <strong>Manage alternatives…</strong>.</li>
     <li>Search for and add up to two alternatives. Changes save immediately.</li>
   </ol>
-  <p>Each alternative row's own <strong>⋮ menu</strong> can remove it (<strong>Remove alternative</strong>) or make it the default.</p>
+  <p>Each alternative row's own <strong>⋮ menu</strong> can remove it (<strong>Remove alternative</strong>, with <strong>Undo</strong>) or make it the default.</p>
   <p>To swap during the workout, open the training screen's <strong>⋮ menu</strong> and tap <strong>Switch to alternative…</strong>. The original is listed too, labeled <strong>(original)</strong>, so you can switch back. You can also pick an alternative before you start, from the swap icon on the routine log preview.</p>
   <p>A swap lasts for that workout only. The new exercise comes in with its own recent weights, your routine stays the same, and your history records what you actually did.</p>
 
@@ -223,9 +242,17 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Progress.</strong> A lift that already <a href="/help/progression/#progressing-together">progresses together</a> with other days keeps doing so on the copy. If only one of those days moves the weight, as in Madcow, the copy follows that day and doesn't move it. Any other lift with a rule starts its own progress on the copy.</li>
   </ul>
 
+  <h2 id="delete-a-day">Delete a day or an exercise</h2>
+  <p>Delete a day or an exercise from a day and it goes at once, with an <strong>Undo</strong> at the bottom of the screen. Undo brings back the slot with its progression rule, training max and progress. See <a href="/help/logging/#undo-deletes">Undo a delete</a>.</p>
+
+  <h2 id="archive-a-routine">Archive a routine</h2>
+  <p>Archive a routine you no longer use to take it out of your routine list without losing anything. In the routine list, tap the routine's <strong>⋮</strong> and tap <strong>Archive</strong>. The same option is in the <strong>⋮</strong> menu inside the routine. Tap <strong>Undo</strong> right after if you change your mind.</p>
+  <p>Archived routines move to <strong>Archived</strong> at the bottom of the list. Tap it to see them. To bring one back, tap its <strong>⋮</strong> and tap <strong>Restore</strong>. Its days, training maxes and progress are as you left them, and past workouts keep their routine.</p>
+  <p>An archived routine doesn't appear when you pick a routine to start. If you archive your active routine, Badger asks first, and no routine is active until you pick one.</p>
+
   <h2 id="delete-a-routine">Delete a routine</h2>
-  <p>In the routine list, tap the routine's <strong>⋮</strong>, tap <strong>Delete</strong> and confirm. The same option is in the <strong>⋮</strong> menu inside the routine.</p>
-  <p>Workouts you logged from the routine stay in History. If you delete the active routine, no routine is active until you set another one.</p>
+  <p>In the routine list, tap the routine's <strong>⋮</strong>, tap <strong>Delete</strong> and confirm. The same option is in the <strong>⋮</strong> menu inside the routine. The confirm lists what goes with it: the days, training maxes and progression rules. Tap <strong>Undo</strong> afterward to bring it all back.</p>
+  <p>Workouts you logged from the routine stay in History. If you delete the active routine, no routine is active until you set another one. To keep a routine's progress but get it out of the list, <a href="#archive-a-routine">archive it</a> instead.</p>
 
   <h2 id="create-from-history">Create a routine from your history</h2>
   <p>Turn past workouts into a multi-day routine, one day per workout, with their exercises, sets and warmups.</p>
@@ -243,6 +270,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     </li>
   </ol>
   <p>The new routine opens right away, with days ordered oldest to newest. To cancel, tap <strong>✕</strong> or press back.</p>
+  <h3 id="create-from-hint">From the History card</h3>
+  <p>If you repeat workouts and have no routine of your own, History may show a card: <strong>You repeat a workout</strong>. Tap <strong>Create routine</strong> and the sheet opens with the newest workout of each repeated session already picked.</p>
+  <p>Each session becomes one day. Repeat a push, a pull and a leg day, and you get a three-day routine; the card tells you the number first. A session you did ten times still makes one day.</p>
 
   <hr />
 

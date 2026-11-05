@@ -700,6 +700,42 @@ const description =
             <code>"always"</code>, where every set is left and right anyway. Needs Badger 1.1.14 or later.
           </td>
         </tr>
+        <tr>
+          <td><code>set_style</code></td>
+          <td>string</td>
+          <td>
+            <code>"drop"</code>, <code>"myo"</code> or <code>"rest_pause"</code>: the set is a drop
+            set, myo-reps or rest-pause. Leave the key out for a straight set. The set's
+            <code>reps</code> and <code>weight</code> are its first bout. Never valid on a warmup or
+            on a left-and-right set. <code>"drop"</code> is not valid on a reps-only or timed
+            exercise: import stores such a set straight. Needs Badger 1.1.17 or later.
+          </td>
+        </tr>
+        <tr>
+          <td><code>planned_steps</code></td>
+          <td>integer</td>
+          <td>
+            Beside <code>set_style</code>: a drop set's number of drops, or the &ldquo;up to
+            N&rdquo; mini-sets or bouts of myo-reps and rest-pause. Whole numbers from 1 to 10.
+            Needs Badger 1.1.17 or later.
+          </td>
+        </tr>
+        <tr>
+          <td><code>drop_percent</code></td>
+          <td>integer</td>
+          <td>
+            Drop sets only: each drop's step down, in percent. Whole numbers from 5 to 50. Leave it
+            out for the default of 20. Needs Badger 1.1.17 or later.
+          </td>
+        </tr>
+        <tr>
+          <td><code>pause_seconds</code></td>
+          <td>integer</td>
+          <td>
+            Myo-reps and rest-pause only: the pause between bouts, in seconds, from 5 to 60. Leave
+            it out to use the lifter's own pause for the exercise. Needs Badger 1.1.17 or later.
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1411,6 +1447,11 @@ const description =
       older version ignores it and rests for the slot's <code>rest_override_seconds</code> instead.
       That key also changed meaning: it now wins over the exercise's own default rest, which an
       older version does not know.
+    </li>
+    <li>
+      <strong>1.1.17 keys.</strong> A set's <code>set_style</code>, <code>planned_steps</code>,
+      <code>drop_percent</code> and <code>pause_seconds</code> are omitted for a straight set. An
+      older version ignores all four and reads a straight set with the same reps and weight.
     </li>
     <li>
       <strong>Older values still read.</strong> <code>machine_type: "plateLoaded"</code>; the

@@ -81,11 +81,20 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li>Date, start time, end time and total duration.</li>
     <li>Every exercise in order, with each set's weight, reps, warmup or working badge, and any <a href={`/help/logging/#rpe-rir`}>RPE or RIR</a> you logged.</li>
+    <li>The tempo you used, such as <strong>Tempo 3-1-X-0</strong>, under the exercise.</li>
     <li>Set comments. Tap the comment icon beside a set to read it in full.</li>
     <li>The gym and machine, if you recorded them.</li>
     <li>The workout comment you added when you finished.</li>
   </ul>
   <p>To keep a workout's sets from setting records, tap <strong>⋮ → Leave out of records</strong>. See <a href="/help/progress/#leave-out">Leave a workout out of your records</a>.</p>
+
+  <h3 id="change-date">Move a workout to another date</h3>
+  <p>Logged a workout on the wrong day? Open its summary, tap <strong>⋮ → Change date</strong> and pick the day. The start and end times stay the same, and so do the times of its sets. You can pick any earlier day or today, never a future day.</p>
+  <p>The day can already have a workout: it then holds both, in the order you created them. Records, the calendar, your week, progress graphs and Last time all follow the new date.</p>
+  <p>The routine stays the same. If your routine's progression has already counted a later workout, or the move would jump past a later workout it hasn't counted yet, Badger asks you to pick an earlier date, so every workout counts once. A workout already saved to Apple Health or Health Connect keeps its original date there.</p>
+
+  <h3 id="delete-workout">Delete a workout</h3>
+  <p>Open the workout summary, tap its <strong>⋮</strong> menu and tap <strong>Delete</strong>. Badger asks you to confirm and says what goes with it: the workout's exercises, its sets and its personal records. Tap <strong>Undo</strong> on the message that follows and everything comes back, records included.</p>
 
   <h3 id="compared-with-last-time">Compared with last time</h3>
   <p>On a workout you started without a routine, <strong>Compared with last time</strong> lists each exercise with your best set today, your best set the last time you did it, and a mark:</p>
@@ -106,15 +115,24 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>Pace appears once a session has at least four completed sets and a running clock. Backdated logs and some older sessions don't show it.</p>
 
+  <h3 id="how-it-felt">How it felt</h3>
+  <p>The <strong>How it felt</strong> section on the summary collects what you said about the session. It appears when you rated the session or answered the <a href="/help/routines/#energy-check-in">energy check-in</a>, and above Pace:</p>
+  <ul>
+    <li><strong>Before</strong> - your answer to the check-in, for example <strong>Low energy</strong>. Tap it to change it. Changing it doesn't re-weight the workout.</li>
+    <li><strong>Lighter today</strong> - appears when you started lifts lighter, for example <strong>3 lifts at 90%</strong>.</li>
+    <li><strong>Session effort</strong> - how hard the whole workout felt, described next.</li>
+  </ul>
+  <p>The History list and the calendar's day summary add <strong>low energy going in</strong> to a workout where you answered Low.</p>
+
   <h3 id="session-effort">Session effort</h3>
-  <p><strong>Session effort</strong> is one number from 1 to 10 for how hard the whole workout felt. It's optional, and nothing else in Badger depends on it.</p>
+  <p><strong>Session effort</strong> is one number from 1 to 10 for how hard the whole workout felt. It's optional.</p>
   <ul>
     <li><strong>1 to 3</strong> is Easy, <strong>4 to 6</strong> Moderate, <strong>7 to 8</strong> Hard and <strong>9 to 10</strong> All out.</li>
     <li>When you end a workout, the <strong>Workout complete</strong> sheet asks <em>How hard was that session?</em> Tap a number, or tap it again to clear it. It's saved with <strong>Done</strong>, along with your note. Skip it and the workout is saved without a rating.</li>
-    <li>On the workout summary, a <strong>Session effort</strong> section above Pace shows the rating, for example <strong>7 (Hard)</strong>. Tap it to change it, or tap <strong>Clear rating</strong>.</li>
+    <li>On the workout summary, the <strong>Session effort</strong> row in <a href="#how-it-felt">How it felt</a> shows the rating, for example <strong>7 (Hard)</strong>. Tap it to change it, or tap <strong>Clear rating</strong>.</li>
   </ul>
   <p>A workout you ended from Today, or that Badger ended for you, never shows the completion sheet. Rate it from its summary: tap <strong>Add session effort</strong>.</p>
-  <p>The rating shows as <strong>effort 7</strong> on the History list and in the calendar's day summary. It's a separate thing from <a href="/help/logging/#rpe-rir">RPE and RIR</a>, which describe one set. It isn't sent to Apple Health or Health Connect, and <a href="/help/progression/">deload detection</a> doesn't read it. It's included in your <a href="/help/settings/#export">CSV export</a> and in backups.</p>
+  <p>The rating shows as <strong>effort 7</strong> on the History list and in the calendar's day summary. It's a separate thing from <a href="/help/logging/#rpe-rir">RPE and RIR</a>, which describe one set. It isn't sent to Apple Health or Health Connect. <a href="/help/tools/#deload">Deload detection</a> reads it in weeks where you logged no RIR or RPE. It's included in your <a href="/help/settings/#export">CSV export</a> and in backups.</p>
 
   <h3>Planned vs. actual (routine workouts)</h3>
   <p>When a workout came from a routine day, each working set can show two lines beneath it:</p>
