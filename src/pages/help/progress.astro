@@ -85,14 +85,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>The number at the top of the page is your best pace and the day you set it. Badger does not track incline, level or floors, so put those in the set note. Your own exercises count too when the name says what they are, such as "Trail run" or "Spin bike". Carries, sled work and swimming do not get a pace.</p>
 
-  <h3>Graph controls</h3>
-  <ul>
-    <li><strong>Data points</strong> - show or hide the markers.</li>
-    <li><strong>Trend line</strong> - add a straight trend line.</li>
-    <li><strong>Y from 0</strong> - start the vertical axis at zero.</li>
-    <li><strong>Share</strong> - send the chart as an image through the share sheet.</li>
-  </ul>
-  <p>Tap a point to see its values below the chart, and use the arrows to step from point to point. Tap the values to open that session's workout summary.</p>
+  <h3 id="chart-range">Time range</h3>
+  <p>The chips above the chart pick how far back it reaches: <strong>3M</strong> (the last three months), <strong>1Y</strong> (the last year) or <strong>All</strong>. It opens on 1Y. If you have fewer than two sessions in the last year, it opens on All instead. Your pick stays as you move between exercises, and the training screen's Graph tab uses the same range.</p>
+  <p>Records are still all-time. A session that was a PR keeps its ring in a shorter range, and the BEST line shows your best ever, even when you set it before the range starts.</p>
+
+  <h3 id="chart-readout">See one session</h3>
+  <p>Tap the chart, or drag along it, to pick the nearest session. The line under the chart shows its date, the value plotted, and the set behind it, for example <em>90 kg × 5</em>. For a total, such as volume or total reps, it shows how many sets went into it.</p>
+  <p>With a screen reader, swipe up or down on the chart to step from session to session.</p>
 
   <h3 id="chart-filters">Chart filters</h3>
   <p>Filter rows appear above the chart once your history has something to filter:</p>
