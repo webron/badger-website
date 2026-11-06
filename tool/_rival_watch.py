@@ -7,6 +7,8 @@ outside the repo, in `~/Development/badger-artifacts/site-stats/rivals/`:
   latest.json        the snapshot from the last fetch
   last-changes.json  what differed between the last two fetches, and the
                      ratings figures, which is all the weekly report reads
+  history.md         one section per fetch, newest last, so past weeks stay
+                     readable after weekly.html is overwritten
 
 weekly-report.py calls `panel()`. That refreshes the snapshot when it is more
 than six days old, so a normal weekly run fetches once and a manual re-run the
@@ -352,12 +354,37 @@ def refresh(state_dir: Path = STATE_DIR, force: bool = False, get=_get,
         state_dir.mkdir(parents=True, exist_ok=True)
         (state_dir / "latest.json").write_text(json.dumps(snap), encoding="utf-8")
         (state_dir / "last-changes.json").write_text(json.dumps(result), encoding="utf-8")
+        append_history(state_dir / "history.md", result)
         (state_dir / "snapshots").mkdir(exist_ok=True)
         (state_dir / "snapshots" / ("%s.json" % snap["date"])).write_text(
             json.dumps(snap), encoding="utf-8")
     except OSError as e:
         result["errors"].append("could not save snapshot: %s" % _short(e))
     return result
+
+
+def history_entry(result: dict) -> str:
+    """One readable section of history.md for a fetch."""
+    if result.get("baseline"):
+        return "## %s\n\nBaseline recorded.\n" % result["date"]
+    lines = ["## %s (since %s)" % (result["date"], result.get("previous")), ""]
+    if not result["changes"]:
+        lines.append("No changes.")
+    for c in result["changes"]:
+        lines.append("- **%s**, %s: %s" % (c["rival"], c["source"], c["summary"]))
+        lines += ["  - added: " + x for x in c["added"]]
+        lines += ["  - removed: " + x for x in c["removed"]]
+    lines += ["- error: " + e for e in result["errors"]]
+    return "\n".join(lines) + "\n"
+
+
+def append_history(path: Path, result: dict) -> None:
+    """Add this fetch to history.md, once per date (a same-day re-run is skipped)."""
+    entry = history_entry(result)
+    existing = path.read_text(encoding="utf-8") if path.exists() else "# Rival watch history\n"
+    if ("\n## %s" % result["date"]) in existing:
+        return
+    path.write_text(existing.rstrip("\n") + "\n\n" + entry, encoding="utf-8")
 
 
 # --- rendering --------------------------------------------------------------

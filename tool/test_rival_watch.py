@@ -152,6 +152,13 @@ class Refresh(unittest.TestCase):
             self.assertEqual(wk["previous"], "2026-11-05")
             self.assertTrue(any(c["summary"].startswith("version") for c in wk["changes"]))
             self.assertTrue((d / "snapshots" / "2026-11-12.json").exists())
+            history = (d / "history.md").read_text()
+            self.assertIn("## 2026-11-05\n\nBaseline recorded.", history)
+            self.assertIn("## 2026-11-12 (since 2026-11-05)", history)
+            self.assertIn("version: 1.0 \u2192 2.0", history)
+            # A same-day forced re-run does not write the section twice.
+            rw.refresh(d, force=True, get=fake_get(version="2.0"), today=date(2026, 11, 12))
+            self.assertEqual((d / "history.md").read_text().count("## 2026-11-12"), 1)
 
     def test_render_escapes(self):
         result = {"date": "2026-11-12", "previous": "2026-11-05", "baseline": False,
