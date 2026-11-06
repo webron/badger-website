@@ -26,6 +26,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from _ai_probe import PROMPTS, PROVIDERS, latest_summary  # noqa: E402
+from _apple_analytics import installs_and_deletions  # noqa: E402
 from _stats_sources import (  # noqa: E402
     STORE_EVENTS, app_store, app_store_listing, app_store_ratings,
     app_store_reviews, goatcounter, play, play_quality, play_ratings,
@@ -321,6 +323,62 @@ def stars(rating: object) -> str:
     return "\u2605" * n + "\u2606" * (5 - n)
 
 
+def ios_deletions_section(days: int) -> str:
+    """Installs against deletions, from Apple's Analytics Reports API.
+
+    Play's panel shows uninstalls; this is the iOS counterpart. It degrades to
+    a sentence, never a dead panel: the request may not exist yet, or Apple may
+    not have written a file yet.
+    """
+    data = installs_and_deletions(days)
+    if "error" in data:
+        return f'<h3>Deletions</h3><p class="error">{esc(data["error"])}</p>'
+    if "pending" in data:
+        return f'<h3>Deletions</h3><p class="empty">{esc(data["pending"])}</p>'
+    parts = ["<h3>Deletions</h3>"]
+    rate = f' ({data["deletes"] / data["installs"]:.0%} of installs)' if data["installs"] else ""
+    parts.append(f'<p class="sub">{data["deletes"]} deletions against '
+                 f'{data["installs"]} installs, {esc(data["start"])} to '
+                 f'{esc(data["end"])}{esc(rate)}. Apple counts only people who '
+                 f'share analytics, so both figures run low.</p>')
+    parts.append(sparkline(weekly_buckets(data["daily"])))
+    parts.append(rows_table(
+        ["Deletions", "Territory"],
+        [[str(c), esc(name)] for name, c in data["territories"][:10]],
+        "No deletions recorded in this window."))
+    return "".join(parts)
+
+
+def build_ai_answers() -> str:
+    """Whether AI search answers name Badger, from the last probe run.
+
+    Reads the history file the weekly probe (tool/_ai_probe.py) appends to; it
+    makes no API calls itself, so a report never spends money or waits on a
+    provider. Empty until the probe has run once.
+    """
+    summary = latest_summary()
+    if summary.get("empty"):
+        return panel("AI answers", "", '<p class="empty">The probe has not run '
+                     'yet. Run <code>python3 tool/_ai_probe.py</code> with at '
+                     'least one provider key.</p>')
+    rows = []
+    for name, v in summary["providers"].items():
+        rows.append([esc(name), f'{v["named"]} of {v["asked"]}',
+                     f'{v["cited"]} of {v["asked"]}', str(v["errors"])])
+    missing = [p for p in PROVIDERS if p not in summary["providers"]]
+    note = ""
+    if missing:
+        note = (f'<p class="sub">No key for {esc(", ".join(missing))}, so they '
+                f'were not asked.</p>')
+    return panel(
+        "AI answers", summary["date"],
+        f'<p class="sub">{len(PROMPTS)} fixed program prompts, each asked once. '
+        f'"Named" counts answers that mention Badger; "cited" counts answers '
+        f'that list badger.fit as a source.</p>'
+        + rows_table(["Provider", "Named", "Cited", "Failed"], rows, "No answers.")
+        + note)
+
+
 def build_app_store(days: int) -> str:
     """The iOS panel.
 
@@ -426,6 +484,8 @@ def build_app_store(days: int) -> str:
                 [[str(c), esc(name)] for name, c in store["devices"]],
                 "Nothing yet."))
 
+    parts.append(ios_deletions_section(days))
+
     return panel("App Store", subtitle, "".join(parts))
 
 
@@ -482,6 +542,7 @@ def main() -> None:
         build_search_console(days),
         build_play(days),
         build_app_store(days),
+        build_ai_answers(),
     ])
 
     page = (
