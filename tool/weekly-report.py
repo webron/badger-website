@@ -31,6 +31,7 @@ from _stats_sources import (  # noqa: E402
     app_store_reviews, goatcounter, play, play_quality, play_ratings,
     search_console,
 )
+from _rival_watch import panel as build_rivals  # noqa: E402
 
 DEFAULT_OUT = Path.home() / "Development/badger-artifacts/site-stats/weekly.html"
 WEEKS = 5  # this week plus the four it is measured against
@@ -482,6 +483,7 @@ def main() -> None:
         build_search_console(days),
         build_play(days),
         build_app_store(days),
+        build_rivals(),
     ])
 
     page = (
