@@ -73,7 +73,10 @@ RIVALS: dict[str, dict] = {
         "pages": ["https://www.boostcamp.app/"],
     },
     "FitNotes": {
-        "ios": "1059245195",
+        # Android only (fitnotesapp.com says so). The App Store's "FitNotes -
+        # Workout Tracker" (id 1059245195, Evgeny Uralsky) is an unrelated app
+        # with the same name, so it is deliberately not watched.
+        "ios": None,
         "play": "com.github.jamesgay.fitnotes",
         "pages": ["https://www.fitnotesapp.com/"],
     },
@@ -186,11 +189,12 @@ def fetch_snapshot(prev: dict | None = None, get=_get) -> dict:
         cur: dict = {"pages": {}}
 
         try:
-            data = parse_ios(json.loads(get(
-                "https://itunes.apple.com/lookup?id=%s&country=us" % cfg["ios"])))
-            if not data:
-                raise ValueError("no record for app id %s" % cfg["ios"])
-            cur["ios"] = data
+            if cfg.get("ios"):
+                data = parse_ios(json.loads(get(
+                    "https://itunes.apple.com/lookup?id=%s&country=us" % cfg["ios"])))
+                if not data:
+                    raise ValueError("no record for app id %s" % cfg["ios"])
+                cur["ios"] = data
         except Exception as e:  # noqa: BLE001 - any failure degrades, never raises
             snap["errors"].append("%s App Store: %s" % (name, _short(e)))
             if old.get("ios"):

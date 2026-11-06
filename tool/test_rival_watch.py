@@ -117,6 +117,22 @@ class Diffing(unittest.TestCase):
         self.assertIn("(+30)", rw._stars(rows[0]["ios"]))
 
 
+class AndroidOnly(unittest.TestCase):
+    def test_rival_without_an_ios_id_is_never_looked_up(self):
+        asked = []
+
+        def get(url):
+            asked.append(url)
+            return fake_get()(url)
+
+        snap = rw.fetch_snapshot(None, get=get)
+        self.assertNotIn("ios", snap["rivals"]["FitNotes"])
+        self.assertEqual(snap["errors"], [])
+        self.assertFalse(any("1059245195" in u for u in asked))
+        rows = {r["rival"]: r for r in rw.ratings_table(None, snap)}
+        self.assertEqual(rw._stars(rows["FitNotes"]["ios"]), "\u2013")
+
+
 class Failures(unittest.TestCase):
     def test_failed_source_keeps_old_data_and_is_reported(self):
         old = rw.fetch_snapshot(None, get=fake_get())
