@@ -1,0 +1,52 @@
+PPL + Upper/Lower (5-Day) spreadsheet
+"Built from the PPL + Upper/Lower (5-Day) program that ships in Badger 1.1.15. The sets, reps and rules are the app's, and weights are worked out the way the app works them out."
+Run this program in Badger: https://badger.fit/programs/
+Get the app: https://badger.fit/#download
+How the rules work: https://badger.fit/help/progression/
+
+"Push / Pull / Legs on the first three days, then an upper and a lower day. Five sessions, two rest days you place where they suit you. Rep ranges: stay at the bottom of the range until you can hit the top on every set, then add weight."
+Write the weight you used for each exercise in the week columns. Use the same unit all the way down.
+
+Push
+Exercise,Sets × reps,Week 1,Week 2,Week 3,Week 4,Week 5,Week 6,Week 7,Week 8,Week 9,Week 10,Week 11,Week 12
+Flat Barbell Bench Press,4 × 5-8
+Overhead Barbell Press,3 × 6-10
+Incline Dumbbell Bench Press,3 × 8-12
+Dumbbell Lateral Raise,3 × 12-20
+Tricep Pushdown (Cable),3 × 10-15
+Overhead Tricep Extension,3 × 10-15
+
+Pull
+Exercise,Sets × reps,Week 1,Week 2,Week 3,Week 4,Week 5,Week 6,Week 7,Week 8,Week 9,Week 10,Week 11,Week 12
+Deadlift,3 × 4-6
+Barbell Row,4 × 6-10
+Lat Pulldown,3 × 8-12
+Seated Cable Row,3 × 10-15
+Face Pull,3 × 12-20
+Barbell Curl,3 × 8-12
+
+Legs
+Exercise,Sets × reps,Week 1,Week 2,Week 3,Week 4,Week 5,Week 6,Week 7,Week 8,Week 9,Week 10,Week 11,Week 12
+Barbell Back Squat,4 × 5-8
+Romanian Deadlift,3 × 8-12
+Leg Press,3 × 10-15
+Leg Curl (Lying),3 × 10-15
+Calf Raise (Standing),4 × 10-15
+Hanging Leg Raise,3 × 10-15
+
+Upper
+Exercise,Sets × reps,Week 1,Week 2,Week 3,Week 4,Week 5,Week 6,Week 7,Week 8,Week 9,Week 10,Week 11,Week 12
+Incline Barbell Bench Press,4 × 6-10
+Pull-Up,4 × 6-10
+Flat Dumbbell Bench Press,3 × 8-12
+Single-Arm Dumbbell Row,3 × 10-15
+Dumbbell Lateral Raise,3 × 12-20
+Hammer Curl,3 × 10-15
+
+Lower
+Exercise,Sets × reps,Week 1,Week 2,Week 3,Week 4,Week 5,Week 6,Week 7,Week 8,Week 9,Week 10,Week 11,Week 12
+Barbell Front Squat,3 × 6-10
+Barbell Hip Thrust,3 × 8-12
+Bulgarian Split Squat,3 × 8-12
+Leg Extension,3 × 12-15
+Calf Raise (Seated),4 × 12-20

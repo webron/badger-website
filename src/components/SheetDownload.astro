@@ -1,0 +1,61 @@
+---
+/**
+ * The spreadsheet download block on a program's guide page.
+ *
+ * The files are made by tool/sheets from the program's own .badger file, so the
+ * sets, percentages and rules are the app's. `npm run sheets` rebuilds them and
+ * tool/sheets/sheets.test.mjs fails if the committed copies are stale.
+ */
+interface Props {
+  /** The .badger file name without its extension, e.g. "gzclp". */
+  slug: string;
+  /** The program's name as the page writes it. */
+  name: string;
+  /** What the reader types first: "training maxes", "working weights", "starting weights". */
+  inputs: string;
+}
+
+const { slug, name, inputs } = Astro.props;
+const xlsx = `/programs/sheets/${slug}-spreadsheet.xlsx`;
+const csv = `/programs/sheets/${slug}-spreadsheet.csv`;
+---
+
+<h2 id="spreadsheet">{name} spreadsheet</h2>
+
+<p>
+  Download the {name} spreadsheet to plan your weights before you train. Enter your {inputs} and every
+  set comes out rounded to the plates you have, in kg or lb.
+</p>
+
+<p class="sheet-links">
+  <a href={xlsx} download>Excel (.xlsx)</a>
+  <a href={csv} download>CSV for Google Sheets</a>
+</p>
+
+<p>
+  In Google Sheets, open a blank sheet and choose File, Import, Upload, then pick the CSV. The sheet
+  uses the program's own sets, percentages and rules, so its weights match what Badger proposes when
+  you make every set. Badger keeps the numbers current after each session, and you can
+  <a href="/#download">get the app here</a>.
+</p>
+
+<style>
+  .sheet-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+  }
+
+  .sheet-links a {
+    font-weight: 600;
+    color: var(--accent-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--accent-ink) 45%, transparent);
+  }
+
+  .sheet-links a:hover {
+    text-decoration-color: var(--accent-ink);
+  }
+</style>

@@ -236,6 +236,10 @@ const description =
           : 'The files below carry sets, reps and structure. The progression rules that go with these programs are in the copies built into the app; the downloads here do not carry them yet.'
       }
     </p>
+    <p class="sub">
+      Every program also has a spreadsheet, as Excel and as CSV for Google Sheets. Enter your starting
+      numbers and it works out the weights for each set.
+    </p>
     <p class="sub">You can also use a file to:</p>
     <ul class="uses">
       <li>read a program before you commit to it</li>
@@ -269,6 +273,16 @@ const description =
             <p class="program-get">
               <a class="download" href={`/programs/${p.slug}.badger`} download>
                 Download {p.slug}.badger
+              </a>
+            </p>
+            <p class="program-get">
+              Spreadsheet:{' '}
+              <a class="download" href={`/programs/sheets/${p.slug}-spreadsheet.xlsx`} download>
+                Excel
+              </a>
+              {' '}
+              <a class="download" href={`/programs/sheets/${p.slug}-spreadsheet.csv`} download>
+                CSV for Google Sheets
               </a>
             </p>
           </li>

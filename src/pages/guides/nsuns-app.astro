@@ -1,6 +1,7 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
+import SheetDownload from '../../components/SheetDownload.astro';
 
 /**
  * Program landing page, published 2026-11-05, same shape as gzclp-app.astro.
@@ -31,6 +32,10 @@ const faq = [
   {
     q: 'How do I get the nSuns routine?',
     a: 'It is in the app under You, Routines, in the Intermediate Programs folder. You can also download nsuns-531lp.badger from the programs page and open it on your phone.',
+  },
+  {
+    q: 'Is there an nSuns spreadsheet?',
+    a: 'Yes. Download the nSuns 531LP spreadsheet as Excel or CSV from this page. Enter a training max for each lift and the reps you get on the 1+ set, and it updates the next week\'s training max and every set.',
   },
   {
     q: 'What does Badger cost?',
@@ -139,6 +144,8 @@ const faq = [
     <code>nsuns-531lp.badger</code> from the <a href="/programs/">programs page</a> and open it on your phone.
     The file is plain text you can read first; the <a href="/badger-format/">format is documented</a>.
   </p>
+
+  <SheetDownload slug="nsuns-531lp" name="nSuns 531LP" inputs="training maxes" />
 
   <h2 id="import">Bringing your history over</h2>
 

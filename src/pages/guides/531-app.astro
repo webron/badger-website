@@ -1,6 +1,7 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
+import SheetDownload from '../../components/SheetDownload.astro';
 
 /**
  * Marketing research 2026-11-04, published 2026-11-05.
@@ -32,6 +33,10 @@ const faq = [
   {
     q: 'Does it work in pounds?',
     a: 'Yes. Weights can be logged in kilograms or pounds, and per exercise if you want.',
+  },
+  {
+    q: 'Is there a 5/3/1 spreadsheet?',
+    a: 'Yes. Download the 5/3/1 Boring But Big spreadsheet as Excel or CSV from this page. Enter a training max for each lift and it works out every set of the four-week wave and the five sets of ten behind it, for three cycles.',
   },
   {
     q: 'What does Badger cost?',
@@ -132,6 +137,8 @@ const faq = [
     it on your phone. nSuns 531LP ships the same way if you want a higher-volume version. To see the weights
     before you start, try the <a href="/tools/531-calculator/">5/3/1 calculator</a>.
   </p>
+
+  <SheetDownload slug="531-bbb" name="5/3/1 Boring But Big" inputs="training maxes" />
 
   <h2 id="import">Bringing your history over</h2>
 
