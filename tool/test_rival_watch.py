@@ -160,6 +160,18 @@ class Refresh(unittest.TestCase):
             rw.refresh(d, force=True, get=fake_get(version="2.0"), today=date(2026, 11, 12))
             self.assertEqual((d / "history.md").read_text().count("## 2026-11-12"), 1)
 
+    def test_unwritable_history_keeps_snapshot_and_does_not_raise(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            (d / "history.md").mkdir()  # a directory where the file should be
+            r = rw.refresh(d, get=fake_get(), today=date(2026, 11, 5))
+            self.assertTrue((d / "snapshots" / "2026-11-05.json").exists())
+            self.assertTrue(any("history" in e for e in r["errors"]))
+            (d / "history.md").rmdir()
+            (d / "history.md").write_bytes(b"\xff\xfe bad")
+            r = rw.refresh(d, force=True, get=fake_get(), today=date(2026, 11, 12))
+            self.assertTrue(any("history" in e for e in r["errors"]))
+
     def test_render_escapes(self):
         result = {"date": "2026-11-12", "previous": "2026-11-05", "baseline": False,
                   "changes": [{"rival": "X", "source": "s", "summary": "page text changed",

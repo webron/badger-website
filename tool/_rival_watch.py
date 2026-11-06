@@ -354,12 +354,16 @@ def refresh(state_dir: Path = STATE_DIR, force: bool = False, get=_get,
         state_dir.mkdir(parents=True, exist_ok=True)
         (state_dir / "latest.json").write_text(json.dumps(snap), encoding="utf-8")
         (state_dir / "last-changes.json").write_text(json.dumps(result), encoding="utf-8")
-        append_history(state_dir / "history.md", result)
         (state_dir / "snapshots").mkdir(exist_ok=True)
         (state_dir / "snapshots" / ("%s.json" % snap["date"])).write_text(
             json.dumps(snap), encoding="utf-8")
     except OSError as e:
         result["errors"].append("could not save snapshot: %s" % _short(e))
+    # Last and on its own: a bad history file must not cost the snapshot or the panel.
+    try:
+        append_history(state_dir / "history.md", result)
+    except Exception as e:  # noqa: BLE001
+        result["errors"].append("could not write history: %s" % _short(e))
     return result
 
 
