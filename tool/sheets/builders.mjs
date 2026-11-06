@@ -16,7 +16,7 @@ import {
   snap, percentLoad, percentF, nextWorking, nextF, incF, unitF, WEEKDAY,
   startSheet, sectionBar, headerRow, textLines,
 } from './common.mjs';
-import { describeSets, ruleSentences, successIncrementKg } from './rules.mjs';
+import { describeSets, ruleBlocks, successIncrementKg } from './rules.mjs';
 
 // Example starting numbers, in kg and lb. They only fill the yellow cells so the
 // sheet shows real figures on first open; the reader types over them.
@@ -46,6 +46,23 @@ const lookup = (table, name) => table[name] ?? [40, 90];
 /** An input cell holding an example that switches with the unit. */
 function exampleInput(g, r, c, [kg, lb]) {
   g.set(r, c, kg, { f: unitF(kg, lb), s: 'input' });
+}
+
+
+/**
+ * The closing "rules" section: one block per distinct rule, headed by the lifts
+ * it covers, so each lift's own increment is the one printed.
+ * `label(exercise)` names a lift in the heading.
+ */
+function writeRules(g, r, payload, cols, label = (e) => e.exercise_name) {
+  sectionBar(g, r, 'The rules', cols);
+  r += 1;
+  const ruled = payload.days.flatMap((d) => d.exercises).filter((e) => e.progression);
+  for (const { names, text } of ruleBlocks(ruled.map((e) => ({ name: label(e), progression: e.progression })))) {
+    g.set(r++, 0, names.join(', '), { s: 'bold' });
+    r = textLines(g, r, text);
+  }
+  return r;
 }
 
 const weeksFor = (sets) => {
@@ -146,9 +163,7 @@ function build531(ctx) {
     r += 1;
   }
 
-  sectionBar(g, r, 'The rule', widths.length);
-  const sample = payload.days.find((d) => d.exercises.some((e) => e.progression)).exercises.find((e) => e.progression);
-  textLines(g, r + 1, ruleSentences(sample.progression));
+  writeRules(g, r, payload, widths.length);
   return g;
 }
 
@@ -242,13 +257,7 @@ function buildNsuns(ctx) {
     }
   }
 
-  sectionBar(g, r, 'The rules', widths.length);
-  r += 1;
-  for (const scheme of ['nsuns_t1', 'nsuns_t2']) {
-    const e = payload.days.flatMap((d) => d.exercises).find((x) => x.progression?.scheme === scheme);
-    g.set(r++, 0, scheme === 'nsuns_t1' ? 'Tier 1' : 'Tier 2', { s: 'bold' });
-    r = textLines(g, r, ruleSentences(e.progression));
-  }
+  writeRules(g, r, payload, widths.length, (e) => `${e.exercise_name} (${e.progression.scheme === 'nsuns_t1' ? 'tier 1' : 'tier 2'})`);
   return g;
 }
 
@@ -329,9 +338,7 @@ function buildMadcow(ctx) {
     r += 1;
   }
 
-  sectionBar(g, r, 'The rule', widths.length);
-  const ruled = payload.days.flatMap((d) => d.exercises).find((x) => x.progression);
-  textLines(g, r + 1, ruleSentences(ruled.progression));
+  writeRules(g, r, payload, widths.length);
   return g;
 }
 
@@ -359,7 +366,7 @@ function buildGzclp(ctx) {
   const { g, row: top } = startSheet({ ...ctx, widths: widths.length > 3 ? widths : [34, 14, 14] });
   let r = top;
   r = textLines(g, r, [
-    'Each day has a heavy lift (tier 1), a medium lift (tier 2) and a light lift (tier 3). The weight goes up when every set is made.',
+    'Each day has a heavy lift (tier 1), a medium lift (tier 2) and a light lift (tier 3). The weight goes up when every set is made, and on tier 3 when the last set reaches its rep target.',
     'Miss a set and the lift moves to its next stage at the same weight. The table below assumes you made every set.',
   ], 'note') + 1;
 
@@ -393,7 +400,7 @@ function buildGzclp(ctx) {
 
   sectionBar(g, r, 'Starting weights', widths.length);
   r += 1;
-  headerRow(g, r, ['Lift', 'Start', 'Add when every set is made']);
+  headerRow(g, r, ['Lift', 'Start', 'Add on success']);
   r += 1;
   const startRow = new Map();
   for (const e of [...t12, ...t3]) {
@@ -431,13 +438,7 @@ function buildGzclp(ctx) {
   }
   r += 1;
 
-  sectionBar(g, r, 'The rules', widths.length);
-  r += 1;
-  for (const scheme of ['gzclp_t1', 'gzclp_t2', 'gzclp_t3']) {
-    const e = all.find((x) => x.e.progression?.scheme === scheme).e;
-    g.set(r++, 0, scheme.slice(-2).toUpperCase().replace('T', 'Tier '), { s: 'bold' });
-    r = textLines(g, r, ruleSentences(e.progression));
-  }
+  writeRules(g, r, payload, widths.length, (e) => `${e.exercise_name} (${e.progression.scheme.slice(-2).toUpperCase()})`);
   return g;
 }
 
@@ -511,20 +512,7 @@ function buildLinear(ctx) {
   }
   r += 1;
 
-  sectionBar(g, r, 'The rules', useWidths.length);
-  r += 1;
-  // One rule block per distinct rule text, with the lifts it covers.
-  const byText = new Map();
-  for (const { e } of lifts) {
-    const text = ruleSentences(e.progression);
-    const k = JSON.stringify(text);
-    if (!byText.has(k)) byText.set(k, { text, names: [] });
-    byText.get(k).names.push(e.exercise_name);
-  }
-  for (const { text, names } of byText.values()) {
-    g.set(r++, 0, names.join(', '), { s: 'bold' });
-    r = textLines(g, r, text);
-  }
+  r = writeRules(g, r, payload, useWidths.length);
   const stages = weeksFor(lifts[0].e.predefined_sets);
   if (stages.length > 1) {
     g.set(r++, 0, `Stages: ${stages.map((s) => describeSets(s)).join(', then ')}.`, { s: 'note' });

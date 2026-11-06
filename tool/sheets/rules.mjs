@@ -31,7 +31,7 @@ const TRIGGERS = {
     `After ${c.count} misses in a row`,
   all_sets_met: () => 'When every set is met',
   any_set_missed: () => 'When you miss a set',
-  stage_is_last: () => 'At the last stage',
+  stage_is_last: () => 'After failing at the last stage',
   driver_reps_between: (c) =>
     `When the key set gets ${c.reps_min} to ${c.reps_max} reps`,
   driver_reps_at_least: (c) => `When the key set gets ${c.reps_min} or more reps`,
@@ -90,12 +90,15 @@ export function ruleSentences(progression) {
   return groups.map((g) => `${g.lead}, ${g.actions.join(' and ')}.`);
 }
 
-/** The clause that adds a fixed amount when the rule's success trigger fires. */
+/**
+ * The fixed amount a rule adds when its lift succeeds: every set met, the end of
+ * a cycle, or the key set reaching its rep target (GZCLP tier 3).
+ */
 export function successIncrementKg(progression) {
   const c = progression.clauses.find(
     (x) =>
       x.action === 'add_absolute' &&
-      ['all_sets_met', 'cycle_complete'].includes(x.trigger),
+      ['all_sets_met', 'cycle_complete', 'driver_reps_at_least'].includes(x.trigger),
   );
   return c ? c.amount : null;
 }
@@ -105,11 +108,33 @@ export function describeSets(sets) {
   const work = sets.filter((s) => !s.is_warmup);
   const parts = [];
   for (const s of work) {
-    const reps = s.reps_max && s.reps_max !== s.reps ? `${s.reps}-${s.reps_max}` : `${s.reps}`;
+    const reps =
+      s.reps == null && s.duration_seconds != null
+        ? `${s.duration_seconds} sec`
+        : s.reps_max && s.reps_max !== s.reps
+          ? `${s.reps}-${s.reps_max}`
+          : `${s.reps}`;
     const label = `${reps}${s.is_amrap ? '+' : ''}`;
     const last = parts[parts.length - 1];
     if (last && last.label === label) last.count += 1;
     else parts.push({ label, count: 1 });
   }
   return parts.map((p) => `${p.count} × ${p.label}`).join(', ');
+}
+
+/**
+ * Rule sentences for a set of ruled exercises, one block per distinct rule with
+ * the lifts it covers. A program's lifts often differ only in their increment,
+ * so printing one lift's rule for all of them would state the wrong number.
+ * Returns [{ names, text }].
+ */
+export function ruleBlocks(exercises) {
+  const blocks = new Map();
+  for (const { name, progression } of exercises) {
+    const text = ruleSentences(progression);
+    const k = JSON.stringify(text);
+    if (!blocks.has(k)) blocks.set(k, { text, names: [] });
+    if (!blocks.get(k).names.includes(name)) blocks.get(k).names.push(name);
+  }
+  return [...blocks.values()];
 }

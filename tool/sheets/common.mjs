@@ -15,14 +15,16 @@ export const DEFAULT_STEP = { kg: 2.5, lb: 5 };
 export const DEFAULT_BAR = { kg: 20, lb: 45 };
 
 /**
- * The app rounds a derived load to the nearest weight the gym can load:
- * `(target / step).round() * step` in lib/features/workout/domain/weight_increment.dart.
- * Math.round and the spreadsheet ROUND agree on positive numbers.
+ * The app rounds a derived load to the nearest loadable weight, and on a bar a
+ * load exactly half way between two plates goes DOWN
+ * (`(target - down) <= (up - target) ? down : up`, _plateSnap in
+ * lib/features/workout/domain/equipment_snapper.dart). `ROUNDUP(x - 0.5)` is
+ * that rule: 13.5 steps becomes 13, 13.6 becomes 14.
  */
-export const snap = (raw, step = DEFAULT_STEP.kg) => Math.round(raw / step) * step;
+export const snap = (raw, step = DEFAULT_STEP.kg) => Math.ceil(raw / step - 0.5) * step;
 
-/** `ROUND(raw/step,0)*step` as the formula text. */
-export const snapF = (rawExpr) => `ROUND((${rawExpr})/${STEP},0)*${STEP}`;
+/** The same rounding as formula text. */
+export const snapF = (rawExpr) => `ROUNDUP((${rawExpr})/${STEP}-0.5,0)*${STEP}`;
 
 /**
  * A percentage set's load: nearest loadable weight, never below the bar
@@ -44,7 +46,7 @@ export function nextWorking(prev, incKg, step = DEFAULT_STEP.kg) {
   return v <= prev + 0.0001 ? prev + step : v;
 }
 export const nextF = (prevRef, incRef) =>
-  `MAX(ROUND((${prevRef}+${incRef})/${STEP},0)*${STEP},${prevRef}+${STEP})`;
+  `MAX(ROUNDUP((${prevRef}+${incRef})/${STEP}-0.5,0)*${STEP},${prevRef}+${STEP})`;
 
 /** A value that is `kg` in a kg sheet and `lb` in a pound sheet. */
 export const unitF = (kg, lb) => `IF(${UNIT}="lb",${lb},${kg})`;
@@ -68,7 +70,7 @@ export function startSheet({ payload, appVersion, slug, pageUrl, title, widths, 
   g.set(
     1,
     0,
-    `Built from the ${name} program that ships in Badger ${appVersion}. The sets, reps and rules are the app's, and weights are worked out the way the app works them out.`,
+    `Built from the ${name} program as Badger ${appVersion} exports it. The sets, reps and rules are the app's, and weights are worked out the way the app works them out.`,
     { s: 'note' },
   );
   g.set(2, 0, `Run this program in Badger: ${pageUrl}`, { s: 'link', link: pageUrl });

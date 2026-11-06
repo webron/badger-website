@@ -100,6 +100,22 @@ test('every exercise in the file is on its sheet', () => {
   }
 });
 
+test('no formula or text carries a stray null or undefined', () => {
+  for (const slug of slugs) {
+    for (const c of cellsOf(built[slug].grid)) {
+      assert.doesNotMatch(String(c.f ?? ''), /null|undefined|NaN/, `${slug} formula ${c.f}`);
+      assert.doesNotMatch(String(c.v ?? ''), /null|undefined|NaN/, `${slug} cell ${c.v}`);
+    }
+  }
+});
+
+test('a rule block names the lifts it covers, so each lift prints its own increment', () => {
+  const csv = built['531-bbb'].csv;
+  assert.match(csv, /Overhead Barbell Press, Flat Barbell Bench Press"[\s\S]{0,200}?add 2\.5 kg \/ 5 lb/);
+  assert.match(csv, /"Deadlift, Barbell Back Squat"[\s\S]{0,200}?add 5 kg \/ 10 lb/);
+  assert.match(built.gzclp.csv, /After failing at the last stage, go back to stage 1/);
+});
+
 test('no dashes or curly quotes in anything a sheet says (docs/writing_style.md)', () => {
   for (const slug of slugs) {
     const text = writeCsv(built[slug].grid);
@@ -194,8 +210,10 @@ test('5/3/1: weights round to the nearest plate and never fall below the bar', {
   const wk1 = findRow(grid, 'Week 1', press);
   const wk4 = findRow(grid, 'Week 4', press);
   const kg = calc['kg-531-bbb'];
-  // TM 45 kg. 65% = 29.25 -> 30. 75% = 33.75 -> 35. 85% = 38.25 -> 37.5.
-  assert.deepEqual([0, 1, 2].map((i) => num(kg, wk1 + i, 3)), [30, 35, 37.5]);
+  // TM 45 kg. 65% = 29.25 -> 30. 75% = 33.75 is exactly half way between 32.5
+  // and 35, and the app's plate snap sends a tie DOWN (equipment_snapper.dart,
+  // _plateSnap): 32.5. 85% = 38.25 -> 37.5.
+  assert.deepEqual([0, 1, 2].map((i) => num(kg, wk1 + i, 3)), [30, 32.5, 37.5]);
   // Cycle 2 TM is 47.5: 65% = 30.875 -> 30.
   assert.equal(num(kg, wk1, 4), 30);
   // Week 4, 40% of 45 = 18 -> 17.5, which is under the 20 kg bar: the bar.
@@ -228,10 +246,10 @@ test('nSuns: the training max moves by the app\'s bands from the reps you type',
   const tm = findRow(g2, 'Training max', t1);
   // 70 kg start. 5 reps -> +5 (4 to 5 band) = 75. 1 rep -> +0 = 75. 6 reps -> +7.5 = 82.5.
   assert.deepEqual([3, 4, 5, 6].map((c) => num(rows, tm, c)), [70, 75, 75, 82.5]);
-  // 95% set of 75 = 71.25 -> 72.5 on the 2.5 kg grid (half-way rounds up).
+  // 95% set of 75 = 71.25 is half way between 70 and 72.5: a tie goes down, 70.
   const set3 = findRow(g2, 'Set 3 (the 1+ set)', t1);
   assert.equal(num(rows, set3, 3), 67.5);
-  assert.equal(num(rows, set3, 4), 72.5);
+  assert.equal(num(rows, set3, 4), 70);
   // Tier 2 press: y (lower case) counts, N does not. 45 -> 47.5 -> 47.5.
   const t2 = findRow(g2, 'Bench / Press: Overhead Barbell Press (tier 2)');
   const tm2 = findRow(g2, 'Training max', t2);
@@ -239,6 +257,10 @@ test('nSuns: the training max moves by the app\'s bands from the reps you type',
   // Nothing typed: the training max holds.
   const blank = calc['kg-nsuns-531lp'];
   assert.deepEqual([3, 4, 5].map((c) => num(blank, findRow(grid, 'Training max', t1), c)), [70, 70, 70]);
+  // In pounds, 50% of a 105 lb training max is 52.5, half way between 50 and 55: 50.
+  const lbT2 = findRow(grid, 'Bench / Press: Overhead Barbell Press (tier 2)');
+  const lbSet1 = findRow(grid, 'Set 1', lbT2);
+  assert.equal(num(calc['lb-nsuns-531lp'], lbSet1, 3), 50);
   // The pound sheet steps +5 lb for the 2.5 kg pair only when reps are typed, so it also holds.
   assert.equal(num(calc['lb-nsuns-531lp'], findRow(grid, 'Training max', t1), 3), 155);
 });
