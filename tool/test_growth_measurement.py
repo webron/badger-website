@@ -88,7 +88,7 @@ class AnalyticsFlow(unittest.TestCase):
     def test_request_without_a_report_is_pending_not_an_error(self):
         out = self.run_with(self.patched(
             [{"id": "1", "attributes": {"accessType": "ONGOING"}}],
-            _find_report={"return_value": None}))
+            _find_reports={"return_value": []}))
         self.assertIn("pending", out)
         self.assertNotIn("error", out)
 
@@ -105,12 +105,65 @@ class AnalyticsFlow(unittest.TestCase):
 
         stack = self.patched(
             [{"id": "1", "attributes": {"accessType": "ONGOING"}}],
-            _find_report={"return_value": {"id": "r1"}},
+            _find_reports={"return_value": [{"id": "r1"}]},
             _list_all={"side_effect": fake_list})
         stack.append(mock.patch.object(aa.src, "_get_bytes", return_value=payload))
         out = self.run_with(stack)
         self.assertEqual((out["installs"], out["deletes"]), (5, 2))
         self.assertEqual(out["territories"], [("US", 2)])
+
+    def test_sparse_days_are_zero_filled_and_territories_windowed(self):
+        today = aa.src.utc_window(28)[1]
+        d1, d3 = (today - __import__("datetime").timedelta(days=2)).isoformat(), today.isoformat()
+        payload = tsv([(d1, "Delete", 1, "US"), (d3, "Delete", 2, "GB"),
+                       ("2020-01-01", "Delete", 50, "FR")])
+
+        def fake_list(url, token):
+            if "/instances" in url:
+                return [{"id": "i1", "attributes": {"processingDate": d3}}]
+            return [{"attributes": {"url": "https://example.test/seg"}}]
+
+        stack = self.patched(
+            [{"id": "1", "attributes": {"accessType": "ONGOING"}}],
+            _find_reports={"return_value": [{"id": "r1"}]},
+            _list_all={"side_effect": fake_list})
+        stack.append(mock.patch.object(aa.src, "_get_bytes", return_value=payload))
+        out = self.run_with(stack)
+        self.assertEqual([n for _, n in out["daily"]], [1, 0, 2])
+        self.assertEqual(out["deletes"], 3)
+        self.assertEqual(dict(out["territories"]), {"US": 1, "GB": 2})  # no FR
+
+    def test_a_restated_day_is_counted_once(self):
+        day = aa.src.utc_window(28)[1].isoformat()
+        payload = tsv([(day, "Delete", 4, "US")])
+
+        def fake_list(url, token):
+            if "/instances" in url:  # same processing day twice
+                return [{"id": "old", "attributes": {"processingDate": day}},
+                        {"id": "new", "attributes": {"processingDate": day}}]
+            return [{"attributes": {"url": "https://example.test/seg"}}]
+
+        stack = self.patched(
+            [{"id": "1", "attributes": {"accessType": "ONGOING"}}],
+            _find_reports={"return_value": [{"id": "r1"}]},
+            _list_all={"side_effect": fake_list})
+        stack.append(mock.patch.object(aa.src, "_get_bytes", return_value=payload))
+        self.assertEqual(self.run_with(stack)["deletes"], 4)
+
+    def test_report_name_matches_on_its_stem(self):
+        self.assertTrue(aa._is_our_report("App Store Installations and Deletions Standard"))
+        self.assertFalse(aa._is_our_report("App Store Downloads"))
+
+    def test_infinite_counts_do_not_crash(self):
+        self.assertEqual(aa.fold([{"Date": "2026-11-01", "Event": "Delete",
+                                   "Counts": "inf"}])["daily"], {})
+
+    def test_stopped_requests_are_recreated(self):
+        stopped = [{"attributes": {"accessType": "ONGOING", "stoppedDueToInactivity": True}}]
+        with mock.patch.object(aa, "list_requests", return_value=stopped), \
+             mock.patch.object(aa.src, "_get_json", return_value={}):
+            self.assertEqual(aa.ensure_requests("t")["created"],
+                             ["ONGOING", "ONE_TIME_SNAPSHOT"])
 
     def test_setup_403_names_the_admin_key(self):
         exc = urllib.error.HTTPError("u", 403, "Forbidden", Message(), None)
@@ -133,6 +186,32 @@ class ProbeDetection(unittest.TestCase):
         self.assertTrue(probe.detect("Badger.fit is a tracker", [])["named"])
         self.assertFalse(probe.detect("A honey badger is fierce", [])["named"])
 
+    def test_brand_match_needs_a_word_end(self):
+        self.assertFalse(probe.detect("Badger Fitness Club", [])["named"])
+        self.assertFalse(probe.detect("outfit.badger", [])["named"])
+
+    def test_anthropic_search_hits_are_not_citations_and_pause_turn_errors(self):
+        got = probe.parse_anthropic({"content": [
+            {"type": "web_search_tool_result", "content": [{"url": "https://badger.fit/"}]},
+            {"type": "text", "text": "ok"}]})
+        self.assertFalse(probe.detect(got["text"], got["urls"])["cited"])
+        with self.assertRaises(ValueError):
+            probe.parse_anthropic({"stop_reason": "pause_turn", "content": []})
+
+    def test_same_day_rerun_replaces_instead_of_doubling(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "h.tsv"
+            row = {"date": "2026-11-05", "provider": "openai", "model": "m",
+                   "prompt": "a", "named": "1", "cited": "0", "error": ""}
+            probe.append_history([row, row], path)
+            self.assertEqual(probe.latest_summary(path)["providers"]["openai"]["asked"], 1)
+
+    def test_corrupt_history_reads_as_empty(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "h.tsv"
+            path.write_bytes(b"\xff\xfe\x00bad")
+            self.assertEqual(probe.latest_summary(path), {"empty": True})
+
     def test_cited_needs_the_domain_as_a_host(self):
         self.assertTrue(probe.detect("", ["https://badger.fit/help/x"])["cited"])
         self.assertTrue(probe.detect("", ["https://www.badger.fit/"])["cited"])
@@ -151,8 +230,8 @@ class ProbeDetection(unittest.TestCase):
             "groundingMetadata": {"groundingChunks": [{"web": {"uri": "u", "title": "badger.fit"}}]}}]})
         self.assertTrue(probe.detect(got["text"], got["urls"])["cited"])
         got = probe.parse_anthropic({"content": [
-            {"type": "web_search_tool_result", "content": [{"url": "https://badger.fit/"}]},
-            {"type": "text", "text": "ok", "citations": []}]})
+            {"type": "text", "text": "ok",
+             "citations": [{"url": "https://badger.fit/"}]}]})
         self.assertTrue(probe.detect(got["text"], got["urls"])["cited"])
 
 

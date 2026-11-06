@@ -55,7 +55,7 @@ PROMPTS = [
 ]
 
 # Name the brand and the domain; a bare "badger" is also an animal.
-_NAMED = re.compile(r"badger[\s._-]?fit|fit\.badger", re.IGNORECASE)
+_NAMED = re.compile(r"badger[\s._-]?fit(?![a-z])|\bfit\.badger(?![a-z])", re.IGNORECASE)
 _CITED = re.compile(r"(^|[/.])badger\.fit(/|$|\?|#)", re.IGNORECASE)
 
 PROVIDERS = ("perplexity", "openai", "gemini", "anthropic")
@@ -106,7 +106,6 @@ def detect(text: str, urls: list[str]) -> dict:
 def parse_perplexity(payload: dict) -> dict:
     text = ((payload.get("choices") or [{}])[0].get("message") or {}).get("content", "")
     urls = list(payload.get("citations") or [])
-    urls += [r.get("url", "") for r in payload.get("search_results") or []]
     return {"text": text, "urls": urls}
 
 
@@ -134,15 +133,17 @@ def parse_gemini(payload: dict) -> dict:
 
 
 def parse_anthropic(payload: dict) -> dict:
+    if payload.get("stop_reason") == "pause_turn":
+        # A long search turn handed back unfinished; the text is partial, so a
+        # missing mention would be a false "not named".
+        raise ValueError("pause_turn")
     text, urls = [], []
     for block in payload.get("content") or []:
         if block.get("type") == "text":
             text.append(block.get("text", ""))
             urls += [c.get("url", "") for c in block.get("citations") or []]
-        elif block.get("type") == "web_search_tool_result":
-            content = block.get("content")
-            if isinstance(content, list):
-                urls += [r.get("url", "") for r in content]
+        # web_search_tool_result hits are what the model looked at, not what it
+        # cited, so only text-block citations count as "cited".
     return {"text": "\n".join(text), "urls": urls}
 
 
@@ -170,7 +171,7 @@ def ask(provider: str, prompt: str, key: str, model: str) -> dict:
             json.dumps(body).encode(), timeout=120)
         return parse_gemini(data)
     if provider == "anthropic":
-        body = {"model": model, "max_tokens": 1500,
+        body = {"model": model, "max_tokens": 4000,
                 "messages": [{"role": "user", "content": prompt}],
                 "tools": [{"type": "web_search_20250305", "name": "web_search",
                            "max_uses": 3}]}
@@ -203,7 +204,7 @@ def run(prompts: list[str] = PROMPTS, ask_fn=ask, keys_models=None) -> dict:
                 row["named"] = "1" if found["named"] else "0"
                 row["cited"] = "1" if found["cited"] else "0"
             except Exception as exc:  # noqa: BLE001 - one prompt must not sink the run
-                row["error"] = f"{type(exc).__name__}"
+                row["error"] = str(getattr(exc, "code", type(exc).__name__))
             rows.append(row)
     return {"rows": rows, "skipped": [p for p in PROVIDERS if p not in keys]}
 
@@ -230,21 +231,24 @@ def latest_summary(path: Path = HISTORY_PATH) -> dict:
     try:
         with open(path, encoding="utf-8", newline="") as fh:
             rows = list(csv.DictReader(fh, delimiter="\t"))
-    except OSError:
+    except (OSError, ValueError):  # ValueError covers UnicodeDecodeError
         return {"empty": True}
+    rows = [r for r in rows if r.get("date") and r.get("provider")]
     if not rows:
         return {"empty": True}
     latest = max(r["date"] for r in rows)
+    # A second run on the same day replaces the first rather than doubling it.
+    newest = {(r["provider"], r.get("prompt")): r for r in rows if r["date"] == latest}
     providers: dict[str, dict] = {}
-    for r in (r for r in rows if r["date"] == latest):
+    for r in newest.values():
         slot = providers.setdefault(
             r["provider"], {"asked": 0, "named": 0, "cited": 0, "errors": 0})
-        if r["error"]:
+        if r.get("error"):
             slot["errors"] += 1
             continue
         slot["asked"] += 1
-        slot["named"] += r["named"] == "1"
-        slot["cited"] += r["cited"] == "1"
+        slot["named"] += r.get("named") == "1"
+        slot["cited"] += r.get("cited") == "1"
     return {"date": latest, "providers": providers}
 
 

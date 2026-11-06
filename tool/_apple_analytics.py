@@ -29,6 +29,7 @@ import json
 import sys
 import urllib.error
 import urllib.parse
+from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -67,7 +68,10 @@ def ensure_requests(token: str) -> dict:
     The only write in this module. Returns {"created": [...], "existing": [...]}.
     A 403 here means the key is not Admin, which `setup_error` words for Ron.
     """
-    have = {r["attributes"].get("accessType") for r in list_requests(token)}
+    # A request Apple stopped for inactivity produces nothing, so it does not
+    # count as existing: setup makes a fresh one.
+    have = {r["attributes"].get("accessType") for r in list_requests(token)
+            if not r["attributes"].get("stoppedDueToInactivity")}
     created, existing = [], []
     for access in ACCESS_TYPES:
         if access in have:
@@ -95,21 +99,24 @@ def setup_error(exc: urllib.error.HTTPError) -> str:
     return f"Apple answered HTTP {exc.code}: {exc.read().decode(errors='replace')[:200]}"
 
 
-def _find_report(token: str, requests: list[dict]) -> dict | None:
-    """The installs-and-deletions report of the first request that has one.
+def _is_our_report(name: str) -> bool:
+    """Apple's name may gain a Standard/Detailed suffix; match on the stem."""
+    return (name or "").strip().lower().startswith("app store installation")
 
-    ONGOING is preferred: it keeps growing. The snapshot is a fallback for the
-    first days, before the ongoing request has written anything.
+
+def _find_reports(token: str, requests: list[dict]) -> list[dict]:
+    """Every installs-and-deletions report, snapshot first, ongoing last.
+
+    Both are read and merged by day, ongoing winning: right after setup the
+    ongoing report exists with no days while the snapshot already holds history.
     """
-    ordered = sorted(requests, key=lambda r: r["attributes"].get("accessType") != "ONGOING")
+    ordered = sorted(requests, key=lambda r: r["attributes"].get("accessType") == "ONGOING")
+    found: list[dict] = []
     for request in ordered:
-        query = urllib.parse.urlencode({"filter[name]": REPORT_NAME, "limit": 200})
         reports = _list_all(
-            f"{src.ASC_API}/v1/analyticsReportRequests/{request['id']}/reports?{query}", token)
-        for report in reports:
-            if report["attributes"].get("name") == REPORT_NAME:
-                return report
-    return None
+            f"{src.ASC_API}/v1/analyticsReportRequests/{request['id']}/reports?limit=200", token)
+        found += [r for r in reports if _is_our_report(r["attributes"].get("name"))]
+    return found
 
 
 def _event_kind(row: dict) -> str | None:
@@ -136,8 +143,8 @@ def parse_segment(raw: bytes) -> list[dict]:
     return list(csv.DictReader(io.StringIO(text), delimiter="\t"))
 
 
-def fold(rows: list[dict]) -> dict:
-    """Counts per kind, and per day, from the report's rows."""
+def fold(rows: list[dict], start: str = "", end: str = "9999-12-31") -> dict:
+    """Counts per kind, and per day, from the report's rows inside [start, end]."""
     daily: dict[str, dict[str, int]] = {}
     territories: dict[str, int] = {}
     for row in rows:
@@ -146,9 +153,11 @@ def fold(rows: list[dict]) -> dict:
             continue
         try:
             n = int(float(row.get("Counts") or 0))
-        except ValueError:
+        except (ValueError, OverflowError):
             continue
         day = (row.get("Date") or "")[:10]
+        if not day or not start <= day <= end:
+            continue
         slot = daily.setdefault(day, {"install": 0, "delete": 0})
         slot[kind] += n
         if kind == "delete":
@@ -174,26 +183,41 @@ def installs_and_deletions(days: int) -> dict:
                 "No analytics report request exists yet, so Apple is producing "
                 "nothing. Run `python3 tool/_apple_analytics.py --setup` once "
                 "with an Admin API key.")}
-        report = _find_report(token, requests)
-        if report is None:
+        reports = _find_reports(token, requests)
+        if not reports:
             return {"pending": "Apple has not produced the installs and deletions "
                                "report yet. A new request takes a day or two."}
 
         start, today = src.utc_window(days)
         query = urllib.parse.urlencode({"filter[granularity]": "DAILY", "limit": 200})
-        instances = _list_all(
-            f"{src.ASC_API}/v1/analyticsReports/{report['id']}/instances?{query}", token)
-        rows: list[dict] = []
-        for instance in instances:
-            day = instance["attributes"].get("processingDate") or ""
-            if day and day < start.isoformat():
-                continue
-            segments = _list_all(
-                f"{src.ASC_API}/v1/analyticsReportInstances/{instance['id']}/segments", token)
-            for segment in segments:
-                url = segment["attributes"].get("url")
-                if url:
-                    rows.extend(parse_segment(src._get_bytes(url, {})))
+        # One set of rows per processing day. A day Apple restates, or one both
+        # the snapshot and the ongoing report carry, is counted once: the later
+        # report in the list wins.
+        by_day: dict[str, list[dict]] = {}
+        for report in reports:
+            instances = _list_all(
+                f"{src.ASC_API}/v1/analyticsReports/{report['id']}/instances?{query}", token)
+            newest: dict[str, dict] = {}
+            for instance in instances:
+                day = instance["attributes"].get("processingDate") or ""
+                if day and day < start.isoformat():
+                    continue
+                newest[day] = instance  # list order is oldest first, so last wins
+            for day, instance in newest.items():
+                rows: list[dict] = []
+                segments = _list_all(
+                    f"{src.ASC_API}/v1/analyticsReportInstances/{instance['id']}/segments",
+                    token)
+                for segment in segments:
+                    url = segment["attributes"].get("url")
+                    if url:
+                        rows.extend(parse_segment(src._get_bytes(url, {})))
+                by_day[day] = rows
+
+        all_rows = [row for rows in by_day.values() for row in rows]
+        if not all_rows:
+            return {"pending": "The report exists but holds no days in this window yet."}
+        folded = fold(all_rows, start.isoformat(), today.isoformat())
     except urllib.error.HTTPError as exc:
         if exc.code == 403:
             return {"error": "This App Store Connect key cannot read analytics reports."}
@@ -203,21 +227,24 @@ def installs_and_deletions(days: int) -> dict:
     except Exception as exc:  # noqa: BLE001 - one panel must not sink the report
         return {"error": f"App Store analytics failed ({type(exc).__name__})."}
 
-    if not rows:
-        return {"pending": "The report exists but holds no days in this window yet."}
-
-    folded = fold(rows)
-    window = {d: v for d, v in folded["daily"].items()
-              if start.isoformat() <= d <= today.isoformat()}
+    window = folded["daily"]
     if not window:
         return {"pending": "The report exists but holds no days in this window yet."}
-    ordered = sorted(window)
+    first = date.fromisoformat(min(window))
+    last = date.fromisoformat(max(window))
+    # Apple writes a file only for days with data, and the weekly buckets assume
+    # consecutive days, so the quiet ones are filled in as zeros.
+    series = []
+    day = first
+    while day <= last:
+        series.append((day.isoformat(), window.get(day.isoformat(), {}).get("delete", 0)))
+        day += timedelta(days=1)
     return {
-        "start": ordered[0],
-        "end": ordered[-1],
+        "start": first.isoformat(),
+        "end": last.isoformat(),
         "installs": sum(v["install"] for v in window.values()),
         "deletes": sum(v["delete"] for v in window.values()),
-        "daily": [(d, window[d]["delete"]) for d in ordered],
+        "daily": series,
         "territories": sorted(folded["territories"].items(), key=lambda kv: -kv[1]),
     }
 
