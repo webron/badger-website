@@ -1,0 +1,199 @@
+---
+import HelpLayout from '../../layouts/HelpLayout.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+/**
+ * Migration walkthrough for someone leaving the StrongLifts app. The program
+ * itself (the seeded 5x5 template, its rules, the stall ladder) is covered on
+ * /guides/stronglifts-5x5-tracker/, so this page links there rather than
+ * repeating it. This one answers "how do I move": export, import, check,
+ * carry on.
+ *
+ * TRADEMARK HYGIENE, binding: same rule as the 5x5 page. StrongLifts is
+ * someone else's mark. Everything here is compatibility (Badger reads the CSV
+ * their app exports), never affiliation or endorsement, and nothing compares
+ * the two apps to StrongLifts' disadvantage. Describe Badger; do not grade
+ * StrongLifts.
+ *
+ * Checked 2026-11-05 against badger-fit main (app 1.1.17):
+ * - stronglifts_parser.dart: reads the Date, Exercise, Workout Name, Notes,
+ *   Body Weight, Duration, Start Time, End Time and "Set N (Reps)" /
+ *   "Set N (LBS|KG)" columns; any number of set pairs; semicolon-delimited
+ *   files; yyyy/mm/dd dates. The SetsxReps, SetsxTime, e1RM and volume
+ *   columns are not read. Warmups and failures are not marked by the export.
+ * - Its own message for a file it cannot read: "Required columns not found.
+ *   Ensure this is a StrongLifts CSV export in English."
+ * - Export path per StrongLifts' own support page
+ *   (support.stronglifts.com/article/131-export, seen 2026-11-05): Settings,
+ *   Export Data, a CSV, and a Share button. The app's own import screen says
+ *   "Settings -> Export workout data"; the label may differ by version.
+ * - Power Pack: support.stronglifts.com/article/148-power-pack (seen
+ *   2026-11-05) says "We retired Power Pack in 2025" and that it unlocked
+ *   warmup, plate calculator and assistance work.
+ */
+
+const description =
+  'Export your StrongLifts CSV, import it into Badger, check the preview and keep your 5x5 going. What carries across, what does not, and what to do if the file will not load.';
+---
+
+<HelpLayout title="Moving from StrongLifts" description={description}>
+  <ArticleSchema
+    slot="head"
+    headline="Moving from StrongLifts to Badger"
+    description={description}
+    dateModified="2026-11-05"
+    about={['StrongLifts', 'Workout data export']}
+    breadcrumb={[{ name: 'Guides', url: '/guides/' }]}
+  />
+
+  <h1>Moving from StrongLifts to Badger</h1>
+
+  <p>
+    Export a CSV from StrongLifts, import it into Badger, and your sets, PRs and graphs are in place
+    in about five minutes. Then set the 5x5 routine active and carry on from your last session.
+  </p>
+
+  <h2 id="export">1. Export from StrongLifts</h2>
+
+  <ol>
+    <li>In StrongLifts, open <strong>Settings</strong> and tap <strong>Export Data</strong> (the label can differ a little between versions). You get a CSV file.</li>
+    <li>
+      Use the share button to put it somewhere the phone you train with can open it. On an iPhone,
+      tap <strong>Save to Files</strong>. On Android, save it to Downloads or Google Drive. Emailing it
+      to yourself works on either.
+    </li>
+  </ol>
+
+  <p>
+    If the export is locked in your version of StrongLifts, its own
+    <a href="https://support.stronglifts.com/article/131-export">export page</a> describes a route
+    through Contact Support: send the pre-filled email to your own address and the CSV arrives in it.
+  </p>
+
+  <p>Make the export before you uninstall StrongLifts or switch phones.</p>
+
+  <h2 id="import">2. Import into Badger</h2>
+
+  <ol>
+    <li>Open <strong>Settings &rarr; Backup, import and export &rarr; Import from another app</strong> and pick <strong>StrongLifts</strong>.</li>
+    <li>Tap <strong>Choose file</strong> and pick the CSV.</li>
+    <li>Read the preview (next section), then tap <strong>Import</strong>.</li>
+  </ol>
+
+  <p>
+    New installs get the same import during first-launch onboarding. The full steps, including undo,
+    are in <a href="/help/getting-started/#importing">importing from another app</a>.
+  </p>
+
+  <h2 id="preview">3. Check the preview</h2>
+
+  <ul>
+    <li>
+      <strong>The weight unit</strong> comes from the file's column headers, so a pounds export stays
+      in pounds and a kilograms export stays in kilograms, with no rounding.
+    </li>
+    <li>
+      <strong>The date range</strong> under <strong>Workout days</strong> should start where your
+      StrongLifts log starts.
+    </li>
+    <li>
+      <strong>Exercise mapping</strong> shows how many of your exercises matched ones already in your
+      library. A match keeps that lift's history, PRs and graphs together, and
+      <strong>Review exercise mapping</strong> lets you change any of them.
+    </li>
+  </ul>
+
+  <p>
+    Badger saves a safety copy of your log before it writes anything. If the result is not what you
+    expected, tap <strong>Undo import</strong> when it finishes, or use
+    <strong>Undo last import</strong> in the same settings screen, which stays there for 30 days or until your next import.
+  </p>
+
+  <h2 id="carries">What comes across</h2>
+
+  <ul>
+    <li>Every set with its date, exercise, reps and weight. A row can hold five sets or fifty.</li>
+    <li>One workout per session, told apart by start time and workout name.</li>
+    <li>The workout name (such as Workout A) as a note on that session, and each row's note on its first set.</li>
+    <li>When each session started and how long it ran, when the file has them.</li>
+    <li>Your body weight, as one reading per day. A day that already has a reading is skipped.</li>
+    <li>Your PRs, worked out from the imported history.</li>
+    <li>Files with semicolons between the columns, which some regions export.</li>
+  </ul>
+
+  <h2 id="stays">What stays behind</h2>
+
+  <ul>
+    <li>
+      <strong>Warmup and failure markers.</strong> The export file has no column for them, so every set arrives
+      as a working set, and a missed set of five arrives as the reps you did.
+    </li>
+    <li>
+      <strong>Which program a session belonged to.</strong> The import brings history. You set the
+      routine active separately, below.
+    </li>
+    <li>
+      <strong>StrongLifts' own calculations</strong> (estimated 1RM, volume, the SetsxReps summary).
+      Badger works its own out from your sets.
+    </li>
+  </ul>
+
+  <h2 id="carry-on">4. Carry on with your program</h2>
+
+  <p>
+    The 5x5 routine ships in the app, under <strong>You &rarr; Routines</strong> in the Beginner
+    Programs folder. Set it active and enter the weights from your last StrongLifts session. The
+    rules then propose each weight and say why, and you can type over any of them.
+    <a href="/guides/stronglifts-5x5-tracker/">StrongLifts 5x5 in Badger</a> covers the routine, its
+    rules and the stall ladder in full.
+  </p>
+
+  <h2 id="power-pack">If you used Power Pack</h2>
+
+  <p>
+    StrongLifts <a href="https://support.stronglifts.com/article/148-power-pack">retired Power Pack in 2025</a>.
+    It unlocked warmups, a plate calculator and assistance work. Badger has the first two built in: a
+    warmup generator that builds the ramp to your work weight, and a plate calculator that works from
+    the plates your gym owns. For assistance work, add any exercise to a routine day.
+  </p>
+
+  <h2 id="trouble">If the file will not load</h2>
+
+  <ul>
+    <li>
+      <strong>"Required columns not found."</strong> Badger reads StrongLifts files with English
+      column names, such as <code>Date</code>, <code>Exercise</code> and <code>Set 1 (Reps)</code>.
+      Open the CSV in a spreadsheet and check the first row. If the headers are in another language,
+      Badger cannot read that file yet.
+    </li>
+    <li>
+      <strong>A row was skipped.</strong> The result lists each one with the row number. A date that is
+      not in the <code>yyyy/mm/dd</code> form is the usual cause.
+    </li>
+    <li>
+      <strong>You imported twice.</strong> Badger skips sessions that start in the same minute as one it
+      already has, and the preview says how many. See
+      <a href="/help/getting-started/#importing-again">importing the same file again</a>.
+    </li>
+  </ul>
+
+  <p>
+    Coming from more than one app? <a href="/guides/switching/">Switching from another workout tracker</a>
+    covers FitNotes, Strong and Hevy as well.
+  </p>
+
+  <h2 id="trademark">About the name</h2>
+
+  <p class="fineprint">
+    StrongLifts is a trademark of its owner. Badger is not affiliated with, endorsed by, sponsored by,
+    or connected to StrongLifts in any way. This page describes compatibility only: Badger reads the
+    CSV file that the StrongLifts app exports.
+  </p>
+</HelpLayout>
+
+<style>
+  .fineprint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>
