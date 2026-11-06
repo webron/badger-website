@@ -56,7 +56,7 @@ const description =
   <h2 id="export">1. Export from StrongLifts</h2>
 
   <ol>
-    <li>In StrongLifts, open <strong>Settings</strong> and tap <strong>Export Data</strong>. You get a CSV file.</li>
+    <li>In StrongLifts, open <strong>Settings</strong> and tap <strong>Export Data</strong> (the label can differ a little between versions). You get a CSV file.</li>
     <li>
       Use the share button to put it somewhere the phone you train with can open it. On an iPhone,
       tap <strong>Save to Files</strong>. On Android, save it to Downloads or Google Drive. Emailing it
@@ -106,14 +106,14 @@ const description =
   <p>
     Badger saves a safety copy of your log before it writes anything. If the result is not what you
     expected, tap <strong>Undo import</strong> when it finishes, or use
-    <strong>Undo last import</strong> in the same settings screen for the next 30 days.
+    <strong>Undo last import</strong> in the same settings screen, which stays there for 30 days or until your next import.
   </p>
 
   <h2 id="carries">What comes across</h2>
 
   <ul>
     <li>Every set with its date, exercise, reps and weight. A row can hold five sets or fifty.</li>
-    <li>One workout per session, so two sessions on one day stay two workouts.</li>
+    <li>One workout per session, told apart by start time and workout name.</li>
     <li>The workout name (such as Workout A) as a note on that session, and each row's note on its first set.</li>
     <li>When each session started and how long it ran, when the file has them.</li>
     <li>Your body weight, as one reading per day. A day that already has a reading is skipped.</li>
@@ -125,7 +125,7 @@ const description =
 
   <ul>
     <li>
-      <strong>Warmup and failure markers.</strong> The export does not mark them, so every set arrives
+      <strong>Warmup and failure markers.</strong> The export file has no column for them, so every set arrives
       as a working set, and a missed set of five arrives as the reps you did.
     </li>
     <li>
@@ -164,7 +164,7 @@ const description =
       <strong>"Required columns not found."</strong> Badger reads StrongLifts files with English
       column names, such as <code>Date</code>, <code>Exercise</code> and <code>Set 1 (Reps)</code>.
       Open the CSV in a spreadsheet and check the first row. If the headers are in another language,
-      export again with StrongLifts set to English.
+      Badger cannot read that file yet.
     </li>
     <li>
       <strong>A row was skipped.</strong> The result lists each one with the row number. A date that is
