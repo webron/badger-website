@@ -13,9 +13,9 @@ const description =
 // Set Order W/F/D markers and Workout Notes, Hevy's description and supersets,
 // and StrongLifts body weight all come across.
 //
-// StrongLifts is last and points at the 5x5 program page on purpose. That page
-// already carries the import walkthrough, and a second page of ours aimed at
-// the same query would split it rather than adding anything.
+// StrongLifts is last. Its page is the migration walkthrough; the 5x5 program
+// and its rules live on /guides/stronglifts-5x5-tracker/, which that page links.
+
 const fromApps = [
   {
     app: 'FitNotes',
@@ -37,14 +37,14 @@ const fromApps = [
   },
   {
     app: 'StrongLifts',
-    href: '/guides/stronglifts-5x5-tracker/#import',
-    note: 'Covered on the 5x5 page, together with the template that ships in the app.',
-    full: false,
+    href: '/guides/moving-from-stronglifts/',
+    note: 'A CSV with every set, your session times and body weight. Warmups are not marked, so they arrive as working sets.',
+    full: true,
   },
 ];
 ---
 
-<HelpLayout title="Switching from another workout tracker" description={description}>
+<HelpLayout title="Import Strong, Hevy, FitNotes or StrongLifts history" description={description}>
   <ArticleSchema
     slot="head"
     headline="Switching to Badger from another workout tracker"
