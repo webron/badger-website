@@ -1,0 +1,80 @@
+GZCLP spreadsheet
+"Built from the GZCLP program as Badger 1.1.15 exports it. The sets, reps and rules are the app's, and weights are worked out the way the app works them out."
+Run this program in Badger: https://badger.fit/guides/gzclp-app/
+Get the app: https://badger.fit/#download
+How the rules work: https://badger.fit/help/progression/
+
+Setup
+Unit (kg or lb),kg
+Round loads to the nearest,"=IF($B$8=""lb"",5,2.5)","Your smallest plate jump, both sides together. Type your own number over it."
+Bar weight,"=IF($B$8=""lb"",45,20)",A percentage set never comes out lighter than the bar.
+"Yellow cells are yours to fill in. The numbers in them are examples, so type your own over them."
+
+"Each day has a heavy lift (tier 1), a medium lift (tier 2) and a light lift (tier 3). The weight goes up when every set is made, and on tier 3 when the last set reaches its rep target."
+Miss a set and the lift moves to its next stage at the same weight. The table below assumes you made every set.
+
+The week
+Day,Tier 1,Tier 2,Tier 3
+Day 1 (Monday),Barbell Back Squat,Flat Barbell Bench Press,Lat Pulldown
+Day 2 (Tuesday),Overhead Barbell Press,Deadlift,Dumbbell Row
+Day 3 (Thursday),Flat Barbell Bench Press,Barbell Back Squat,Lat Pulldown
+Day 4 (Friday),Deadlift,Overhead Barbell Press,Dumbbell Row
+
+Stages
+Tier,Stage 1,Stage 2,Stage 3
+Tier 1,"4 × 3, 1 × 3+","5 × 2, 1 × 2+","9 × 1, 1 × 1+"
+Tier 2,3 × 10,3 × 8,3 × 6
+Tier 3,"2 × 15, 1 × 15+"
+
+Starting weights
+Lift,Start,Add on success
+Barbell Back Squat (T1),"=IF($B$8=""lb"",135,60)","=IF($B$8=""lb"",10,5)"
+Flat Barbell Bench Press (T2),"=IF($B$8=""lb"",95,40)","=IF($B$8=""lb"",5,2.5)"
+Overhead Barbell Press (T1),"=IF($B$8=""lb"",65,30)","=IF($B$8=""lb"",5,2.5)"
+Deadlift (T2),"=IF($B$8=""lb"",135,60)","=IF($B$8=""lb"",10,5)"
+Flat Barbell Bench Press (T1),"=IF($B$8=""lb"",95,40)","=IF($B$8=""lb"",5,2.5)"
+Barbell Back Squat (T2),"=IF($B$8=""lb"",135,60)","=IF($B$8=""lb"",10,5)"
+Deadlift (T1),"=IF($B$8=""lb"",135,60)","=IF($B$8=""lb"",10,5)"
+Overhead Barbell Press (T2),"=IF($B$8=""lb"",65,30)","=IF($B$8=""lb"",5,2.5)"
+Lat Pulldown (T3),"=IF($B$8=""lb"",90,40)","=IF($B$8=""lb"",5,2.5)"
+Dumbbell Row (T3),"=IF($B$8=""lb"",35,15)","=IF($B$8=""lb"",5,2.5)"
+
+"Weight each week, if every set is made"
+Week,Barbell Back Squat (T1),Flat Barbell Bench Press (T2),Overhead Barbell Press (T1),Deadlift (T2),Flat Barbell Bench Press (T1),Barbell Back Squat (T2),Deadlift (T1),Overhead Barbell Press (T2)
+Week 1,=$B$31,=$B$32,=$B$33,=$B$34,=$B$35,=$B$36,=$B$37,=$B$38
+Week 2,"=MAX(ROUNDUP((B44+$C$31)/$B$9-0.5,0)*$B$9,B44+$B$9)","=MAX(ROUNDUP((C44+$C$32)/$B$9-0.5,0)*$B$9,C44+$B$9)","=MAX(ROUNDUP((D44+$C$33)/$B$9-0.5,0)*$B$9,D44+$B$9)","=MAX(ROUNDUP((E44+$C$34)/$B$9-0.5,0)*$B$9,E44+$B$9)","=MAX(ROUNDUP((F44+$C$35)/$B$9-0.5,0)*$B$9,F44+$B$9)","=MAX(ROUNDUP((G44+$C$36)/$B$9-0.5,0)*$B$9,G44+$B$9)","=MAX(ROUNDUP((H44+$C$37)/$B$9-0.5,0)*$B$9,H44+$B$9)","=MAX(ROUNDUP((I44+$C$38)/$B$9-0.5,0)*$B$9,I44+$B$9)"
+Week 3,"=MAX(ROUNDUP((B45+$C$31)/$B$9-0.5,0)*$B$9,B45+$B$9)","=MAX(ROUNDUP((C45+$C$32)/$B$9-0.5,0)*$B$9,C45+$B$9)","=MAX(ROUNDUP((D45+$C$33)/$B$9-0.5,0)*$B$9,D45+$B$9)","=MAX(ROUNDUP((E45+$C$34)/$B$9-0.5,0)*$B$9,E45+$B$9)","=MAX(ROUNDUP((F45+$C$35)/$B$9-0.5,0)*$B$9,F45+$B$9)","=MAX(ROUNDUP((G45+$C$36)/$B$9-0.5,0)*$B$9,G45+$B$9)","=MAX(ROUNDUP((H45+$C$37)/$B$9-0.5,0)*$B$9,H45+$B$9)","=MAX(ROUNDUP((I45+$C$38)/$B$9-0.5,0)*$B$9,I45+$B$9)"
+Week 4,"=MAX(ROUNDUP((B46+$C$31)/$B$9-0.5,0)*$B$9,B46+$B$9)","=MAX(ROUNDUP((C46+$C$32)/$B$9-0.5,0)*$B$9,C46+$B$9)","=MAX(ROUNDUP((D46+$C$33)/$B$9-0.5,0)*$B$9,D46+$B$9)","=MAX(ROUNDUP((E46+$C$34)/$B$9-0.5,0)*$B$9,E46+$B$9)","=MAX(ROUNDUP((F46+$C$35)/$B$9-0.5,0)*$B$9,F46+$B$9)","=MAX(ROUNDUP((G46+$C$36)/$B$9-0.5,0)*$B$9,G46+$B$9)","=MAX(ROUNDUP((H46+$C$37)/$B$9-0.5,0)*$B$9,H46+$B$9)","=MAX(ROUNDUP((I46+$C$38)/$B$9-0.5,0)*$B$9,I46+$B$9)"
+Week 5,"=MAX(ROUNDUP((B47+$C$31)/$B$9-0.5,0)*$B$9,B47+$B$9)","=MAX(ROUNDUP((C47+$C$32)/$B$9-0.5,0)*$B$9,C47+$B$9)","=MAX(ROUNDUP((D47+$C$33)/$B$9-0.5,0)*$B$9,D47+$B$9)","=MAX(ROUNDUP((E47+$C$34)/$B$9-0.5,0)*$B$9,E47+$B$9)","=MAX(ROUNDUP((F47+$C$35)/$B$9-0.5,0)*$B$9,F47+$B$9)","=MAX(ROUNDUP((G47+$C$36)/$B$9-0.5,0)*$B$9,G47+$B$9)","=MAX(ROUNDUP((H47+$C$37)/$B$9-0.5,0)*$B$9,H47+$B$9)","=MAX(ROUNDUP((I47+$C$38)/$B$9-0.5,0)*$B$9,I47+$B$9)"
+Week 6,"=MAX(ROUNDUP((B48+$C$31)/$B$9-0.5,0)*$B$9,B48+$B$9)","=MAX(ROUNDUP((C48+$C$32)/$B$9-0.5,0)*$B$9,C48+$B$9)","=MAX(ROUNDUP((D48+$C$33)/$B$9-0.5,0)*$B$9,D48+$B$9)","=MAX(ROUNDUP((E48+$C$34)/$B$9-0.5,0)*$B$9,E48+$B$9)","=MAX(ROUNDUP((F48+$C$35)/$B$9-0.5,0)*$B$9,F48+$B$9)","=MAX(ROUNDUP((G48+$C$36)/$B$9-0.5,0)*$B$9,G48+$B$9)","=MAX(ROUNDUP((H48+$C$37)/$B$9-0.5,0)*$B$9,H48+$B$9)","=MAX(ROUNDUP((I48+$C$38)/$B$9-0.5,0)*$B$9,I48+$B$9)"
+Week 7,"=MAX(ROUNDUP((B49+$C$31)/$B$9-0.5,0)*$B$9,B49+$B$9)","=MAX(ROUNDUP((C49+$C$32)/$B$9-0.5,0)*$B$9,C49+$B$9)","=MAX(ROUNDUP((D49+$C$33)/$B$9-0.5,0)*$B$9,D49+$B$9)","=MAX(ROUNDUP((E49+$C$34)/$B$9-0.5,0)*$B$9,E49+$B$9)","=MAX(ROUNDUP((F49+$C$35)/$B$9-0.5,0)*$B$9,F49+$B$9)","=MAX(ROUNDUP((G49+$C$36)/$B$9-0.5,0)*$B$9,G49+$B$9)","=MAX(ROUNDUP((H49+$C$37)/$B$9-0.5,0)*$B$9,H49+$B$9)","=MAX(ROUNDUP((I49+$C$38)/$B$9-0.5,0)*$B$9,I49+$B$9)"
+Week 8,"=MAX(ROUNDUP((B50+$C$31)/$B$9-0.5,0)*$B$9,B50+$B$9)","=MAX(ROUNDUP((C50+$C$32)/$B$9-0.5,0)*$B$9,C50+$B$9)","=MAX(ROUNDUP((D50+$C$33)/$B$9-0.5,0)*$B$9,D50+$B$9)","=MAX(ROUNDUP((E50+$C$34)/$B$9-0.5,0)*$B$9,E50+$B$9)","=MAX(ROUNDUP((F50+$C$35)/$B$9-0.5,0)*$B$9,F50+$B$9)","=MAX(ROUNDUP((G50+$C$36)/$B$9-0.5,0)*$B$9,G50+$B$9)","=MAX(ROUNDUP((H50+$C$37)/$B$9-0.5,0)*$B$9,H50+$B$9)","=MAX(ROUNDUP((I50+$C$38)/$B$9-0.5,0)*$B$9,I50+$B$9)"
+Week 9,"=MAX(ROUNDUP((B51+$C$31)/$B$9-0.5,0)*$B$9,B51+$B$9)","=MAX(ROUNDUP((C51+$C$32)/$B$9-0.5,0)*$B$9,C51+$B$9)","=MAX(ROUNDUP((D51+$C$33)/$B$9-0.5,0)*$B$9,D51+$B$9)","=MAX(ROUNDUP((E51+$C$34)/$B$9-0.5,0)*$B$9,E51+$B$9)","=MAX(ROUNDUP((F51+$C$35)/$B$9-0.5,0)*$B$9,F51+$B$9)","=MAX(ROUNDUP((G51+$C$36)/$B$9-0.5,0)*$B$9,G51+$B$9)","=MAX(ROUNDUP((H51+$C$37)/$B$9-0.5,0)*$B$9,H51+$B$9)","=MAX(ROUNDUP((I51+$C$38)/$B$9-0.5,0)*$B$9,I51+$B$9)"
+Week 10,"=MAX(ROUNDUP((B52+$C$31)/$B$9-0.5,0)*$B$9,B52+$B$9)","=MAX(ROUNDUP((C52+$C$32)/$B$9-0.5,0)*$B$9,C52+$B$9)","=MAX(ROUNDUP((D52+$C$33)/$B$9-0.5,0)*$B$9,D52+$B$9)","=MAX(ROUNDUP((E52+$C$34)/$B$9-0.5,0)*$B$9,E52+$B$9)","=MAX(ROUNDUP((F52+$C$35)/$B$9-0.5,0)*$B$9,F52+$B$9)","=MAX(ROUNDUP((G52+$C$36)/$B$9-0.5,0)*$B$9,G52+$B$9)","=MAX(ROUNDUP((H52+$C$37)/$B$9-0.5,0)*$B$9,H52+$B$9)","=MAX(ROUNDUP((I52+$C$38)/$B$9-0.5,0)*$B$9,I52+$B$9)"
+Week 11,"=MAX(ROUNDUP((B53+$C$31)/$B$9-0.5,0)*$B$9,B53+$B$9)","=MAX(ROUNDUP((C53+$C$32)/$B$9-0.5,0)*$B$9,C53+$B$9)","=MAX(ROUNDUP((D53+$C$33)/$B$9-0.5,0)*$B$9,D53+$B$9)","=MAX(ROUNDUP((E53+$C$34)/$B$9-0.5,0)*$B$9,E53+$B$9)","=MAX(ROUNDUP((F53+$C$35)/$B$9-0.5,0)*$B$9,F53+$B$9)","=MAX(ROUNDUP((G53+$C$36)/$B$9-0.5,0)*$B$9,G53+$B$9)","=MAX(ROUNDUP((H53+$C$37)/$B$9-0.5,0)*$B$9,H53+$B$9)","=MAX(ROUNDUP((I53+$C$38)/$B$9-0.5,0)*$B$9,I53+$B$9)"
+Week 12,"=MAX(ROUNDUP((B54+$C$31)/$B$9-0.5,0)*$B$9,B54+$B$9)","=MAX(ROUNDUP((C54+$C$32)/$B$9-0.5,0)*$B$9,C54+$B$9)","=MAX(ROUNDUP((D54+$C$33)/$B$9-0.5,0)*$B$9,D54+$B$9)","=MAX(ROUNDUP((E54+$C$34)/$B$9-0.5,0)*$B$9,E54+$B$9)","=MAX(ROUNDUP((F54+$C$35)/$B$9-0.5,0)*$B$9,F54+$B$9)","=MAX(ROUNDUP((G54+$C$36)/$B$9-0.5,0)*$B$9,G54+$B$9)","=MAX(ROUNDUP((H54+$C$37)/$B$9-0.5,0)*$B$9,H54+$B$9)","=MAX(ROUNDUP((I54+$C$38)/$B$9-0.5,0)*$B$9,I54+$B$9)"
+
+The rules
+"Barbell Back Squat (T1), Deadlift (T1)"
+"After failing at the last stage, go back to stage 1 and take 10% off the weight."
+"When you miss a set, move to the next stage."
+"When every set is met, add 5 kg / 10 lb to the weight."
+"Otherwise, hold the weight."
+"Flat Barbell Bench Press (T2), Overhead Barbell Press (T2)"
+"After failing at the last stage, go back to stage 1 and restart from your stage 1 weight plus 7.5 kg / 15 lb."
+"When you miss a set, move to the next stage."
+"When every set is met, add 2.5 kg / 5 lb to the weight."
+"Otherwise, hold the weight."
+"Lat Pulldown (T3), Dumbbell Row (T3)"
+"When the key set gets 25 or more reps, add 2.5 kg / 5 lb to the weight."
+"Otherwise, hold the weight."
+"Overhead Barbell Press (T1), Flat Barbell Bench Press (T1)"
+"After failing at the last stage, go back to stage 1 and take 10% off the weight."
+"When you miss a set, move to the next stage."
+"When every set is met, add 2.5 kg / 5 lb to the weight."
+"Otherwise, hold the weight."
+"Deadlift (T2), Barbell Back Squat (T2)"
+"After failing at the last stage, go back to stage 1 and restart from your stage 1 weight plus 7.5 kg / 15 lb."
+"When you miss a set, move to the next stage."
+"When every set is met, add 5 kg / 10 lb to the weight."
+"Otherwise, hold the weight."

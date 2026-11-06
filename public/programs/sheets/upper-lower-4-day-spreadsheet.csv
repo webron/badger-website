@@ -1,0 +1,42 @@
+Upper/Lower (4-Day) spreadsheet
+"Built from the Upper/Lower (4-Day) program as Badger 1.1.15 exports it. The sets, reps and rules are the app's, and weights are worked out the way the app works them out."
+Run this program in Badger: https://badger.fit/programs/
+Get the app: https://badger.fit/#download
+How the rules work: https://badger.fit/help/progression/
+
+4 days/week strength + hypertrophy split. Upper A → Lower A → rest → Upper B → Lower B → rest × 2.
+Write the weight you used for each exercise in the week columns. Use the same unit all the way down.
+
+Upper A - Strength (Monday)
+Exercise,Sets × reps,Week 1,Week 2,Week 3,Week 4,Week 5,Week 6,Week 7,Week 8,Week 9,Week 10,Week 11,Week 12
+Flat Barbell Bench Press,4 × 5
+Barbell Row,4 × 5
+Overhead Barbell Press,3 × 8
+Lat Pulldown,3 × 8
+Close-Grip Bench Press,3 × 10
+Barbell Curl,3 × 10
+
+Lower A - Strength (Tuesday)
+Exercise,Sets × reps,Week 1,Week 2,Week 3,Week 4,Week 5,Week 6,Week 7,Week 8,Week 9,Week 10,Week 11,Week 12
+Barbell Back Squat,4 × 5
+Romanian Deadlift,3 × 8
+Leg Press,3 × 10
+Leg Curl (Lying),3 × 10
+Calf Raise (Standing),4 × 12
+
+Upper B - Hypertrophy (Thursday)
+Exercise,Sets × reps,Week 1,Week 2,Week 3,Week 4,Week 5,Week 6,Week 7,Week 8,Week 9,Week 10,Week 11,Week 12
+Incline Dumbbell Bench Press,4 × 10
+Seated Cable Row,4 × 10
+Dumbbell Lateral Raise,3 × 15
+Single-Arm Dumbbell Row,3 × 12
+Overhead Tricep Extension,3 × 12
+Dumbbell Curl,3 × 12
+
+Lower B - Hypertrophy (Friday)
+Exercise,Sets × reps,Week 1,Week 2,Week 3,Week 4,Week 5,Week 6,Week 7,Week 8,Week 9,Week 10,Week 11,Week 12
+Romanian Deadlift,4 × 10
+Bulgarian Split Squat,3 × 10
+Leg Extension,3 × 12
+Leg Curl (Lying),3 × 12
+Calf Raise (Seated),4 × 15

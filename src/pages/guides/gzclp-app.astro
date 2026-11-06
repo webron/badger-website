@@ -1,6 +1,7 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
+import SheetDownload from '../../components/SheetDownload.astro';
 
 /**
  * Marketing research 2026-11-04, published 2026-11-05.
@@ -34,6 +35,10 @@ const faq = [
   {
     q: 'Can I bring my history from Strong, Hevy or FitNotes?',
     a: 'Yes. Badger imports CSV exports from Strong, Hevy, FitNotes and StrongLifts, then you set the GZCLP routine active.',
+  },
+  {
+    q: 'Is there a GZCLP spreadsheet?',
+    a: 'Yes. Download the GZCLP spreadsheet as Excel or CSV from this page. It lists the T1, T2 and T3 stages and works out each week\'s weights from your starting numbers, rounded to your plates.',
   },
   {
     q: 'What does Badger cost?',
@@ -135,6 +140,8 @@ const faq = [
     on your phone. The file is plain text you can read first; the
     <a href="/badger-format/">format is documented</a>.
   </p>
+
+  <SheetDownload slug="gzclp" name="GZCLP" inputs="starting weights" />
 
   <h2 id="import">Bringing your history over</h2>
 

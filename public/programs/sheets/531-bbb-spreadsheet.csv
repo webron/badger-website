@@ -1,0 +1,104 @@
+5/3/1 (Boring But Big) spreadsheet
+"Built from the 5/3/1 (Boring But Big) program as Badger 1.1.15 exports it. The sets, reps and rules are the app's, and weights are worked out the way the app works them out."
+Run this program in Badger: https://badger.fit/guides/531-app/
+Get the app: https://badger.fit/#download
+How the rules work: https://badger.fit/help/progression/
+
+Setup
+Unit (kg or lb),kg
+Round loads to the nearest,"=IF($B$8=""lb"",5,2.5)","Your smallest plate jump, both sides together. Type your own number over it."
+Bar weight,"=IF($B$8=""lb"",45,20)",A percentage set never comes out lighter than the bar.
+"Yellow cells are yours to fill in. The numbers in them are examples, so type your own over them."
+
+"Each day has one main lift. Its training max (TM) runs a four-week wave, then you do Boring But Big sets of the same lift."
+Fill in the four training maxes. Later cycles assume you reached the minimum reps on every plus set.
+
+Press Day: Overhead Barbell Press
+,,,Cycle 1,Cycle 2,Cycle 3
+Training max,,,"=IF($B$8=""lb"",105,45)",=D18+$D$19,=E18+$D$19
+Training max goes up by (each cycle),,,"=IF($B$8=""lb"",5,2.5)"
+Week,Reps,% of training max
+Week 1,5,65,"=MAX(ROUNDUP((D$18*$C21/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C21/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C21/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,75,"=MAX(ROUNDUP((D$18*$C22/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C22/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C22/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5+,85,"=MAX(ROUNDUP((D$18*$C23/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C23/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C23/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 2,3,70,"=MAX(ROUNDUP((D$18*$C24/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C24/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C24/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3,80,"=MAX(ROUNDUP((D$18*$C25/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C25/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C25/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3+,90,"=MAX(ROUNDUP((D$18*$C26/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C26/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C26/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 3,5,75,"=MAX(ROUNDUP((D$18*$C27/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C27/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C27/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3,85,"=MAX(ROUNDUP((D$18*$C28/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C28/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C28/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,1+,95,"=MAX(ROUNDUP((D$18*$C29/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C29/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C29/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 4,5,40,"=MAX(ROUNDUP((D$18*$C30/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C30/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C30/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,50,"=MAX(ROUNDUP((D$18*$C31/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C31/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C31/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,60,"=MAX(ROUNDUP((D$18*$C32/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C32/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C32/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Boring But Big,5 × 10,60,"=MAX(ROUNDUP((D$18*$C33/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$18*$C33/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$18*$C33/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Accessories: Dumbbell Lateral Raise 3 × 15; Barbell Curl 3 × 10.
+
+Deadlift Day: Deadlift
+,,,Cycle 1,Cycle 2,Cycle 3
+Training max,,,"=IF($B$8=""lb"",275,120)",=D38+$D$39,=E38+$D$39
+Training max goes up by (each cycle),,,"=IF($B$8=""lb"",10,5)"
+Week,Reps,% of training max
+Week 1,5,65,"=MAX(ROUNDUP((D$38*$C41/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C41/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C41/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,75,"=MAX(ROUNDUP((D$38*$C42/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C42/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C42/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5+,85,"=MAX(ROUNDUP((D$38*$C43/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C43/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C43/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 2,3,70,"=MAX(ROUNDUP((D$38*$C44/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C44/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C44/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3,80,"=MAX(ROUNDUP((D$38*$C45/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C45/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C45/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3+,90,"=MAX(ROUNDUP((D$38*$C46/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C46/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C46/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 3,5,75,"=MAX(ROUNDUP((D$38*$C47/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C47/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C47/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3,85,"=MAX(ROUNDUP((D$38*$C48/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C48/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C48/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,1+,95,"=MAX(ROUNDUP((D$38*$C49/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C49/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C49/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 4,5,40,"=MAX(ROUNDUP((D$38*$C50/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C50/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C50/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,50,"=MAX(ROUNDUP((D$38*$C51/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C51/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C51/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,60,"=MAX(ROUNDUP((D$38*$C52/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C52/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C52/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Boring But Big,5 × 10,60,"=MAX(ROUNDUP((D$38*$C53/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$38*$C53/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$38*$C53/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Accessories: Leg Curl (Lying) 3 × 10; Barbell Row 3 × 10.
+
+Bench Day: Flat Barbell Bench Press
+,,,Cycle 1,Cycle 2,Cycle 3
+Training max,,,"=IF($B$8=""lb"",155,70)",=D58+$D$59,=E58+$D$59
+Training max goes up by (each cycle),,,"=IF($B$8=""lb"",5,2.5)"
+Week,Reps,% of training max
+Week 1,5,65,"=MAX(ROUNDUP((D$58*$C61/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C61/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C61/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,75,"=MAX(ROUNDUP((D$58*$C62/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C62/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C62/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5+,85,"=MAX(ROUNDUP((D$58*$C63/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C63/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C63/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 2,3,70,"=MAX(ROUNDUP((D$58*$C64/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C64/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C64/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3,80,"=MAX(ROUNDUP((D$58*$C65/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C65/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C65/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3+,90,"=MAX(ROUNDUP((D$58*$C66/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C66/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C66/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 3,5,75,"=MAX(ROUNDUP((D$58*$C67/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C67/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C67/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3,85,"=MAX(ROUNDUP((D$58*$C68/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C68/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C68/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,1+,95,"=MAX(ROUNDUP((D$58*$C69/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C69/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C69/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 4,5,40,"=MAX(ROUNDUP((D$58*$C70/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C70/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C70/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,50,"=MAX(ROUNDUP((D$58*$C71/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C71/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C71/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,60,"=MAX(ROUNDUP((D$58*$C72/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C72/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C72/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Boring But Big,5 × 10,60,"=MAX(ROUNDUP((D$58*$C73/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$58*$C73/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$58*$C73/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Accessories: Close-Grip Bench Press 3 × 10; Dumbbell Lateral Raise 3 × 15.
+
+Squat Day: Barbell Back Squat
+,,,Cycle 1,Cycle 2,Cycle 3
+Training max,,,"=IF($B$8=""lb"",225,100)",=D78+$D$79,=E78+$D$79
+Training max goes up by (each cycle),,,"=IF($B$8=""lb"",10,5)"
+Week,Reps,% of training max
+Week 1,5,65,"=MAX(ROUNDUP((D$78*$C81/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C81/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C81/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,75,"=MAX(ROUNDUP((D$78*$C82/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C82/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C82/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5+,85,"=MAX(ROUNDUP((D$78*$C83/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C83/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C83/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 2,3,70,"=MAX(ROUNDUP((D$78*$C84/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C84/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C84/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3,80,"=MAX(ROUNDUP((D$78*$C85/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C85/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C85/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3+,90,"=MAX(ROUNDUP((D$78*$C86/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C86/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C86/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 3,5,75,"=MAX(ROUNDUP((D$78*$C87/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C87/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C87/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,3,85,"=MAX(ROUNDUP((D$78*$C88/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C88/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C88/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,1+,95,"=MAX(ROUNDUP((D$78*$C89/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C89/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C89/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Week 4,5,40,"=MAX(ROUNDUP((D$78*$C90/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C90/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C90/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,50,"=MAX(ROUNDUP((D$78*$C91/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C91/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C91/100)/$B$9-0.5,0)*$B$9,$B$10)"
+,5,60,"=MAX(ROUNDUP((D$78*$C92/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C92/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C92/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Boring But Big,5 × 10,60,"=MAX(ROUNDUP((D$78*$C93/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((E$78*$C93/100)/$B$9-0.5,0)*$B$9,$B$10)","=MAX(ROUNDUP((F$78*$C93/100)/$B$9-0.5,0)*$B$9,$B$10)"
+Accessories: Leg Press 3 × 10; Romanian Deadlift 3 × 10.
+
+The rules
+"Overhead Barbell Press, Flat Barbell Bench Press"
+"When a plus set fell short of its minimum this cycle, change nothing."
+"At the end of a cycle, add 2.5 kg / 5 lb to the training max."
+"Otherwise, change nothing."
+"Deadlift, Barbell Back Squat"
+"When a plus set fell short of its minimum this cycle, change nothing."
+"At the end of a cycle, add 5 kg / 10 lb to the training max."
+"Otherwise, change nothing."

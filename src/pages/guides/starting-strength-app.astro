@@ -1,6 +1,7 @@
 ---
 import HelpLayout from '../../layouts/HelpLayout.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
+import SheetDownload from '../../components/SheetDownload.astro';
 
 /**
  * Program landing page, published 2026-11-05, same shape as gzclp-app.astro.
@@ -31,6 +32,10 @@ const faq = [
   {
     q: 'How do I get the Starting Strength routine?',
     a: 'It is in the app under You, Routines, in the Beginner Programs folder. You can also download starting-strength.badger from the programs page and open it on your phone.',
+  },
+  {
+    q: 'Is there a Starting Strength spreadsheet?',
+    a: 'Yes. Download the Starting Strength spreadsheet as Excel or CSV from this page. Enter a starting weight for each lift and it lists the weight for every session of Workout A and Workout B.',
   },
   {
     q: 'What does Badger cost?',
@@ -132,6 +137,8 @@ const faq = [
     <code>starting-strength.badger</code> from the <a href="/programs/">programs page</a> and open it on your phone.
     The file is plain text you can read first; the <a href="/badger-format/">format is documented</a>.
   </p>
+
+  <SheetDownload slug="starting-strength" name="Starting Strength" inputs="starting weights" />
 
   <h2 id="import">Bringing your history over</h2>
 

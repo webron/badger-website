@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sheets": "node tool/sheets/index.mjs",
+    "test:sheets": "node --test tool/sheets/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -19,5 +21,8 @@
     "astro-indexnow": "^2.3.10",
     "astro-pagefind": "^1.8.6",
     "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "fflate": "0.8.2"
   }
 }
