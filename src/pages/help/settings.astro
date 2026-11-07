@@ -193,6 +193,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>It also shares a second CSV with your <a href="/help/goals/">goals</a>.</p>
   <p>The file includes sets you never completed, such as the rest of a routine workout you started and left. To count only real training, filter on <code>is_complete</code>; <code>is_skipped</code> marks skipped sets. If you're giving the file to an AI, <a href={`/guides/ai/`}>Use your own AI</a> has a prompt that already explains this.</p>
 
+  <h3 id="export-strong">Exporting for Hevy or another app</h3>
+  <p><strong>Export as Strong CSV</strong> makes a file in Strong's export format, which Hevy and other apps that read Strong files can import. In Hevy, go to Profile, Settings, Export &amp; Import Data, Import Data, then <strong>Import Strong CSV</strong>. Strong itself can't import a CSV.</p>
+  <p>Before it exports, a notice lists what the format can't hold. Tap <strong>Export workout data</strong> there to get the full Badger file instead. Weights are in kg and distances in km whatever unit you log in; Hevy shows them in your own unit.</p>
+  <ul>
+    <li>Kept: completed sets only, with warm-up, to failure and drop set markings, set and workout notes, and RPE. Workouts are named for the routine day, or "Workout".</li>
+    <li>Left out: RIR, tempo and heart rate; left and right sides (the better one is kept); myo-rep and rest-pause bouts after the first; session effort, energy check-ins and lighter days; categories, gyms and equipment; sets you didn't complete.</li>
+  </ul>
+
   <h3 id="ai-context">Copying your context for an AI</h3>
   <p><strong>Copy context for AI</strong> puts together a short plain-text briefing on your training: your <a href={`#training-notes`}>training notes</a>, your active program and its current targets, your last ten sessions (with each exercise's tempo), your records, the equipment at your current gym, and anything you've marked as avoided.</p>
   <p>It ends with instructions telling the AI how to read it, including how to write a routine back as a <a href={`/badger-format/`}><code>.badger</code> file</a>.</p>
