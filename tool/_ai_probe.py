@@ -75,7 +75,7 @@ ENV_KEYS = {
 DEFAULT_MODELS = {
     "perplexity": "sonar",
     "openai": "gpt-4.1",
-    "gemini": "gemini-2.5-flash",
+    "gemini": "gemini-3.8-flash",
     "anthropic": "claude-haiku-5-5",
     "xai": "grok-4.7",
 }
