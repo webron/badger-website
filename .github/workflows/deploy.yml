@@ -49,3 +49,61 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  # Runs after the deploy on purpose. Pinging during the build (the old
+  # astro-indexnow integration) made the search engine fetch the key file
+  # before it was published, and the key was then marked failed: every ping
+  # after 2026-11-06 got 403 UserForbiddedToAccessSite. By this point the
+  # site is live. The key is public by design (it proves ownership by being
+  # served from the site), so it sits in plain env.
+  indexnow:
+    name: Ping IndexNow
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions: {}
+    env:
+      INDEXNOW_KEY: b9db15b62c683144774ab2eaaca2838c
+    steps:
+      - name: Wait for the key file to be live
+        run: |
+          # Pages' CDN can lag a few seconds behind the deploy job.
+          for i in $(seq 1 10); do
+            body=$(curl -fsS "https://badger.fit/${INDEXNOW_KEY}.txt" || true)
+            if [ "$body" = "$INDEXNOW_KEY" ]; then
+              echo "Key file live (try $i)"
+              exit 0
+            fi
+            echo "Key file not live yet (try $i), waiting 15s"
+            sleep 15
+          done
+          echo "::error::Key file never became live"
+          exit 1
+
+      - name: Submit sitemap URLs to IndexNow
+        run: |
+          set -euo pipefail
+          # Sitemap index first, then every child sitemap it lists.
+          index=$(curl -fsS https://badger.fit/sitemap-index.xml)
+          : > urls.txt
+          for sm in $(printf '%s' "$index" | python3 -c 'import re,sys; print("\n".join(re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", sys.stdin.read())))'); do
+            curl -fsS "$sm" | python3 -c 'import re,sys; print("\n".join(re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", sys.stdin.read())))' >> urls.txt
+          done
+          echo "Submitting $(wc -l < urls.txt) URLs"
+          python3 - > payload.json <<'PY'
+          import json, os
+          key = os.environ["INDEXNOW_KEY"]
+          urls = [u for u in open("urls.txt").read().split() if u]
+          print(json.dumps({"host": "badger.fit", "key": key,
+                            "keyLocation": f"https://badger.fit/{key}.txt",
+                            "urlList": urls}))
+          PY
+          status=$(curl -sS -o response.txt -w '%{http_code}' \
+            -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            --data @payload.json)
+          echo "HTTP $status"
+          cat response.txt
+          # 200 = accepted, 202 = accepted pending key validation. Anything
+          # else fails the job so a broken ping is a red job, not a buried warning.
+          case "$status" in 200|202) ;; *) exit 1 ;; esac
