@@ -34,6 +34,7 @@ from _stats_sources import (  # noqa: E402
     search_console,
 )
 from _rival_watch import panel as build_rivals  # noqa: E402
+from _search_health import bing_health, google_health  # noqa: E402
 
 DEFAULT_OUT = Path.home() / "Development/badger-artifacts/site-stats/weekly.html"
 WEEKS = 5  # this week plus the four it is measured against
@@ -186,6 +187,71 @@ def build_search_console(days: int) -> str:
         "Nothing yet."))
 
     return panel("Google search", f"{sc['start']} to {sc['end']}", "".join(parts))
+
+
+def search_health_lines(google: dict, bing: dict) -> tuple[list[str], list[str]]:
+    """(flags, ok_lines) for the Search health panel; flags go first.
+
+    Every failure is one line. Nothing here raises.
+    """
+    flags: list[str] = []
+    oks: list[str] = []
+    if "error" in google:
+        flags.append(google["error"])
+    else:
+        sm = google.get("sitemaps", {})
+        if "error" in sm:
+            flags.append(sm["error"])
+        else:
+            flags += sm["flags"]
+            if sm.get("notes"):
+                oks += sm["notes"]
+            elif not sm["flags"]:
+                oks.append(f'Google sitemaps: OK, {len(sm["sitemaps"])} read and '
+                           f'fresh, no errors.')
+        ins = google.get("inspection", {})
+        if "error" in ins:
+            flags.append(ins["error"])
+        else:
+            flags += ins["flags"]
+            for url, state in ins["not_indexed"]:
+                flags.append(f"Not indexed: {url} ({state})")
+            for url, why in ins["failed"][:5]:
+                flags.append(f"Could not inspect {url}: {why}")
+            if not ins["flags"]:
+                oks.append(f'Google indexing: OK, all {ins["total"]} sitemap URLs indexed.')
+            else:
+                counts = ", ".join(f"{n} {s}" for s, n in sorted(ins["states"].items()))
+                oks.append(f'Google indexing of {ins["total"]} URLs: {counts}.')
+    if "no_key" in bing:
+        oks.append(bing["no_key"])
+    elif "error" in bing:
+        flags.append(bing["error"])
+    else:
+        flags += bing["flags"]
+        c = bing["crawl"]
+        crawl = (f'{c["crawled"]} pages crawled and {c["errors"]} crawl errors on '
+                 f'{c["date"]}' + (f', {c["in_index"]} in index' if c["in_index"] is not None else "")
+                 if c else "no crawl stats")
+        feeds = ", ".join(f'{f["url"]} crawled {f["age"]}d ago' for f in bing["feeds"]
+                          if f["age"] is not None)
+        oks.append(("Bing: OK, " if not bing["flags"] else "Bing: ") + crawl
+                   + (f"; {feeds}" if feeds else "") + ".")
+    return flags, oks
+
+
+def build_search_health() -> str:
+    """Is Google/Bing reading the sitemap and indexing pages? Quiet when fine."""
+    try:
+        flags, oks = search_health_lines(google_health(), bing_health())
+    except Exception as exc:  # noqa: BLE001 - never cost the rest of the report
+        return error_panel("Search health", f"Search health failed ({type(exc).__name__}).")
+    inner = ""
+    if flags:
+        inner += "<h3>Needs attention</h3>" + "".join(
+            f'<p class="error">{esc(f)}</p>' for f in flags)
+    inner += "".join(f'<p class="sub">{esc(o)}</p>' for o in oks)
+    return panel("Search health", "", inner)
 
 
 def build_play(days: int) -> str:
@@ -541,6 +607,7 @@ def main() -> None:
     body = "".join([
         build_goatcounter(days),
         build_search_console(days),
+        build_search_health(),
         build_play(days),
         build_app_store(days),
         build_ai_answers(),
