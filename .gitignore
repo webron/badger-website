@@ -29,5 +29,3 @@ pnpm-debug.log*
 # Python bytecode from the stats tools
 __pycache__/
 
-# IndexNow change cache: written by astro-indexnow, meaningless between CI runs
-.astro-indexnow-cache.json
