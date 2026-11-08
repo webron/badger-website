@@ -76,8 +76,15 @@ const article = addHeadingAnchors(await Astro.slots.render('default'));
     if (!link) return;
     if (!(await copyText(link.href))) return; // The address bar still has it.
     document.querySelectorAll('a.heading-anchor.is-copied').forEach((a) => a.classList.remove('is-copied'));
+    // Near the left edge (a short heading on a phone) the label hangs to the
+    // right of the icon instead, so it is not cut off.
+    link.classList.toggle('label-start', link.getBoundingClientRect().right < 120);
     link.classList.add('is-copied');
-    if (status) status.textContent = 'Link copied';
+    if (status) {
+      // Cleared first so a second click still reads as a change and is announced.
+      status.textContent = '';
+      window.setTimeout(() => (status.textContent = 'Link copied'), 50);
+    }
     window.clearTimeout(reset);
     reset = window.setTimeout(() => {
       link.classList.remove('is-copied');

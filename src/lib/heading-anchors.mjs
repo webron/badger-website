@@ -12,9 +12,13 @@
 // "organize-days-and-routines"), suffixed -2, -3 only if it would collide with
 // another id on the page.
 
-const HEADING = /<h([23])((?:\s[^>]*)?)>([\s\S]*?)<\/h\1>/g;
-const ID_ATTR = /\sid\s*=\s*"([^"]*)"/;
-const ALL_IDS = /\sid\s*=\s*"([^"]*)"/g;
+// Attributes may hold a '>' inside quotes, so a quoted value is skipped whole.
+const HEADING = /<h([23])((?:\s(?:[^>"']|"[^"]*"|'[^']*')*)?)>([\s\S]*?)<\/h\1>/gi;
+// An id in double, single or no quotes, in any case.
+const ID_SOURCE = String.raw`\sid\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+))`;
+const ID_ATTR = new RegExp(ID_SOURCE, 'i');
+const ALL_IDS = new RegExp(ID_SOURCE, 'gi');
+const idOf = (m) => m[1] ?? m[2] ?? m[3];
 
 const ENTITIES = {
   amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
@@ -27,7 +31,7 @@ function decodeEntities(text) {
   return text.replace(/&(#x[0-9a-f]+|#[0-9]+|[a-z]+);/gi, (match, code) => {
     if (code[0] === '#') {
       const n = code[1] === 'x' || code[1] === 'X' ? parseInt(code.slice(2), 16) : parseInt(code.slice(1), 10);
-      return Number.isFinite(n) ? String.fromCodePoint(n) : match;
+      return Number.isFinite(n) && n >= 0 && n <= 0x10ffff ? String.fromCodePoint(n) : ' ';
     }
     // An entity this table does not know is dropped, so its name never ends
     // up in a slug as if it were a word of the heading.
@@ -60,13 +64,17 @@ const ICON =
 
 export function addHeadingAnchors(html) {
   const used = new Set();
-  for (const m of html.matchAll(ALL_IDS)) used.add(m[1]);
+  for (const m of html.matchAll(ALL_IDS)) used.add(idOf(m));
 
   return html.replace(HEADING, (whole, level, attrs, inner) => {
     if (inner.includes('class="heading-anchor"')) return whole;
 
     const text = headingText(inner);
-    let id = attrs.match(ID_ATTR)?.[1];
+    const idMatch = attrs.match(ID_ATTR);
+    let id = idMatch ? idOf(idMatch) : undefined;
+    // A hand-written but empty id is left alone: adding a second id would not
+    // win in the browser, so the link would point at nothing.
+    if (id === '') return whole;
 
     if (!id) {
       const base = slugify(text);

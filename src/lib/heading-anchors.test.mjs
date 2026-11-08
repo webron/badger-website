@@ -55,3 +55,23 @@ test('slugify and headingText', () => {
   assert.equal(slugify('Café  set-up'), 'cafe-set-up');
   assert.equal(headingText('Don&#39;t <em>skip</em>'), "Don't skip");
 });
+
+test('a > inside a quoted attribute does not cut the heading open', () => {
+  const out = addHeadingAnchors('<h2 title="a>b">Hello</h2>');
+  assert.match(out, /^<h2 title="a>b" id="hello">Hello<a /);
+});
+
+test('single-quoted, unquoted and upper-case ids count as hand-written', () => {
+  assert.match(addHeadingAnchors("<h2 id='foo'>Hello</h2>"), /^<h2 id='foo'>Hello<a [^>]*href="#foo"/);
+  assert.match(addHeadingAnchors('<h2 id=foo>Hello</h2>'), /^<h2 id=foo>Hello<a [^>]*href="#foo"/);
+  assert.match(addHeadingAnchors('<H2 ID="foo">Hello</H2>'), /^<h2 ID="foo">Hello<a [^>]*href="#foo"/);
+  assert.equal(addHeadingAnchors('<h2 id="">Hello</h2>'), '<h2 id="">Hello</h2>');
+});
+
+test('a single-quoted id elsewhere still blocks a generated one', () => {
+  assert.match(addHeadingAnchors("<p id='hello'>x</p><h2>Hello</h2>"), /<h2 id="hello-2">/);
+});
+
+test('an out-of-range numeric entity does not throw', () => {
+  assert.match(addHeadingAnchors('<h2>A &#99999999999; B</h2>'), /<h2 id="a-b">/);
+});

@@ -500,6 +500,11 @@ a:hover {
   color: var(--accent-ink);
 }
 
+.prose .heading-anchor.is-copied.label-start::after {
+  right: auto;
+  left: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .prose .heading-anchor {
     transition: none;
