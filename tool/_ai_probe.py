@@ -27,6 +27,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 from datetime import date
 from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
@@ -105,7 +106,8 @@ def detect(text: str, urls: list[str]) -> dict:
 _HTTP = re.compile(r"^https?://", re.IGNORECASE)
 # Gemini's grounding uri is a Google redirect; the real site is only in the title.
 _REDIRECT_HOSTS = ("vertexaisearch.cloud.google.com",)
-_DOMAIN = re.compile(r"^[a-z0-9-]+(\.[a-z0-9-]+)+$", re.IGNORECASE)
+# A bare domain ends in a letters-only label, so "1.2" and "v1.0" are not domains.
+_DOMAIN = re.compile(r"^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$", re.IGNORECASE)
 
 
 def _clean_url(url: str) -> str:
@@ -121,26 +123,36 @@ def domain_of(host: str) -> str:
     return host[4:] if host.startswith("www.") else host
 
 
+def _page_key(url: str) -> str:
+    """One page, whatever its leading www. or trailing slash."""
+    parts = urlsplit(url)
+    return urlunsplit(("", domain_of(parts.netloc), parts.path.rstrip("/"), parts.query, ""))
+
+
 def extract_sources(urls: list[str]) -> list[dict]:
     """[{"url", "domain"}] from a provider's citation list, deduplicated.
 
     A real URL gives both fields. A bare domain (Gemini's title) gives a domain
     and no URL. A redirect URL is dropped, since its host says nothing about the
     source. The first occurrence keeps its position, so order is citation order.
+    A malformed URL is skipped on its own and never stops the rest.
     """
     out, seen = [], set()
     for raw in urls:
         raw = (raw or "").strip()
         if _HTTP.match(raw):
-            host = domain_of(urlsplit(raw).hostname or "")
-            if not host or host in _REDIRECT_HOSTS:
+            try:
+                host = domain_of(urlsplit(raw).hostname or "")
+                if not host or host in _REDIRECT_HOSTS:
+                    continue
+                item = {"url": _clean_url(raw), "domain": host}
+            except ValueError:  # e.g. an unbalanced "[" in the host
                 continue
-            item = {"url": _clean_url(raw), "domain": host}
         elif _DOMAIN.match(raw):
             item = {"url": "", "domain": domain_of(raw)}
         else:
             continue
-        key = item["url"] or item["domain"]
+        key = _page_key(item["url"]) if item["url"] else item["domain"]
         if key not in seen:
             seen.add(key)
             out.append(item)
@@ -255,10 +267,17 @@ def run(prompts: list[str] = PROMPTS, ask_fn=ask, keys_models=None) -> dict:
                 found = detect(answer["text"], answer["urls"])
                 row["named"] = "1" if found["named"] else "0"
                 row["cited"] = "1" if found["cited"] else "0"
-                sources += [{"date": row["date"], "provider": provider, "prompt": prompt,
-                             **item} for item in extract_sources(answer["urls"])]
             except Exception as exc:  # noqa: BLE001 - one prompt must not sink the run
                 row["error"] = str(getattr(exc, "code", type(exc).__name__))
+            else:
+                # Apart from the try above: the source list is extra, and a fault in
+                # it must never turn a good answer into an error row in the history.
+                try:
+                    sources += [{"date": row["date"], "provider": provider,
+                                 "prompt": prompt, **item}
+                                for item in extract_sources(answer["urls"])]
+                except Exception:  # noqa: BLE001
+                    pass
             rows.append(row)
     return {"rows": rows, "sources": sources, "skipped": [p for p in PROVIDERS if p not in keys]}
 
@@ -280,20 +299,32 @@ SOURCE_FIELDS = ["date", "provider", "prompt", "url", "domain"]
 
 
 def append_sources(sources: list[dict], path: Path = SOURCES_PATH) -> None:
-    """Append the cited URLs of a run; a same-day rerun replaces that day's rows."""
+    """Append the cited URLs of a run; a same-day rerun replaces that prompt's rows.
+
+    Only a missing file counts as empty. Any other read error propagates before
+    anything is written, so an unreadable file is never truncated. The write goes
+    to a temp file in the same folder, then replaces the original in one step.
+    """
     kept: list[dict] = []
     try:
         with open(path, encoding="utf-8", newline="") as fh:
             kept = list(csv.DictReader(fh, delimiter="\t"))
-    except (OSError, ValueError):
+    except FileNotFoundError:
         pass
-    replaced = {(s["date"], s["provider"]) for s in sources}
-    kept = [r for r in kept if (r.get("date"), r.get("provider")) not in replaced]
+    replaced = {(s["date"], s["provider"], s["prompt"]) for s in sources}
+    kept = [r for r in kept
+            if (r.get("date"), r.get("provider"), r.get("prompt")) not in replaced]
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, SOURCE_FIELDS, delimiter="\t", extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(kept + sources)
+    fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=path.name + ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="") as fh:
+            writer = csv.DictWriter(fh, SOURCE_FIELDS, delimiter="\t", extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(kept + sources)
+        os.replace(tmp, path)
+    except BaseException:
+        os.unlink(tmp)
+        raise
 
 
 def latest_summary(path: Path = HISTORY_PATH) -> dict:
@@ -335,10 +366,18 @@ def main() -> None:
         sys.exit("No provider has a key, so nothing was asked. Set at least one "
                  f"of {', '.join(ENV_KEYS.values())} or add it to {CONFIG_PATH}.")
     append_history(result["rows"])
-    append_sources(result["sources"])
+    sources_error = None
+    try:
+        append_sources(result["sources"])
+    except Exception as exc:  # noqa: BLE001 - the answers are already recorded
+        sources_error = exc
     for r in result["rows"]:
         mark = "ERR" if r["error"] else ("named" if r["named"] == "1" else "-")
         print(f'{r["provider"]:11s} {mark:6s} {r["prompt"]}')
+    if sources_error:
+        sys.exit(f"The answers were saved to {HISTORY_PATH}, but the cited sources "
+                 f"were NOT saved to {SOURCES_PATH} ({sources_error!r}); the existing "
+                 "file was left as it was.")
 
 
 if __name__ == "__main__":

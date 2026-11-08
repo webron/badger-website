@@ -304,6 +304,89 @@ class ProbeSources(unittest.TestCase):
                              ["date", "provider", "model", "prompt", "named", "cited", "error"])
             self.assertNotEqual(probe.SOURCES_PATH, probe.HISTORY_PATH)
 
+    def test_a_malformed_url_is_skipped_and_the_rest_survive(self):
+        got = probe.extract_sources(["https://[bad/x", "https://ok.com/a"])
+        self.assertEqual(got, [{"url": "https://ok.com/a", "domain": "ok.com"}])
+
+    def test_a_malformed_url_leaves_the_history_row_error_free(self):
+        def fake(provider, prompt, key, model):
+            return {"text": "Try Badger Fit", "urls": ["https://[bad/x", "https://ok.com/a"]}
+
+        out = probe.run(["p"], fake, ({"openai": "k"}, dict(probe.DEFAULT_MODELS)))
+        self.assertEqual((out["rows"][0]["error"], out["rows"][0]["named"]), ("", "1"))
+        self.assertEqual([s["domain"] for s in out["sources"]], ["ok.com"])
+
+    def test_a_source_extraction_fault_cannot_set_the_row_error(self):
+        def fake(provider, prompt, key, model):
+            return {"text": "x", "urls": ["https://a.com"]}
+
+        with mock.patch.object(probe, "extract_sources", side_effect=RuntimeError("x")):
+            out = probe.run(["p"], fake, ({"openai": "k"}, dict(probe.DEFAULT_MODELS)))
+        self.assertEqual((out["rows"][0]["error"], out["rows"][0]["named"]), ("", "0"))
+        self.assertEqual(out["sources"], [])
+
+    def test_numeric_and_version_strings_are_not_domains(self):
+        self.assertEqual(probe.extract_sources(["1.2", "v1.0", "3.14.15", "a.b"]), [])
+        self.assertEqual(probe.extract_sources(["bbc.co.uk"])[0]["domain"], "bbc.co.uk")
+
+    def test_pages_differing_only_by_www_or_trailing_slash_dedupe(self):
+        got = probe.extract_sources(["https://example.com/a/", "https://www.example.com/a",
+                                     "https://example.com/a?x=1"])
+        self.assertEqual([i["url"] for i in got],
+                         ["https://example.com/a/", "https://example.com/a?x=1"])
+
+    def test_a_gemini_payload_goes_through_the_parser_into_sources(self):
+        got = probe.parse_gemini({"candidates": [{
+            "content": {"parts": [{"text": "t"}]},
+            "groundingMetadata": {"groundingChunks": [
+                {"web": {"uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/a",
+                         "title": "reddit.com"}},
+                {"web": {"uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/b",
+                         "title": "reddit.com"}},
+                {"web": {"uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/c",
+                         "title": "badger.fit"}}]}}]})
+        self.assertEqual(probe.extract_sources(got["urls"]),
+                         [{"url": "", "domain": "reddit.com"}, {"url": "", "domain": "badger.fit"}])
+
+    def test_an_undecodable_sources_file_is_left_intact_and_append_raises(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "s.tsv"
+            path.write_bytes(b"date\tprovider\n\xff\xfe\x80\n")
+            before = path.read_bytes()
+            with self.assertRaises(ValueError):
+                probe.append_sources([{"date": "2026-11-08", "provider": "openai",
+                                       "prompt": "p", "url": "", "domain": "a.com"}], path)
+            self.assertEqual(path.read_bytes(), before)
+            self.assertEqual([p.name for p in Path(d).iterdir()], ["s.tsv"])
+
+    def test_a_partial_rerun_keeps_the_rows_of_a_prompt_that_failed_this_time(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "s.tsv"
+            row = lambda provider, prompt, dom: {
+                "date": "2026-11-08", "provider": provider, "prompt": prompt,
+                "url": f"https://{dom}/", "domain": dom}
+            probe.append_sources([row("openai", "p1", "a.com"), row("openai", "p2", "b.com")], path)
+            probe.append_sources([row("openai", "p1", "c.com")], path)  # p2 failed this time
+            probe.append_sources([row("gemini", "p1", "g.com")], path)  # same day, other provider
+            with open(path, encoding="utf-8", newline="") as fh:
+                got = list(csv.DictReader(fh, delimiter="\t"))
+            self.assertEqual(sorted((r["provider"], r["prompt"], r["domain"]) for r in got),
+                             [("gemini", "p1", "g.com"), ("openai", "p1", "c.com"),
+                              ("openai", "p2", "b.com")])
+
+    def test_main_prints_results_then_exits_nonzero_when_sources_cannot_be_saved(self):
+        result = {"rows": [{"provider": "openai", "error": "", "named": "1", "prompt": "p"}],
+                  "sources": [], "skipped": []}
+        with mock.patch.object(probe, "run", return_value=result), \
+                mock.patch.object(probe, "append_history") as hist, \
+                mock.patch.object(probe, "append_sources", side_effect=ValueError("bad")), \
+                mock.patch("builtins.print") as shown:
+            with self.assertRaises(SystemExit) as cm:
+                probe.main()
+        hist.assert_called_once()
+        shown.assert_called_once()
+        self.assertIn("NOT saved", str(cm.exception.code))
+
 
 class ProbeRun(unittest.TestCase):
     def test_skips_providers_without_a_key_and_records_errors_apart(self):
