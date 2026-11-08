@@ -433,6 +433,91 @@ a:hover {
   color: var(--text);
 }
 
+/* The section link next to every h2/h3 (added by src/lib/heading-anchors.mjs).
+   With a mouse it shows on hover so headings stay clean; on touch screens,
+   where there is no hover, it stays visible but faint. */
+.prose .heading-anchor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-left: 4px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  border-radius: 4px;
+  color: var(--text-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 120ms ease, color 120ms ease;
+}
+
+/* A jump to a section leaves a little room above it, so an h2's top rule is
+   not cut off at the window edge. */
+.prose h2[id],
+.prose h3[id] {
+  scroll-margin-top: 16px;
+}
+
+.prose h2:hover .heading-anchor,
+.prose h3:hover .heading-anchor,
+.prose .heading-anchor:focus-visible,
+.prose .heading-anchor.is-copied {
+  opacity: 1;
+}
+
+.prose .heading-anchor:hover,
+.prose .heading-anchor:focus-visible {
+  color: var(--accent-ink);
+}
+
+@media (hover: none) {
+  .prose .heading-anchor {
+    opacity: 0.55;
+  }
+}
+
+/* "Copied" confirmation, shown under the icon for a moment after a click.
+   It hangs down and to the LEFT of the icon: the icon can sit at the right
+   edge of a phone screen, and a label running further right would push the
+   page sideways. */
+.prose .heading-anchor.is-copied::after {
+  content: 'Link copied';
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 1;
+  padding: 3px 8px;
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  background: var(--surface);
+  line-height: 1.3;
+  white-space: nowrap;
+  font-family: var(--font-sans, inherit);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prose .heading-anchor {
+    transition: none;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .prose h4 {
   font-size: 0.8125rem;
   font-weight: 700;

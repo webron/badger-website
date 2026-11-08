@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import HelpSidebar from '../components/HelpSidebar.astro';
+import { addHeadingAnchors } from '../lib/heading-anchors.mjs';
 
 interface Props {
   title: string;
@@ -11,6 +12,10 @@ interface Props {
 
 const { title, description } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+// Every h2/h3 gets an id and a link icon at build time (see the module for why
+// not in the browser).
+const article = addHeadingAnchors(await Astro.slots.render('default'));
 ---
 
 <BaseLayout title={title} description={description}>
@@ -26,13 +31,60 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
     <main class="help-main">
       <article class="prose">
-        <slot />
+        <Fragment set:html={article} />
       </article>
+      <p class="heading-anchor-status sr-only" aria-live="polite"></p>
     </main>
   </div>
 
   <Footer />
 </BaseLayout>
+
+<script>
+  // The heading link still does its normal job (jump to the section, put the
+  // #fragment in the address bar). It also copies the full URL, which is what
+  // a reader clicking it almost always wants.
+  const status = document.querySelector('.heading-anchor-status');
+
+  async function copyText(text: string): Promise<boolean> {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Older Safari and some embedded browsers refuse the async clipboard.
+      // The old selection-based copy still works there inside a click.
+      const field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      let ok = false;
+      try {
+        ok = document.execCommand('copy');
+      } catch {
+        ok = false;
+      }
+      field.remove();
+      return ok;
+    }
+  }
+  let reset: number | undefined;
+  document.addEventListener('click', async (event) => {
+    const link = (event.target as Element | null)?.closest?.('a.heading-anchor') as HTMLAnchorElement | null;
+    if (!link) return;
+    if (!(await copyText(link.href))) return; // The address bar still has it.
+    document.querySelectorAll('a.heading-anchor.is-copied').forEach((a) => a.classList.remove('is-copied'));
+    link.classList.add('is-copied');
+    if (status) status.textContent = 'Link copied';
+    window.clearTimeout(reset);
+    reset = window.setTimeout(() => {
+      link.classList.remove('is-copied');
+      if (status) status.textContent = '';
+    }, 1600);
+  });
+</script>
 
 <style>
   .help-shell {
