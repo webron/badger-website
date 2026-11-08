@@ -10,6 +10,7 @@ file handles an empty or missing request, and what counts as "named".
 
 from __future__ import annotations
 
+import csv
 import gzip
 import importlib.util
 import sys
@@ -233,6 +234,75 @@ class ProbeDetection(unittest.TestCase):
             {"type": "text", "text": "ok",
              "citations": [{"url": "https://badger.fit/"}]}]})
         self.assertTrue(probe.detect(got["text"], got["urls"])["cited"])
+
+
+class ProbeSources(unittest.TestCase):
+    def test_strips_tracking_and_www_and_dedupes_in_order(self):
+        got = probe.extract_sources([
+            "https://www.Example.com/best-apps?utm_source=openai&id=3#top",
+            "https://example.com/other",
+            "https://www.example.com/best-apps?id=3&utm_source=x",
+        ])
+        self.assertEqual(got, [
+            {"url": "https://www.example.com/best-apps?id=3", "domain": "example.com"},
+            {"url": "https://example.com/other", "domain": "example.com"}])
+
+    def test_gemini_redirects_are_dropped_and_titles_give_the_domain(self):
+        got = probe.extract_sources([
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/abc", "reddit.com",
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/def", "alternativeto.net"])
+        self.assertEqual(got, [{"url": "", "domain": "reddit.com"},
+                               {"url": "", "domain": "alternativeto.net"}])
+
+    def test_a_bare_domain_is_redundant_next_to_a_url_from_it(self):
+        got = probe.extract_sources(["reddit.com", "https://www.reddit.com/r/x/comments/1"])
+        self.assertEqual([i["domain"] for i in got], ["reddit.com"])
+        self.assertTrue(got[0]["url"])
+
+    def test_junk_is_ignored(self):
+        self.assertEqual(probe.extract_sources(["", None, "not a url", "ftp://x.org/a"]), [])
+
+    def test_each_provider_parser_feeds_sources(self):
+        oa = probe.parse_openai({"output": [{"type": "message", "content": [
+            {"text": "t", "annotations": [
+                {"type": "url_citation", "url": "https://a.com/x?utm_source=openai"},
+                {"type": "file_citation", "url": "https://skip.com"}]}]}]})
+        self.assertEqual(probe.extract_sources(oa["urls"]),
+                         [{"url": "https://a.com/x", "domain": "a.com"}])
+        pp = probe.parse_perplexity({"choices": [{"message": {"content": "t"}}],
+                                     "citations": ["https://b.org/p"]})
+        self.assertEqual(probe.extract_sources(pp["urls"])[0]["domain"], "b.org")
+        an = probe.parse_anthropic({"content": [{"type": "text", "text": "t",
+                                                 "citations": [{"url": "https://c.net/q"}]}]})
+        self.assertEqual(probe.extract_sources(an["urls"])[0]["domain"], "c.net")
+
+    def test_run_collects_sources_per_answer_and_skips_failures(self):
+        def fake(provider, prompt, key, model):
+            if "bad" in prompt:
+                raise RuntimeError("boom")
+            return {"text": "x", "urls": ["https://a.com/1", "https://a.com/1"]}
+
+        out = probe.run(["ok", "bad"], fake, ({"openai": "k"}, dict(probe.DEFAULT_MODELS)))
+        self.assertEqual(len(out["sources"]), 1)
+        self.assertEqual((out["sources"][0]["provider"], out["sources"][0]["prompt"],
+                          out["sources"][0]["domain"]), ("openai", "ok", "a.com"))
+
+    def test_sources_file_replaces_same_day_and_never_touches_history(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "s.tsv"
+            row = lambda day, dom: {"date": day, "provider": "openai", "prompt": "p",
+                                    "url": f"https://{dom}/", "domain": dom}
+            probe.append_sources([row("2026-11-05", "a.com")], path)
+            probe.append_sources([row("2026-11-08", "b.com")], path)
+            probe.append_sources([row("2026-11-08", "c.com")], path)
+            with open(path, encoding="utf-8", newline="") as fh:
+                got = list(csv.DictReader(fh, delimiter="\t"))
+            self.assertEqual([(r["date"], r["domain"]) for r in got],
+                             [("2026-11-05", "a.com"), ("2026-11-08", "c.com")])
+            self.assertEqual(probe.SOURCE_FIELDS, ["date", "provider", "prompt", "url", "domain"])
+            self.assertEqual(probe.FIELDS[:7],
+                             ["date", "provider", "model", "prompt", "named", "cited", "error"])
+            self.assertNotEqual(probe.SOURCES_PATH, probe.HISTORY_PATH)
 
 
 class ProbeRun(unittest.TestCase):

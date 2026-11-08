@@ -29,6 +29,7 @@ import re
 import sys
 from datetime import date
 from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -36,6 +37,9 @@ import _stats_sources as src  # noqa: E402
 
 CONFIG_PATH = os.path.expanduser("~/.config/badger-stats/ai-probe.json")
 HISTORY_PATH = Path.home() / "Development/badger-artifacts/marketing-2026-11/ai-answers.tsv"
+# One row per cited URL, kept apart from HISTORY_PATH so that file's columns (and
+# the trend read from them) never change.
+SOURCES_PATH = HISTORY_PATH.with_name("ai-sources.tsv")
 
 # Fixed on purpose. Add to the end rather than editing: the trend is only
 # comparable across weeks for a prompt that has stayed the same.
@@ -96,6 +100,53 @@ def detect(text: str, urls: list[str]) -> dict:
     named = bool(_NAMED.search(text or ""))
     cited = any(_CITED.search(u or "") for u in urls)
     return {"named": named, "cited": cited}
+
+
+_HTTP = re.compile(r"^https?://", re.IGNORECASE)
+# Gemini's grounding uri is a Google redirect; the real site is only in the title.
+_REDIRECT_HOSTS = ("vertexaisearch.cloud.google.com",)
+_DOMAIN = re.compile(r"^[a-z0-9-]+(\.[a-z0-9-]+)+$", re.IGNORECASE)
+
+
+def _clean_url(url: str) -> str:
+    """Drop the tracking tail (utm_*, fragment) so one page is one string."""
+    parts = urlsplit(url.strip())
+    query = urlencode([(k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True)
+                       if not k.lower().startswith("utm_")])
+    return urlunsplit((parts.scheme.lower(), parts.netloc.lower(), parts.path, query, ""))
+
+
+def domain_of(host: str) -> str:
+    host = (host or "").lower().split(":")[0]
+    return host[4:] if host.startswith("www.") else host
+
+
+def extract_sources(urls: list[str]) -> list[dict]:
+    """[{"url", "domain"}] from a provider's citation list, deduplicated.
+
+    A real URL gives both fields. A bare domain (Gemini's title) gives a domain
+    and no URL. A redirect URL is dropped, since its host says nothing about the
+    source. The first occurrence keeps its position, so order is citation order.
+    """
+    out, seen = [], set()
+    for raw in urls:
+        raw = (raw or "").strip()
+        if _HTTP.match(raw):
+            host = domain_of(urlsplit(raw).hostname or "")
+            if not host or host in _REDIRECT_HOSTS:
+                continue
+            item = {"url": _clean_url(raw), "domain": host}
+        elif _DOMAIN.match(raw):
+            item = {"url": "", "domain": domain_of(raw)}
+        else:
+            continue
+        key = item["url"] or item["domain"]
+        if key not in seen:
+            seen.add(key)
+            out.append(item)
+    # A bare domain adds nothing once a URL from the same domain is present.
+    with_url = {i["domain"] for i in out if i["url"]}
+    return [i for i in out if i["url"] or i["domain"] not in with_url]
 
 
 # --- providers ---------------------------------------------------------------
@@ -187,12 +238,13 @@ def ask(provider: str, prompt: str, key: str, model: str) -> dict:
 def run(prompts: list[str] = PROMPTS, ask_fn=ask, keys_models=None) -> dict:
     """Ask every prompt through every keyed provider.
 
-    Returns {"rows": [...], "skipped": [providers with no key]}. A failed
+    Returns {"rows": [...], "sources": [...], "skipped": [providers with no key]}.
+    "sources" has one entry per cited URL per answer (see SOURCE_FIELDS). A failed
     request becomes a row with an error, so a flaky provider cannot read as
     "Badger was not named".
     """
     keys, models = keys_models or load_keys()
-    rows = []
+    rows, sources = [], []
     for provider, key in keys.items():
         for prompt in prompts:
             row = {"date": date.today().isoformat(), "provider": provider,
@@ -203,10 +255,12 @@ def run(prompts: list[str] = PROMPTS, ask_fn=ask, keys_models=None) -> dict:
                 found = detect(answer["text"], answer["urls"])
                 row["named"] = "1" if found["named"] else "0"
                 row["cited"] = "1" if found["cited"] else "0"
+                sources += [{"date": row["date"], "provider": provider, "prompt": prompt,
+                             **item} for item in extract_sources(answer["urls"])]
             except Exception as exc:  # noqa: BLE001 - one prompt must not sink the run
                 row["error"] = str(getattr(exc, "code", type(exc).__name__))
             rows.append(row)
-    return {"rows": rows, "skipped": [p for p in PROVIDERS if p not in keys]}
+    return {"rows": rows, "sources": sources, "skipped": [p for p in PROVIDERS if p not in keys]}
 
 
 FIELDS = ["date", "provider", "model", "prompt", "named", "cited", "error"]
@@ -220,6 +274,26 @@ def append_history(rows: list[dict], path: Path = HISTORY_PATH) -> None:
         if new:
             writer.writeheader()
         writer.writerows(rows)
+
+
+SOURCE_FIELDS = ["date", "provider", "prompt", "url", "domain"]
+
+
+def append_sources(sources: list[dict], path: Path = SOURCES_PATH) -> None:
+    """Append the cited URLs of a run; a same-day rerun replaces that day's rows."""
+    kept: list[dict] = []
+    try:
+        with open(path, encoding="utf-8", newline="") as fh:
+            kept = list(csv.DictReader(fh, delimiter="\t"))
+    except (OSError, ValueError):
+        pass
+    replaced = {(s["date"], s["provider"]) for s in sources}
+    kept = [r for r in kept if (r.get("date"), r.get("provider")) not in replaced]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, SOURCE_FIELDS, delimiter="\t", extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(kept + sources)
 
 
 def latest_summary(path: Path = HISTORY_PATH) -> dict:
@@ -261,6 +335,7 @@ def main() -> None:
         sys.exit("No provider has a key, so nothing was asked. Set at least one "
                  f"of {', '.join(ENV_KEYS.values())} or add it to {CONFIG_PATH}.")
     append_history(result["rows"])
+    append_sources(result["sources"])
     for r in result["rows"]:
         mark = "ERR" if r["error"] else ("named" if r["named"] == "1" else "-")
         print(f'{r["provider"]:11s} {mark:6s} {r["prompt"]}')
