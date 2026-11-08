@@ -23,7 +23,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Watch the solid accent line: it's a <strong>7-day average</strong>. The faint line with dots is exactly what you logged.</p>
   <p>Body weight moves day to day with water, food and time of day, so one morning's reading can be a kilo off either way. The average smooths that out and shows which way you're really heading.</p>
   <p>Use the <strong>30d</strong>, <strong>90d</strong> and <strong>All</strong> chips to change the time range.</p>
-  <p>The small caret next to a reading compares it to the one before. It's colored only when you've set a direction you want for that measurement (waist going down, arms going up); with no goal, it shows the change without color.</p>
+  <p>The small caret next to a reading compares it to the one before. With no <a href="#goals">goal</a> it is plain, since a measurement can be better going up or down. With a goal, a move toward it is green.</p>
+
+  <h2 id="goals">Goals</h2>
+  <p>Open a measurement's page, find the <strong>Goal</strong> section and tap <strong>Set a goal</strong>. Type the number you want, which starts at your latest reading, and add a target date if you like. Then save.</p>
+  <p>Badger works out whether the goal is above or below your latest reading, so you never pick up or down. The line under the box says how far away it is, for example <em>5.4 kg below your latest reading</em>.</p>
+  <ul>
+    <li><strong>On the chart</strong> - A dashed line marks the goal. With a target date, a dotted pace line runs from your reading on the day you set the goal to the goal on its date, and the caption gives the pace, for example <em>about 1.4 kg a month</em>. It is a guide only.</li>
+    <li><strong>The goal row</strong> - It reads <em>By Mar 1, 2027 &middot; 5.4 kg to go</em>. If the date passes, the goal stays open and the row reads <em>Target date Mar 1 passed</em>.</li>
+    <li><strong>Reaching it</strong> - Your first reading at or past the goal, logged on or after the day you set it, reaches it. It stays reached even if the number moves back. The row then shows the date and how long it took. Tap <strong>Set a new goal</strong> to replace it.</li>
+    <li><strong>On the Body screen</strong> - Under the measurement's name you see <em>5.4 kg to go</em> or <em>Goal reached</em>.</li>
+  </ul>
+  <p>Each measurement has one goal. To remove it, use the row's <span aria-hidden="true">&#8942;</span> menu; <strong>Undo</strong> brings it back. Body goals also appear in <strong>You &rarr; Goals</strong>, next to your <a href="/help/goals/">lift goals</a>.</p>
+  <p>Goals use your lifting unit, in kg or lbs for weight and cm or in for lengths. Body fat is in %, and a custom measurement keeps its own unit.</p>
 
   <h2 id="units">Units</h2>
   <p>Measurements follow your lifting unit: kilograms and centimeters, or pounds and inches. Change it and everything switches to the new unit.</p>
