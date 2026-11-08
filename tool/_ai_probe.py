@@ -214,17 +214,13 @@ def parse_anthropic(payload: dict) -> dict:
 
 
 def parse_xai(payload: dict) -> dict:
-    """Grok's Responses API: OpenAI-shaped annotations, plus a flat citations list.
+    """Grok's Responses API: OpenAI-shaped inline url_citation annotations.
 
-    The inline url_citation annotations are what the answer actually cites. The
-    top-level "citations" list is every source the tools gathered, and xAI says
-    some of those are not cited in the answer, so it is only a fallback for a
-    reply that carries no annotations.
+    The top-level "citations" list is every source the tools gathered, and xAI
+    says some are not cited in the answer, so it is ignored: counting it would
+    record "cited" for a page Grok only looked at.
     """
-    got = parse_openai(payload)
-    if not got["urls"]:
-        got["urls"] = [u for u in payload.get("citations") or [] if isinstance(u, str)]
-    return got
+    return parse_openai(payload)
 
 
 def ask(provider: str, prompt: str, key: str, model: str) -> dict:

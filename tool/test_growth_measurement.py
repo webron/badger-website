@@ -401,11 +401,12 @@ class ProbeXai(unittest.TestCase):
         self.assertEqual(got["text"], "Try Badger Fit [[1]](https://badger.fit/)")
         self.assertTrue(probe.detect(got["text"], got["urls"]) == {"named": True, "cited": True})
 
-    def test_falls_back_to_the_flat_list_without_annotations(self):
-        got = probe.parse_xai({"citations": ["https://a.com/x", 7, None],
+    def test_the_flat_list_alone_is_not_a_citation(self):
+        got = probe.parse_xai({"citations": ["https://badger.fit/x"],
                                "output": [{"type": "message", "content": [
                                    {"type": "output_text", "text": "t"}]}]})
-        self.assertEqual(got["urls"], ["https://a.com/x"])
+        self.assertEqual(got["urls"], [])
+        self.assertFalse(probe.detect(got["text"], got["urls"])["cited"])
 
     def test_empty_payload_is_an_empty_answer(self):
         self.assertEqual(probe.parse_xai({}), {"text": "", "urls": []})
