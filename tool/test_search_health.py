@@ -9,6 +9,7 @@ import importlib.util
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -107,6 +108,79 @@ class BingTests(unittest.TestCase):
         self.assertIn("error", r)
         self.assertNotIn("SECRETKEY", r["error"])
 
+    def test_key_scrubbed_when_exception_carries_url(self):
+        def boom(url, headers):
+            raise RuntimeError(url)
+        with tempfile.NamedTemporaryFile("w", suffix=".key") as fh:
+            fh.write("SECRET/KEY+1\n"); fh.flush()
+            r = sh.bing_health(NOW, key_path=fh.name, get_json=boom)
+        self.assertIn("error", r)
+        self.assertNotIn("SECRET", r["error"])
+        self.assertNotIn("SECRET%2FKEY", r["error"])
+        self.assertIn("apikey=***", r["error"])
+
+
+def placeholder_feed(submitted: datetime, **kw) -> dict:
+    f = {"Url": "https://badger.fit/sitemap-index.xml",
+         "Status": "The page is not accessible", "FileSize": 0, "Type": "NA",
+         "Submitted": ms(submitted), "LastCrawled": ms(submitted)}
+    f.update(kw)
+    return f
+
+
+class BingPlaceholderTests(unittest.TestCase):
+    def test_fresh_placeholder_is_a_note(self):
+        r = sh.analyze_bing([placeholder_feed(datetime(2026, 11, 7, tzinfo=timezone.utc))], [], NOW)
+        self.assertEqual(r["flags"], [])
+        self.assertEqual(r["notes"], ["Bing sitemap https://badger.fit/sitemap-index.xml: "
+                                      "pending first fetch (submitted 2026-11-07)"])
+
+    def test_old_placeholder_is_flagged(self):
+        r = sh.analyze_bing([placeholder_feed(datetime(2026, 10, 1, tzinfo=timezone.utc))], [], NOW)
+        self.assertEqual(len(r["flags"]), 1)
+        self.assertIn("38 days ago", r["flags"][0])
+        self.assertEqual(r["notes"], [])
+
+    def test_real_failure_still_flagged(self):
+        sub = datetime(2026, 11, 1, tzinfo=timezone.utc)
+        f = placeholder_feed(sub, FileSize=123, Type="Sitemap")
+        r = sh.analyze_bing([f], [], NOW)
+        self.assertTrue(any("status" in x for x in r["flags"]))
+
+
+class ParseMsDateTests(unittest.TestCase):
+    def test_plain_and_offset(self):
+        self.assertEqual(sh.parse_ms_date("/Date(1315781995040)/"),
+                         datetime(2011, 9, 11, 22, 59, 55, 40000, tzinfo=timezone.utc))
+        self.assertEqual(sh.parse_ms_date("/Date(1315781995040-0700)/"),
+                         sh.parse_ms_date("/Date(1315781995040)/"))
+
+    def test_never_is_none(self):
+        self.assertIsNone(sh.parse_ms_date("/Date(-62135596800000)/"))
+
+    def test_bad_input_is_none(self):
+        for raw in (None, "", "garbage", "/Date(abc)/"):
+            self.assertIsNone(sh.parse_ms_date(raw))
+
+
+class GoogleHealthTests(unittest.TestCase):
+    def test_all_inspections_failed(self):
+        def boom(*a, **k):
+            raise RuntimeError("quota")
+        with tempfile.NamedTemporaryFile("w") as fh:
+            old = sh.SC_KEY_PATH
+            sh.SC_KEY_PATH = fh.name
+            try:
+                with unittest.mock.patch.object(sh, "_fetch", boom):
+                    r = sh.google_health(NOW, get_json=lambda u, h: {"sitemap": []},
+                                         token_fn=lambda *a: "t",
+                                         urls_fn=lambda: ["https://badger.fit/", "https://badger.fit/a"],
+                                         sleep=lambda s: None)
+            finally:
+                sh.SC_KEY_PATH = old
+        self.assertIn("failed for every URL", r["inspection"]["error"])
+        self.assertIn("quota", r["inspection"]["error"])
+
 
 class PanelTests(unittest.TestCase):
     @classmethod
@@ -122,6 +196,23 @@ class PanelTests(unittest.TestCase):
         flags, oks = self.wr.search_health_lines(google, {"no_key": sh.BING_NO_KEY})
         self.assertEqual(flags, ["stale"])
         self.assertIn(sh.BING_NO_KEY, oks)
+
+    def test_not_indexed_flags_capped_at_ten(self):
+        ni = [(f"https://badger.fit/{i}", "x") for i in range(13)]
+        google = {"sitemaps": {"flags": [], "sitemaps": []},
+                  "inspection": {"flags": ["13 URL(s) not indexed by Google."], "total": 20,
+                                 "states": {"x": 13}, "not_indexed": ni, "failed": []}}
+        flags, _ = self.wr.search_health_lines(google, {"no_key": "x"})
+        self.assertEqual(len([f for f in flags if f.startswith("Not indexed:")]), 10)
+        self.assertIn("...and 3 more not indexed.", flags)
+        self.assertIn("13 URL(s) not indexed by Google.", flags)
+
+    def test_build_search_health_exception_path(self):
+        def boom():
+            raise ValueError("x")
+        with unittest.mock.patch.object(self.wr, "google_health", boom):
+            out = self.wr.build_search_health()
+        self.assertIn("Search health failed (ValueError)", out)
 
     def test_google_error_is_a_single_flag(self):
         flags, _ = self.wr.search_health_lines({"error": "auth failed"}, {"no_key": "x"})

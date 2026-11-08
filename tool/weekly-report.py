@@ -214,8 +214,10 @@ def search_health_lines(google: dict, bing: dict) -> tuple[list[str], list[str]]
             flags.append(ins["error"])
         else:
             flags += ins["flags"]
-            for url, state in ins["not_indexed"]:
+            for url, state in ins["not_indexed"][:10]:
                 flags.append(f"Not indexed: {url} ({state})")
+            if len(ins["not_indexed"]) > 10:
+                flags.append(f'...and {len(ins["not_indexed"]) - 10} more not indexed.')
             for url, why in ins["failed"][:5]:
                 flags.append(f"Could not inspect {url}: {why}")
             if not ins["flags"]:
@@ -229,6 +231,7 @@ def search_health_lines(google: dict, bing: dict) -> tuple[list[str], list[str]]
         flags.append(bing["error"])
     else:
         flags += bing["flags"]
+        oks += bing.get("notes", [])
         c = bing["crawl"]
         crawl = (f'{c["crawled"]} pages crawled and {c["errors"]} crawl errors on '
                  f'{c["date"]}' + (f', {c["in_index"]} in index' if c["in_index"] is not None else "")

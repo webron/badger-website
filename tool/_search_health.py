@@ -57,7 +57,9 @@ def parse_ms_date(raw: str | None) -> datetime | None:
     m = re.match(r"/Date\((-?\d+)", raw or "")
     if not m:
         return None
-    return datetime.fromtimestamp(int(m.group(1)) / 1000, tz=timezone.utc)
+    dt = datetime.fromtimestamp(int(m.group(1)) / 1000, tz=timezone.utc)
+    # .NET's default(DateTime) (year 1) means "never", not a real date.
+    return dt if dt.year >= 2000 else None
 
 
 def _age(dt: datetime | None, now: datetime) -> int | None:
@@ -124,11 +126,29 @@ def summarize_inspections(results: dict[str, dict]) -> dict:
 # ---- Bing ------------------------------------------------------------------
 
 def analyze_bing(feeds: list[dict], crawl: list[dict], now: datetime) -> dict:
-    flags = []
+    flags, notes = [], []
     feed_rows = []
     for f in feeds:
         crawled = parse_ms_date(f.get("LastCrawled"))
+        submitted = parse_ms_date(f.get("Submitted"))
         age = _age(crawled, now)
+        url = f.get("Url", "?")
+        # Right after a resubmit Bing returns a placeholder: not accessible,
+        # size 0, type NA, LastCrawled == Submitted. Not a fault yet.
+        placeholder = (crawled is not None and submitted is not None
+                       and abs((crawled - submitted).total_seconds()) <= 60
+                       and not f.get("FileSize") and f.get("Type") == "NA")
+        if placeholder:
+            feed_rows.append({"url": url, "status": f.get("Status", "?"),
+                              "age": None, "urls": f.get("UrlCount")})
+            sub_age = _age(submitted, now)
+            if sub_age > STALE_DAYS:
+                flags.append(f"Bing sitemap {url} has not been fetched since it "
+                             f"was submitted {sub_age} days ago.")
+            else:
+                notes.append(f"Bing sitemap {url}: pending first fetch "
+                             f"(submitted {submitted.date().isoformat()})")
+            continue
         feed_rows.append({"url": f.get("Url", "?"), "status": f.get("Status", "?"),
                           "age": age, "urls": f.get("UrlCount")})
         if crawled is None:
@@ -147,7 +167,7 @@ def analyze_bing(feeds: list[dict], crawl: list[dict], now: datetime) -> dict:
         d, c = max(dated, key=lambda t: t[0])
         latest = {"date": d.date().isoformat(), "crawled": c.get("CrawledPages", 0),
                   "errors": c.get("CrawlErrors", 0), "in_index": c.get("InIndex")}
-    return {"feeds": feed_rows, "crawl": latest, "flags": flags}
+    return {"feeds": feed_rows, "crawl": latest, "flags": flags, "notes": notes}
 
 
 # ---- fetchers ---------------------------------------------------------------
@@ -211,7 +231,18 @@ def google_health(now: datetime | None = None, get_json=_get_json,
     return out
 
 
-def _why(exc: Exception) -> str:
+def _scrub(text: str, key: str | None = None) -> str:
+    if key:
+        for k in (key, urllib.parse.quote(key)):
+            text = text.replace(k, "***")
+    return re.sub(r"apikey=[^&\s]+", "apikey=***", text, flags=re.I)
+
+
+def _why(exc: Exception, key: str | None = None) -> str:
+    return _scrub(_why_raw(exc), key)
+
+
+def _why_raw(exc: Exception) -> str:
     if isinstance(exc, urllib.error.HTTPError):
         try:
             detail = exc.read().decode(errors="replace")[:150]
@@ -242,6 +273,6 @@ def bing_health(now: datetime | None = None, key_path: str = BING_KEY_PATH,
         feeds = call("GetFeeds")
         crawl = call("GetCrawlStats")
     except Exception as exc:  # noqa: BLE001
-        # The key is in the URL; _why never includes it.
-        return {"error": f"Bing API failed: {_why(exc)}"}
+        # The key is in the URL; _why scrubs it.
+        return {"error": f"Bing API failed: {_why(exc, key)}"}
     return analyze_bing(feeds, crawl, now)
