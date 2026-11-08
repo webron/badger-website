@@ -16,6 +16,7 @@ the repo; this file never holds one.
     OPENAI_API_KEY       Responses API with the web_search tool
     GEMINI_API_KEY       generateContent with Google Search grounding
     ANTHROPIC_API_KEY    Messages API with the web_search tool
+    XAI_API_KEY          Grok, Responses API with the web_search and x_search tools
 
 Every request is a read: a question in, an answer out. Nothing is posted.
 """
@@ -27,8 +28,10 @@ import json
 import os
 import re
 import sys
+import tempfile
 from datetime import date
 from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -36,6 +39,9 @@ import _stats_sources as src  # noqa: E402
 
 CONFIG_PATH = os.path.expanduser("~/.config/badger-stats/ai-probe.json")
 HISTORY_PATH = Path.home() / "Development/badger-artifacts/marketing-2026-11/ai-answers.tsv"
+# One row per cited URL, kept apart from HISTORY_PATH so that file's columns (and
+# the trend read from them) never change.
+SOURCES_PATH = HISTORY_PATH.with_name("ai-sources.tsv")
 
 # Fixed on purpose. Add to the end rather than editing: the trend is only
 # comparable across weeks for a prompt that has stayed the same.
@@ -58,18 +64,20 @@ PROMPTS = [
 _NAMED = re.compile(r"badger[\s._-]?fit(?![a-z])|\bfit\.badger(?![a-z])", re.IGNORECASE)
 _CITED = re.compile(r"(^|[/.])badger\.fit(/|$|\?|#)", re.IGNORECASE)
 
-PROVIDERS = ("perplexity", "openai", "gemini", "anthropic")
+PROVIDERS = ("perplexity", "openai", "gemini", "anthropic", "xai")
 ENV_KEYS = {
     "perplexity": "PERPLEXITY_API_KEY",
     "openai": "OPENAI_API_KEY",
     "gemini": "GEMINI_API_KEY",
     "anthropic": "ANTHROPIC_API_KEY",
+    "xai": "XAI_API_KEY",
 }
 DEFAULT_MODELS = {
     "perplexity": "sonar",
     "openai": "gpt-4.1",
     "gemini": "gemini-2.5-flash",
     "anthropic": "claude-haiku-5-5",
+    "xai": "grok-4.7",
 }
 
 
@@ -96,6 +104,64 @@ def detect(text: str, urls: list[str]) -> dict:
     named = bool(_NAMED.search(text or ""))
     cited = any(_CITED.search(u or "") for u in urls)
     return {"named": named, "cited": cited}
+
+
+_HTTP = re.compile(r"^https?://", re.IGNORECASE)
+# Gemini's grounding uri is a Google redirect; the real site is only in the title.
+_REDIRECT_HOSTS = ("vertexaisearch.cloud.google.com",)
+# A bare domain ends in a letters-only label, so "1.2" and "v1.0" are not domains.
+_DOMAIN = re.compile(r"^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$", re.IGNORECASE)
+
+
+def _clean_url(url: str) -> str:
+    """Drop the tracking tail (utm_*, fragment) so one page is one string."""
+    parts = urlsplit(url.strip())
+    query = urlencode([(k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True)
+                       if not k.lower().startswith("utm_")])
+    return urlunsplit((parts.scheme.lower(), parts.netloc.lower(), parts.path, query, ""))
+
+
+def domain_of(host: str) -> str:
+    host = (host or "").lower().split(":")[0]
+    return host[4:] if host.startswith("www.") else host
+
+
+def _page_key(url: str) -> str:
+    """One page, whatever its leading www. or trailing slash."""
+    parts = urlsplit(url)
+    return urlunsplit(("", domain_of(parts.netloc), parts.path.rstrip("/"), parts.query, ""))
+
+
+def extract_sources(urls: list[str]) -> list[dict]:
+    """[{"url", "domain"}] from a provider's citation list, deduplicated.
+
+    A real URL gives both fields. A bare domain (Gemini's title) gives a domain
+    and no URL. A redirect URL is dropped, since its host says nothing about the
+    source. The first occurrence keeps its position, so order is citation order.
+    A malformed URL is skipped on its own and never stops the rest.
+    """
+    out, seen = [], set()
+    for raw in urls:
+        raw = (raw or "").strip()
+        if _HTTP.match(raw):
+            try:
+                host = domain_of(urlsplit(raw).hostname or "")
+                if not host or host in _REDIRECT_HOSTS:
+                    continue
+                item = {"url": _clean_url(raw), "domain": host}
+            except ValueError:  # e.g. an unbalanced "[" in the host
+                continue
+        elif _DOMAIN.match(raw):
+            item = {"url": "", "domain": domain_of(raw)}
+        else:
+            continue
+        key = _page_key(item["url"]) if item["url"] else item["domain"]
+        if key not in seen:
+            seen.add(key)
+            out.append(item)
+    # A bare domain adds nothing once a URL from the same domain is present.
+    with_url = {i["domain"] for i in out if i["url"]}
+    return [i for i in out if i["url"] or i["domain"] not in with_url]
 
 
 # --- providers ---------------------------------------------------------------
@@ -147,6 +213,16 @@ def parse_anthropic(payload: dict) -> dict:
     return {"text": "\n".join(text), "urls": urls}
 
 
+def parse_xai(payload: dict) -> dict:
+    """Grok's Responses API: OpenAI-shaped inline url_citation annotations.
+
+    The top-level "citations" list is every source the tools gathered, and xAI
+    says some are not cited in the answer, so it is ignored: counting it would
+    record "cited" for a page Grok only looked at.
+    """
+    return parse_openai(payload)
+
+
 def ask(provider: str, prompt: str, key: str, model: str) -> dict:
     if provider == "perplexity":
         body = {"model": model, "messages": [{"role": "user", "content": prompt}]}
@@ -181,18 +257,29 @@ def ask(provider: str, prompt: str, key: str, model: str) -> dict:
              "Content-Type": "application/json"},
             json.dumps(body).encode(), timeout=120)
         return parse_anthropic(data)
+    if provider == "xai":
+        # Live Search (search_parameters) was retired; web_search and x_search are
+        # the documented replacements. Both are on, as in the Grok app.
+        body = {"model": model, "input": [{"role": "user", "content": prompt}],
+                "tools": [{"type": "web_search"}, {"type": "x_search"}]}
+        data = src._get_json(
+            "https://api.x.ai/v1/responses",
+            {"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json.dumps(body).encode(), timeout=180)
+        return parse_xai(data)
     raise ValueError(f"unknown provider {provider}")
 
 
 def run(prompts: list[str] = PROMPTS, ask_fn=ask, keys_models=None) -> dict:
     """Ask every prompt through every keyed provider.
 
-    Returns {"rows": [...], "skipped": [providers with no key]}. A failed
+    Returns {"rows": [...], "sources": [...], "skipped": [providers with no key]}.
+    "sources" has one entry per cited URL per answer (see SOURCE_FIELDS). A failed
     request becomes a row with an error, so a flaky provider cannot read as
     "Badger was not named".
     """
     keys, models = keys_models or load_keys()
-    rows = []
+    rows, sources = [], []
     for provider, key in keys.items():
         for prompt in prompts:
             row = {"date": date.today().isoformat(), "provider": provider,
@@ -205,8 +292,17 @@ def run(prompts: list[str] = PROMPTS, ask_fn=ask, keys_models=None) -> dict:
                 row["cited"] = "1" if found["cited"] else "0"
             except Exception as exc:  # noqa: BLE001 - one prompt must not sink the run
                 row["error"] = str(getattr(exc, "code", type(exc).__name__))
+            else:
+                # Apart from the try above: the source list is extra, and a fault in
+                # it must never turn a good answer into an error row in the history.
+                try:
+                    sources += [{"date": row["date"], "provider": provider,
+                                 "prompt": prompt, **item}
+                                for item in extract_sources(answer["urls"])]
+                except Exception:  # noqa: BLE001
+                    pass
             rows.append(row)
-    return {"rows": rows, "skipped": [p for p in PROVIDERS if p not in keys]}
+    return {"rows": rows, "sources": sources, "skipped": [p for p in PROVIDERS if p not in keys]}
 
 
 FIELDS = ["date", "provider", "model", "prompt", "named", "cited", "error"]
@@ -220,6 +316,38 @@ def append_history(rows: list[dict], path: Path = HISTORY_PATH) -> None:
         if new:
             writer.writeheader()
         writer.writerows(rows)
+
+
+SOURCE_FIELDS = ["date", "provider", "prompt", "url", "domain"]
+
+
+def append_sources(sources: list[dict], path: Path = SOURCES_PATH) -> None:
+    """Append the cited URLs of a run; a same-day rerun replaces that prompt's rows.
+
+    Only a missing file counts as empty. Any other read error propagates before
+    anything is written, so an unreadable file is never truncated. The write goes
+    to a temp file in the same folder, then replaces the original in one step.
+    """
+    kept: list[dict] = []
+    try:
+        with open(path, encoding="utf-8", newline="") as fh:
+            kept = list(csv.DictReader(fh, delimiter="\t"))
+    except FileNotFoundError:
+        pass
+    replaced = {(s["date"], s["provider"], s["prompt"]) for s in sources}
+    kept = [r for r in kept
+            if (r.get("date"), r.get("provider"), r.get("prompt")) not in replaced]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=path.name + ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="") as fh:
+            writer = csv.DictWriter(fh, SOURCE_FIELDS, delimiter="\t", extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(kept + sources)
+        os.replace(tmp, path)
+    except BaseException:
+        os.unlink(tmp)
+        raise
 
 
 def latest_summary(path: Path = HISTORY_PATH) -> dict:
@@ -261,9 +389,18 @@ def main() -> None:
         sys.exit("No provider has a key, so nothing was asked. Set at least one "
                  f"of {', '.join(ENV_KEYS.values())} or add it to {CONFIG_PATH}.")
     append_history(result["rows"])
+    sources_error = None
+    try:
+        append_sources(result["sources"])
+    except Exception as exc:  # noqa: BLE001 - the answers are already recorded
+        sources_error = exc
     for r in result["rows"]:
         mark = "ERR" if r["error"] else ("named" if r["named"] == "1" else "-")
         print(f'{r["provider"]:11s} {mark:6s} {r["prompt"]}')
+    if sources_error:
+        sys.exit(f"The answers were saved to {HISTORY_PATH}, but the cited sources "
+                 f"were NOT saved to {SOURCES_PATH} ({sources_error!r}); the existing "
+                 "file was left as it was.")
 
 
 if __name__ == "__main__":
