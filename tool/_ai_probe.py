@@ -16,6 +16,7 @@ the repo; this file never holds one.
     OPENAI_API_KEY       Responses API with the web_search tool
     GEMINI_API_KEY       generateContent with Google Search grounding
     ANTHROPIC_API_KEY    Messages API with the web_search tool
+    XAI_API_KEY          Grok, Responses API with the web_search and x_search tools
 
 Every request is a read: a question in, an answer out. Nothing is posted.
 """
@@ -63,18 +64,20 @@ PROMPTS = [
 _NAMED = re.compile(r"badger[\s._-]?fit(?![a-z])|\bfit\.badger(?![a-z])", re.IGNORECASE)
 _CITED = re.compile(r"(^|[/.])badger\.fit(/|$|\?|#)", re.IGNORECASE)
 
-PROVIDERS = ("perplexity", "openai", "gemini", "anthropic")
+PROVIDERS = ("perplexity", "openai", "gemini", "anthropic", "xai")
 ENV_KEYS = {
     "perplexity": "PERPLEXITY_API_KEY",
     "openai": "OPENAI_API_KEY",
     "gemini": "GEMINI_API_KEY",
     "anthropic": "ANTHROPIC_API_KEY",
+    "xai": "XAI_API_KEY",
 }
 DEFAULT_MODELS = {
     "perplexity": "sonar",
     "openai": "gpt-4.1",
     "gemini": "gemini-2.5-flash",
     "anthropic": "claude-haiku-5-5",
+    "xai": "grok-4.7",
 }
 
 
@@ -210,6 +213,20 @@ def parse_anthropic(payload: dict) -> dict:
     return {"text": "\n".join(text), "urls": urls}
 
 
+def parse_xai(payload: dict) -> dict:
+    """Grok's Responses API: OpenAI-shaped annotations, plus a flat citations list.
+
+    The inline url_citation annotations are what the answer actually cites. The
+    top-level "citations" list is every source the tools gathered, and xAI says
+    some of those are not cited in the answer, so it is only a fallback for a
+    reply that carries no annotations.
+    """
+    got = parse_openai(payload)
+    if not got["urls"]:
+        got["urls"] = [u for u in payload.get("citations") or [] if isinstance(u, str)]
+    return got
+
+
 def ask(provider: str, prompt: str, key: str, model: str) -> dict:
     if provider == "perplexity":
         body = {"model": model, "messages": [{"role": "user", "content": prompt}]}
@@ -244,6 +261,16 @@ def ask(provider: str, prompt: str, key: str, model: str) -> dict:
              "Content-Type": "application/json"},
             json.dumps(body).encode(), timeout=120)
         return parse_anthropic(data)
+    if provider == "xai":
+        # Live Search (search_parameters) was retired; web_search and x_search are
+        # the documented replacements. Both are on, as in the Grok app.
+        body = {"model": model, "input": [{"role": "user", "content": prompt}],
+                "tools": [{"type": "web_search"}, {"type": "x_search"}]}
+        data = src._get_json(
+            "https://api.x.ai/v1/responses",
+            {"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json.dumps(body).encode(), timeout=180)
+        return parse_xai(data)
     raise ValueError(f"unknown provider {provider}")
 
 

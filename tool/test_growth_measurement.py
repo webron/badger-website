@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import csv
 import gzip
+import json
 import importlib.util
 import sys
 import tempfile
@@ -388,6 +389,57 @@ class ProbeSources(unittest.TestCase):
         self.assertIn("NOT saved", str(cm.exception.code))
 
 
+class ProbeXai(unittest.TestCase):
+    def test_inline_annotations_are_the_citations(self):
+        got = probe.parse_xai({
+            "citations": ["https://x.com/i/status/1", "https://uncited.example/"],
+            "output": [{"type": "message", "content": [{"type": "output_text",
+                "text": "Try Badger Fit [[1]](https://badger.fit/)",
+                "annotations": [{"type": "url_citation", "url": "https://badger.fit/",
+                                 "start_index": 14, "end_index": 40, "title": "1"}]}]}]})
+        self.assertEqual(got["urls"], ["https://badger.fit/"])
+        self.assertEqual(got["text"], "Try Badger Fit [[1]](https://badger.fit/)")
+        self.assertTrue(probe.detect(got["text"], got["urls"]) == {"named": True, "cited": True})
+
+    def test_falls_back_to_the_flat_list_without_annotations(self):
+        got = probe.parse_xai({"citations": ["https://a.com/x", 7, None],
+                               "output": [{"type": "message", "content": [
+                                   {"type": "output_text", "text": "t"}]}]})
+        self.assertEqual(got["urls"], ["https://a.com/x"])
+
+    def test_empty_payload_is_an_empty_answer(self):
+        self.assertEqual(probe.parse_xai({}), {"text": "", "urls": []})
+
+    def test_xai_is_a_known_provider_with_a_key_name_and_model(self):
+        self.assertIn("xai", probe.PROVIDERS)
+        self.assertEqual(probe.ENV_KEYS["xai"], "XAI_API_KEY")
+        self.assertTrue(probe.DEFAULT_MODELS["xai"].startswith("grok"))
+
+    def test_request_uses_the_responses_endpoint_with_both_search_tools(self):
+        seen = {}
+
+        def fake_get_json(url, headers, body, timeout):
+            seen.update(url=url, headers=headers, body=json.loads(body))
+            return {"output": []}
+
+        with mock.patch.object(probe.src, "_get_json", fake_get_json):
+            probe.ask("xai", "q?", "k", "grok-4.7")
+        self.assertEqual(seen["url"], "https://api.x.ai/v1/responses")
+        self.assertEqual(seen["headers"]["Authorization"], "Bearer k")
+        self.assertEqual([t["type"] for t in seen["body"]["tools"]], ["web_search", "x_search"])
+        self.assertEqual(seen["body"]["input"], [{"role": "user", "content": "q?"}])
+
+    def test_xai_key_is_read_from_config(self):
+        with tempfile.TemporaryDirectory() as d:
+            cfg = Path(d) / "c.json"
+            cfg.write_text('{"XAI_API_KEY": "kk", "xai_model": "grok-4.5"}')
+            with mock.patch.object(probe, "CONFIG_PATH", str(cfg)), \
+                 mock.patch.dict(probe.os.environ, {}, clear=True):
+                keys, models = probe.load_keys()
+        self.assertEqual(keys, {"xai": "kk"})
+        self.assertEqual(models["xai"], "grok-4.5")
+
+
 class ProbeRun(unittest.TestCase):
     def test_skips_providers_without_a_key_and_records_errors_apart(self):
         def fake(provider, prompt, key, model):
@@ -397,7 +449,7 @@ class ProbeRun(unittest.TestCase):
 
         out = probe.run(["GZCLP?", "5/3/1?"], fake,
                         ({"openai": "k"}, dict(probe.DEFAULT_MODELS)))
-        self.assertEqual(out["skipped"], ["perplexity", "gemini", "anthropic"])
+        self.assertEqual(out["skipped"], ["perplexity", "gemini", "anthropic", "xai"])
         failed, ok = out["rows"]
         self.assertEqual((failed["error"], failed["named"]), ("RuntimeError", ""))
         self.assertEqual((ok["error"], ok["named"]), ("", "1"))
