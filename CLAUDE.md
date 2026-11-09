@@ -30,6 +30,11 @@ density budgets for constructions that read as machine-written. Before publishin
 The standard is shared with the app repo on purpose: the same person reads the store listing,
 then the app, then a help page, and a change of register between them is noticeable.
 
+**Marketing copy** (home page, guides, comparison pages, directory text, anything that pitches
+Badger) follows the decisions in `../badger-fit/docs/marketing/`. Read `decisions.md` and
+`channels.md` there first, and record a new decision and the other channels you checked in the
+same session.
+
 ## Keeping in sync with the app
 
 Covered in badger-fit's `CLAUDE.md`, and all of it is a two-way obligation:
