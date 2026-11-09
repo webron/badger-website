@@ -64,6 +64,7 @@ jobs:
     permissions: {}
     env:
       INDEXNOW_KEY: b9db15b62c683144774ab2eaaca2838c
+      BING_WEBMASTER_KEY: ${{ secrets.BING_WEBMASTER_KEY }}
     steps:
       - name: Wait for the key file to be live
         run: |
@@ -98,8 +99,12 @@ jobs:
                             "keyLocation": f"https://badger.fit/{key}.txt",
                             "urlList": urls}))
           PY
+          # Yandex's endpoint, not api.indexnow.org: since 2026-11-08 Bing
+          # answers every IndexNow ping for badger.fit with 403
+          # UserForbiddedToAccessSite although the key file is live and
+          # Yandex accepts the same key. Bing gets the URLs from the next step.
           status=$(curl -sS -o response.txt -w '%{http_code}' \
-            -X POST https://api.indexnow.org/indexnow \
+            -X POST https://yandex.com/indexnow \
             -H 'Content-Type: application/json; charset=utf-8' \
             --data @payload.json)
           echo "HTTP $status"
@@ -107,3 +112,26 @@ jobs:
           # 200 = accepted, 202 = accepted pending key validation. Anything
           # else fails the job so a broken ping is a red job, not a buried warning.
           case "$status" in 200|202) ;; *) exit 1 ;; esac
+
+      - name: Submit sitemap URLs to Bing (Webmaster URL Submission API)
+        # Skipped until the BING_WEBMASTER_KEY repo secret exists.
+        if: env.BING_WEBMASTER_KEY != ''
+        run: |
+          set -euo pipefail
+          python3 - > bing.json <<'PY'
+          import json
+          urls = [u for u in open("urls.txt").read().split() if u]
+          print(json.dumps({"siteUrl": "https://badger.fit/", "urlList": urls}))
+          PY
+          status=$(curl -sS -o bing.txt -w '%{http_code}' \
+            -X POST "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlBatch?apikey=${BING_WEBMASTER_KEY}" \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            --data @bing.json)
+          echo "HTTP $status"
+          cat bing.txt
+          # The daily quota is 100 URLs and a deploy sends about 50, so a third
+          # deploy in one day runs out. Bing still reads the sitemap, so a
+          # refusal is a warning; the weekly search health report watches Bing.
+          if [ "$status" != 200 ]; then
+            echo "::warning::Bing URL submission returned HTTP $status"
+          fi
