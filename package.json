@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "sheets": "node tool/sheets/index.mjs",
-    "test:sheets": "node --test tool/sheets/*.test.mjs"
+    "test:sheets": "node --test tool/sheets/*.test.mjs",
+    "test:anchors": "node --test src/lib/heading-anchors.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
