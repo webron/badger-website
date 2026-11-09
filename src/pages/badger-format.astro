@@ -295,6 +295,15 @@ const description =
           </td>
         </tr>
         <tr>
+          <td><code>rep_source</code></td>
+          <td>string</td>
+          <td>
+            Where starting reps come from. The only value written is <code>routine_plan</code>
+            (the planned reps). Absent means the default, the last performance. Any other value is
+            ignored.
+          </td>
+        </tr>
+        <tr>
           <td><code>history_scope</code></td>
           <td>string</td>
           <td>
@@ -433,6 +442,31 @@ const description =
             Rest between sets for this slot, in seconds. It wins over the exercise's own default
             rest. A set's own <a href="#predefined-set"><code>rest_seconds</code></a> wins over it.
             Versions before 1.1.16 let the exercise's default win instead.
+          </td>
+        </tr>
+        <tr>
+          <td><code>notes_override</code></td>
+          <td>string</td>
+          <td>
+            The slot's own note, carried word for word. Absent means the slot has no note of its own.
+          </td>
+        </tr>
+        <tr>
+          <td><code>increment_override_kg</code></td>
+          <td>number greater than 0</td>
+          <td>
+            The slot's weight increment, always in kilograms whatever unit the recipient logs in.
+            Absent means the slot uses the exercise's or machine's own increment. A value of 0 or
+            less is ignored.
+          </td>
+        </tr>
+        <tr>
+          <td><code>default_grip_type</code></td>
+          <td>string</td>
+          <td>
+            The slot's default grip: one of <code>overhand</code>, <code>underhand</code>,
+            <code>neutral</code>, <code>wide</code>, <code>close</code>, <code>hammer</code>. Absent
+            means no default grip. Any other value is ignored.
           </td>
         </tr>
         <tr>
@@ -1381,8 +1415,8 @@ const description =
 
   <ul>
     <li><strong>No history.</strong> No workouts, no logged sets, no PRs. To move your own history to a new phone, use a backup instead: see <a href="/help/phone-migration/">moving to a new phone</a>.</li>
-    <li><strong>No notes below the routine level.</strong> Routine notes travel; per-day and per-exercise notes do not. In a gym file, notes on a machine, attachment, bar or accessory do travel. The setup cues you save against one exercise on one machine never do.</li>
-    <li><strong>No default attachment, default bar, or default grip</strong> on a slot, and no superset group <strong>color</strong>; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel.)</li>
+    <li><strong>No per-day notes, and no exercise-level notes.</strong> Routine notes and a slot's own <code>notes_override</code> travel; per-day notes and an exercise's own notes do not. In a gym file, notes on a machine, attachment, bar or accessory do travel. The setup cues you save against one exercise on one machine never do.</li>
+    <li><strong>No default attachment or default bar</strong> on a slot (a slot's <code>default_grip_type</code> does travel), and no superset group <strong>color</strong>; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel.)</li>
     <li>
       <strong>No training max, and no progress against a rule.</strong> A slot's
       <a href="#progression">progression rule</a> travels. The training max it multiplies does not,
