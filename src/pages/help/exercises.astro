@@ -150,6 +150,21 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p id="change-type">You can change an exercise's type later on its edit screen. If the exercise already has logged sets, Badger asks before it saves, because those sets keep only the fields the new type shows. For example, sets logged as Reps Only keep their reps and show a dash for weight.</p>
   <p>Changing the equipment to or from Bodyweight on a Weight + Reps exercise asks too, because it changes whether logged weights read as added weight.</p>
 
+  <h3 id="multiple-types">Give an exercise more than one type</h3>
+  <p>An exercise can have several types, in order. The first is the default, and a new workout starts in it. Farmer's Walk, for example, logs Weight + Distance and also has Weight + Time.</p>
+  <ul>
+    <li><strong>Add one:</strong> on the edit screen, tap <strong>+ Add another type</strong> under Exercise type and pick from the types not yet on the list. The field becomes <strong>Exercise Types</strong>.</li>
+    <li><strong>Change the default:</strong> drag a type to the top, or open its <strong>⋮</strong> menu and tap <strong>Make default</strong>.</li>
+    <li><strong>Remove one:</strong> open its <strong>⋮</strong> menu and tap <strong>Remove</strong>. If workouts were logged as that type, Badger asks first. They keep the type, and history and records still show them. New workouts can't use it.</li>
+  </ul>
+  <p>Remove down to one type and the field goes back to a single dropdown, which works as described above. Changes save when you tap <strong>Save</strong>.</p>
+  <p>Switch types for one workout in <a href="/help/logging/#switch-type">Exercise settings</a>, or pin one in a <a href="/help/routines/#exercise-type">routine</a>. Records, graphs and goals are kept <a href="/help/progress/#types-progress">per type</a>.</p>
+  <p>Built in: Farmer's Walk, Suitcase Carry, Overhead Carry, Yoke Walk, Sled Push and Sled Pull log Weight + Distance first and Weight + Time second. Plank, Side Plank, Wall Sit and Dead Hang gain Weight + Time. Log the added weight as <strong>+20 kg</strong>, or <strong>BW</strong> for none.</p>
+
+  <h3 id="distance-unit-exercise">Distance unit for one exercise</h3>
+  <p>An exercise with a distance type has a <strong>Distance Unit</strong> field on its edit screen: <strong>Default</strong>, <strong>Kilometers (km)</strong>, <strong>Miles (mi)</strong>, <strong>Meters (m)</strong> or <strong>Feet (ft)</strong>. Default follows the app's distance unit.</p>
+  <p>New sets log in the unit you pick. Sets you already logged keep their own unit, so a change affects new sets only. Carries and sleds start in meters for kilometer users and feet for miles users.</p>
+
   <h2 id="bodyweight">Bodyweight, weighted and assisted exercises</h2>
   <p>Push-Up, Pull-Up, Chin-Up and Dips are Reps Only: you log reps and nothing else. When you start adding weight, or using a machine that helps you up, log on the exercise made for it:</p>
   <ul>
@@ -245,6 +260,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h2 id="exercise-settings">Exercise settings</h2>
   <p>Open <strong>Exercise settings</strong> from the first item in the ⋮ menu on the training screen or on the exercise's page. The pencil on the notes card opens it at the notes. Changes apply to the exercise from now on, in every workout. The sections, in order:</p>
   <ul>
+    <li><strong>Exercise Type</strong> - at the top, when you open it from a workout and the exercise has more than one type. See <a href="/help/logging/#switch-type">Switch type in a workout</a>.</li>
     <li><strong>Logging</strong> - rest (working and warm-up), weight increment and <a href="/help/logging/#tempo">tempo</a>.</li>
     <li><strong>Weights</strong> - the bar or starting weight, per side, and the plate calculator mode.</li>
     <li><strong>Notes and instructions</strong> - your notes and the built-in technique cues.</li>

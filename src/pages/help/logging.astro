@@ -118,7 +118,16 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>When you update with distances already logged, Badger asks <strong>Kilometers or miles?</strong> once.</p>
   <p>Tap <strong>Miles</strong> if you logged them in miles: your past distances keep their numbers, so a 3.1 stays 3.1 and now reads as 3.1 mi. Tap <strong>Kilometers</strong> and nothing changes.</p>
   <p>Close the question without answering and it comes back the next time you open the app. With no distances logged yet, Badger asks the first time a distance field appears on the training screen.</p>
-  <p>After that, changing the unit in Settings → Units and equipment changes how every distance is shown: graphs, records, history, set rows and the plan line. A distance logged in the other unit is converted for display, and the number you typed is kept as typed.</p>
+  <p>This is the unit for exercises that don't have <a href="#distance-unit-own">their own</a>. After that, changing the unit in Settings → Units and equipment changes how every distance is shown: graphs, records, history, set rows and the plan line. A distance logged in the other unit is converted for display, and the number you typed is kept as typed.</p>
+
+  <h3 id="distance-unit-own">Meters and feet</h3>
+  <p>An exercise can have its own distance unit: km, mi, m or ft. Carries and sleds log in meters (or feet, if your app unit is miles), so a 40 m carry is typed as <strong>40</strong>. Set it under <strong>Distance Unit</strong> on the exercise's <a href="/help/exercises/#distance-unit-exercise">edit screen</a>.</p>
+  <p>Every screen shows that exercise's distances in its unit. A set logged in another unit is converted and rounded for display, and the number you typed is kept as typed. Changing the unit affects new sets only.</p>
+
+  <h3 id="switch-type">Switch type in a workout</h3>
+  <p>Open <strong>⋮ → Exercise settings</strong> on an exercise with more than one <a href="/help/exercises/#multiple-types">type</a> and pick one under <strong>Exercise Type</strong> at the top. It applies to this workout only. The default stays as set on the exercise's edit page.</p>
+  <p>If sets are already logged, Badger asks <strong>Switch logged sets?</strong> first. They keep the fields both types share and show a dash for the rest.</p>
+  <p>A workout starts in the type the routine slot pins. With none pinned it uses the type you logged last time, then the exercise's default.</p>
 
   <h3 id="per-side">Weight per side</h3>
   <p>When an exercise or its machine is set to per side, the weight label reads <strong>WEIGHT (LBS / SIDE)</strong>, and your sets read <strong>90 lbs &times; 8 /side</strong> in your history, on the workout summary and in the exercise's log.</p>
