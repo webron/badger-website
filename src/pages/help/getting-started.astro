@@ -3,7 +3,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
 ---
 
-<HelpLayout title="Getting started" description="How to install Badger, log your first workout, and import your history from FitNotes, Strong, Hevy, StrongLifts, Fitbod or any CSV file.">
+<HelpLayout title="Getting started" description="How to install Badger, log your first workout, and import your history from FitNotes, Strong, Hevy, StrongLifts, Fitbod, Lyfta or any CSV file.">
   <h1>Getting started</h1>
 
   <p>Install Badger, pick your weight unit, and you can log your first set a minute later. If you're coming from another app, you can bring your whole history with you.</p>
@@ -15,7 +15,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <ol>
     <li><strong>Welcome</strong> - Tap <strong>Let's go</strong>.</li>
     <li><strong>Units</strong> - Pick <strong>kg</strong> or <strong>lbs</strong> for weight and <strong>km</strong> or <strong>mi</strong> for distance. Each starts from your phone's region. The weight unit is the default for every exercise, and you can change it for a single exercise later. Both are also under Settings → Units and equipment.</li>
-    <li><strong>Import data</strong> - Pick <strong>I'm new</strong> or the app you're coming from: FitNotes, Strong, Hevy, StrongLifts or Fitbod. The main button then reads <strong>Start fresh</strong> or <strong>Import from</strong> that app. Until you pick, it reads <strong>Choose one above</strong>. <strong>Not now, I'll import later</strong> skips the step; see <a href="#importing">Import from another app</a>. After an import, setup moves on by itself.</li>
+    <li><strong>Import data</strong> - Pick <strong>I'm new</strong> or the app you're coming from: FitNotes, Strong, Hevy, StrongLifts, Fitbod or Lyfta. The main button then reads <strong>Start fresh</strong> or <strong>Import from</strong> that app. Until you pick, it reads <strong>Choose one above</strong>. <strong>Not now, I'll import later</strong> skips the step; see <a href="#importing">Import from another app</a>. After an import, setup moves on by itself.</li>
     <li><strong>Backup</strong> - On iPhone, <strong>Back up to iCloud</strong> starts on and keeps five copies of your log in your iCloud. On Android, Badger keeps five copies, which Android saves to your Google account if Android backup is on, and <strong>Keep copies in Google Drive</strong> adds Drive. You can turn Drive on later under <strong>You → Data &amp; backup</strong>. Tap <strong>Continue</strong>.</li>
     <li><strong>You're all set</strong> - After an import, this page lists what came in. Tap <strong>Start training</strong>.</li>
   </ol>
@@ -52,7 +52,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <p>More on <a href="/help/routines/">Routines</a>.</p>
 
   <h2 id="importing">Import from another app</h2>
-  <p>Badger imports your full workout history from FitNotes, Strong, Hevy, StrongLifts and Fitbod, and from any other app that exports a CSV file. Export a file from your old app, save it on the phone you train with, then import it. On an iPhone, tap <strong>Save to Files</strong> in the share sheet. On Android, save it to Downloads or Google Drive.</p>
+  <p>Badger imports your full workout history from FitNotes, Strong, Hevy, StrongLifts, Fitbod, Lyfta and any other app that exports a CSV file. Export a file from your old app, save it on the phone you train with, then import it. On an iPhone, tap <strong>Save to Files</strong> in the share sheet. On Android, save it to Downloads or Google Drive.</p>
   <p>Find your old app below for what to export, then follow <a href="#importing-steps">Import the file into Badger</a>.</p>
 
   <h3 id="importing-fitnotes">FitNotes</h3>
@@ -70,6 +70,7 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
 
   <h3 id="importing-strong">Strong</h3>
   <p>In Strong, go to <strong>Profile → Settings → Export Data</strong> (<strong>Export Strong Data</strong> on an iPhone) to produce a <code>strong.csv</code> file. Your RPE, per-set notes and session times come with it, in kg or lbs, from any region's export. The <strong>Workout Notes</strong> column becomes the workout's note, after the workout name. When the export marks a set <code>W</code> (warmup), <code>F</code> (failure) or <code>D</code> (drop set) in <strong>Set Order</strong>, warmups and failure sets arrive as such and drop sets join the set above them as <a href="/help/set-types/#importing">drops</a>. Older exports that only number the sets import as working sets.</p>
+  <p>A note that sits on every set of an exercise arrives once, on its first set. Different notes stay on their own sets.</p>
 
   <h3 id="importing-hevy">Hevy</h3>
   <p>In Hevy, go to <strong>Profile → Settings → Export &amp; Import Data → Export Data → Export Workouts</strong>. Warmups come across as warmups, sets Hevy marked as failure come across as <a href="/help/logging/#to-failure">To failure</a>, and your RPE and session times come along too. Badger stores RPE as a whole number, so a half point such as 7.5 or 8.5 is rounded; when that happens the import's last screen says <strong>RPE values with halves were rounded to whole numbers</strong>. The workout description becomes the workout's note, after the title, and supersets come across as Badger supersets.</p>
@@ -91,31 +92,37 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
   <p>In Fitbod, open <strong>Settings</strong> and tap <strong>Export Workout Data</strong> to make a <code>WorkoutExport.csv</code> file. Your sets, warmups, timed sets and cardio distance come with it.</p>
   <p>Fitbod saves weights in kg even when you log in pounds, so Badger turns them back into the pounds you logged: 17.5 lbs stays 17.5 lbs. Fitbod's file has no session end time, so imported Fitbod workouts show no duration.</p>
 
+  <h3 id="importing-lyfta">Lyfta</h3>
+  <p>In Lyfta, export your data and choose CSV. The file's name starts with <code>export</code>. If your Lyfta has no export option, email <code>support@lyfta.app</code> with "Data export request" in the subject and ask for a CSV file.</p>
+  <p>Each workout keeps its title as its note, and its start time and length come with it. Warmups, drop sets and failure sets arrive as such. Negative-rep and back-off sets arrive as working sets, and supersets don't come across.</p>
+  <p>Lyfta's file doesn't say whether its weights are kg or lbs. On the preview, pick the unit you use in Lyfta before you tap <strong>Import</strong>.</p>
+
   <h3 id="importing-csv">Another app (any CSV file)</h3>
   <p>Coming from another app? If it exports your history as a CSV file with one row per set, pick <strong>Another app</strong> at the bottom of the list. After you choose the file, <strong>Check the columns</strong> shows which column Badger picked for each part of a set, with an example value from your file:</p>
   <ul>
     <li><strong>Needed</strong> - Date, Exercise, Weight and Reps. <strong>Continue</strong> stays off until each has a column.</li>
-    <li><strong>Optional</strong> - Warm-up, Notes, RPE, Distance, Duration and Set type. Pick <strong>Not in this file</strong> for any your file doesn't have.</li>
+    <li><strong>Optional</strong> - Warm-up, Notes, RPE, Distance, Duration, Set type, Workout name and Workout length. Pick <strong>Not in this file</strong> for any your file doesn't have.</li>
   </ul>
   <p>Tap a row to pick a different column. Badger reads the weight unit from the column name when it says (like <code>Weight (kg)</code>); otherwise pick kg or lbs. Rows with the same date and start time become one workout. If the dates have no time, each date becomes one workout.</p>
+  <p>A Workout length column gives each workout its start and end time. A note that sits on every set of an exercise arrives once, on its first set.</p>
   <p>Comma-, semicolon- and tab-separated files all work, and so do decimal commas (82,5). A set type of <code>warmup</code>, <code>failure</code> or <code>drop</code> comes across as a warmup, a <a href="/help/logging/#to-failure">To failure</a> set or a <a href="/help/set-types/#importing">drop</a>. On the next screen, <strong>Columns → Change</strong> takes you back.</p>
 
   <h3 id="importing-steps">Import the file into Badger</h3>
   <ol>
-    <li>Go to <strong>Settings → Backup, import and export</strong>, tap <strong>Import from another app</strong> and pick your old app: FitNotes, Strong, Hevy, StrongLifts, Fitbod, or Another app for any CSV file. The screen opens with that app's export steps. When your file is ready, tap <strong>Choose file</strong> and pick it.</li>
+    <li>Go to <strong>Settings → Backup, import and export</strong>, tap <strong>Import from another app</strong> and pick your old app: FitNotes, Strong, Hevy, StrongLifts, Fitbod, Lyfta, or Another app for any CSV file. A Fitbod or Lyfta file picked under Another app is recognized. The screen opens with that app's export steps. When your file is ready, tap <strong>Choose file</strong> and pick it.</li>
         <li>Check the preview: exercises, workout days, sets and the weight unit. Strong and FitNotes show <strong>Weight unit in this file</strong>, which you can change. Strong starts on the unit in the file's header, else your app's unit. FitNotes starts on your app's unit; a backup from before about 2018 carries its unit per set.</li>
     <li>Check the date range under <strong>Workout days</strong>, then <strong>Exercise mapping</strong>. It shows how many of your exercises matched ones already in your library, which keeps their history, PRs and graphs together. Tap <strong>Review exercise mapping</strong> to change what any name is logged against, or to add it as a new exercise. Close guesses are listed first, under <strong>Close guesses</strong>. Turn on <strong>Keep my exercise names</strong> to add every name from your file as its own exercise instead of matching.</li>
     <li>Tap <strong>Import</strong>. Badger first saves a safety copy of your log, listed on the <a href="/help/settings/#cloud-backup">Backup screen</a> as <strong>Before destructive action</strong>. If it can't, Badger asks whether to <strong>Import anyway</strong>. A big file takes a minute, and the screen stays awake while it writes.</li>
   </ol>
   <p>A close match is skipped when the library exercise has no field for something your file logged. A Farmer Walk with a distance would lose it on a weight and reps exercise, for example. It's added as a new exercise instead, and the review sheet says why.</p>
   <p>New exercises go into an "Imported" category (a FitNotes backup keeps your own categories instead). Where a name states its equipment, Badger fills in the equipment type: "Cable Fly" arrives as cable, "Smith Machine Squat" as machine. You can edit exercises and move them between categories in the exercise library afterwards.</p>
-  <p>Strong, Hevy, StrongLifts, Fitbod and CSV imports create one workout for each session in the file, so two sessions on the same day arrive as two workouts. A FitNotes backup arrives as one workout per day, since its file has no sessions. Imports you made earlier are not changed.</p>
+  <p>Strong, Hevy, StrongLifts, Fitbod, Lyfta and CSV imports create one workout for each session in the file, so two sessions on the same day arrive as two workouts. A FitNotes backup arrives as one workout per day, since its file has no sessions. Imports you made earlier are not changed.</p>
   <h3 id="importing-again">Importing the same file again</h3>
   <p>Badger skips what it already has. The preview says how many sessions or sets will be skipped, and the result lists them.</p>
   <ul>
-    <li><strong>Strong, Hevy and StrongLifts</strong> - a session is skipped when a workout in Badger started in the same minute. Another session on the same day imports as normal. A workout with no start time never counts as a match.</li>
+    <li><strong>Strong, Hevy, StrongLifts and Lyfta</strong> - a session is skipped when a workout in Badger started in the same minute. Another session on the same day imports as normal. A workout with no start time never counts as a match.</li>
     <li><strong>Hevy measurements</strong> - a reading is skipped when Badger already has it.</li>
-    <li><strong>Fitbod and other CSV files</strong> - every session comes in again, since these files have no end time to match on. Use <a href="#undo-import">Undo import</a> to take a second import back.</li>
+    <li><strong>Fitbod and other CSV files</strong> - every session comes in again, since these files have no end time to match on (a CSV file with a Workout length column is matched like Lyfta). Use <a href="#undo-import">Undo import</a> to take a second import back.</li>
     <li><strong>FitNotes</strong> - import a newer backup and Badger adds the sets that are new since last time, including new sets on a day it already has. Sets it already has are skipped, and a set you edited in Badger after the first import is not added again.</li>
   </ul>
   <p>To bring the skipped ones in anyway, turn on <strong>Import them anyway</strong> on the preview. A FitNotes backup then brings in every set again, and they appear twice.</p>
