@@ -71,7 +71,7 @@ const ruleExample = {
 const ruleExamplePretty = JSON.stringify(ruleExample, null, 2);
 
 const description =
-  'How a .badger file is put together: the share/v1 envelope, the routine, gym and machine payloads, what import does with each field, and a worked example.';
+  'How a .badger file is put together: the share/v1 and share/v2 envelope, the routine, gym and machine payloads, what import does with each field, and a worked example.';
 ---
 
 <HelpLayout title="The .badger file format" description={description}>
@@ -211,8 +211,10 @@ const description =
           <td><code>badger</code></td>
           <td>string, required</td>
           <td>
-            Schema version. Today it is always <code>share/v1</code>. A file with any other value is
-            refused.
+            Schema version: <code>share/v1</code>, or <code>share/v2</code> when any plan set's
+            <code>distance</code> is tagged <code>mi</code>, <code>m</code> or <code>ft</code>. A
+            file with any other value is refused with "created with a newer version". Badger 1.1.18
+            reads both; an older version refuses a <code>share/v2</code> file.
           </td>
         </tr>
         <tr>
@@ -388,7 +390,27 @@ const description =
             <code>time_only</code>, <code>distance_only</code>, <code>weight_only</code>,
             <code>weight_time</code>, <code>weight_distance</code>, <code>reps_time</code>,
             <code>reps_distance</code>, <code>distance_time</code>. An unrecognized value falls back to
-            <code>weight_reps</code>.
+            <code>weight_reps</code>. This is the exercise's default way to log.
+          </td>
+        </tr>
+        <tr>
+          <td><code>extra_types</code></td>
+          <td>array of strings</td>
+          <td>
+            The other ways to log the exercise, after <code>type</code>, using the same values. It
+            never repeats <code>type</code>, and unknown values are ignored. Left out for an exercise
+            with one type. Import matches an existing exercise on its name and any type on its list.
+            A built-in exercise also matches the type it was first seeded with, so an older file's
+            "Farmer's Walk" with <code>distance_time</code> finds the carry.
+          </td>
+        </tr>
+        <tr>
+          <td><code>distance_unit</code></td>
+          <td>string</td>
+          <td>
+            <code>km</code>, <code>mi</code>, <code>m</code> or <code>ft</code>: the unit the
+            exercise logs distance in. Left out, the exercise follows the recipient's distance
+            setting. An exercise created on import keeps it.
           </td>
         </tr>
         <tr>
@@ -433,6 +455,15 @@ const description =
             exactly equal the definition's <code>type</code>, because import matches the slot by
             name and type together. A mismatch matches nothing, and the slot is skipped and counted
             in the import preview's warning, like an unmatched name.
+          </td>
+        </tr>
+        <tr>
+          <td><code>logging_type</code></td>
+          <td>string, one of the exercise's types</td>
+          <td>
+            Pins the slot to one way of logging the exercise. Left out, the slot uses the type last
+            used, then the exercise's default. Import keeps it only when that type is on the matched
+            exercise's list.
           </td>
         </tr>
         <tr>
@@ -633,7 +664,23 @@ const description =
           </td>
         </tr>
         <tr><td><code>duration_seconds</code></td><td>integer</td><td>Planned time, for timed exercises.</td></tr>
-        <tr><td><code>distance</code></td><td>number</td><td>Planned distance in kilometers.</td></tr>
+        <tr>
+          <td><code>distance</code></td>
+          <td>number</td>
+          <td>
+            Planned distance, in the unit named by <code>distance_unit</code>. Absent means
+            kilometers, and a <code>share/v1</code> file's distance is always kilometers.
+          </td>
+        </tr>
+        <tr>
+          <td><code>distance_unit</code></td>
+          <td>string</td>
+          <td>
+            <code>km</code>, <code>mi</code>, <code>m</code> or <code>ft</code>. Written only for
+            <code>mi</code>, <code>m</code> and <code>ft</code>, and a file that carries one is
+            <code>share/v2</code>.
+          </td>
+        </tr>
         <tr>
           <td><code>percent_of_reference</code></td>
           <td>number</td>
@@ -1438,6 +1485,11 @@ const description =
   </p>
 
   <p>
+    Badger writes <code>share/v2</code> only when a plan set's <code>distance</code> is in miles,
+    meters or feet. Every other file stays <code>share/v1</code>. Badger 1.1.18 reads both.
+  </p>
+
+  <p>
     A file you exported today should still import years from now. See also
     <a href="/promise/">the promise</a>.
   </p>
@@ -1488,6 +1540,12 @@ const description =
       older version ignores all four and reads a straight set with the same reps and weight.
     </li>
     <li>
+      <strong>1.1.18 keys.</strong> An exercise's <code>extra_types</code> and
+      <code>distance_unit</code>, a slot's <code>logging_type</code> and a set's
+      <code>distance_unit</code> are omitted when not set. An older version ignores them. The one
+      exception is a <code>share/v2</code> file, which an older version refuses.
+    </li>
+    <li>
       <strong>Older values still read.</strong> <code>machine_type: "plateLoaded"</code>; the
       camelCase <code>plate_calculator_mode</code> values; a machine's <code>bar_weight_kg</code>
       (always kg) in place of <code>bar_weight</code> and <code>bar_weight_unit</code>; and the
@@ -1498,8 +1556,8 @@ const description =
   <div class="callout">
     <span class="caps">Verified</span>
     <p>
-      Last checked against Badger <strong>{appVersion}</strong>, schema <code>share/v1</code>. The
-      example above and the files on the <a href="/programs/">Programs</a> page were exported by that
+      Last checked against Badger <strong>{appVersion}</strong>, schemas <code>share/v1</code> and
+      <code>share/v2</code>. The example above and the files on the <a href="/programs/">Programs</a> page were exported by that
       build and imported back into it before publishing. The <a href="#progression">progression</a>,
       percentage, driver and wave keys were checked against Badger <strong>1.1.12</strong>'s own
       import and export code. The published files are regenerated whenever the seeded programs
