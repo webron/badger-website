@@ -60,6 +60,6 @@ Covered in badger-fit's `CLAUDE.md`, and all of it is a two-way obligation:
 
 ```bash
 npm run dev      # local preview
-npm run build    # what CI runs on every PR (.github/workflows/build.yml: build, then
-                 # test:anchors and test:sheets) and again on push to main before deploying
+npm run build    # what CI runs on every PR (.github/workflows/build.yml: build +
+                 # test:anchors) and again on push to main before deploying
 ```
