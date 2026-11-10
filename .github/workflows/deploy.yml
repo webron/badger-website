@@ -81,16 +81,58 @@ jobs:
           echo "::error::Key file never became live"
           exit 1
 
-      - name: Submit sitemap URLs to IndexNow
+      # Checked out only to diff the pushed commits (no credentials kept).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Work out which pages changed
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           set -euo pipefail
-          # Sitemap index first, then every child sitemap it lists.
-          index=$(curl -fsS https://badger.fit/sitemap-index.xml)
           : > urls.txt
+          # Only a push has a before/after range. Manual and scheduled runs,
+          # new branches (all-zero before) and force-pushes (before commit gone)
+          # cannot say what changed, so they submit nothing.
+          if [ "$EVENT_NAME" != push ] || ! git cat-file -e "${BEFORE_SHA}^{commit}" 2>/dev/null; then
+            echo "Cannot tell what changed (event $EVENT_NAME), skipping submission"
+            exit 0
+          fi
+          # Page source -> route. Dynamic routes ([x]) and non-page files
+          # (layouts, components, styles) cannot be mapped to a URL, so they are
+          # left out rather than guessed at.
+          git diff --name-only --diff-filter=AM "$BEFORE_SHA" "$AFTER_SHA" -- 'src/pages/' \
+            | python3 -c '
+          import re, sys
+          for f in sys.stdin.read().split("\n"):
+              m = re.fullmatch(r"src/pages/(.+)\.(astro|md|mdx)", f)
+              if not m or "[" in f or "/_" in f or f.startswith("src/pages/_"):
+                  continue
+              route = m.group(1)
+              route = re.sub(r"(^|/)index$", "", route)
+              print("https://badger.fit/" + route + ("/" if route else ""))
+          ' | sort -u > candidates.txt
+          # Keep only URLs the live sitemap lists, so a wrong guess never goes out.
+          index=$(curl -fsS https://badger.fit/sitemap-index.xml)
+          : > sitemap.txt
           for sm in $(printf '%s' "$index" | python3 -c 'import re,sys; print("\n".join(re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", sys.stdin.read())))'); do
-            curl -fsS "$sm" | python3 -c 'import re,sys; print("\n".join(re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", sys.stdin.read())))' >> urls.txt
+            curl -fsS "$sm" | python3 -c 'import re,sys; print("\n".join(re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", sys.stdin.read())))' >> sitemap.txt
           done
-          echo "Submitting $(wc -l < urls.txt) URLs"
+          grep -Fxf sitemap.txt candidates.txt > urls.txt || true
+          echo "Changed pages to submit: $(wc -l < urls.txt)"
+          cat urls.txt
+
+      - name: Submit changed URLs to IndexNow
+        run: |
+          set -euo pipefail
+          if [ ! -s urls.txt ]; then
+            echo "No changed pages, nothing to submit"
+            exit 0
+          fi
           python3 - > payload.json <<'PY'
           import json, os
           key = os.environ["INDEXNOW_KEY"]
@@ -103,21 +145,28 @@ jobs:
           # answers every IndexNow ping for badger.fit with 403
           # UserForbiddedToAccessSite although the key file is live and
           # Yandex accepts the same key. Bing gets the URLs from the next step.
-          status=$(curl -sS -o response.txt -w '%{http_code}' \
+          status=$(curl -sS --max-time 30 -o response.txt -w '%{http_code}' \
             -X POST https://yandex.com/indexnow \
             -H 'Content-Type: application/json; charset=utf-8' \
-            --data @payload.json)
+            --data @payload.json) || status=000
           echo "HTTP $status"
-          cat response.txt
+          cat response.txt 2>/dev/null || true
           # 200 = accepted, 202 = accepted pending key validation. Anything
-          # else fails the job so a broken ping is a red job, not a buried warning.
-          case "$status" in 200|202) ;; *) exit 1 ;; esac
+          # else is a warning, not a failure: search engines still read the
+          # sitemap, and a red deploy for a best-effort ping costs more than it
+          # saves (4 of 26 deploys went red on a 403 before this).
+          case "$status" in 200|202) ;; *) echo "::warning::IndexNow submission returned HTTP $status" ;; esac
 
-      - name: Submit sitemap URLs to Bing (Webmaster URL Submission API)
-        # Skipped until the BING_WEBMASTER_KEY repo secret exists.
+      - name: Submit changed URLs to Bing (Webmaster URL Submission API)
+        # Skipped until the BING_WEBMASTER_KEY repo secret exists, and when no
+        # page changed.
         if: env.BING_WEBMASTER_KEY != ''
         run: |
           set -euo pipefail
+          if [ ! -s urls.txt ]; then
+            echo "No changed pages, nothing to submit"
+            exit 0
+          fi
           python3 - > bing.json <<'PY'
           import json
           urls = [u for u in open("urls.txt").read().split() if u]
@@ -129,8 +178,8 @@ jobs:
             --data @bing.json) || status=000
           echo "HTTP $status"
           cat bing.txt 2>/dev/null || true
-          # The daily quota is 100 URLs and a deploy sends about 50, so a third
-          # deploy in one day runs out. Bing still reads the sitemap, so a
+          # The daily quota is 100 URLs; a deploy now sends only the changed pages, so
+          # it is rarely reached. Bing still reads the sitemap, so a
           # refusal is a warning; the weekly search health report watches Bing.
           if [ "$status" != 200 ]; then
             echo "::warning::Bing URL submission returned HTTP $status"
