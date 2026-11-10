@@ -22,7 +22,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3>Weight</h3>
   <ul>
     <li><strong>Weight unit</strong> - Kilograms or pounds, for every exercise that doesn't set its own.</li>
-    <li><strong>Distance unit</strong> - Kilometers or miles, for every distance in the app. It starts from your phone's region and is separate from the weight unit. See <a href={`/help/logging/#distance-unit`}>Distance unit</a>.</li>
+    <li><strong>Distance unit</strong> - Kilometers or miles. It is the default for exercises with no distance unit of their own, and it sets pace and your workout and year totals. An exercise can pick km, mi, m or ft in its <a href="/help/exercises/#distance-unit-exercise">edit screen</a>. It starts from your phone's region and is separate from the weight unit. See <a href={`/help/logging/#distance-unit`}>Distance unit</a>.</li>
     <li><strong>Default weight increment</strong> - The step for the + and − buttons on a set and for the progressive overload suggestion, when an exercise has no increment of its own.</li>
   </ul>
   <h3>Equipment defaults</h3>
@@ -170,7 +170,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <ul>
     <li><strong>Automatic</strong> - the iCloud switch and its status on iPhone, or the count of on-phone copies on Android, plus a manual <strong>Back up now</strong> for iCloud.</li>
     <li><strong>Restore a copy</strong> - every backup from every destination, newest first, in one list. Tap a copy to confirm and restore. <strong>Restore previous data</strong> appears when Badger holds a copy from before the last restore, history delete or undone import, and brings back whatever was there, and <strong>From a file…</strong> restores a <code>.workout_backup</code> file you picked yourself. A file that isn't a Badger backup is refused with a message, and nothing changes.</li>
-    <li><strong>Extra</strong> - the Google Drive switch, <strong>Back up equipment photos</strong> (off by default, iCloud and Drive only), a manual Drive backup, and <strong>Save a backup file</strong> for a one-off export you send yourself.</li>
+    <li><strong>Extra</strong> - the Google Drive switch, <strong>Back up equipment photos</strong> (off by default, iCloud and Drive only), a manual Drive backup, and <strong>Save a backup file</strong> for a one-off export you send yourself. A saved backup file does not include progress photos: use <strong>Export progress photos</strong> in Your data to save them.</li>
   </ul>
   <p id="older-copies"><strong>Older copies.</strong> Besides the five most recent copies, every destination keeps one copy about a month old and one about 3 months old. They're listed under <strong>Restore a copy</strong> as <strong>Monthly copy</strong> and <strong>Quarterly copy</strong>, with their dates. Use them when a mistake went unnoticed for a few weeks.</p>
   <p id="stale-backup"><strong>When a backup is out of date.</strong> If your last backup is more than a week old and you've logged since, Today shows <strong>Your backup is out of date</strong>, with <strong>Back up now</strong>. The Backup screen shows the same card. If you haven't trained since the last backup, there's nothing to warn about, and no banner shows.</p>
@@ -185,13 +185,22 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="export">Exporting data</h3>
   <p><strong>Export workout data</strong> makes a CSV file with one row per set (date, exercise, weight, reps, duration, warmup flag, RPE, RIR and more) and opens the share sheet. Five columns after those cover <a href="/help/logging/#left-right">left and right sets</a>: <code>is_unilateral</code>, <code>reps_left</code>, <code>reps_right</code>, <code>duration_left_seconds</code> and <code>duration_right_seconds</code>. On those rows, <code>reps</code> and <code>duration_seconds</code> hold the better arm.</p>
-  <p>The next two columns are <code>is_failure</code> and <code>distance_unit</code>. <code>is_failure</code> reads <code>true</code> on a set you marked <a href="/help/logging/#to-failure">To failure</a>, and its <code>rir</code> is blank. <code>distance_unit</code> reads <code>km</code> or <code>mi</code> and is blank when the set has no distance. The <code>distance</code> column holds the number as you typed it, so read the two together.</p>
+  <p>The next two columns are <code>is_failure</code> and <code>distance_unit</code>. <code>is_failure</code> reads <code>true</code> on a set you marked <a href="/help/logging/#to-failure">To failure</a>, and its <code>rir</code> is blank. <code>distance_unit</code> reads <code>km</code>, <code>mi</code>, <code>m</code> or <code>ft</code> and is blank when the set has no distance. The <code>distance</code> column holds the number as you typed it, so read the two together.</p>
   <p>The next column, <code>session_effort</code>, is the workout's <a href="/help/history/#session-effort">session effort</a>. It repeats on every set row of that workout and is blank when you didn't rate it.</p>
   <p>Drop sets, myo-reps and rest-pause add the three columns after it, <code>set_style</code>, <code>steps</code> and <code>steps_volume</code>; see <a href="/help/set-types/#export">CSV export</a>.</p>
   <p>The next two come from the <a href="/help/routines/#energy-check-in">energy check-in</a>. <code>readiness</code> reads <code>low</code>, <code>usual</code> or <code>high</code> on every set row of a workout where you answered, and is blank otherwise. <code>eased_percent</code> reads <code>90</code> on the sets of a lift you started on a lighter day.</p>
-  <p>The last column, <code>tempo</code>, holds the exercise's <a href="/help/logging/#tempo">tempo</a> for that workout, such as <code>3-1-X-0</code>. It is blank when there was none.</p>
+  <p>The next column, <code>tempo</code>, holds the exercise's <a href="/help/logging/#tempo">tempo</a> for that workout, such as <code>3-1-X-0</code>. It is blank when there was none.</p>
+  <p>The last column, <code>logging_type</code>, is the way that entry was logged, such as <code>weight_distance</code> or <code>weight_time</code>. <code>distance_unit</code> reads <code>km</code>, <code>mi</code>, <code>m</code> or <code>ft</code>, and <code>distance</code> is as typed.</p>
   <p>It also shares a second CSV with your <a href="/help/goals/">goals</a>.</p>
   <p>The file includes sets you never completed, such as the rest of a routine workout you started and left. To count only real training, filter on <code>is_complete</code>; <code>is_skipped</code> marks skipped sets. If you're giving the file to an AI, <a href={`/guides/ai/`}>Use your own AI</a> has a prompt that already explains this.</p>
+
+  <h3 id="export-strong">Exporting for Hevy or another app</h3>
+  <p><strong>Export as Strong CSV</strong> makes a file in Strong's export format, which Hevy and other apps that read Strong files can import. In Hevy, go to Profile, Settings, Export &amp; Import Data, Import Data, then <strong>Import Strong CSV</strong>. Strong itself can't import a CSV.</p>
+  <p>Before it exports, a notice lists what the format can't hold. Tap <strong>Export workout data</strong> there to get the full Badger file instead. Weights are in kg and distances in km whatever unit you log in; Hevy shows them in your own unit.</p>
+  <ul>
+    <li>Kept: completed sets only, with warm-up, to failure and drop set markings, set and workout notes, and RPE. Workouts are named for the routine day, or "Workout".</li>
+    <li>Left out: RIR, tempo and heart rate; left and right sides (the better one is kept); myo-rep and rest-pause bouts after the first; session effort, energy check-ins and lighter days; categories, gyms and equipment; sets you didn't complete.</li>
+  </ul>
 
   <h3 id="ai-context">Copying your context for an AI</h3>
   <p><strong>Copy context for AI</strong> puts together a short plain-text briefing on your training: your <a href={`#training-notes`}>training notes</a>, your active program and its current targets, your last ten sessions (with each exercise's tempo), your records, the equipment at your current gym, and anything you've marked as avoided.</p>
@@ -201,8 +210,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The same action is at the bottom of your Training notes page, labeled <strong>Copy for AI</strong>. See <a href={`/guides/ai/`}>Use your own AI</a> for what to do with it.</p>
 
   <h3 id="importing">Importing workout history</h3>
-  <p><strong>Import from another app</strong> opens a sheet listing each app Badger can read: FitNotes (a <code>.fitnotes</code> backup), and Strong, Hevy and StrongLifts (each a CSV export). Tap one to open its import page. For how to export from each app and what carries over, see <a href={`/help/getting-started/#importing`}>Import from another app</a>.</p>
-  <p>Strong, Stronglifts and Hevy files that write weights with a decimal comma import correctly.</p>
+  <p><strong>Import from another app</strong> opens a sheet listing each app Badger can read: FitNotes (a <code>.fitnotes</code> backup), and Strong, Hevy and StrongLifts (each a CSV export; Hevy has two, workouts and measurements, imported one at a time). Tap one to open its import page. For how to export from each app and what carries over, see <a href={`/help/getting-started/#importing`}>Import from another app</a>.</p>
+  <p>Strong, StrongLifts and Hevy files that write weights with a decimal comma import correctly.</p>
   <p>Strong and FitNotes previews have a <strong>Weight unit in this file</strong> choice. Every import first saves a safety copy of your log, and asks before importing anyway if it can't.</p>
   <p>The preview shows the date range of the file. Close name matches are listed apart from sure ones, and <strong>Keep my exercise names</strong> adds every name as its own exercise.</p>
   <p>If you see "file is too large" (the limit is 10&nbsp;MB), the file is probably damaged. Export it again from the other app.</p>

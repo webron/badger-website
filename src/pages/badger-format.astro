@@ -71,7 +71,7 @@ const ruleExample = {
 const ruleExamplePretty = JSON.stringify(ruleExample, null, 2);
 
 const description =
-  'How a .badger file is put together: the share/v1 envelope, the routine, gym and machine payloads, what import does with each field, and a worked example.';
+  'How a .badger file is put together: the share/v1 and share/v2 envelope, the routine, gym and machine payloads, what import does with each field, and a worked example.';
 ---
 
 <HelpLayout title="The .badger file format" description={description}>
@@ -211,8 +211,10 @@ const description =
           <td><code>badger</code></td>
           <td>string, required</td>
           <td>
-            Schema version. Today it is always <code>share/v1</code>. A file with any other value is
-            refused.
+            Schema version: <code>share/v1</code>, or <code>share/v2</code> when any plan set's
+            <code>distance</code> is tagged <code>mi</code>, <code>m</code> or <code>ft</code>. A
+            file with any other value is refused with "created with a newer version". Badger 1.1.18
+            reads both; an older version refuses a <code>share/v2</code> file.
           </td>
         </tr>
         <tr>
@@ -292,6 +294,15 @@ const description =
           <td>
             Where starting weights come from: <code>last_performance</code> (default),
             <code>routine_defaults</code>, or <code>routine_defaults_then_last</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>rep_source</code></td>
+          <td>string</td>
+          <td>
+            Where starting reps come from. The only value written is <code>routine_plan</code>
+            (the planned reps). Absent means the default, the last performance. Any other value is
+            ignored.
           </td>
         </tr>
         <tr>
@@ -379,7 +390,27 @@ const description =
             <code>time_only</code>, <code>distance_only</code>, <code>weight_only</code>,
             <code>weight_time</code>, <code>weight_distance</code>, <code>reps_time</code>,
             <code>reps_distance</code>, <code>distance_time</code>. An unrecognized value falls back to
-            <code>weight_reps</code>.
+            <code>weight_reps</code>. This is the exercise's default way to log.
+          </td>
+        </tr>
+        <tr>
+          <td><code>extra_types</code></td>
+          <td>array of strings</td>
+          <td>
+            The other ways to log the exercise, after <code>type</code>, using the same values. It
+            never repeats <code>type</code>, and unknown values are ignored. Left out for an exercise
+            with one type. Import matches an existing exercise on its name and any type on its list.
+            A built-in exercise also matches the type it was first seeded with, so an older file's
+            "Farmer's Walk" with <code>distance_time</code> finds the carry.
+          </td>
+        </tr>
+        <tr>
+          <td><code>distance_unit</code></td>
+          <td>string</td>
+          <td>
+            <code>km</code>, <code>mi</code>, <code>m</code> or <code>ft</code>: the unit the
+            exercise logs distance in. Left out, the exercise follows the recipient's distance
+            setting. An exercise created on import keeps it.
           </td>
         </tr>
         <tr>
@@ -427,12 +458,46 @@ const description =
           </td>
         </tr>
         <tr>
+          <td><code>logging_type</code></td>
+          <td>string, one of the exercise's types</td>
+          <td>
+            Pins the slot to one way of logging the exercise. Left out, the slot uses the type last
+            used, then the exercise's default. Import keeps it only when that type is on the matched
+            exercise's list.
+          </td>
+        </tr>
+        <tr>
           <td><code>rest_override_seconds</code></td>
           <td>integer</td>
           <td>
             Rest between sets for this slot, in seconds. It wins over the exercise's own default
             rest. A set's own <a href="#predefined-set"><code>rest_seconds</code></a> wins over it.
             Versions before 1.1.16 let the exercise's default win instead.
+          </td>
+        </tr>
+        <tr>
+          <td><code>notes_override</code></td>
+          <td>string</td>
+          <td>
+            The slot's own note, carried word for word. Absent means the slot has no note of its own.
+          </td>
+        </tr>
+        <tr>
+          <td><code>increment_override_kg</code></td>
+          <td>number greater than 0</td>
+          <td>
+            The slot's weight increment, always in kilograms whatever unit the recipient logs in.
+            Absent means the slot has no increment of its own and uses the exercise's. A value of 0 or
+            less is ignored.
+          </td>
+        </tr>
+        <tr>
+          <td><code>default_grip_type</code></td>
+          <td>string</td>
+          <td>
+            The slot's default grip: one of <code>overhand</code>, <code>underhand</code>,
+            <code>neutral</code>, <code>wide</code>, <code>close</code>, <code>hammer</code>. Absent
+            means no default grip. Any other value is ignored.
           </td>
         </tr>
         <tr>
@@ -599,7 +664,23 @@ const description =
           </td>
         </tr>
         <tr><td><code>duration_seconds</code></td><td>integer</td><td>Planned time, for timed exercises.</td></tr>
-        <tr><td><code>distance</code></td><td>number</td><td>Planned distance in kilometers.</td></tr>
+        <tr>
+          <td><code>distance</code></td>
+          <td>number</td>
+          <td>
+            Planned distance, in the unit named by <code>distance_unit</code>. Absent means
+            kilometers, and a <code>share/v1</code> file's distance is always kilometers.
+          </td>
+        </tr>
+        <tr>
+          <td><code>distance_unit</code></td>
+          <td>string</td>
+          <td>
+            <code>km</code>, <code>mi</code>, <code>m</code> or <code>ft</code>. Written only for
+            <code>mi</code>, <code>m</code> and <code>ft</code>, and a file that carries one is
+            <code>share/v2</code>.
+          </td>
+        </tr>
         <tr>
           <td><code>percent_of_reference</code></td>
           <td>number</td>
@@ -1381,8 +1462,8 @@ const description =
 
   <ul>
     <li><strong>No history.</strong> No workouts, no logged sets, no PRs. To move your own history to a new phone, use a backup instead: see <a href="/help/phone-migration/">moving to a new phone</a>.</li>
-    <li><strong>No notes below the routine level.</strong> Routine notes travel; per-day and per-exercise notes do not. In a gym file, notes on a machine, attachment, bar or accessory do travel. The setup cues you save against one exercise on one machine never do.</li>
-    <li><strong>No default attachment, default bar, or default grip</strong> on a slot, and no superset group <strong>color</strong>; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel.)</li>
+    <li><strong>No per-day notes, and no exercise-level notes.</strong> Routine notes and a slot's own <code>notes_override</code> travel; per-day notes and an exercise's own notes do not. In a gym file, notes on a machine, attachment, bar or accessory do travel. The setup cues you save against one exercise on one machine never do.</li>
+    <li><strong>No default attachment or default bar</strong> on a slot (a slot's <code>default_grip_type</code> does travel), and no superset group <strong>color</strong>; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel.)</li>
     <li>
       <strong>No training max, and no progress against a rule.</strong> A slot's
       <a href="#progression">progression rule</a> travels. The training max it multiplies does not,
@@ -1401,6 +1482,11 @@ const description =
     Unknown fields are ignored, so a file written by a newer Badger still opens in an older one,
     minus whatever that older version has no concept of. If the shape ever has to change in a way
     that breaks, <code>badger</code> gets a new value and <code>share/v1</code> keeps being read.
+  </p>
+
+  <p>
+    Badger writes <code>share/v2</code> only when a plan set's <code>distance</code> is in miles,
+    meters or feet. Every other file stays <code>share/v1</code>. Badger 1.1.18 reads both.
   </p>
 
   <p>
@@ -1454,6 +1540,12 @@ const description =
       older version ignores all four and reads a straight set with the same reps and weight.
     </li>
     <li>
+      <strong>1.1.18 keys.</strong> An exercise's <code>extra_types</code> and
+      <code>distance_unit</code>, a slot's <code>logging_type</code> and a set's
+      <code>distance_unit</code> are omitted when not set. An older version ignores them. The one
+      exception is a <code>share/v2</code> file, which an older version refuses.
+    </li>
+    <li>
       <strong>Older values still read.</strong> <code>machine_type: "plateLoaded"</code>; the
       camelCase <code>plate_calculator_mode</code> values; a machine's <code>bar_weight_kg</code>
       (always kg) in place of <code>bar_weight</code> and <code>bar_weight_unit</code>; and the
@@ -1464,8 +1556,8 @@ const description =
   <div class="callout">
     <span class="caps">Verified</span>
     <p>
-      Last checked against Badger <strong>{appVersion}</strong>, schema <code>share/v1</code>. The
-      example above and the files on the <a href="/programs/">Programs</a> page were exported by that
+      Last checked against Badger <strong>{appVersion}</strong>, schemas <code>share/v1</code> and
+      <code>share/v2</code>. The example above and the files on the <a href="/programs/">Programs</a> page were exported by that
       build and imported back into it before publishing. The <a href="#progression">progression</a>,
       percentage, driver and wave keys were checked against Badger <strong>1.1.12</strong>'s own
       import and export code. The published files are regenerated whenever the seeded programs

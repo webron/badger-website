@@ -25,6 +25,64 @@ import Footer from '../components/Footer.astro';
 // card is an eight-line cut of it.
 const releases = [
   {
+    version: '1.1.18',
+    date: 'November 2026',
+    headline: 'Log an exercise more than one way, import from any app, and set body goals',
+    groups: [
+      {
+        title: 'Logging',
+        items: [
+          'An exercise can have more than one logging type. In the exercise form, Add another type builds a list; the first one is the default. A routine slot can pin a type, or use the one you logged last time.',
+          'Switch an exercise\'s type during a workout in Exercise settings. Progress charts and goals follow the type too.',
+          'The built-in carries and sleds (Farmer\'s Walk, Suitcase and Overhead Carry, Yoke Walk, Sled Push and Sled Pull) now default to Weight + Distance. Weight + Time is also offered, and Distance + Time stays if you used it. Workouts you already logged keep their type.',
+          'Log distances in meters and feet as well as km and miles.',
+          'A running rest timer comes back after Android or iOS closes the app.',
+          'A workout you started before midnight still shows on Today.',
+        ],
+      },
+      {
+        title: 'Body',
+        items: [
+          'Set a goal for body weight or any measurement, with an optional target date. The chart draws the goal line, and a dated goal adds a pace line. The Body screen shows how far you have to go, and You, Goals lists body goals with lift goals.',
+          'A measurement\'s change arrow stays neutral until you set a goal for it. The goal sets the direction.',
+        ],
+      },
+      {
+        title: 'Import and export',
+        items: [
+          'Import from any CSV file with Another app: match the columns, check the preview and import. Fitbod and Lyfta files are recognized and skip the column step.',
+          'Export your history as a Strong CSV, for Hevy and other apps that import Strong files.',
+          'After a StrongLifts import, Continue StrongLifts 5×5 sets up the program with your weights and the next day.',
+          'Importing a newer FitNotes backup adds the sets missing from days you already imported. It also brings over body goals, lift goal dates and the rest timer (if you never changed Badger\'s).',
+          'Import Hevy\'s body measurements file into Body.',
+          'Hevy asks for the unit when the file does not say, and says so when half-point RPE values were rounded.',
+          'A note repeated on every set comes in once, and dropped supersets show a warning.',
+          'Workouts you import now show the start time from the file, no longer shifted by your time zone.',
+          'History refreshes after every import and Undo import.',
+          'Importing a photo zip again skips the photos you already have.',
+          'Shared routines keep slot notes, increments, grips and rep sources.',
+        ],
+      },
+      {
+        title: 'Health and setup',
+        items: [
+          'Sync now on the Health screen, with the time of the last sync or what went wrong.',
+          'Setup shows Step 1 of 5 and so on, in place of the page dots. On Android it says Google Drive backup can be turned on later.',
+          'Backup says that progress photos are not in the backup file.',
+          'A one-time hint on Today shows how to put routine days on weekdays.',
+        ],
+      },
+      {
+        title: 'Fixes',
+        items: [
+          'Two workouts on the same day are numbered and listed by start time.',
+          'Equipment photos no longer keep the camera\'s location data, and photos saved before are cleaned too.',
+          'A routine you share that has distances in miles, meters or feet needs Badger 1.1.18 or later to open. Routines in km open in 1.1.17 as before.',
+        ],
+      },
+    ],
+  },
+  {
     version: '1.1.17',
     date: 'November 2026',
     headline: 'Progress photos, drop sets, and finishing on your terms',

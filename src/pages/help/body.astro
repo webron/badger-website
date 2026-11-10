@@ -23,7 +23,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Watch the solid accent line: it's a <strong>7-day average</strong>. The faint line with dots is exactly what you logged.</p>
   <p>Body weight moves day to day with water, food and time of day, so one morning's reading can be a kilo off either way. The average smooths that out and shows which way you're really heading.</p>
   <p>Use the <strong>30d</strong>, <strong>90d</strong> and <strong>All</strong> chips to change the time range.</p>
-  <p>The small caret next to a reading compares it to the one before. It's colored only when you've set a direction you want for that measurement (waist going down, arms going up); with no goal, it shows the change without color.</p>
+  <p>The small caret next to a reading compares it to the one before. With no <a href="#goals">goal</a> it is plain, since a measurement can be better going up or down. With a goal, a move toward it is green.</p>
+
+  <h2 id="goals">Goals</h2>
+  <p>Open a measurement's page, find the <strong>Goal</strong> section and tap <strong>Set a goal</strong>. Type the number you want, which starts at your latest reading, and add a target date if you like. Then save.</p>
+  <p>Badger works out whether the goal is above or below your latest reading, so you never pick up or down. The line under the box says how far away it is, for example <em>5.4 kg below your latest reading</em>.</p>
+  <ul>
+    <li><strong>On the chart</strong> - A dashed line marks the goal. With a target date, a dotted pace line runs from your reading on the day you set the goal to the goal on its date, and the caption gives the pace, for example <em>about 1.4 kg a month</em>. It is a guide only.</li>
+    <li><strong>The goal row</strong> - It reads <em>By Mar 1, 2027 &middot; 5.4 kg to go</em>. If the date passes, the goal stays open and the row reads <em>Target date Mar 1 passed</em>.</li>
+    <li><strong>Reaching it</strong> - Your first reading at or past the goal, logged on or after the day you set it, reaches it. It stays reached even if the number moves back. The row then shows the date and how long it took. Tap <strong>Set a new goal</strong> to replace it.</li>
+    <li><strong>On the Body screen</strong> - Under the measurement's name you see <em>5.4 kg to go</em> or <em>Goal reached</em>.</li>
+  </ul>
+  <p>Each measurement has one goal. To remove it, use the row's <span aria-hidden="true">&#8942;</span> menu; <strong>Undo</strong> brings it back. Body goals also appear in <strong>You &rarr; Goals</strong>, next to your <a href="/help/goals/">lift goals</a>.</p>
+  <p>Goals use your lifting unit, in kg or lbs for weight and cm or in for lengths. Body fat is in %, and a custom measurement keeps its own unit.</p>
 
   <h2 id="units">Units</h2>
   <p>Measurements follow your lifting unit: kilograms and centimeters, or pounds and inches. Change it and everything switches to the new unit.</p>
@@ -80,7 +92,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="photos-lock">Lock your photos</h3>
   <p>Turn on <strong>Lock progress photos</strong> from the Photos screen menu and Badger asks for Face ID, Touch ID, your fingerprint or your screen lock before it shows a photo. It locks the Photos screen, the viewer, Compare and the Body thumbnails, which show a plain locked tile. The lock comes back whenever you leave Badger.</p>
   <p>Badger offers the lock once after your first photo. It stays off until you turn it on.</p>
-  <p>With the lock on, a photo screen is hidden when you open the app switcher: blurred on iPhone, and left out of the recent apps preview on Android 13 and later. Screenshots still work.</p>
+  <p>With the lock on, a photo screen is hidden when you open the app switcher: blurred on iPhone, and left out of the recent apps preview on Android 13 and later. On Android 12 and earlier, the recent apps preview can still show the photo. Screenshots still work.</p>
 
   <h3 id="photos-backup">Back up your photos</h3>
   <p>Photos are only on this phone until you back them up. After your first photo Badger asks where to keep them: <strong>Only on this phone</strong> or <strong>This phone and my iCloud</strong> (<strong>Google Drive</strong> on Android). You can change this on the <a href="/help/settings/#data">Backup</a> screen with <strong>Back up progress photos</strong>.</p>
@@ -93,7 +105,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Restoring on a new phone brings your photos back from that backup. A photo that has not arrived yet shows <em>Not on this phone</em>.</p>
 
   <h3 id="photos-export">Export and import</h3>
-  <p><strong>Export progress photos</strong> saves a .zip file with your photos as JPEGs and a <code>manifest.json</code> listing each one's date and pose. It is on the <a href="/help/settings/#data">Backup, import and export</a> page. <strong>Import photos from an export</strong> reads one back, from the same page or the Photos screen menu. A photo you already have is skipped.</p>
+  <p><strong>Export progress photos</strong> saves a .zip file with your photos as JPEGs and a <code>manifest.json</code> listing each one's date and pose. It is on the <a href="/help/settings/#data">Backup, import and export</a> page. <strong>Import photos from an export</strong> reads one back, from the same page or the Photos screen menu. Badger keeps the photos you already have: it skips exact copies, and it skips a photo for a day and pose that already has one. The message after the import counts both.</p>
 
   <h3 id="photos-delete">Delete photos</h3>
   <p>Delete one photo from its menu, or a whole check-in from its row. Both can be undone from the message at the bottom. <strong>Delete all photos</strong> on the Photos screen menu asks first, then offers <strong>Undo</strong> as well.</p>
@@ -119,7 +131,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="import-weight">Importing body weight</h3>
   <p>Weigh-ins in your health store (from a smart scale, another app, or typed into Health) appear in your body tracker as ordinary entries. Badger asks for body weight only.</p>
   <p>On Android, Health Connect also asks whether Badger may see data older than 30 days. Allow it and your first import reaches back a year; decline and you get the last 30 days. You can change this anytime in Health Connect.</p>
-  <p>Badger checks for new weigh-ins only when you open the Body screen, never in the background. If your health store filled in missing days later, tap <strong>Bring in weigh-ins now</strong> to search the whole past year. The same reading is never imported twice, but a genuine second weigh-in on the same morning is kept.</p>
+  <p>Badger checks for new weigh-ins only when you open the Body screen, never in the background. If your health store filled in missing days later, tap <strong>Sync now</strong> on the Health screen to search the whole past year. The same reading is never imported twice, but a genuine second weigh-in on the same morning is kept.</p>
+  <h3 id="sync-now">Sync now</h3>
+  <p>With any of the three switches on, the Health screen has a <strong>Sync now</strong> button. It checks that Badger can still reach Apple Health or Health Connect and, if body weight is on, brings in new weigh-ins from the past year. Under the button, <strong>Last synced</strong> shows when the last sync finished.</p>
+  <p>If a sync fails, the reason shows in red under the button and the last good time stays. On Android that includes a permission you removed in Health Connect: allow it there and tap <strong>Sync now</strong> again. Workouts are written once, when you finish them, and heart rate is read after each workout, so <strong>Sync now</strong> does not resend old workouts. On iPhone, Apple Health does not tell Badger whether it may read your data, so a missing permission shows up as "nothing new", not as an error.</p>
   <p>Imported weigh-ins are saved in Badger like the ones you type, so they're in your backups: the backup file and, if you use it, the cloud backup to your own Google Drive. See the <a href="/legal/privacy/">Privacy Policy</a>.</p>
 
   <h3 id="heart-rate">Heart rate on your sets</h3>
