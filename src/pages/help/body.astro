@@ -131,7 +131,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="import-weight">Importing body weight</h3>
   <p>Weigh-ins in your health store (from a smart scale, another app, or typed into Health) appear in your body tracker as ordinary entries. Badger asks for body weight only.</p>
   <p>On Android, Health Connect also asks whether Badger may see data older than 30 days. Allow it and your first import reaches back a year; decline and you get the last 30 days. You can change this anytime in Health Connect.</p>
-  <p>Badger checks for new weigh-ins only when you open the Body screen, never in the background. If your health store filled in missing days later, tap <strong>Bring in weigh-ins now</strong> to search the whole past year. The same reading is never imported twice, but a genuine second weigh-in on the same morning is kept.</p>
+  <p>Badger checks for new weigh-ins only when you open the Body screen, never in the background. If your health store filled in missing days later, tap <strong>Sync now</strong> on the Health screen to search the whole past year. The same reading is never imported twice, but a genuine second weigh-in on the same morning is kept.</p>
+  <h3 id="sync-now">Sync now</h3>
+  <p>With any of the three switches on, the Health screen has a <strong>Sync now</strong> button. It checks that Badger can still reach Apple Health or Health Connect and, if body weight is on, brings in new weigh-ins from the past year. Under the button, <strong>Last synced</strong> shows when the last sync finished.</p>
+  <p>If a sync fails, the reason shows in red under the button and the last good time stays. On Android that includes a permission you removed in Health Connect: allow it there and tap <strong>Sync now</strong> again. Workouts are written once, when you finish them, and heart rate is read after each workout, so <strong>Sync now</strong> does not resend old workouts. On iPhone, Apple Health does not tell Badger whether it may read your data, so a missing permission shows up as "nothing new", not as an error.</p>
   <p>Imported weigh-ins are saved in Badger like the ones you type, so they're in your backups: the backup file and, if you use it, the cloud backup to your own Google Drive. See the <a href="/legal/privacy/">Privacy Policy</a>.</p>
 
   <h3 id="heart-rate">Heart rate on your sets</h3>
