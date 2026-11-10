@@ -1,7 +1,10 @@
 # CLAUDE.md - badger.fit website
 
 Astro site, deployed to GitHub Pages. The app it documents lives at
-`/Users/ron/Development/badger-fit`, and that repo's `CLAUDE.md` is the fuller context.
+`/Users/ron/Development/badger-fit`. Site-only changes (layout, styling, typos, build) do not
+need that repo's `CLAUDE.md` (25 KB); skip it. Open it only for questions about app behavior or the
+release, and read just the section you need (`## Current release`, `## Feature Flags`, or the
+`.claude/rules/` file for the area).
 
 ## Two rules that bind every session here
 
@@ -31,7 +34,8 @@ The standard is shared with the app repo on purpose: the same person reads the s
 then the app, then a help page, and a change of register between them is noticeable.
 
 **Marketing copy** (home page, guides, comparison pages, directory text, anything that pitches
-Badger) follows the decisions in `../badger-fit/docs/marketing/`. Read `decisions.md` and
+Badger) follows the decisions in `../badger-fit/docs/marketing/` (about 29 KB, so only for copy that
+pitches Badger; not for help pages, typos or build work). For that copy, read `decisions.md` and
 `channels.md` there first, and record a new decision and the other channels you checked in the
 same session.
 
@@ -56,5 +60,6 @@ Covered in badger-fit's `CLAUDE.md`, and all of it is a two-way obligation:
 
 ```bash
 npm run dev      # local preview
-npm run build    # also what CI runs
+npm run build    # what CI runs on every PR (.github/workflows/build.yml: build, then
+                 # test:anchors and test:sheets) and again on push to main before deploying
 ```
