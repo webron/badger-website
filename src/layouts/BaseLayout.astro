@@ -50,6 +50,10 @@ const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
     <link rel="preload" href="/fonts/exo2-latin-var.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/literata-latin-var.woff2" as="font" type="font/woff2" crossorigin />
 
+    <!-- Browser chrome (address bar tint, scrollbars, native controls) follows the
+         OS preference by default. When a theme is chosen or saved, the script
+         below rewrites these so they follow the site's theme instead. -->
+    <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F1EDE3" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1C1A16" />
     <!-- Direction E journal favicon: ink badger head on a paper rounded square,
@@ -61,12 +65,37 @@ const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
     <script is:inline>
       // Apply the saved theme before first paint. This has to live in <head> and
       // run synchronously: from the end of <body> it can repaint over a rendered
-      // frame, which is the flash it is meant to prevent.
+      // frame, which is the flash it is meant to prevent. The metas it updates
+      // are declared above, so they already exist when it runs.
       (function () {
-        const saved = localStorage.getItem('theme');
-        if (saved === 'light' || saved === 'dark') {
-          document.documentElement.setAttribute('data-theme', saved);
-        }
+        var COLORS = { light: '#F1EDE3', dark: '#1C1A16' };
+        var root = document.documentElement;
+
+        // Single place that switches theme: the attribute the stylesheet keys
+        // on, plus the metas the browser reads for its own UI.
+        window.__setTheme = function (theme) {
+          root.setAttribute('data-theme', theme);
+          var metas = document.head.querySelectorAll('meta[name="theme-color"]');
+          for (var i = 0; i < metas.length; i++) metas[i].setAttribute('content', COLORS[theme]);
+          var scheme = document.head.querySelector('meta[name="color-scheme"]');
+          if (scheme) scheme.setAttribute('content', theme);
+        };
+
+        var saved = null;
+        try {
+          saved = localStorage.getItem('theme');
+        } catch (e) {}
+        if (saved === 'light' || saved === 'dark') window.__setTheme(saved);
+
+        // Cross-document transitions animate the header and stripe in place, but
+        // those are not sticky: on a scrolled page they sit off-screen and would
+        // slide in from above. Drop their names for that navigation.
+        window.addEventListener('pageswap', function () {
+          if (window.scrollY > 0) root.classList.add('vt-scrolled');
+        });
+        window.addEventListener('pageshow', function (e) {
+          if (e.persisted) root.classList.remove('vt-scrolled');
+        });
       })();
     </script>
 

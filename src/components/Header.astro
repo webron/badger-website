@@ -50,7 +50,7 @@ const navLinks = [
     </div>
   </nav>
 </header>
-<Stripe />
+<Stripe class="header-stripe" />
 
 <script is:inline>
   const btn = document.getElementById('theme-toggle');
@@ -60,8 +60,23 @@ const navLinks = [
       root.getAttribute('data-theme') ??
       (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
     const next = current === 'light' ? 'dark' : 'light';
-    root.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+    const apply = () => {
+      if (window.__setTheme) window.__setTheme(next);
+      else root.setAttribute('data-theme', next);
+    };
+    try {
+      localStorage.setItem('theme', next);
+    } catch (e) {}
+    // Animate through a view transition where the browser has one; elsewhere,
+    // and under reduced motion, the theme simply switches.
+    if (
+      typeof document.startViewTransition === 'function' &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      document.startViewTransition(apply);
+    } else {
+      apply();
+    }
   });
 </script>
 

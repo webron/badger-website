@@ -699,3 +699,34 @@ a:hover {
 .callout.warning .caps {
   color: var(--warning);
 }
+
+
+/* ---------------------------------------------------------------------------
+   View transitions: page-to-page navigation and the theme switch.
+
+   Cross-document transitions are opt-in per page and only outside reduced
+   motion. Browsers without support ignore the at-rule and navigate as before.
+   The header and stripe get their own names so they are captured as separate
+   layers: identical on both pages, they stay put while the rest cross-fades.
+   `vt-scrolled` (set on the outgoing page, see BaseLayout) removes the names
+   when the page is scrolled, since the header is not sticky.
+   ------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  html:not(.vt-scrolled) .site-header {
+    view-transition-name: site-header;
+  }
+
+  html:not(.vt-scrolled) .header-stripe {
+    view-transition-name: site-stripe;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 180ms;
+    animation-timing-function: ease-out;
+  }
+}
