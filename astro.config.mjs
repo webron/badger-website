@@ -13,7 +13,11 @@ export default defineConfig({
     // honest value available here: the site is a static build, so every page in
     // a given deploy was produced at the same moment, and claiming a per-page
     // date we do not track would be worse than claiming none.
-    sitemap({ lastmod: new Date() }),
+    sitemap({
+      lastmod: new Date(),
+      // Unlisted review pages (src/pages/review/) stay out of the sitemap.
+      filter: (page) => !page.includes('/review/'),
+    }),
     // IndexNow (Bing, and so ChatGPT search) is deliberately NOT pinged from
     // the build. An integration here pings during `npm run build`, before the
     // deploy job publishes the site, so the search engine fetched the key file
