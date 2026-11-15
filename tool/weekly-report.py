@@ -35,6 +35,7 @@ from _stats_sources import (  # noqa: E402
 )
 from _rival_watch import panel as build_rivals  # noqa: E402
 from _search_health import bing_health, google_health  # noqa: E402
+from _tracking_check import check as tracking_check  # noqa: E402
 
 DEFAULT_OUT = Path.home() / "Development/badger-artifacts/site-stats/weekly.html"
 WEEKS = 5  # this week plus the four it is measured against
@@ -130,6 +131,7 @@ def build_goatcounter(days: int) -> str:
         f'<p class="figure">{this_week}<span> page views this week</span></p>',
         f'<p class="sub">{esc(context)}</p>',
         sparkline(buckets),
+        tracking_line(),
     ]
 
     parts.append("<h3>Pages</h3>")
@@ -160,6 +162,17 @@ def build_goatcounter(days: int) -> str:
         "Nobody has tapped through to a store in this window."))
 
     return panel("Website", f"{gc['start']} to {gc['end']} UTC", "".join(parts))
+
+
+def tracking_line() -> str:
+    """One line: is GoatCounter still counting, judged against Search Console."""
+    try:
+        r = tracking_check()
+    except Exception as exc:  # noqa: BLE001 - never cost the Website panel
+        r = {"error": f"Tracking check failed ({type(exc).__name__})."}
+    if "error" in r:
+        return f'<p class="sub">{esc(r["error"])}</p>'
+    return f'<p class="{"error" if r["flag"] else "sub"}">{esc(r["line"])}</p>'
 
 
 def build_search_console(days: int) -> str:
