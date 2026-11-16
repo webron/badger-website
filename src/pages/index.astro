@@ -3,44 +3,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StoreBadges from '../components/StoreBadges.astro';
-import PositioningStrip from '../components/PositioningStrip.astro';
-import PhoneFrameBand from '../components/PhoneFrameBand.astro';
-import FeatureRow from '../components/FeatureRow.astro';
-import LedgerRow from '../components/LedgerRow.astro';
-import ArrowGlyph from '../components/ArrowGlyph.astro';
+import HomeScreen from '../components/home/HomeScreen.astro';
+import RestBar from '../components/home/RestBar.astro';
+import '../styles/home.css';
 import { APP_STORE_URL, PLAY_URL } from '../store-links';
 
 // Kept at or under 165 characters: Google truncates the displayed snippet at
 // roughly that width, and this string is the snippet, the og:description and
 // the schema description all at once. Measure before editing.
 const description =
-  'Badger is a workout and strength tracker for Android and iOS. As capable as the big trackers, as private as a notebook. No account, no subscription, works offline.';
+  'Badger is a workout and strength tracker for Android and iOS. Log a set and the rest timer starts, the plates are counted and your program picks the weights.';
 
-// The switching band. These pages answer a question someone arrives with, and
-// they were previously reachable only from /guides, two clicks in. A crawler
-// reads internal links as a statement of what matters on a site, and so does a
-// person who landed here from a search for their old app's name.
-const switchingGuides = [
-  {
-    href: '/guides/fitnotes-alternative/',
-    app: 'FitNotes',
-    blurb: 'Your .fitnotes backup brings your whole exercise library as well as your sets.',
-  },
-  {
-    href: '/guides/moving-from-stronglifts/',
-    app: 'StrongLifts',
-    blurb: 'Export the CSV, import it, and keep your 5x5 going.',
-  },
-  {
-    href: '/guides/strong-alternative/',
-    app: 'Strong',
-    blurb: 'Your RPE and per-set notes come across with your sets.',
-  },
-  {
-    href: '/guides/hevy-alternative/',
-    app: 'Hevy',
-    blurb: 'The richest export of the four. Your warmups arrive as warmups.',
-  },
+// The four importers. They link to the guide for each app: these pages answer a
+// question someone arrives with, and a crawler reads internal links from the
+// homepage as a statement of what matters on the site.
+const importers = [
+  { href: '/guides/fitnotes-alternative/', app: 'FitNotes' },
+  { href: '/guides/strong-alternative/', app: 'Strong' },
+  { href: '/guides/hevy-alternative/', app: 'Hevy' },
+  { href: '/guides/moving-from-stronglifts/', app: 'StrongLifts' },
 ];
 
 const ORG_ID = 'https://badger.fit/#organization';
@@ -96,459 +77,192 @@ const structuredData = {
     },
   ],
 };
-
-const positioning = [
-  { value: 'No account needed', detail: 'no sign-up, no login' },
-  { value: 'No subscription', detail: 'free, no caps' },
-  { value: 'Works offline', detail: 'basement-gym proof' },
-  { value: 'Your data stays yours', detail: 'on your phone, export anytime' },
-];
-
-// Copy: docs/2026-07-16-copy-worklist.md section 1 (feature ledger), verbatim.
-// Grid fills row-first, so this order is left, right, left, right down the page.
-//
-// Four rows carry an inline link to the page that documents that exact feature.
-// The 2026-09 voice pass edited the gym and deload rows away from the worklist
-// wording. Bodies are rendered as HTML by FeatureRow; keep them free of bare
-// & < > if you edit them.
-const features = [
-  {
-    glyph: 'barbell',
-    title: 'Logging that keeps up',
-    body: 'Weight, reps, time, distance, whatever the exercise needs. Warmup sets, RPE, RIR, tempo, and per-set notes included.',
-  },
-  {
-    glyph: 'stopwatch',
-    title: 'Rest timer',
-    body: 'Auto-starts after each working set. Per-exercise defaults, live countdown on your lock screen, sound or vibration.',
-  },
-  {
-    glyph: 'program',
-    title: 'Routines and programs',
-    body: 'Build your own or start from <a href="/programs/">eleven built-in programs</a> (StrongLifts, 5/3/1, PPL, and more). Supersets, scheduled days, predefined sets.',
-  },
-  {
-    glyph: 'trend',
-    title: 'Progress you can read',
-    body: '<a href="/help/progress/">PR detection for every exercise type</a>, estimated 1RM, 11 graphs per exercise, activity heatmap, weekly volume by muscle group.',
-  },
-  {
-    glyph: 'gym',
-    title: 'Your gym, modeled',
-    body: '<a href="/help/gyms/">Track which gym and which machine every set was done on</a>. Separate PRs per machine, the weight steps each machine really has, attachments and grips.',
-  },
-  {
-    glyph: 'plate',
-    title: 'Plate calculator',
-    body: 'Barbell, machine, and single-lever modes. Finds the best combination from the plates your gym actually has.',
-  },
-  {
-    glyph: 'compare',
-    title: 'Planned vs. actual',
-    body: 'Finish a routine workout and the summary shows what you hit against what the plan asked for, set by set.',
-  },
-  {
-    glyph: 'import',
-    title: 'Bring your history',
-    body: '<a href="/guides/switching/">Import from FitNotes, Strong, Hevy, or StrongLifts</a>. Export every set to CSV or back up the full database anytime.',
-  },
-  {
-    glyph: 'wave',
-    title: 'Deload, handled',
-    body: 'Optional deload detection by time, RPE, or stalled lifts. Lightens the load for a week. Your next normal session starts from your real weights, not the deload ones.',
-  },
-  {
-    glyph: 'shield',
-    title: 'Backup on your terms',
-    body: 'Automatic backup to a private folder in your own Google Drive, or a plain file you keep wherever you like. Optional, off by default.',
-  },
-] as const;
-
-const shouldDo = [
-  { label: 'Unlimited routines, unlimited history', annotation: 'no free-tier caps' },
-  { label: 'Full-depth set logging', annotation: 'RPE · RIR · tempo · warmups' },
-  { label: 'PRs and graphs for every exercise type', annotation: 'est. 1RM included' },
-  { label: 'Per-gym equipment and machine tracking', annotation: 'PRs per machine' },
-  { label: 'Plate calculator and warmup generator', annotation: 'your plates, your increments' },
-  { label: 'Imports from four other trackers', annotation: 'FitNotes · Strong · Hevy · StrongLifts' },
-];
-
-// Account, subscription and offline are said once, in the positioning strip at
-// the top. This column carries only what the strip does not.
-const shouldnt = [
-  { label: 'No ads', annotation: 'no tracking, nothing sent to us' },
-  { label: 'No lock-in', annotation: 'CSV export and full backup, anytime' },
-  { label: 'No streak guilt', annotation: 'no XP, no badges, no nagging' },
-];
 ---
 
 <BaseLayout
   title="Badger"
-  fullTitle="Badger - Workout & strength tracker for Android & iOS"
+  fullTitle="Badger - Workout & strength tracker that handles the rest"
   description={description}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(structuredData)} />
 
   <Header currentPath={Astro.url.pathname} />
 
-  <main>
+  <main class="home">
     <section class="hero">
-      <span class="kicker">Workout &amp; strength tracker &middot; Android &amp; iOS</span>
-
-      <!-- The space before the break is collapsed on screen but keeps the two
-           sentences separated in the text content, so the heading does not read
-           as "trackers.As private" to a screen reader or a crawler. -->
-      <h1>As capable as the big trackers. <br />As private as a notebook.</h1>
-
-      <p class="hero-sub">
-        Log every set, run programs like 5/3/1 and StrongLifts, and watch your PRs and progress,
-        all on your phone.
-      </p>
-
-      <div class="hero-badges">
-        <StoreBadges id="download" />
-      </div>
-
-      <a class="docs-link" href="/help/getting-started/">
-        Read the help <ArrowGlyph />
-      </a>
-
-      <PositioningStrip items={positioning} />
-    </section>
-
-    <PhoneFrameBand />
-
-    <section class="block">
-      <h2 class="caps section-label">What's in the app</h2>
-      <div class="rule-ink section-rule"></div>
-
-      <ul class="features">
-        {features.map((f) => <FeatureRow glyph={f.glyph} title={f.title} body={f.body} />)}
-      </ul>
-    </section>
-
-    <section class="block">
-      <div class="spread">
-        <div class="spread-col">
-          <div class="rule-ink"></div>
-          <h2>Everything a tracker should do</h2>
-          <ul>
-            {shouldDo.map((r) => <LedgerRow label={r.label} annotation={r.annotation} />)}
+      <div class="wrap">
+        <div class="hero-copy">
+          <div class="eyebrow">Workout &amp; strength tracker &middot; Android &amp; iOS</div>
+          <div>
+            <!-- The space before the break is collapsed on screen but keeps the two
+                 sentences apart in the text content, so the heading does not read as
+                 "set.Badger" to a screen reader or a crawler. -->
+            <h1>Log the set. <br /><span class="it">Badger handles the&nbsp;rest.</span></h1>
+            <div class="stripe"></div>
+          </div>
+          <p class="lede">
+            Save a set and the rest timer starts. The plates are counted, last session's numbers
+            sit above the next set, and programs like 5/3/1 and StrongLifts work out what goes on
+            the bar.
+          </p>
+          <div class="hero-badges">
+            <StoreBadges id="download" />
+          </div>
+          <ul class="facts">
+            <li>No account needed</li>
+            <li>Works offline</li>
           </ul>
         </div>
 
-        <div class="spread-col">
-          <div class="rule-ink"></div>
-          <h2>Nothing a tracker shouldn't</h2>
-          <ul>
-            {shouldnt.map((r) => <LedgerRow label={r.label} annotation={r.annotation} />)}
-          </ul>
+        <div class="stage">
+          <HomeScreen
+            hero
+            name="training"
+            alt="Training screen for Flat Barbell Bench Press with the sets already logged below the weight and reps boxes"
+          />
+          <div class="pop lockchip" aria-hidden="true">
+            <b>LOCK SCREEN</b>&minus;15 s &middot; +15 s &middot; Skip, without opening the app
+          </div>
+          <RestBar />
         </div>
       </div>
     </section>
 
-    <section class="block switching">
-      <h2 class="caps section-label">Coming from another app</h2>
-      <div class="rule-ink section-rule"></div>
-
-      <ul class="switch-rows">
-        {switchingGuides.map((g) => (
-          <li>
-            <a class="switch-row" href={g.href}>
-              <span class="switch-row__app">{g.app}</span>
-              <span class="switch-row__blurb">{g.blurb}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+    <section class="rule">
+      <div class="wrap">
+        <div class="head center">
+          <div class="eyebrow">At the bar</div>
+          <h2>Between sets, <span class="it">it does the math.</span></h2>
+          <div class="stripe"></div>
+        </div>
+        <div class="scenes">
+          <div class="scene">
+            <div class="stage">
+              <HomeScreen
+                name="tools"
+                alt="Plate calculator showing 225 lbs on a 45 lb bar, with the plates for each side"
+              />
+              <div class="pop tag" style="bottom: 10%" aria-hidden="true">
+                45 bar + 90 each side<small>1 &times; 55 &middot; 1 &times; 35 per side</small>
+              </div>
+            </div>
+            <h3>Plates, counted.</h3>
+            <p>
+              Type 225 and see what goes on each side, from the plates your gym has. Barbell,
+              machine or single-lever.
+            </p>
+          </div>
+          <div class="scene">
+            <div class="stage">
+              <HomeScreen
+                name="set_timer"
+                alt="Set timer counting down 47 seconds for a plank"
+              />
+              <div class="pop tag" style="top: 30%" aria-hidden="true">
+                Spoken countdown<small>plays over your music</small>
+              </div>
+            </div>
+            <h3>Timed sets, out loud.</h3>
+            <p>
+              Planks and holds get a countdown you can hear, so the phone stays on the floor. It
+              keeps going with the screen locked.
+            </p>
+          </div>
+          <div class="scene">
+            <div class="stage">
+              <HomeScreen
+                name="program_day"
+                alt="Bench day of a 5/3/1 style program with every set's weight filled in"
+              />
+              <div class="pop tag" style="top: 24%" aria-hidden="true">
+                190 lbs &times; 1+<small>from your training max</small>
+              </div>
+            </div>
+            <h3>Today's weights, ready.</h3>
+            <p>Start a program day and every set already has its weight. Tick them off as you go.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="promise-teaser">
-      <p class="teaser-line">Five commitments about your data and your money, written down.</p>
-      <a class="teaser-link" href="/promise/">
-        Read the Badger promise <ArrowGlyph />
-      </a>
+    <section class="rule">
+      <div class="wrap">
+        <div class="split">
+          <div class="stage">
+            <HomeScreen
+              name="progress_pr"
+              alt="Bench press progress overview: an estimated one-rep max of 306, last session's top set, and a chart of the past year with the personal record marked"
+            />
+            <div
+              class="pop tag"
+              style="top: 21%; left: auto; right: -34px; width: 150px"
+              aria-hidden="true"
+            >
+              PR<small>best est. 1RM 326.8</small>
+            </div>
+          </div>
+          <div class="copy">
+            <div class="eyebrow">After the workout</div>
+            <h2>Watch your <span class="it">strength climb.</span></h2>
+            <div class="stripe"></div>
+            <p>
+              Every exercise gets a chart and its records. The summary puts today next to last
+              time, lift by lift.
+            </p>
+            <ul class="ticks">
+              <li>Estimated 1RM, heaviest set, rep records</li>
+              <li>Records kept per gym and per machine</li>
+              <li>Weekly muscle balance</li>
+            </ul>
+          </div>
+        </div>
+        <div class="split flip">
+          <div class="stage">
+            <HomeScreen
+              name="stall"
+              alt="Workout B with the back squat's stage changed after three misses in a row"
+            />
+            <div class="pop tag" style="top: 45%" aria-hidden="true">
+              Stage 2 of 3<small>3 misses in a row, plan changed</small>
+            </div>
+          </div>
+          <div class="copy">
+            <div class="eyebrow">When a lift stalls</div>
+            <h2>Miss a lift, <span class="it">the plan adjusts.</span></h2>
+            <div class="stripe"></div>
+            <p>
+              Programs follow their own rules for a stall: change the rep scheme, deload, or reset
+              the training max. You see what changed and why before you start.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rule">
+      <div class="wrap center" style="display: grid; gap: 14px; justify-items: center">
+        <div class="eyebrow">Switching?</div>
+        <h2>Bring your history <span class="it">with you.</span></h2>
+        <div class="stripe"></div>
+        <p class="lede">Import your log from these four apps and pick up where you left off.</p>
+        <ul class="imports">
+          {importers.map((i) => <li><a href={i.href}>{i.app}</a></li>)}
+        </ul>
+      </div>
     </section>
 
     <section class="cta">
-      <h2>Ready to start?</h2>
-      <p>Badger is free on Google Play and the App Store.</p>
-      <StoreBadges lazy />
+      <div class="wrap">
+        <h2>Your next session, <span class="it">sorted.</span></h2>
+        <div class="stripe"></div>
+        <StoreBadges lazy />
+        <p class="small">
+          Free on Android and iOS. Your log stays on your phone.
+          <a href="/promise/">Read the Badger promise</a>
+        </p>
+      </div>
     </section>
   </main>
 
   <Footer />
 </BaseLayout>
-
-<style>
-  /* ---- hero ---- */
-
-  .hero {
-    padding: 68px 24px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 20px;
-  }
-
-  .hero h1 {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-weight: 600;
-    font-size: clamp(28px, 4.4vw, 44px);
-    line-height: 1.18;
-    max-width: 30ch;
-    color: var(--text);
-  }
-
-  .hero-sub {
-    margin: 0;
-    font-size: 16.5px;
-    line-height: 1.65;
-    color: var(--text-secondary);
-    max-width: 58ch;
-  }
-
-  /* A wrapper this page owns, rather than a class handed to StoreBadges: Astro
-     does not extend a parent's style scope onto a child component's root, so a
-     scoped .store-badges rule from here would never match. */
-  .hero-badges {
-    margin-top: 6px;
-  }
-
-  .docs-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
-    color: var(--text-secondary);
-    text-decoration: none;
-  }
-
-  .docs-link:hover {
-    color: var(--text);
-    text-decoration: underline;
-  }
-
-  /* ---- sections ---- */
-
-  .block {
-    padding: 60px 24px 0;
-  }
-
-  .section-label {
-    display: block;
-    max-width: 1012px;
-    margin: 0 auto 6px;
-  }
-
-  .section-rule {
-    max-width: 1012px;
-    margin: 0 auto;
-  }
-
-  /* ---- feature ledger ---- */
-
-  .features {
-    max-width: 1012px;
-    margin: 0 auto;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 56px;
-  }
-
-  /* ---- capable / shouldn't spread ---- */
-
-  .spread {
-    max-width: 1012px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px;
-  }
-
-  .spread h2 {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 18px;
-    color: var(--text);
-    padding: 14px 0 10px;
-  }
-
-  .spread ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  /* ---- promise teaser ---- */
-
-  .promise-teaser {
-    text-align: center;
-    padding: 68px 24px 4px;
-  }
-
-  /* Capped and centered on the same 1012px measure as every other band. Left
-     uncapped it filled the section, so past about 1060px of viewport the line
-     kept widening while the bands above and below it stayed at 1012 - the same
-     detachment the switching rows had. The text is centered, so today's short
-     sentence hides it; a longer one would wrap at the full viewport width. */
-  .teaser-line {
-    margin: 0 auto;
-    max-width: 1012px;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 22px;
-    color: var(--text);
-  }
-
-  .teaser-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--accent-ink);
-    text-decoration: none;
-  }
-
-  .teaser-link:hover {
-    text-decoration: underline;
-  }
-
-  /* ---- CTA ---- */
-
-  .cta {
-    max-width: 1012px;
-    margin: 64px auto 0;
-    padding: 28px 24px 8px;
-    border-top: 2px solid var(--ink);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    text-align: center;
-  }
-
-  .cta h2 {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-weight: 600;
-    font-size: 24px;
-    color: var(--text);
-  }
-
-  .cta p {
-    margin: 0;
-    font-size: 14.5px;
-    color: var(--text-secondary);
-    max-width: 46ch;
-  }
-
-  /* The spread's widest pair ("Plate calculator and warmup generator" against
-     "your plates, your increments") needs ~430px to hold one line, so two
-     columns only earn their keep from about 1000px up. Below that they are
-     narrower than the content and the labels shred into three ragged lines,
-     which is what the mockup does at tablet width. One wide column instead:
-     still a ledger, still label-left annotation-right, just readable. */
-  @media (max-width: 1000px) {
-    .spread {
-      grid-template-columns: 1fr;
-      gap: 34px;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .hero {
-      padding: 44px 20px 32px;
-    }
-
-    .block {
-      padding: 52px 20px 0;
-    }
-
-    .features {
-      grid-template-columns: 1fr;
-      column-gap: 0;
-    }
-
-    .promise-teaser {
-      padding: 56px 20px 4px;
-    }
-
-    .teaser-line {
-      font-size: 20px;
-    }
-
-    .cta {
-      margin-top: 52px;
-      padding: 28px 20px 8px;
-    }
-  }
-
-  /* ---- switching band ---- */
-
-  /* Same 1012px measure and centering as every other section child (the caps
-     label and its rule directly above, the feature ledger, the two-column
-     spread, the CTA). Without it the rows ran the full width of the section,
-     which only shows above about 1060px of viewport: past that the label and
-     rule stay centered at 1012 while the rows underneath keep widening, so the
-     band reads as detached from its own heading. */
-  .switch-rows {
-    list-style: none;
-    max-width: 1012px;
-    margin: 0 auto;
-    padding: 0;
-  }
-
-  .switch-row {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    padding: 13px 0;
-    border-bottom: 1px solid var(--hair);
-    text-decoration: none;
-  }
-
-  .switch-row:hover {
-    text-decoration: none;
-  }
-
-  .switch-row__app {
-    flex: 0 0 auto;
-    min-width: 130px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .switch-row:hover .switch-row__app {
-    color: var(--accent-ink);
-  }
-
-  .switch-row__blurb {
-    font-size: 13.5px;
-    line-height: 1.55;
-    color: var(--text-secondary);
-  }
-
-  /* Same reasoning as the guide picker: the pair does not fit side by side on a
-     phone, so the blurb drops under the app name rather than being shredded. */
-  @media (max-width: 560px) {
-    .switch-row {
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .switch-row__app {
-      min-width: 0;
-    }
-  }
-</style>
