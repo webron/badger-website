@@ -20,7 +20,7 @@ export const mainNav = [
   { href: '/glossary/', label: 'Glossary', match: (p) => p === '/glossary' },
 ];
 
-// Where "Search" in the phone menu goes: the field at the top of the help index.
+// Where "Search" in the phone menu and the header search icon go: the field at the top of the help index.
 export const searchHref = '/help/#help-search';
 
 // Footer, in three rows. Same links as before, regrouped.
@@ -32,7 +32,7 @@ export const footerGroups = [
       { href: '/guides/', label: 'Guides' },
       { href: '/programs/', label: 'Programs' },
       { href: '/glossary/', label: 'Glossary' },
-      { href: '/badger-format/', label: 'File format' },
+      { href: '/badger-format/', label: '.badger file format' },
     ],
   },
   {

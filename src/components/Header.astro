@@ -32,11 +32,18 @@ const navLinks = mainNav.map((l) => ({ ...l, active: l.match(path) }));
         ))
       }
 
+      <a class="nav-search" href={searchHref} aria-label="Search help and guides" title="Search help and guides">
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false">
+          <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.9"></circle>
+          <line x1="15.5" y1="15.5" x2="20.5" y2="20.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></line>
+        </svg>
+      </a>
+
       <a class="btn-accent" href="/#download">Get the app</a>
 
       <!-- Phone menu: a native disclosure, so it works without script and keeps
            keyboard and screen-reader behavior. Shown at 640px and below, where
-           the four links above do not fit. The small script below only closes it. -->
+           the four links and the search icon above do not fit. The small script below only closes it. -->
       <details class="nav-menu">
         <summary class="nav-menu-btn">
           <span>Menu</span>
@@ -92,6 +99,10 @@ const navLinks = mainNav.map((l) => ({ ...l, active: l.match(path) }));
     });
     document.addEventListener('click', function (e) {
       if (!menu.contains(e.target)) close();
+    });
+    // Tabbing out past the last link closes it too, so it does not sit open over the page.
+    menu.addEventListener('focusout', function (e) {
+      if (e.relatedTarget && !menu.contains(e.relatedTarget)) close();
     });
     menu.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && menu.hasAttribute('open')) {
@@ -204,7 +215,8 @@ const navLinks = mainNav.map((l) => ({ ...l, active: l.match(path) }));
   /* .btn-accent itself is a shared primitive in global.css (the promise page's
      closing CTA uses the same button). */
 
-  #theme-toggle {
+  #theme-toggle,
+  .nav-search {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -218,7 +230,13 @@ const navLinks = mainNav.map((l) => ({ ...l, active: l.match(path) }));
     cursor: pointer;
   }
 
-  #theme-toggle:hover {
+  .nav-search:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  #theme-toggle:hover,
+  .nav-search:hover {
     color: var(--text);
     border-color: var(--text-muted);
   }
@@ -361,7 +379,8 @@ const navLinks = mainNav.map((l) => ({ ...l, active: l.match(path) }));
       right: 16px;
     }
 
-    .nav-link {
+    .nav-link,
+    .nav-search {
       display: none;
     }
 
