@@ -10,6 +10,7 @@ worth another go and which are answers to be reported as-is.
 from __future__ import annotations
 
 import io
+import socket
 import sys
 import unittest
 import warnings
@@ -130,6 +131,19 @@ class GetJsonRetry(unittest.TestCase):
         result, error, calls, _ = self.call([TimeoutError("timed out"), ok()])
         self.assertIsNone(error)
         self.assertEqual(calls, 2)
+
+    def test_retries_socket_timeout(self):
+        # On Python 3.9 socket.timeout is not a TimeoutError, so it needs its
+        # own arm. Run this under /usr/bin/python3 to see it matter.
+        result, error, calls, _ = self.call([socket.timeout("timed out"), ok()])
+        self.assertIsNone(error)
+        self.assertEqual(result, {"total": 1})
+        self.assertEqual(calls, 2)
+
+    def test_gives_up_on_a_persistent_socket_timeout(self):
+        _, error, calls, _ = self.call(socket.timeout("timed out"))
+        self.assertIsInstance(error, socket.timeout)
+        self.assertEqual(calls, src.RETRY_ATTEMPTS)
 
     def test_error_body_survives_the_retry_path(self):
         # play_quality() calls exc.read() on the raised error. Reading headers

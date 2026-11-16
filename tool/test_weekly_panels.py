@@ -101,6 +101,25 @@ class AiFailureReasons(unittest.TestCase):
         self.assertIn("1 (TimeoutError)", html)
         self.assertNotIn("429 means", html)
 
+    def test_429_note_shows_even_when_429_is_not_a_top_code(self):
+        rows = ([f"2026-11-09\tgemini\tg\tp{i}\t\t\tTimeoutError" for i in range(3)]
+                + [f"2026-11-09\tgemini\tg\tq{i}\t\t\t404" for i in range(2)]
+                + [f"2026-11-09\tgemini\tg\tr{i}\t\t\t429" for i in range(2)])
+        summary = probe.latest_summary(history(rows))
+        self.assertEqual(summary["providers"]["gemini"]["error_codes"], ["TimeoutError", "404"])
+        with mock.patch.object(report, "latest_summary", return_value=summary):
+            html = report.build_ai_answers()
+        self.assertIn("7 (TimeoutError, HTTP 404)", html)
+        self.assertIn("429 means the provider refused", html)
+
+    def test_a_csv_error_reads_as_no_history(self):
+        with mock.patch.object(probe.csv, "DictReader", side_effect=probe.csv.Error("bad")):
+            self.assertEqual(probe.latest_summary(history(["x"])), {"empty": True})
+
+    def test_a_crashing_ai_panel_is_an_error_panel(self):
+        with mock.patch.object(report, "build_ai_answers", side_effect=boom):
+            self.assertIn("AI answers failed (RuntimeError).", report.build_ai_answers_safe())
+
     def test_no_failures_shows_a_bare_zero(self):
         html = self.panel(["2026-11-09\topenai\to\tp1\t1\t1\t"])
         self.assertIn("<td>0</td>", html)

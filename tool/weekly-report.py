@@ -487,7 +487,7 @@ def build_ai_answers() -> str:
         codes = v.get("error_codes") or []
         if codes:
             failed += " (" + ", ".join(error_label(c) for c in codes) + ")"
-            quota = quota or "429" in codes
+        quota = quota or v.get("rate_limited", 0) > 0
         rows.append([esc(name), f'{v["named"]} of {v["asked"]}',
                      f'{v["cited"]} of {v["asked"]}', esc(failed)])
     missing = [p for p in PROVIDERS if p not in summary["providers"]]
@@ -664,6 +664,13 @@ def build_rivals_safe() -> str:
         return error_panel("Rivals", f"Rival watch failed ({type(exc).__name__}).")
 
 
+def build_ai_answers_safe() -> str:
+    try:
+        return build_ai_answers()
+    except Exception as exc:  # noqa: BLE001 - never cost the rest of the report
+        return error_panel("AI answers", f"AI answers failed ({type(exc).__name__}).")
+
+
 def main() -> None:
     argv = sys.argv[1:]
     out = Path(argv[argv.index("--out") + 1]) if "--out" in argv else DEFAULT_OUT
@@ -678,7 +685,7 @@ def main() -> None:
         build_search_health(),
         build_play(days),
         build_app_store(days),
-        build_ai_answers(),
+        build_ai_answers_safe(),
         build_rivals_safe(),
     ])
 
