@@ -1,19 +1,23 @@
 ---
 import Search from 'astro-pagefind/components/Search';
+import { sectionOf, browseLabel, strip } from '../lib/wayfinding.mjs';
 
 interface Props {
   currentPath: string;
 }
 const { currentPath } = Astro.props;
+const here = strip(currentPath);
 
-// Help groups first, in the order a new user meets them, with "Getting
-// started" on top: a reader with a problem should not scroll past the guides
-// to reach it. The guides collapse into one group of hub links near the
-// bottom; each hub links on to its own pages. Every anchor below must exist
-// as an id on its target page.
+// One group per topic, in the order a new user meets them, with "Getting
+// started" on top. Each group has a `section` (help, guides or reference): the
+// reader's own section is listed first. An item without a '#' is a PAGE row; an
+// item with one is an anchor row that belongs to the page row above it. Anchor
+// rows only show inside the open group, and the open group is the one holding
+// the current page. Every anchor below must exist as an id on its target page.
 const nav = [
   {
     label: 'Getting started',
+    section: 'help',
     items: [
       { href: `/help/getting-started/`, label: 'Quick start' },
       { href: `/help/getting-started/#first-workout`, label: 'Your first workout' },
@@ -24,6 +28,7 @@ const nav = [
   },
   {
     label: 'Logging workouts',
+    section: 'help',
     items: [
       { href: `/help/logging/`, label: 'Logging sets' },
       { href: `/help/logging/#set-types`, label: 'Warmup sets' },
@@ -38,6 +43,7 @@ const nav = [
   },
   {
     label: 'Exercises',
+    section: 'help',
     items: [
       { href: `/help/exercises/`, label: 'Exercise library' },
       { href: `/help/exercises/#search-filter`, label: 'Search and filters' },
@@ -50,6 +56,7 @@ const nav = [
   },
   {
     label: 'Routines',
+    section: 'help',
     items: [
       { href: `/help/routines/`, label: 'Overview' },
       { href: `/help/routines/#creating`, label: 'Create a routine' },
@@ -63,6 +70,7 @@ const nav = [
   },
   {
     label: 'Progression',
+    section: 'help',
     items: [
       { href: `/help/progression/`, label: 'Why your weight changed' },
       { href: `/help/progression/#rules`, label: 'Progression rules' },
@@ -75,6 +83,7 @@ const nav = [
   },
   {
     label: 'Gyms and equipment',
+    section: 'help',
     items: [
       { href: `/help/gyms/`, label: 'Picking equipment in a workout' },
       { href: `/help/gyms/#machines`, label: 'Machines and attachments' },
@@ -87,6 +96,7 @@ const nav = [
   },
   {
     label: 'History',
+    section: 'help',
     items: [
       { href: `/help/history/`, label: 'Viewing history' },
       { href: `/help/history/#views`, label: 'List and calendar views' },
@@ -99,6 +109,7 @@ const nav = [
   },
   {
     label: 'Progress',
+    section: 'help',
     items: [
       { href: `/help/progress/`, label: 'Exercise progress' },
       { href: `/help/progress/#prs`, label: 'Personal records' },
@@ -111,6 +122,7 @@ const nav = [
   },
   {
     label: 'Goals',
+    section: 'help',
     items: [
       { href: `/help/goals/`, label: 'Goals per lift' },
       { href: `/help/goals/#set-a-goal`, label: 'Set a goal' },
@@ -125,6 +137,7 @@ const nav = [
   },
   {
     label: 'Body',
+    section: 'help',
     items: [
       { href: `/help/body/`, label: 'Body tracking' },
       { href: `/help/body/#what-you-track`, label: 'Choosing what you track' },
@@ -136,7 +149,9 @@ const nav = [
   },
   {
     label: 'Tools',
+    section: 'help',
     items: [
+      { href: `/help/tools/`, label: 'Tools overview' },
       { href: `/help/tools/#calculators`, label: 'Calculators' },
       { href: `/help/tools/#plate-calculator`, label: 'Plate calculator' },
       { href: `/help/tools/#percent-of-max`, label: 'Percent of max' },
@@ -146,82 +161,139 @@ const nav = [
   },
   {
     label: 'Settings and data',
+    section: 'help',
     items: [
       { href: `/help/settings/`, label: 'Settings overview' },
       { href: `/help/settings/#units`, label: 'Units and equipment' },
-      { href: `/help/settings/#logging`, label: 'Logging sets' },
       { href: `/help/settings/#timers`, label: 'Timers and sounds' },
       { href: `/help/settings/#coaching`, label: 'Coaching settings' },
       { href: `/help/settings/#app`, label: 'Display and behavior' },
       { href: `/help/settings/#data`, label: 'Backup, import and export' },
-      { href: `/help/settings/#backup`, label: 'Backup and restore' },
-      { href: `/help/settings/#export`, label: 'Exporting data' },
       { href: `/help/phone-migration/`, label: 'Moving to a new phone' },
     ],
   },
   {
-    label: 'Guides',
+    label: 'Find your path',
+    section: 'guides',
     items: [
-      { href: `/guides/`, label: 'Pick your guide' },
+      { href: `/guides/`, label: 'Guides' },
+      { href: `/guides/just-lifting/`, label: 'Just want to lift?' },
+      { href: `/guides/program-runner/`, label: 'Running a program' },
+      { href: `/guides/machines-and-cardio/`, label: 'Machines and cardio' },
+      { href: `/guides/minimal-equipment/`, label: 'No or minimal equipment' },
+      { href: `/guides/optimizer/`, label: 'Show me the data' },
+    ],
+  },
+  {
+    label: 'Moving to Badger',
+    section: 'guides',
+    items: [
       { href: `/guides/switching/`, label: 'Switching from another app' },
-      { href: `/guides/moving-from-stronglifts/`, label: 'Moving from StrongLifts' },
+      { href: `/guides/strong-alternative/`, label: 'From Strong' },
+      { href: `/guides/hevy-alternative/`, label: 'From Hevy' },
+      { href: `/guides/fitnotes-alternative/`, label: 'From FitNotes' },
+      { href: `/guides/fitnotes-on-iphone/`, label: 'FitNotes on iPhone' },
+      { href: `/guides/moving-from-stronglifts/`, label: 'From StrongLifts' },
+    ],
+  },
+  {
+    label: 'Program guides',
+    section: 'guides',
+    items: [
+      { href: `/programs/`, label: 'All programs' },
+      { href: `/guides/stronglifts-5x5-tracker/`, label: 'StrongLifts 5x5' },
+      { href: `/guides/gzclp-app/`, label: 'GZCLP' },
+      { href: `/guides/531-app/`, label: '5/3/1 Boring But Big' },
+      { href: `/tools/531-calculator/`, label: '5/3/1 calculator' },
+      { href: `/guides/nsuns-app/`, label: 'nSuns 531LP' },
+      { href: `/guides/madcow-app/`, label: 'Madcow 5x5' },
+      { href: `/guides/starting-strength-app/`, label: 'Starting Strength' },
+    ],
+  },
+  {
+    label: 'More guides',
+    section: 'guides',
+    items: [
+      { href: `/guides/workout-tracker-no-subscription/`, label: 'No subscription' },
       { href: `/guides/ai/`, label: 'Use your own AI' },
       { href: `/guides/overview/`, label: 'Everything Badger does' },
     ],
   },
   {
     label: 'Reference',
+    section: 'reference',
     items: [
-      { href: `/glossary/`, label: 'Words to know' },
-      { href: `/programs/`, label: 'Programs' },
-      { href: `/badger-format/`, label: 'The .badger file format' },
+      { href: `/glossary/`, label: 'Glossary' },
+      { href: `/badger-format/`, label: '.badger file format' },
+      { href: `/changelog/`, label: 'Changelog' },
     ],
   },
 ];
+
+// The reference group is named for itself, so it takes no section heading.
+const sectionNames = { help: 'Help', guides: 'Guides', reference: '' };
+
+// Page rows only: an anchor row never matches, so exactly one row per page is
+// current. Links carry a trailing slash so a crawler is not sent through a
+// redirect; here is already stripped of one, so strip the href to compare.
+const isPageRow = (item) => !item.href.includes('#');
+const isCurrent = (item) => isPageRow(item) && strip(item.href) === here;
+
+// The group holding the current page is the one that opens.
+const openGroup = nav.find((g) => g.items.some(isCurrent));
+
+// The reader's own section first, the rest in the order above (a stable sort).
+const mine = sectionOf(here);
+const groups = [...nav].sort((a, b) => Number(b.section === mine) - Number(a.section === mine));
+const toggleLabel = browseLabel(here);
 ---
 
 <aside id="help-sidebar">
   <!-- Search pinned at top - never scrolls away -->
   <div class="help-search-wrap">
-    <Search id="help-search" uiOptions={{ showImages: false, showSubResults: false, excerptLength: 12, pageSize: 20 }} />
+    <Search
+      id="help-search"
+      uiOptions={{
+        showImages: false,
+        showSubResults: true,
+        excerptLength: 12,
+        pageSize: 20,
+        translations: { placeholder: 'Search help and guides' },
+      }}
+    />
   </div>
   <!-- Nav: scrolls independently on desktop, collapsible on mobile -->
   <details id="help-nav-details" open>
     <summary class="help-nav-toggle">
-      <span class="help-nav-toggle-label">Browse help topics</span>
+      <span class="help-nav-toggle-label">{toggleLabel}</span>
       <svg class="help-nav-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </summary>
-    <nav id="help-sidebar-nav">
-    {nav.map(section => (
-      <div class="sgroup">
-        <p class="caps sgroup-label">{section.label}</p>
-        <ul>
-          {section.items.map(item => {
-            // Exact match only. Comparing against the href with its hash stripped
-            // marked every anchor item on the current page active at once, so
-            // /help/logging lit up all four of its rows and the keyline ran down
-            // the group as one accent block. Astro sees no fragment server-side,
-            // so this resolves to exactly one row per page: the page's own entry.
-            // Links carry a trailing slash so a crawler is not sent through a
-            // redirect; currentPath arrives already stripped of one, so strip
-            // the href to compare. An anchor item ends in its fragment, is
-            // untouched by this, and so still never matches - which is the
-            // one-row-per-page behavior described above.
-            const active = currentPath === item.href.replace(/\/$/, "");
-            return (
-              <li>
-                <a
-                  class:list={['sgroup-link', { active }]}
-                  href={item.href}
-                  aria-current={active ? 'page' : undefined}
-                >
-                  {item.label}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+    <nav id="help-sidebar-nav" aria-label="Help and guides">
+    {groups.map((section, i) => (
+      <>
+        {sectionNames[section.section] && (i === 0 || groups[i - 1].section !== section.section) && (
+          <p class="ssection">{sectionNames[section.section]}</p>
+        )}
+        <details class="sgroup" open={section === openGroup}>
+          <summary class="sgroup-label">{section.label}</summary>
+          <ul>
+            {section.items.map(item => {
+              const active = isCurrent(item);
+              return (
+                <li class:list={{ 'sgroup-anchor': !isPageRow(item) }}>
+                  <a
+                    class:list={['sgroup-link', { active }]}
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </details>
+      </>
     ))}
     </nav>
   </details>
@@ -248,9 +320,24 @@ const nav = [
     function nameField() {
       var input = wrap.querySelector('.pagefind-ui__search-input');
       if (!input) return false;
-      input.setAttribute('aria-label', 'Search Badger help');
+      input.setAttribute('aria-label', 'Search help and guides');
+      // The phone menu's Search entry links to /help/#help-search: land in the field.
+      if (location.hash === '#help-search') input.focus({ preventScroll: false });
       return true;
     }
+
+    // Search links to /help/#help-search; on this page they only change the
+    // hash, so focus the field on that tap too, not only on page load.
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href$="#help-search"]');
+      if (!a || a.pathname !== location.pathname) return;
+      var input = wrap.querySelector('.pagefind-ui__search-input');
+      if (!input) return;
+      e.preventDefault();
+      if (location.hash !== '#help-search') history.pushState(null, '', '#help-search');
+      wrap.scrollIntoView({ block: 'start' });
+      input.focus({ preventScroll: true });
+    });
 
     if (nameField()) return;
 
@@ -448,23 +535,77 @@ const nav = [
 
   /* ---- the index ---- */
 
-  .sgroup {
-    margin-bottom: 22px;
+  /* A section heading (Help, Guides) over a run of groups. */
+  .ssection {
+    margin: 18px 0 6px;
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
   }
 
-  /* Caps label over a hairline: the group heading of a journal index. */
-  .sgroup-label {
-    display: block;
-    font-size: 10px;
-    color: var(--text-muted);
-    margin: 0 0 2px;
-    padding-bottom: 5px;
+  .ssection:first-child {
+    margin-top: 0;
+  }
+
+  /* One group per topic, collapsed unless it holds the current page. The links
+     of a closed group stay in the DOM. */
+  .sgroup {
     border-bottom: 1px solid var(--hair);
+  }
+
+  /* Caps label over a hairline: the group heading of a journal index. It is a
+     disclosure, so it carries a chevron and a visible focus ring. */
+  .sgroup-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 2px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .sgroup-label::-webkit-details-marker {
+    display: none;
+  }
+
+  .sgroup-label::after {
+    content: '';
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border-right: 1.6px solid currentColor;
+    border-bottom: 1.6px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+  }
+
+  .sgroup[open] > .sgroup-label::after {
+    transform: translateY(1px) rotate(-135deg);
+  }
+
+  .sgroup-label:hover {
+    color: var(--text);
+  }
+
+  .sgroup-label:focus-visible,
+  .sgroup-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+
+  .sgroup[open] > .sgroup-label {
+    color: var(--text);
   }
 
   .sgroup ul {
     list-style: none;
-    margin: 0;
+    margin: 0 0 10px;
     padding: 0;
   }
 
@@ -477,6 +618,12 @@ const nav = [
     color: var(--text-secondary);
     text-decoration: none;
     border-left: 2px solid transparent;
+  }
+
+  /* An anchor row sits under its page row, one step in and a size down. */
+  .sgroup-anchor .sgroup-link {
+    padding: 4px 0 4px 22px;
+    font-size: 12.5px;
   }
 
   .sgroup-link:hover {

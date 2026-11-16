@@ -3,22 +3,46 @@ import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import HelpSidebar from '../components/HelpSidebar.astro';
-import { addHeadingAnchors } from '../lib/heading-anchors.mjs';
+import { addHeadingAnchors, headingText } from '../lib/heading-anchors.mjs';
+import { defaultNext } from '../lib/wayfinding.mjs';
+
+interface NextLink {
+  href: string;
+  label: string;
+  note?: string;
+}
 
 interface Props {
   title: string;
   description?: string;
+  /** Replaces the default "<title> - Badger" tab title. */
+  fullTitle?: string;
+  /** Up to three links for the "Next" block. Omit for the default, pass [] for none. */
+  next?: NextLink[];
+  /** Force the "On this page" list on or off. Default: on from four h2s. */
+  toc?: boolean;
+  /** Pagefind weight of the article text. Below 1 ranks the page lower in search. */
+  searchWeight?: number;
 }
 
-const { title, description } = Astro.props;
+const { title, description, fullTitle, next, toc, searchWeight } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 // Every h2/h3 gets an id and a link icon at build time (see the module for why
 // not in the browser).
 const article = addHeadingAnchors(await Astro.slots.render('default'));
+
+// "On this page": the h2s of the article, read back from the HTML that already
+// carries their ids. Pages with fewer than four h2s do not need one.
+const headings = [...article.matchAll(/<h2\b[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/gi)]
+  .map((m) => ({ id: m[1], text: headingText(m[2]) }))
+  .filter((h) => h.text);
+const showToc = toc ?? headings.length >= 4;
+
+const nextLinks = (next ?? defaultNext(currentPath)).slice(0, 3);
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} fullTitle={fullTitle}>
   <!-- Forwarded so a guide page can pass its own JSON-LD (see ArticleSchema)
        into <head>. Without this the named slot is swallowed here and the
        markup lands in the article body, where a crawler ignores it. -->
@@ -26,15 +50,63 @@ const article = addHeadingAnchors(await Astro.slots.render('default'));
 
   <Header currentPath={currentPath} />
 
-  <div class="help-shell">
+  <div class:list={['help-shell', { 'has-toc': showToc }]}>
     <HelpSidebar currentPath={currentPath} />
 
     <main class="help-main">
-      <article class="prose">
+      {
+        showToc && (
+          <details class="toc-inline">
+            <summary>On this page</summary>
+            <ol>
+              {headings.map((h) => (
+                <li>
+                  <a href={`#${h.id}`}>{h.text}</a>
+                </li>
+              ))}
+            </ol>
+          </details>
+        )
+      }
+
+      <article class="prose" data-pagefind-weight={searchWeight}>
         <Fragment set:html={article} />
       </article>
       <p class="heading-anchor-status sr-only" aria-live="polite"></p>
+
+      {
+        nextLinks.length > 0 && (
+          <nav class="next-steps" aria-labelledby="next-steps-label">
+            <p class="caps" id="next-steps-label">Next</p>
+            <ul>
+              {nextLinks.map((l) => (
+                <li>
+                  <a href={l.href}>
+                    <span class="next-label">{l.label}</span>
+                    {l.note && <span class="next-note">{l.note}</span>}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
     </main>
+
+    {
+      showToc && (
+        <nav class="toc-rail" aria-label="On this page">
+          <p class="caps">On this page</p>
+          <ol>
+            {headings.map((h) => (
+              <li>
+                <a href={`#${h.id}`}>{h.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
   </div>
 
   <Footer />
@@ -111,6 +183,165 @@ const article = addHeadingAnchors(await Astro.slots.render('default'));
 
   .help-main .prose {
     max-width: 720px;
+  }
+
+  /* ---- On this page ---- */
+
+  .toc-rail,
+  .toc-inline ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-rail ol {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+  }
+
+  .toc-rail li a,
+  .toc-inline li a {
+    display: block;
+    padding: 4px 0 4px 10px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-left: 2px solid var(--hair);
+  }
+
+  .toc-rail li a:hover,
+  .toc-inline li a:hover {
+    color: var(--text);
+    border-left-color: var(--accent);
+    text-decoration: none;
+  }
+
+  .toc-rail a:focus-visible,
+  .toc-inline summary:focus-visible,
+  .toc-inline a:focus-visible,
+  .next-steps a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Wide: a sticky rail to the right of the article. The shell is wider than on
+     pages without one so the article keeps its 720px measure. */
+  .toc-rail {
+    display: none;
+  }
+
+  .toc-inline {
+    margin: 0 0 1.5rem;
+    border: 1px solid var(--outline);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  .toc-inline summary {
+    cursor: pointer;
+    padding: 0.65rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text);
+    list-style: none;
+  }
+
+  .toc-inline summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-inline summary::after {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-left: 10px;
+    border-right: 1.6px solid currentColor;
+    border-bottom: 1.6px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+  }
+
+  .toc-inline[open] summary::after {
+    transform: translateY(1px) rotate(-135deg);
+  }
+
+  .toc-inline ol {
+    padding: 0 1rem 0.75rem;
+  }
+
+  @media (min-width: 1120px) {
+    .help-shell.has-toc {
+      max-width: 1260px;
+      gap: 2.5rem;
+    }
+
+    .toc-inline {
+      display: none;
+    }
+
+    .toc-rail {
+      display: block;
+      flex: none;
+      width: 184px;
+      position: sticky;
+      top: 1.5rem;
+      max-height: calc(100vh - 3rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .help-shell.has-toc .help-main {
+      flex: 0 1 720px;
+    }
+  }
+
+  /* ---- Next ---- */
+
+  .next-steps {
+    max-width: 720px;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--ink);
+  }
+
+  .next-steps ul {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+  }
+
+  .next-steps li + li {
+    border-top: 1px solid var(--hair);
+  }
+
+  .next-steps a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.15rem 1rem;
+    padding: 0.7rem 0;
+    text-decoration: none;
+  }
+
+  .next-steps a:hover {
+    text-decoration: none;
+  }
+
+  .next-steps a:hover .next-label {
+    text-decoration: underline;
+  }
+
+  .next-label {
+    font-weight: 600;
+    color: var(--accent-ink);
+  }
+
+  .next-note {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
   }
 
   @media (max-width: 768px) {

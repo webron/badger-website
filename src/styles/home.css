@@ -1,0 +1,530 @@
+/* Homepage (src/pages/index.astro) styles that need the site's theme state.
+
+   Phone screens take the OPPOSITE theme to the page: slate (dark) iPhone screens
+   on the paper (light) page, paper (light) Android screens on the slate (dark)
+   page. The popped-out rest bar follows the theme of the SCREEN it sits on, so it
+   is slate on the paper page and paper on the slate page.
+
+   The theme state is read exactly the way global.css reads it: slate is the
+   :root default, a (prefers-color-scheme: light) query swaps to paper, and
+   [data-theme] (set pre-paint from localStorage, flipped by the header toggle)
+   beats both. Order matters for the same reason as there: the light media query
+   comes first and the two manual overrides last, so the toggle wins in both
+   directions. */
+
+/* ---- Tokens: page slate (default) -> screens are paper -------------------- */
+
+:root {
+  --home-body: var(--badger-slate-text-body);
+  --home-edge: #4a453b; /* the phone's rim on a slate page */
+  --home-dim: 0.93; /* paper screens are a touch bright on a slate page */
+
+  /* Rest bar card = paper, because the screen under it is paper. */
+  --rb-surface: var(--badger-paper-surface);
+  --rb-variant: var(--badger-paper-surface-variant);
+  --rb-ink: var(--badger-paper-ink);
+  --rb-outline: var(--badger-paper-outline);
+  --rb-subtle: var(--badger-paper-outline-subtle);
+  --rb-text: var(--badger-paper-text-primary);
+  --rb-muted: var(--badger-paper-text-muted);
+  --rb-secondary: var(--badger-paper-text-secondary);
+  --rb-accent-ink: #297081; /* the app's accentInk at runtime on paper, measured from a device capture */
+  --rb-warning: var(--badger-paper-warning);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --home-body: var(--badger-paper-text-body);
+    --home-edge: #262219;
+    --home-dim: 1;
+
+    --rb-surface: var(--badger-slate-surface);
+    --rb-variant: var(--badger-slate-surface-variant);
+    --rb-ink: var(--badger-slate-ink);
+    --rb-outline: var(--badger-slate-outline);
+    --rb-subtle: var(--badger-slate-outline-subtle);
+    --rb-text: var(--badger-slate-text-primary);
+    --rb-muted: var(--badger-slate-text-muted);
+    --rb-secondary: var(--badger-slate-text-secondary);
+    --rb-accent-ink: #3592a7; /* ditto on slate */
+    --rb-warning: var(--badger-slate-warning);
+  }
+}
+
+[data-theme="dark"] {
+  --home-body: var(--badger-slate-text-body);
+  --home-edge: #4a453b;
+  --home-dim: 0.93;
+
+  --rb-surface: var(--badger-paper-surface);
+  --rb-variant: var(--badger-paper-surface-variant);
+  --rb-ink: var(--badger-paper-ink);
+  --rb-outline: var(--badger-paper-outline);
+  --rb-subtle: var(--badger-paper-outline-subtle);
+  --rb-text: var(--badger-paper-text-primary);
+  --rb-muted: var(--badger-paper-text-muted);
+  --rb-secondary: var(--badger-paper-text-secondary);
+  --rb-accent-ink: #297081; /* the app's accentInk at runtime on paper, measured from a device capture */
+  --rb-warning: var(--badger-paper-warning);
+}
+
+[data-theme="light"] {
+  --home-body: var(--badger-paper-text-body);
+  --home-edge: #262219;
+  --home-dim: 1;
+
+  --rb-surface: var(--badger-slate-surface);
+  --rb-variant: var(--badger-slate-surface-variant);
+  --rb-ink: var(--badger-slate-ink);
+  --rb-outline: var(--badger-slate-outline);
+  --rb-subtle: var(--badger-slate-outline-subtle);
+  --rb-text: var(--badger-slate-text-primary);
+  --rb-muted: var(--badger-slate-text-muted);
+  --rb-secondary: var(--badger-slate-text-secondary);
+  --rb-accent-ink: #3592a7;
+  --rb-warning: var(--badger-slate-warning);
+}
+
+/* ---- Which screen shows ---------------------------------------------------
+   .scr-on-slate is the paper screen (shown on a slate page); .scr-on-paper is
+   the slate screen (shown on a paper page). The hidden one is never fetched for
+   lazy images: a display:none <img loading="lazy"> has no box to bring near the
+   viewport. Same cascade order as the token blocks above. */
+
+.scr-on-paper {
+  display: none;
+}
+
+.scr-on-slate {
+  display: block;
+}
+
+@media (prefers-color-scheme: light) {
+  .scr-on-paper {
+    display: block;
+  }
+
+  .scr-on-slate {
+    display: none;
+  }
+}
+
+[data-theme="dark"] .scr-on-paper {
+  display: none;
+}
+
+[data-theme="dark"] .scr-on-slate {
+  display: block;
+}
+
+[data-theme="light"] .scr-on-paper {
+  display: block;
+}
+
+[data-theme="light"] .scr-on-slate {
+  display: none;
+}
+
+/* ---- Page ---------------------------------------------------------------- */
+
+.home {
+  --home-wrap: 1120px;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--home-body);
+}
+
+.home .wrap {
+  max-width: var(--home-wrap);
+  margin: 0 auto;
+  padding-inline: max(24px, env(safe-area-inset-left, 0px));
+}
+
+.home h1,
+.home h2,
+.home h3 {
+  font-family: var(--font-serif);
+  color: var(--text);
+  font-weight: 600;
+  margin: 0;
+  text-wrap: balance;
+  line-height: 1.12;
+}
+
+.home h1 {
+  font-size: clamp(2.3rem, 5.4vw, 4.1rem);
+  letter-spacing: -0.01em;
+}
+
+.home h2 {
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+}
+
+.home h3 {
+  font-size: 1.35rem;
+}
+
+.home .it {
+  font-style: italic;
+  color: var(--accent-ink);
+  font-weight: 500;
+}
+
+.home .eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.home .lede {
+  margin: 0;
+  font-size: 1.15rem;
+  max-width: 34em;
+  color: var(--home-body);
+}
+
+/* The journal stripe: thick over thin, as on the store screenshots. */
+.home .stripe {
+  height: 7px;
+  width: 132px;
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  margin-top: 18px;
+}
+
+.home .center .stripe {
+  margin-inline: auto;
+}
+
+.home section {
+  padding-block: 72px;
+}
+
+.home .rule {
+  border-top: 1px solid var(--outline);
+}
+
+/* ---- Hero ---------------------------------------------------------------- */
+
+.home .hero {
+  padding-block: 0;
+}
+
+.home .hero .wrap {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 48px;
+  align-items: center;
+  padding-block: 40px 64px;
+}
+
+.home .hero-copy {
+  display: grid;
+  gap: 22px;
+  justify-items: start;
+}
+
+.home .hero-badges {
+  margin-left: -10px; /* the badge's own 10px clear space lines up with the text */
+}
+
+.home .hero-badges .store-badges {
+  justify-content: flex-start;
+}
+
+.home .facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.home .facts li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* A drawn check: Exo 2's latin subset has no U+2713, and a fallback glyph would
+   look different on every device. */
+.home .facts li::before {
+  content: "";
+  width: 5px;
+  height: 10px;
+  border: solid var(--accent-ink);
+  border-width: 0 2px 2px 0;
+  transform: translateY(-1px) rotate(45deg);
+}
+
+/* ---- Phones -------------------------------------------------------------- */
+
+.home .stage {
+  position: relative;
+  max-width: 330px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.home .phone {
+  position: relative;
+  border-radius: 34px;
+  padding: 7px;
+  background: var(--home-edge);
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.05),
+    0 24px 48px -24px rgba(20, 16, 8, 0.45);
+}
+
+.home .phone img {
+  width: 100%;
+  height: auto;
+  border-radius: 28px;
+}
+
+.home .phone img.scr-on-slate {
+  filter: brightness(var(--home-dim));
+}
+
+/* Popped-out cards other than the rest bar: always paper, in both themes, so
+   they stand clear of whichever screen is under them. */
+.home .pop {
+  position: absolute;
+  background: var(--badger-paper-surface);
+  color: var(--badger-paper-ink);
+  border: 2px solid var(--badger-accent-petrol);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px -18px rgba(20, 16, 8, 0.55);
+}
+
+.home .lockchip {
+  top: 9%;
+  right: -58px;
+  padding: 9px 12px;
+  font-size: 0.78rem;
+  line-height: 1.3;
+  max-width: 170px;
+}
+
+.home .lockchip b {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--badger-paper-text-secondary);
+}
+
+.home .tag {
+  left: -18px;
+  right: -18px;
+  padding: 10px 12px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.home .tag small {
+  display: block;
+  font-weight: 500;
+  color: var(--badger-paper-text-secondary);
+  font-size: 0.75rem;
+}
+
+/* ---- Scenes at the bar ---------------------------------------------------- */
+
+.home .head {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.home .center {
+  text-align: center;
+}
+
+.home .scenes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px 32px;
+}
+
+.home .scene {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.home .scene .stage {
+  max-width: 260px;
+}
+
+.home .scene p {
+  margin: 0;
+}
+
+.home .scene h3 {
+  margin-bottom: -8px;
+}
+
+/* ---- Split rows ----------------------------------------------------------- */
+
+.home .split {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.home .split + .split {
+  margin-top: 80px;
+}
+
+.home .split.flip {
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.home .split.flip .stage {
+  order: 2;
+}
+
+.home .split .stage {
+  max-width: 290px;
+}
+
+.home .split .copy {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+
+.home .split .copy p {
+  margin: 0;
+  max-width: 32em;
+}
+
+.home .ticks {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.home .ticks li {
+  padding-left: 22px;
+  position: relative;
+}
+
+.home .ticks li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 12px;
+  height: 2px;
+  background: var(--accent-ink);
+}
+
+/* ---- Importers ------------------------------------------------------------ */
+
+.home .imports {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home .imports a {
+  display: block;
+  border: 1px solid var(--outline);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  text-decoration: none;
+}
+
+.home .imports a:hover {
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
+  text-decoration: none;
+}
+
+/* ---- Closing -------------------------------------------------------------- */
+
+.home .cta {
+  background: var(--panel);
+}
+
+.home .cta .wrap {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  text-align: center;
+}
+
+.home .small {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* ---- Narrow screens ------------------------------------------------------- */
+
+@media (max-width: 880px) {
+  .home .hero .wrap {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding-block: 24px 48px;
+  }
+
+  .home .scenes {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin-inline: auto;
+    gap: 56px;
+  }
+
+  .home .scene .stage,
+  .home .split .stage {
+    max-width: 230px;
+  }
+
+  .home .split,
+  .home .split.flip {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .home .split.flip .stage {
+    order: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .home .wrap {
+    padding-inline: max(20px, env(safe-area-inset-left, 0px));
+  }
+
+  .home .section,
+  .home section {
+    padding-block: 56px;
+  }
+
+  .home .hero .stage {
+    max-width: 290px;
+  }
+
+  .home .lockchip {
+    right: -8px;
+  }
+}

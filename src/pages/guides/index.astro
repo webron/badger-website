@@ -32,20 +32,51 @@ const personas = [
     title: 'Show me the data',
     blurb: "You want the numbers. PRs, strength trends, training volume, and when you have stalled.",
   },
+];
+
+// Moving over from another app: the hub, then one page per app.
+const moving = [
   {
     href: '/guides/switching/',
     title: "I'm switching from another app",
-    blurb: "You have history in FitNotes, Strong, Hevy, or StrongLifts. Bring it over, and see what carries across from yours.",
+    blurb: 'You have history in FitNotes, Strong, Hevy, or StrongLifts. Bring it over, and see what carries across from yours.',
   },
-];
-
-// Not personas: each answers one question someone arrives with.
-const questions = [
+  {
+    href: '/guides/strong-alternative/',
+    title: 'Moving from Strong',
+    blurb: 'Export the Strong CSV, import it, and check what carries across.',
+  },
+  {
+    href: '/guides/hevy-alternative/',
+    title: 'Moving from Hevy',
+    blurb: 'The Hevy CSV keeps warmups as warmups and brings RPE with it.',
+  },
+  {
+    href: '/guides/fitnotes-alternative/',
+    title: 'Moving from FitNotes',
+    blurb: 'Your .fitnotes backup brings the library, every set, routines and measurements.',
+  },
+  {
+    href: '/guides/fitnotes-on-iphone/',
+    title: 'FitNotes on iPhone',
+    blurb:
+      'There is no iPhone version of FitNotes. What to do with the log you already have when you switch phones.',
+  },
   {
     href: '/guides/moving-from-stronglifts/',
     title: 'Moving from StrongLifts',
     blurb:
       'Export the CSV, import it, check the preview, and carry on with your 5x5.',
+  },
+];
+
+// One guide per program, under a link to the program files themselves.
+const programs = [
+  {
+    href: '/programs/',
+    title: 'All programs',
+    blurb: 'Eleven starter programs as files you can import, with a spreadsheet for each.',
+    go: 'See the programs',
   },
   {
     href: '/guides/stronglifts-5x5-tracker/',
@@ -66,6 +97,13 @@ const questions = [
       'Training max per lift, the four-week wave, and a max that rises after each cycle.',
   },
   {
+    href: '/tools/531-calculator/',
+    title: '5/3/1 calculator',
+    blurb:
+      'Enter a training max or a recent best set and get every set weight for the four-week wave, plus the next max.',
+    go: 'Open the calculator',
+  },
+  {
     href: '/guides/nsuns-app/',
     title: 'nSuns 531LP in Badger',
     blurb:
@@ -83,18 +121,9 @@ const questions = [
     blurb:
       'Alternating A and B days, weight added each session, and what happens when you stall.',
   },
-  {
-    href: '/tools/531-calculator/',
-    title: '5/3/1 calculator',
-    blurb:
-      'Enter a training max or a recent best set and get every set weight for the four-week wave, plus the next max.',
-  },
-  {
-    href: '/guides/fitnotes-on-iphone/',
-    title: 'FitNotes on iPhone',
-    blurb:
-      'There is no iPhone version of FitNotes. What to do with the log you already have when you switch phones.',
-  },
+];
+
+const more = [
   {
     href: '/guides/workout-tracker-no-subscription/',
     title: 'A tracker with no subscription',
@@ -115,12 +144,14 @@ const questions = [
 ];
 
 const groups = [
-  { label: 'Start here', rows: personas },
-  { label: 'Common questions', rows: questions },
+  { label: 'Find your path', rows: personas },
+  { label: 'Moving to Badger', rows: moving },
+  { label: 'Programs', rows: programs },
+  { label: 'More', rows: more },
 ];
 ---
 
-<HelpLayout title="Guides" description="Pick the guide that matches how you train and get going with Badger in a few minutes.">
+<HelpLayout title="Guides" description="Pick the guide that matches how you train, move your history over from another app, or run a program. Get going with Badger in a few minutes.">
   <h1>Guides</h1>
   <p>You do not need all of Badger on day one. Pick the description that sounds most like you, and the guide covers the parts that matter for how you train.</p>
 
@@ -134,7 +165,7 @@ const groups = [
             <a class="guide-row" href={r.href}>
               <span class="guide-row__head">
                 <span class="guide-row__title">{r.title}</span>
-                <span class="guide-row__go">Read this guide &rarr;</span>
+                <span class="guide-row__go">{r.go ?? 'Read this guide'} &rarr;</span>
               </span>
               <span class="guide-row__blurb">{r.blurb}</span>
             </a>

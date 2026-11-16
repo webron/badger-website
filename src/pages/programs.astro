@@ -154,7 +154,23 @@ function readProgram(slug: string): ProgramFile {
   };
 }
 
-const programs = programCopy.map((p) => ({ ...p, file: readProgram(p.slug) }));
+// The guide that goes with each program, where one exists. 5/3/1 also has a
+// calculator. Program guides are linked from here so a reader on this page can
+// find what the program asks of them before they download it.
+const guideFor: Record<string, { href: string; label: string; extra?: { href: string; label: string } }> = {
+  'stronglifts-5x5': { href: '/guides/stronglifts-5x5-tracker/', label: 'StrongLifts 5x5 in Badger' },
+  'starting-strength': { href: '/guides/starting-strength-app/', label: 'Starting Strength in Badger' },
+  gzclp: { href: '/guides/gzclp-app/', label: 'GZCLP in Badger' },
+  '531-bbb': {
+    href: '/guides/531-app/',
+    label: '5/3/1 Boring But Big in Badger',
+    extra: { href: '/tools/531-calculator/', label: '5/3/1 calculator' },
+  },
+  'nsuns-531lp': { href: '/guides/nsuns-app/', label: 'nSuns 531LP in Badger' },
+  'madcow-5x5': { href: '/guides/madcow-app/', label: 'Madcow 5x5 in Badger' },
+};
+
+const programs = programCopy.map((p) => ({ ...p, file: readProgram(p.slug), guide: guideFor[p.slug] }));
 // Files are regenerated per release, so a newer program can sit beside older exports.
 const appVersions = [...new Set(programs.map((p) => p.file.appVersion))].sort();
 const appVersion = appVersions.join(' and ');
@@ -211,15 +227,15 @@ const progressCards = [
 ];
 
 const description =
-  'Eleven starter programs as .badger files you can import straight into Badger: Full Body Starter, StrongLifts 5x5, Starting Strength, full body, GZCLP, 5/3/1 Boring But Big, nSuns 531LP, Madcow 5x5, upper/lower, a five-day push/pull/legs and upper/lower hybrid, and six-day push/pull/legs. Six of them carry their own progression rules.';
+  'Eleven starter programs as .badger files you can import into Badger, from StrongLifts 5x5 and GZCLP to 5/3/1, nSuns and push/pull/legs, with spreadsheets.';
 ---
 
-<BaseLayout title="Download GZCLP, 5/3/1, nSuns and Madcow program files" description={description}>
+<BaseLayout title="Programs" fullTitle="Programs: GZCLP, 5/3/1, nSuns, Madcow and more - Badger" description={description}>
   <Header currentPath={Astro.url.pathname} />
 
   <main class="doc">
-    <span class="kicker">Programs</span>
-    <h1>Programs you can import</h1>
+    <span class="kicker">Starter routines</span>
+    <h1>Programs</h1>
     <p class="lede">
       Each of these is a <code>.badger</code> file: a routine you download, open on your phone, and
       import into Badger in one step.
@@ -270,6 +286,22 @@ const description =
               {fmtSize(p.file.bytes)}
             </p>
             <p class="program-blurb">{p.blurb}</p>
+            {p.guide && (
+              <p class="program-get">
+                Guide:{' '}
+                <a class="download" href={p.guide.href}>
+                  {p.guide.label}
+                </a>
+                {p.guide.extra && (
+                  <>
+                    {' '}
+                    <a class="download" href={p.guide.extra.href}>
+                      {p.guide.extra.label}
+                    </a>
+                  </>
+                )}
+              </p>
+            )}
             <p class="program-get">
               <a class="download" href={`/programs/${p.slug}.badger`} download>
                 Download {p.slug}.badger

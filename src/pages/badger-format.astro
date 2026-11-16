@@ -71,10 +71,17 @@ const ruleExample = {
 const ruleExamplePretty = JSON.stringify(ruleExample, null, 2);
 
 const description =
-  'How a .badger file is put together: the share/v1 and share/v2 envelope, the routine, gym and machine payloads, what import does with each field, and a worked example.';
+  'How a .badger file is put together: the share/v1 and share/v2 envelope, routine, gym and machine payloads, what import does with each field, and an example.';
 ---
 
-<HelpLayout title="The .badger file format" description={description}>
+<HelpLayout
+  title="The .badger file format"
+  description={description}
+  next={[
+    { href: '/programs/', label: 'Programs', note: 'Example files to open and read.' },
+    { href: '/guides/ai/', label: 'Use your own AI', note: 'Prompts that write a routine file.' },
+  ]}
+>
   <h1>The <code>.badger</code> file format</h1>
 
   <p>
