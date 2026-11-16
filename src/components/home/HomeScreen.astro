@@ -1,0 +1,54 @@
+---
+/**
+ * A phone on the homepage: two captures of the same screen, one per app theme,
+ * swapped by CSS (.scr-on-paper / .scr-on-slate in src/styles/home.css) so the
+ * phone always takes the OPPOSITE theme to the page, toggle included.
+ *
+ * Assets are public/assets/screenshots/home/<name>-slate.webp (iPhone, shown on
+ * the paper page) and <name>-paper.webp (Android, shown on the slate page).
+ * Width and height are the files' own, so each variant reserves its box before
+ * it arrives and the page does not shift.
+ *
+ * The hero is the only eager image, and it takes fetchpriority="high" on both
+ * variants: the page cannot know at build time which theme the visitor has, and
+ * a hidden eager image is cheap next to a late LCP. Every other phone is lazy,
+ * and a lazy image inside a display:none variant is not fetched at all.
+ */
+interface Props {
+  name: string;
+  alt: string;
+  hero?: boolean;
+}
+
+const { name, alt, hero = false } = Astro.props;
+
+// Output sizes of the webp files (700 wide for the hero, 580 for the rest).
+const slate = hero ? { width: 700, height: 1521 } : { width: 580, height: 1261 };
+const paper = hero ? { width: 700, height: 1556 } : { width: 580, height: 1289 };
+const base = `/assets/screenshots/home/${name}`;
+const loading = hero ? undefined : 'lazy';
+const fetchpriority = hero ? 'high' : undefined;
+---
+
+<div class="phone">
+  <img
+    class="scr-on-paper"
+    src={`${base}-slate.webp`}
+    alt={alt}
+    width={slate.width}
+    height={slate.height}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding={hero ? undefined : 'async'}
+  />
+  <img
+    class="scr-on-slate"
+    src={`${base}-paper.webp`}
+    alt={alt}
+    width={paper.width}
+    height={paper.height}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding={hero ? undefined : 'async'}
+  />
+</div>

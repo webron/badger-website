@@ -1,0 +1,317 @@
+---
+/**
+ * The app's rest bar, drawn in HTML for the homepage hero.
+ *
+ * Source of truth is the app, not a mock:
+ *   lib/features/workout/presentation/widgets/training/rest_bar.dart
+ *   lib/features/workout/presentation/widgets/training/timer_bar_frame.dart
+ * Every size below is the app's dp value, written as a multiple of --u (one dp).
+ * --u is the card's own width over 387, the width of the real card on a 411dp
+ * phone (screen minus 12dp margins), so the card scales as a unit to whatever
+ * width the page gives it and the proportions never drift.
+ *
+ * What the app does, and this copies:
+ *  - Card: surface fill, 1.5dp ink edge, 18dp radius, soft shadow. Padding is
+ *    8 / 10 / 10 / 10 and a 6dp drain strip along the foot. The strip paints over
+ *    the edge (the app's ClipRRect child is not inset by the border).
+ *  - One row, buttons level with the big line (aligned to its bottom): -15, then
+ *    the column, then +15, a 1dp hairline and Skip. Buttons are 56dp squares with
+ *    a 12dp radius, 16dp labels. -15 and +15 are outlined in accent ink, Skip is
+ *    a filled surface-variant tile.
+ *  - The label is centered over the COLUMN (the time's own center line), not the
+ *    card, 11dp / w700 / 1.4dp tracking, "REST" muted and the hint secondary.
+ *  - The time is 52dp / w800 / -1dp tracking / tabular, in a 56dp-tall line box.
+ *  - Last 10 seconds: amber digits, amber drain, amber edge, 10% amber wash.
+ *  - Rest over: the card fills with the accent and loses its edge. There is no
+ *    -15 there, so the column grows left; "REST OVER" sits over "Set 4 is up"
+ *    (20dp / w800), both centered in it. +15 is outlined in white, Done is the
+ *    same filled tile as Skip, and the foot is an empty strip (white at 15%).
+ *
+ * The card takes the theme of the screen it sits on (the opposite of the page);
+ * see the --rb-* tokens in src/styles/home.css. It is decoration, so aria-hidden.
+ * With prefers-reduced-motion it stays on the running state.
+ */
+---
+
+<div class="rb" aria-hidden="true" data-restbar>
+  <div class="rb-card" data-state="running">
+    <div class="rb-body">
+      <div class="rb-row">
+        <span class="rb-btn rb-step rb-lead-btn">&minus;15</span>
+        <div class="rb-col">
+          <div class="rb-label">
+            <span class="rb-lead" data-label>Rest</span><span class="rb-hint" data-hint>{' · then set 4'}</span>
+          </div>
+          <div class="rb-line"><span class="rb-time" data-time>1:54</span></div>
+        </div>
+        <div class="rb-trail">
+          <span class="rb-btn rb-step">+15</span>
+          <i class="rb-hair"></i>
+          <span class="rb-btn rb-tile" data-tile>Skip</span>
+        </div>
+      </div>
+    </div>
+    <div class="rb-drain"><i data-drain style="width: 95%"></i></div>
+  </div>
+</div>
+
+<script>
+  // Counts down from 1:54 in real time for a few seconds, then faster, then in
+  // real time again through the amber last ten seconds so a visitor sees them,
+  // holds Rest over for five seconds and loops. Only runs while on screen.
+  const root = document.querySelector<HTMLElement>('[data-restbar]');
+  if (root && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const card = root.querySelector<HTMLElement>('.rb-card')!;
+    const time = root.querySelector<HTMLElement>('[data-time]')!;
+    const label = root.querySelector<HTMLElement>('[data-label]')!;
+    const hint = root.querySelector<HTMLElement>('[data-hint]')!;
+    const tile = root.querySelector<HTMLElement>('[data-tile]')!;
+    const drain = root.querySelector<HTMLElement>('[data-drain]')!;
+    const TOTAL = 120;
+    const START = 114;
+    const WARN = 10;
+    let left = START;
+    let ticks = 0;
+    let holdTicks = 0;
+    let visible = true;
+
+    const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+
+    const paint = () => {
+      if (left <= 0) {
+        card.dataset.state = 'over';
+        label.textContent = 'Rest over';
+        hint.hidden = true;
+        time.textContent = 'Set 4 is up';
+        tile.textContent = 'Done';
+        drain.style.width = '0%';
+        return;
+      }
+      card.dataset.state = left <= WARN ? 'amber' : 'running';
+      label.textContent = 'Rest';
+      hint.hidden = false;
+      time.textContent = fmt(left);
+      tile.textContent = 'Skip';
+      drain.style.width = `${(left / TOTAL) * 100}%`;
+    };
+
+    setInterval(() => {
+      if (!visible) return;
+      if (left <= 0) {
+        if (++holdTicks >= 5) {
+          left = START;
+          ticks = 0;
+          holdTicks = 0;
+          paint();
+        }
+        return;
+      }
+      ticks++;
+      // Real time at the start and through the last stretch, 4x in between.
+      const step = ticks <= 5 || left <= WARN + 4 ? 1 : Math.min(4, left - (WARN + 4));
+      left -= step;
+      paint();
+    }, 1000);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        visible = entries.some((e) => e.isIntersecting);
+      }).observe(root);
+    }
+  }
+</script>
+
+<style>
+  .rb {
+    /* The container --u is measured against. */
+    container-type: inline-size;
+    position: absolute;
+    left: -22px;
+    right: -22px;
+    bottom: 15%;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .rb-card {
+    --u: calc(100cqw / 387);
+    --rb-fill: var(--rb-surface);
+    --rb-edge: var(--rb-ink);
+    --rb-digits: var(--rb-text);
+    --rb-bar: var(--rb-accent-ink);
+    position: relative;
+    overflow: hidden;
+    background: var(--rb-fill);
+    color: var(--rb-text);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1;
+    border-radius: calc(var(--u) * 18);
+    /* Flutter: blur 26, spread -12, offset (0, 10), shadow color at 40%. */
+    box-shadow: 0 calc(var(--u) * 10) calc(var(--u) * 26) calc(var(--u) * -12) rgba(0, 0, 0, 0.4);
+  }
+
+  /* The edge sits under the content, as in the app, so the foot strip covers it. */
+  .rb-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: calc(var(--u) * 1.5) solid var(--rb-edge);
+    border-radius: inherit;
+  }
+
+  .rb-body {
+    position: relative;
+    padding: calc(var(--u) * 8) calc(var(--u) * 10) calc(var(--u) * 10);
+  }
+
+  .rb-row {
+    display: flex;
+    align-items: flex-end;
+    gap: calc(var(--u) * 8);
+  }
+
+  .rb-col {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* Centered over the column, and allowed to reach past it on either side. */
+  .rb-label {
+    display: flex;
+    justify-content: center;
+    height: calc(var(--u) * 16.5);
+    line-height: calc(var(--u) * 16.5);
+    font-size: calc(var(--u) * 11);
+    font-weight: 700;
+    letter-spacing: calc(var(--u) * 1.4);
+    text-transform: uppercase;
+    white-space: pre;
+    color: var(--rb-muted);
+  }
+
+  .rb-hint {
+    color: var(--rb-secondary);
+  }
+
+  .rb-hint[hidden] {
+    display: none;
+  }
+
+  .rb-line {
+    height: calc(var(--u) * 56);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .rb-time {
+    font-size: calc(var(--u) * 52);
+    font-weight: 800;
+    letter-spacing: calc(var(--u) * -1);
+    font-variant-numeric: tabular-nums;
+    color: var(--rb-digits);
+  }
+
+  .rb-trail {
+    display: flex;
+    align-items: center;
+  }
+
+  .rb-btn {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    min-width: calc(var(--u) * 56);
+    height: calc(var(--u) * 56);
+    padding: 0 calc(var(--u) * 8);
+    border-radius: calc(var(--u) * 12);
+    font-size: calc(var(--u) * 16);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .rb-step {
+    border: calc(var(--u) * 1.5) solid var(--rb-accent-ink);
+    color: var(--rb-accent-ink);
+  }
+
+  .rb-tile {
+    background: var(--rb-variant);
+    color: var(--rb-text);
+  }
+
+  .rb-hair {
+    flex: none;
+    width: calc(var(--u) * 1);
+    height: calc(var(--u) * 40);
+    margin: 0 calc(var(--u) * 10);
+    background: var(--rb-outline);
+  }
+
+  .rb-drain {
+    position: relative;
+    height: calc(var(--u) * 6);
+    background: var(--rb-subtle);
+  }
+
+  .rb-drain i {
+    display: block;
+    height: 100%;
+    background: var(--rb-bar);
+    border-radius: 0 calc(var(--u) * 3) calc(var(--u) * 3) 0;
+  }
+
+  /* Last ten seconds: the warning ink at 10% over the surface. */
+  .rb-card[data-state='amber'] {
+    --rb-fill: color-mix(in srgb, var(--rb-warning) 10%, var(--rb-surface));
+    --rb-edge: var(--rb-warning);
+    --rb-digits: var(--rb-warning);
+    --rb-bar: var(--rb-warning);
+  }
+
+  /* Rest over: accent fill, no edge, white ink, no -15, words on the big line. */
+  .rb-card[data-state='over'] {
+    --rb-fill: var(--badger-accent-petrol);
+    --rb-digits: var(--badger-on-accent);
+    color: var(--badger-on-accent);
+  }
+
+  .rb-card[data-state='over']::before,
+  .rb-card[data-state='over'] .rb-lead-btn {
+    display: none;
+  }
+
+  .rb-card[data-state='over'] .rb-label {
+    color: var(--badger-on-accent);
+  }
+
+  .rb-card[data-state='over'] .rb-time {
+    font-size: calc(var(--u) * 20);
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+
+  .rb-card[data-state='over'] .rb-step {
+    border-color: var(--badger-on-accent);
+    color: var(--badger-on-accent);
+  }
+
+  .rb-card[data-state='over'] .rb-hair {
+    background: rgb(255 255 255 / 0.4);
+  }
+
+  .rb-card[data-state='over'] .rb-drain {
+    background: rgb(255 255 255 / 0.15);
+  }
+
+  @media (max-width: 520px) {
+    .rb {
+      left: -10px;
+      right: -10px;
+    }
+  }
+</style>
