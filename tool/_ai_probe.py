@@ -29,6 +29,7 @@ import os
 import re
 import sys
 import tempfile
+from collections import Counter
 from datetime import date
 from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
@@ -353,13 +354,13 @@ def append_sources(sources: list[dict], path: Path = SOURCES_PATH) -> None:
 def latest_summary(path: Path = HISTORY_PATH) -> dict:
     """The newest run per provider, for the weekly report.
 
-    {"date": ..., "providers": {name: {"asked", "named", "cited", "errors"}},
+    {"date": ..., "providers": {name: {"asked", "named", "cited", "errors", "error_codes", "rate_limited"}},
     "prompts": n} or {"empty": True} when no run exists yet.
     """
     try:
         with open(path, encoding="utf-8", newline="") as fh:
             rows = list(csv.DictReader(fh, delimiter="\t"))
-    except (OSError, ValueError):  # ValueError covers UnicodeDecodeError
+    except (OSError, ValueError, csv.Error):  # ValueError covers UnicodeDecodeError
         return {"empty": True}
     rows = [r for r in rows if r.get("date") and r.get("provider")]
     if not rows:
@@ -370,13 +371,21 @@ def latest_summary(path: Path = HISTORY_PATH) -> dict:
     providers: dict[str, dict] = {}
     for r in newest.values():
         slot = providers.setdefault(
-            r["provider"], {"asked": 0, "named": 0, "cited": 0, "errors": 0})
+            r["provider"], {"asked": 0, "named": 0, "cited": 0, "errors": 0,
+                            "error_codes": [], "rate_limited": 0})
         if r.get("error"):
             slot["errors"] += 1
+            slot["error_codes"].append(r["error"])
+            slot["rate_limited"] += r["error"] == "429"
             continue
         slot["asked"] += 1
         slot["named"] += r.get("named") == "1"
         slot["cited"] += r.get("cited") == "1"
+    for slot in providers.values():
+        # Most common first, so the report can say "12 (HTTP 429)". Ties keep
+        # the code seen first.
+        counts = Counter(slot["error_codes"])
+        slot["error_codes"] = [c for c, _ in counts.most_common(2)]
     return {"date": latest, "providers": providers}
 
 

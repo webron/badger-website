@@ -471,7 +471,8 @@ class ProbeRun(unittest.TestCase):
             got = probe.latest_summary(path)
             self.assertEqual(got["date"], "2026-11-05")
             self.assertEqual(got["providers"]["openai"],
-                             {"asked": 1, "named": 1, "cited": 0, "errors": 1})
+                             {"asked": 1, "named": 1, "cited": 0, "errors": 1,
+                             "error_codes": ["X"], "rate_limited": 0})
 
     def test_config_file_supplies_keys_and_env_wins(self):
         with tempfile.TemporaryDirectory() as d:
