@@ -20,6 +20,11 @@ const {
 const fullTitle = fullTitleProp ?? (title === 'Badger' ? 'Badger' : `${title} - Badger`);
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
+
+// Cloudflare Web Analytics site token, trial started 2026-11-15 to compare it with
+// GoatCounter for a week (Ron's call on which one stays). Public by design: it
+// only names the site in Cloudflare's dashboard. Empty means no beacon.
+const CF_BEACON_TOKEN = '';
 ---
 
 <!doctype html>
@@ -102,7 +107,8 @@ const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
       })();
     </script>
 
-    <!-- GoatCounter: the site's only external request, and the only one the
+    <!-- GoatCounter: one of the site's two external requests (the Cloudflare
+         Web Analytics trial at the end of <body> is the other), and the only one the
          fonts note above does not already rule out. Cookieless and storage-free:
          it sends one hit per pageview (path, referrer, and a country resolved
          from the IP server-side, which is then discarded), keeps no identifier,
@@ -124,5 +130,20 @@ const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
   </head>
   <body>
     <slot />
+    <!-- Cloudflare Web Analytics, on trial next to GoatCounter since 2026-11-15.
+         Cookieless (no cookies or localStorage, per Cloudflare). The site is not
+         proxied through Cloudflare, so this is the manual JS snippet, placed
+         before </body> as Cloudflare's setup guide says. Disclosed in
+         /legal/privacy under "About this website". Production builds only. -->
+    {
+      import.meta.env.PROD && CF_BEACON_TOKEN && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({ token: CF_BEACON_TOKEN })}
+        />
+      )
+    }
   </body>
 </html>
