@@ -135,6 +135,11 @@ const navLinks = mainNav.map((l) => ({ ...l, active: l.match(path) }));
      header carries no border of its own. */
   .site-header {
     background: var(--bg);
+    /* The header is its own stacking context (it carries a view-transition
+       name), so the phone menu's z-index only counts inside it. Lift the whole
+       header above page content so the open menu is not painted under it. */
+    position: relative;
+    z-index: 60;
   }
 
   .site-nav {
@@ -322,12 +327,38 @@ const navLinks = mainNav.map((l) => ({ ...l, active: l.match(path) }));
   /* Under 640px the links do not fit beside the wordmark, button and toggle,
      so they move into the Menu disclosure. The footer carries the full index. */
   @media (max-width: 640px) {
-    .site-nav {
-      padding: 0 20px;
-    }
-
     .nav-menu {
       display: block;
+    }
+
+    /* Wordmark, Get the app, Menu and the toggle share one row: 360px is the
+       narrowest phone in common use, so the spacing tightens rather than a
+       control being dropped. */
+    .site-nav {
+      padding: 0 16px;
+      gap: 8px;
+    }
+
+    .wordmark {
+      gap: 7px;
+    }
+
+    .wordmark-text {
+      font-size: 19px;
+    }
+
+    .btn-accent {
+      padding: 8px 11px;
+    }
+
+    .nav-menu-btn {
+      padding: 0 8px;
+      gap: 5px;
+    }
+
+    .nav-menu-panel {
+      left: 16px;
+      right: 16px;
     }
 
     .nav-link {
@@ -335,7 +366,20 @@ const navLinks = mainNav.map((l) => ({ ...l, active: l.match(path) }));
     }
 
     .nav-right {
-      gap: 12px;
+      gap: 8px;
+    }
+  }
+
+  /* Under 360px the four controls only fit beside the mark alone. The word
+     stays in the page for screen readers. */
+  @media (max-width: 359.98px) {
+    .wordmark-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
   }
 
