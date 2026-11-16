@@ -173,8 +173,10 @@ def goatcounter(days: int) -> dict:
         return {"error": f"{GC_TOKEN_PATH} still holds the placeholder."}
 
     start, today = utc_window(days)
-    # The end is padded by a day: GoatCounter's returned range runs one day
-    # behind the requested one, so asking for exactly today omits it.
+    # The end is padded by a day: with the dashboard timezone set behind UTC
+    # (it was America/Los_Angeles until 2026-11-15) the returned range runs a day
+    # behind the requested one. Since the switch to UTC the padding adds
+    # tomorrow instead, which daily_views() drops.
     params = {"start": start.isoformat(), "end": (today + timedelta(days=1)).isoformat()}
     headers = {"Authorization": f"Bearer {token}"}
 
@@ -208,10 +210,7 @@ def goatcounter(days: int) -> dict:
         "end": today.isoformat(),
         "views": max(total.get("total", 0) - total.get("total_events", 0), 0),
         "events_total": total.get("total_events", 0),
-        "daily": [
-            (s["day"], max(s["daily"] - events_by_day.get(s["day"], 0), 0))
-            for s in total.get("stats", [])
-        ],
+        "daily": daily_views(total.get("stats", []), events_by_day, today.isoformat()),
         "pages": sorted(
             ((h.get("path", "?"), h.get("count", 0)) for h in all_hits if not h.get("event")),
             key=lambda r: -r[1],
@@ -220,6 +219,17 @@ def goatcounter(days: int) -> dict:
         "referrers": _named(refs.get("stats", [])),
         "countries": _named(locations.get("stats", [])),
     }
+
+
+def daily_views(stats: list[dict], events_by_day: dict[str, int],
+                today: str) -> list[tuple[str, int]]:
+    """(day, page views) oldest first, events subtracted, nothing after today.
+
+    A future day reads as a zero, which the weekly chart would draw as a dip
+    and the tracking check would count toward a run of empty days.
+    """
+    return [(s["day"], max(s["daily"] - events_by_day.get(s["day"], 0), 0))
+            for s in stats if s["day"] <= today]
 
 
 def _named(stats: list[dict]) -> list[tuple[str, int]]:
