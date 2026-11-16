@@ -583,20 +583,36 @@ const releases = [
 
 <BaseLayout
   title="Changelog"
-  description="What's new in Badger - a release-by-release list of features, improvements, and fixes."
+  description="What's new in Badger: a release-by-release list of features, improvements and fixes, newest first, for the Android and iOS apps."
 >
   <Header currentPath={Astro.url.pathname} />
 
-  <main class="doc">
+  <!-- The changelog is not a place to look things up, and its release notes
+       name every feature, so it stays out of search: a query for "back up"
+       should reach Settings, not 1.1.x. -->
+  <main class="doc" data-pagefind-ignore>
     <span class="kicker">Release log</span>
-    <h1>What's new</h1>
+    <h1>Changelog</h1>
     <p class="lede">
-      Every release of Badger, newest first. Badger is on Google Play and the App Store.
+      What's new in every release of Badger, newest first. Badger is on Google Play and the App Store.
     </p>
+
+    <nav class="jump" aria-label="Jump to a version">
+      <span class="caps">Jump to</span>
+      <ul>
+        {
+          releases.map((r) => (
+            <li>
+              <a href={`#v${r.version.replace(/\./g, '-')}`}>{r.version}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
 
     {
       releases.map((r, i) => (
-        <article class="release">
+        <article class="release" id={`v${r.version.replace(/\./g, '-')}`}>
           <div class="release-head">
             <h2>Version {r.version}</h2>
             {i === 0 && <span class="release-latest">Latest</span>}
@@ -651,6 +667,45 @@ const releases = [
     font-size: 38px;
     line-height: 1.15;
     color: var(--text);
+  }
+
+  .jump {
+    margin-top: 22px;
+  }
+
+  .jump ul {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 4px;
+  }
+
+  .jump a {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border: 1px solid var(--hair);
+    border-radius: 6px;
+  }
+
+  .jump a:hover {
+    color: var(--text);
+    border-color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .jump a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .release {
+    scroll-margin-top: 16px;
   }
 
   .lede {
