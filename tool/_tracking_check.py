@@ -136,10 +136,10 @@ def check() -> dict:
         rows = sc.get("rows", [])
         sc_clicks = int(rows[0].get("clicks", 0)) if rows else 0
 
-        # GoatCounter's returned range runs a day behind the requested one, so
-        # the end is padded by a day (same as goatcounter() in _stats_sources).
+        # The dashboard timezone is UTC (since 2026-11-15), so GoatCounter's
+        # days line up with Search Console's and the end date is inclusive.
         query = urllib.parse.urlencode({"start": start.isoformat(),
-                                        "end": (end + timedelta(days=1)).isoformat(),
+                                        "end": end.isoformat(),
                                         "limit": 100})
         refs = _get_json(f"{GC_SITE}/api/v0/stats/toprefs?{query}",
                          {"Authorization": f"Bearer {gc_token}"})

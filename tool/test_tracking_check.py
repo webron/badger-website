@@ -97,6 +97,15 @@ class ZeroRunTests(unittest.TestCase):
         self.assertIn("2026-11-13 to 2026-11-14", line)
 
 
+class DailyViewsTests(unittest.TestCase):
+    def test_drops_days_after_today_and_subtracts_events(self):
+        from _stats_sources import daily_views
+        stats = [{"day": "2026-11-15", "daily": 5}, {"day": "2026-11-16", "daily": 2},
+                 {"day": "2026-11-17", "daily": 0}]
+        self.assertEqual(daily_views(stats, {"2026-11-15": 1}, "2026-11-16"),
+                         [("2026-11-15", 4), ("2026-11-16", 2)])
+
+
 class WindowTests(unittest.TestCase):
     def test_window_ends_at_search_console_lag_and_spans_the_window(self):
         start, end = tc._window(date(2026, 11, 16))
