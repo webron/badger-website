@@ -119,8 +119,17 @@ def error_panel(title: str, message: str) -> str:
     return panel(title, "", f'<p class="error">{esc(message)}</p>')
 
 
+def guarded(source, label: str, *args) -> dict:
+    """Call a data source; an unexpected exception becomes the error dict the
+    panels already show, so one source can never take the report down."""
+    try:
+        return source(*args)
+    except Exception as exc:  # noqa: BLE001 - never cost the rest of the report
+        return {"error": f"{label} failed ({type(exc).__name__})."}
+
+
 def build_goatcounter(days: int) -> str:
-    gc = goatcounter(days)
+    gc = guarded(goatcounter, "Website stats", days)
     if "error" in gc:
         return error_panel("Website", gc["error"])
 
@@ -182,7 +191,7 @@ def tracking_line(daily: list[tuple[str, int]]) -> str:
 
 
 def build_search_console(days: int) -> str:
-    sc = search_console(days)
+    sc = guarded(search_console, "Google search stats", days)
     if "error" in sc:
         return error_panel("Google search", sc["error"])
 
@@ -277,7 +286,7 @@ def build_search_health() -> str:
 
 
 def build_play(days: int) -> str:
-    p = play(days)
+    p = guarded(play, "Play Store stats", days)
     if "error" in p:
         return error_panel("Play Store", p["error"])
 
@@ -305,7 +314,7 @@ def build_play(days: int) -> str:
 
     parts.append(play_ratings_section(days))
 
-    q = play_quality()
+    q = guarded(play_quality, "Play quality stats")
     parts.append("<h3>Quality</h3>")
     if "error" in q:
         parts.append(f'<p class="error">{esc(q["error"])}</p>')
@@ -348,6 +357,22 @@ def play_ratings_section(days: int) -> str:
                  f'last 7 days.'
                  + (f' {esc(r["note"])}' if r["note"] else "") + "</p>")
 
+    if r.get("by_country"):
+        parts.append('<p class="sub">Ratings by country: '
+                     + esc(", ".join(f"{c} {v:.1f}" for c, v in r["by_country"]))
+                     + ". Each figure is that country's average rating.</p>")
+    if r.get("country_note"):
+        parts.append(f'<p class="error">{esc(r["country_note"])}</p>')
+
+    def where(row: dict) -> str:
+        if r.get("country_note"):
+            place = "not known"
+        else:
+            place = " or ".join(row.get("countries") or []) or "not known"
+        lang = (f' <span class="empty">{esc(row["language"])}</span>'
+                if row.get("language") else "")
+        return esc(place) + lang
+
     def text(row: dict) -> str:
         body = esc(row["text"][:400]) if row["text"] else '<span class="empty">Stars only</span>'
         if row.get("edited"):
@@ -359,9 +384,9 @@ def play_ratings_section(days: int) -> str:
         return body
 
     parts.append(rows_table(
-        ["Stars", "Date", "Version", "Review"],
+        ["Stars", "Date", "Country", "Version", "Review"],
         [[esc(stars(row["rating"])), esc(row["updated"] or row["date"]),
-          esc(row["version"]), text(row)] for row in r["ratings"][:15]],
+          where(row), esc(row["version"]), text(row)] for row in r["ratings"][:15]],
         "Nobody rated Badger on Play in this window."))
     return "".join(parts)
 
@@ -419,7 +444,7 @@ def ios_deletions_section(days: int) -> str:
     a sentence, never a dead panel: the request may not exist yet, or Apple may
     not have written a file yet.
     """
-    data = installs_and_deletions(days)
+    data = guarded(installs_and_deletions, "App Store deletions", days)
     if "error" in data:
         return f'<h3>Deletions</h3><p class="error">{esc(data["error"])}</p>'
     if "pending" in data:
@@ -438,6 +463,11 @@ def ios_deletions_section(days: int) -> str:
     return "".join(parts)
 
 
+def error_label(code: str) -> str:
+    """An error code as the reader should see it: HTTP 429, or TimeoutError as is."""
+    return f"HTTP {code}" if code.isdigit() else code
+
+
 def build_ai_answers() -> str:
     """Whether AI search answers name Badger, from the last probe run.
 
@@ -451,14 +481,23 @@ def build_ai_answers() -> str:
                      'yet. Run <code>python3 tool/_ai_probe.py</code> with at '
                      'least one provider key.</p>')
     rows = []
+    quota = False
     for name, v in summary["providers"].items():
+        failed = str(v["errors"])
+        codes = v.get("error_codes") or []
+        if codes:
+            failed += " (" + ", ".join(error_label(c) for c in codes) + ")"
+            quota = quota or "429" in codes
         rows.append([esc(name), f'{v["named"]} of {v["asked"]}',
-                     f'{v["cited"]} of {v["asked"]}', str(v["errors"])])
+                     f'{v["cited"]} of {v["asked"]}', esc(failed)])
     missing = [p for p in PROVIDERS if p not in summary["providers"]]
     note = ""
     if missing:
         note = (f'<p class="sub">No key for {esc(", ".join(missing))}, so they '
                 f'were not asked.</p>')
+    if quota:
+        note += ('<p class="sub">429 means the provider refused for quota or rate '
+                 'limits; check the account\'s plan.</p>')
     return panel(
         "AI answers", summary["date"],
         f'<p class="sub">{len(PROMPTS)} fixed program prompts, each asked once. '
@@ -476,11 +515,11 @@ def build_app_store(days: int) -> str:
     reviews need the API key, and the storefront record needs neither. A panel
     that vanished because one of them was missing would hide the other two.
     """
-    listing = app_store_listing()
+    listing = guarded(app_store_listing, "App Store listing")
     subtitle = ""
     parts: list[str] = []
 
-    store = app_store(days)
+    store = guarded(app_store, "App Store downloads", days)
     if "error" in store:
         # Not a dead panel: the ratings and reviews below still stand.
         parts.append(f'<p class="error">{esc(store["error"])}</p>')
@@ -544,7 +583,7 @@ def build_app_store(days: int) -> str:
                      f'{esc(listing["version"])}, released {esc(listing["released"])}, '
                      f'iOS {esc(listing["minimum_os"])} and up.</p>')
 
-    reviews = app_store_reviews(days)
+    reviews = guarded(app_store_reviews, "App Store reviews", days)
     parts.append("<h3>Written reviews</h3>")
     if "error" in reviews:
         parts.append(f'<p class="error">{esc(reviews["error"])}</p>')
@@ -618,6 +657,13 @@ footer{color:var(--muted);font-size:12px;text-align:center;margin-top:8px}
 """
 
 
+def build_rivals_safe() -> str:
+    try:
+        return build_rivals()
+    except Exception as exc:  # noqa: BLE001 - never cost the rest of the report
+        return error_panel("Rivals", f"Rival watch failed ({type(exc).__name__}).")
+
+
 def main() -> None:
     argv = sys.argv[1:]
     out = Path(argv[argv.index("--out") + 1]) if "--out" in argv else DEFAULT_OUT
@@ -633,7 +679,7 @@ def main() -> None:
         build_play(days),
         build_app_store(days),
         build_ai_answers(),
-        build_rivals(),
+        build_rivals_safe(),
     ])
 
     page = (

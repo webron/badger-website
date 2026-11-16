@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import os
+import socket
 import time
 import urllib.error
 import urllib.parse
@@ -138,11 +139,13 @@ def _fetch(url: str, headers: dict, data: bytes | None, timeout: int,
             if attempt == RETRY_ATTEMPTS or exc.code not in retry_statuses:
                 raise
             wait = _retry_after(exc, delay)
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, socket.timeout):
             # A refused connection or a timed-out one. URLError is the parent of
             # HTTPError, so this arm only sees the transport failures the arm
             # above did not already claim. A bare TimeoutError is NOT a URLError
             # and has to be named, or an unattended run dies on a slow socket.
+            # On Python 3.9 (Xcode's, which the timer uses) a read timeout is
+            # socket.timeout, which only became an alias of TimeoutError in 3.10.
             if attempt == RETRY_ATTEMPTS:
                 raise
             wait = delay
@@ -586,6 +589,7 @@ def _play_review_rows(rows: list[dict]) -> list[dict]:
         out.append({
             "id": _review_id(row.get("Review Link", "")),
             "date": (row.get("Review Submit Date and Time") or "")[:10],
+            "submitted": row.get("Review Submit Date and Time") or "",
             "updated": (row.get("Review Last Update Date and Time") or "")[:10],
             "rating": stars,
             "text": (row.get("Review Text") or "").strip(),
@@ -623,6 +627,7 @@ def _play_api_reviews() -> list[dict]:
         out.append({
             "id": review.get("reviewId", ""),
             "date": day,
+            "submitted": "",  # the API has no submit time; Play has not filed it yet
             "updated": day,
             "rating": int(comment.get("starRating") or 0),
             "text": (comment.get("text") or "").strip(),
@@ -673,7 +678,8 @@ def _fold_edits(filed: list[dict], fresh: list[dict]) -> tuple[list[dict], list[
         if len(reviews) > 1:  # two fresh reviews, one row: no way to tell
             unfiled.extend(reviews)
             continue
-        merged[index] = {**reviews[0], "date": filed[index]["date"], "edited": True}
+        merged[index] = {**reviews[0], "date": filed[index]["date"],
+                         "submitted": filed[index].get("submitted", ""), "edited": True}
     return merged, unfiled
 
 
@@ -688,6 +694,58 @@ def _gcs_list(bucket: str, prefix: str, token: str) -> list[str]:
         url = (f"https://storage.googleapis.com/storage/v1/b/{bucket}/o?"
                + urllib.parse.urlencode({"prefix": prefix, "pageToken": page})) if page else ""
     return names
+
+
+def _play_report_day(stamp: str) -> str:
+    """The day Play files a rating under, from its submit time.
+
+    Play's daily files are cut in Pacific time, not UTC: a rating sent at
+    05:22 UTC on 28 October sits on the 27th in the country file. Falls back to
+    the UTC date where the machine has no time zone data.
+    """
+    try:
+        moment = datetime.strptime(stamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return stamp[:10]
+    try:
+        from zoneinfo import ZoneInfo
+        return moment.astimezone(ZoneInfo("America/Los_Angeles")).date().isoformat()
+    except Exception:  # noqa: BLE001 - no zoneinfo or no tz data
+        return moment.date().isoformat()
+
+
+def _rating_countries(rows: list[dict]) -> tuple[list[tuple[str, float]], dict]:
+    """Fold the Play country files into (countries with ratings, countries by day).
+
+    The first is each country's latest nonzero Total Average Rating, best first.
+    The second maps a date to the countries whose Daily Average Rating is
+    nonzero that day, which is the only way a file says "someone there rated
+    on this day". Most days are 0.0 for every country.
+    """
+    latest: dict[str, tuple[str, float]] = {}
+    by_day: dict[str, list[str]] = {}
+    for row in rows:
+        country, day = row.get("Country") or "", row.get("Date") or ""
+        if not country or not day:
+            continue
+        try:
+            total = float(row.get("Total Average Rating") or 0)
+            daily = float(row.get("Daily Average Rating") or 0)
+        except ValueError:
+            continue
+        if total and (country not in latest or day >= latest[country][0]):
+            latest[country] = (day, total)
+        if daily and country not in by_day.setdefault(day, []):
+            by_day[day].append(country)
+    totals = sorted(((c, v[1]) for c, v in latest.items()), key=lambda cv: (-cv[1], cv[0]))
+    return totals, {d: sorted(c) for d, c in by_day.items()}
+
+
+def _play_countries_for(row: dict, by_day: dict) -> list[str]:
+    """Countries that could be where this rating came from; empty when unknown."""
+    if not row.get("submitted"):
+        return []
+    return by_day.get(_play_report_day(row["submitted"]), [])
 
 
 def play_ratings(days: int) -> dict:
@@ -724,6 +782,21 @@ def play_ratings(days: int) -> dict:
 
     ratings = _play_review_rows(rows)
 
+    # The review files have no country, so it comes from the country files. If
+    # they fail the ratings still list, with a note instead of the column.
+    by_country: list[tuple[str, float]] = []
+    by_day: dict = {}
+    country_note = ""
+    try:
+        country_rows: list[dict] = []
+        for name in sorted(n for n in _gcs_list(PLAY_BUCKET, "stats/ratings/", token)
+                           if n.endswith("_country.csv")
+                           and n.startswith(f"stats/ratings/ratings_{PLAY_PACKAGE}_")):
+            country_rows.extend(_play_csv(_gcs_object(PLAY_BUCKET, name, token)))
+        by_country, by_day = _rating_countries(country_rows)
+    except Exception as exc:  # noqa: BLE001
+        country_note = f"Play's country files could not be read ({type(exc).__name__}), so countries are missing."
+
     api_note = ""
     try:
         known = {r["id"] for r in ratings if r["id"]}
@@ -749,7 +822,11 @@ def play_ratings(days: int) -> dict:
     week_start, _ = utc_window(7)
     in_window = [r for r in ratings if (r["updated"] or r["date"]) >= start.isoformat()]
     listed = sorted(fresh + in_window, key=lambda r: r["updated"] or r["date"], reverse=True)
+    for r in listed:
+        r["countries"] = _play_countries_for(r, by_day)
     return {
+        "by_country": by_country,
+        "country_note": country_note,
         "start": start.isoformat(),
         # The files' count only. A fresh API review may be an edit of a row the
         # files already hold, so adding it here could count one person twice.
