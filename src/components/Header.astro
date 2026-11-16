@@ -1,19 +1,15 @@
 ---
 import BadgerMark from './BadgerMark.astro';
 import Stripe from './Stripe.astro';
+import { mainNav, searchHref, strip } from '../lib/wayfinding.mjs';
 
 interface Props {
   currentPath?: string;
 }
 
 const { currentPath = '' } = Astro.props;
-const path = currentPath.replace(/\/$/, '') || '/';
-
-const navLinks = [
-  { href: '/help/', label: 'Help', match: (p: string) => p === '/help/' || p.startsWith('/help/') },
-  { href: '/guides/', label: 'Guides', match: (p: string) => p === '/guides/' || p.startsWith('/guides/') },
-  { href: '/glossary/', label: 'Glossary', match: (p: string) => p === '/glossary/' },
-];
+const path = strip(currentPath);
+const navLinks = mainNav.map((l) => ({ ...l, active: l.match(path) }));
 ---
 
 <header class="site-header">
@@ -25,21 +21,50 @@ const navLinks = [
 
     <div class="nav-right">
       {
-        navLinks.map(({ href, label, match }) => {
-          const active = match(path);
-          return (
-            <a
-              class:list={['nav-link', { active }]}
-              href={href}
-              aria-current={active ? 'page' : undefined}
-            >
-              {label}
-            </a>
-          );
-        })
+        navLinks.map(({ href, label, active }) => (
+          <a
+            class:list={['nav-link', { active }]}
+            href={href}
+            aria-current={active ? 'page' : undefined}
+          >
+            {label}
+          </a>
+        ))
       }
 
       <a class="btn-accent" href="/#download">Get the app</a>
+
+      <!-- Phone menu: a native disclosure, so it works without script and keeps
+           keyboard and screen-reader behavior. Shown at 640px and below, where
+           the four links above do not fit. The small script below only closes it. -->
+      <details class="nav-menu">
+        <summary class="nav-menu-btn">
+          <span>Menu</span>
+          <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false">
+            <polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+          </svg>
+        </summary>
+        <div class="nav-menu-panel">
+          <ul>
+            {
+              navLinks.map(({ href, label, active }) => (
+                <li>
+                  <a
+                    class:list={['nav-menu-link', { active }]}
+                    href={href}
+                    aria-current={active ? 'page' : undefined}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+            <li class="nav-menu-search">
+              <a class="nav-menu-link" href={searchHref}>Search help and guides</a>
+            </li>
+          </ul>
+        </div>
+      </details>
 
       <button id="theme-toggle" type="button" aria-label="Toggle light and dark theme">
         <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false">
@@ -53,6 +78,31 @@ const navLinks = [
 <Stripe class="header-stripe" />
 
 <script is:inline>
+  // Close the phone menu on a link tap (a same-page link such as Search on the
+  // help index does not reload), on Escape, on a tap outside, and when the page
+  // is restored from the back/forward cache.
+  (function () {
+    var menu = document.querySelector('.nav-menu');
+    if (!menu) return;
+    var close = function () {
+      menu.removeAttribute('open');
+    };
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a')) close();
+    });
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target)) close();
+    });
+    menu.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.hasAttribute('open')) {
+        close();
+        var s = menu.querySelector('summary');
+        if (s) s.focus();
+      }
+    });
+    window.addEventListener('pageshow', close);
+  })();
+
   const btn = document.getElementById('theme-toggle');
   btn?.addEventListener('click', () => {
     const root = document.documentElement;
@@ -85,6 +135,11 @@ const navLinks = [
      header carries no border of its own. */
   .site-header {
     background: var(--bg);
+    /* The header is its own stacking context (it carries a view-transition
+       name), so the phone menu's z-index only counts inside it. Lift the whole
+       header above page content so the open menu is not painted under it. */
+    position: relative;
+    z-index: 60;
   }
 
   .site-nav {
@@ -168,11 +223,142 @@ const navLinks = [
     border-color: var(--text-muted);
   }
 
-  /* Under 640px the links do not fit beside the wordmark, button and toggle.
-     The footer carries the full index, and help pages keep their own nav. */
+  /* The phone menu is hidden above 640px, where the links fit. */
+  .nav-menu {
+    display: none;
+  }
+
+  .site-nav {
+    position: relative;
+  }
+
+  .nav-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 10px;
+    list-style: none;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border: 1px solid var(--outline);
+    border-radius: 8px;
+    user-select: none;
+  }
+
+  .nav-menu-btn::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-menu-btn:hover,
+  .nav-menu[open] .nav-menu-btn {
+    color: var(--text);
+    border-color: var(--text-muted);
+  }
+
+  .nav-menu-btn svg {
+    transition: transform 0.15s ease;
+  }
+
+  .nav-menu[open] .nav-menu-btn svg {
+    transform: rotate(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-menu-btn svg {
+      transition: none;
+    }
+  }
+
+  .nav-menu-btn:focus-visible,
+  .nav-menu-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Opens as a sheet under the bar, spanning the content width. */
+  .nav-menu-panel {
+    position: absolute;
+    z-index: 60;
+    top: calc(100% + 4px);
+    left: 20px;
+    right: 20px;
+    background: var(--surface);
+    border: 1px solid var(--outline);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(38, 34, 25, 0.28);
+    padding: 6px 0;
+  }
+
+  .nav-menu-panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-menu-link {
+    display: block;
+    padding: 12px 18px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+  }
+
+  .nav-menu-link:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-menu-link.active {
+    color: var(--accent-ink);
+    font-weight: 600;
+    border-left-color: var(--accent);
+  }
+
+  .nav-menu-search {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--hair);
+  }
+
+  /* Under 640px the links do not fit beside the wordmark, button and toggle,
+     so they move into the Menu disclosure. The footer carries the full index. */
   @media (max-width: 640px) {
+    .nav-menu {
+      display: block;
+    }
+
+    /* Wordmark, Get the app, Menu and the toggle share one row: 360px is the
+       narrowest phone in common use, so the spacing tightens rather than a
+       control being dropped. */
     .site-nav {
-      padding: 0 20px;
+      padding: 0 16px;
+      gap: 8px;
+    }
+
+    .wordmark {
+      gap: 7px;
+    }
+
+    .wordmark-text {
+      font-size: 19px;
+    }
+
+    .btn-accent {
+      padding: 8px 11px;
+    }
+
+    .nav-menu-btn {
+      padding: 0 8px;
+      gap: 5px;
+    }
+
+    .nav-menu-panel {
+      left: 16px;
+      right: 16px;
     }
 
     .nav-link {
@@ -180,7 +366,20 @@ const navLinks = [
     }
 
     .nav-right {
-      gap: 12px;
+      gap: 8px;
+    }
+  }
+
+  /* Under 360px the four controls only fit beside the mark alone. The word
+     stays in the page for screen readers. */
+  @media (max-width: 359.98px) {
+    .wordmark-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
   }
 

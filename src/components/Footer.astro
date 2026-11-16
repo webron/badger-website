@@ -1,22 +1,12 @@
 ---
 import Stripe from './Stripe.astro';
+import { footerGroups } from '../lib/wayfinding.mjs';
 
-// "File format" is here so a reader (or an agent) starting from any page can
-// reach the .badger spec, which the header does not link.
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/help/', label: 'Help' },
-  { href: '/guides/', label: 'Guides' },
-  { href: '/programs/', label: 'Programs' },
-  { href: '/glossary/', label: 'Glossary' },
-  { href: '/badger-format/', label: 'File format' },
-  { href: '/changelog/', label: 'Changelog' },
-  { href: '/promise/', label: 'The promise' },
-  { href: '/about/', label: 'About' },
-  { href: '/about/#contact', label: 'Contact' },
-  { href: '/legal/privacy/', label: 'Privacy' },
-  { href: '/legal/terms/', label: 'Terms' },
-];
+// Three rows: Learn, Badger, Legal. Names come from src/lib/wayfinding.mjs so the
+// footer says what the header and the sidebar say. "File format" is here so a
+// reader (or an agent) starting from any page can reach the .badger spec, which
+// the header does not link.
+const groups = footerGroups;
 
 const year = new Date().getUTCFullYear();
 ---
@@ -26,7 +16,18 @@ const year = new Date().getUTCFullYear();
     <Stripe mini />
 
     <nav class="footer-links" aria-label="Footer">
-      {links.map(({ href, label }) => <a href={href}>{label}</a>)}
+      {
+        groups.map((g) => (
+          <div class="footer-row">
+            <span class="footer-row-label">{g.label}</span>
+            <span class="footer-row-links">
+              {g.links.map(({ href, label }) => (
+                <a href={href}>{label}</a>
+              ))}
+            </span>
+          </div>
+        ))
+      }
     </nav>
 
     <p class="footer-copy">&copy; {year} Badger. All rights reserved.</p>
@@ -79,9 +80,35 @@ const year = new Date().getUTCFullYear();
 
   .footer-links {
     display: flex;
-    gap: 22px;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px 22px;
+  }
+
+  /* The row name is a quiet caps label, not a link. */
+  .footer-row-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    min-width: 4.5em;
+    text-align: right;
+  }
+
+  .footer-row-links {
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 4px 22px;
   }
 
   .footer-links a {
@@ -127,8 +154,14 @@ const year = new Date().getUTCFullYear();
       padding: 30px 20px 36px;
     }
 
-    .footer-links {
-      gap: 16px;
+    .footer-row,
+    .footer-row-links {
+      gap: 4px 16px;
+    }
+
+    .footer-row {
+      flex-direction: column;
+      align-items: center;
     }
   }
 </style>

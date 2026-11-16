@@ -3,7 +3,14 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
 ---
 
-<HelpLayout title="Getting started" description="How to install Badger, log your first workout, and import your history from FitNotes, Strong, Hevy, StrongLifts, Fitbod, Lyfta or any CSV file.">
+<HelpLayout
+  title="Getting started"
+  next={[
+    { href: '/help/logging/', label: 'Logging workouts', note: 'Sets, timers and supersets.' },
+    { href: '/help/routines/', label: 'Routines', note: 'Plan a workout once and reuse it.' },
+    { href: '/guides/', label: 'Guides', note: 'Walkthroughs by how you train.' },
+  ]}
+  description="How to install Badger, log your first workout, and import your history from FitNotes, Strong, Hevy, StrongLifts, Fitbod, Lyfta or any CSV file.">
   <h1>Getting started</h1>
 
   <p>Install Badger, pick your weight unit, and you can log your first set a minute later. If you're coming from another app, you can bring your whole history with you.</p>
