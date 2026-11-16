@@ -2,7 +2,13 @@
 import HelpLayout from '../layouts/HelpLayout.astro';
 ---
 
-<HelpLayout title="Glossary" description="Plain-English definitions of the training terms and Badger's own words: set, rep, warm-up, drop set, myo-reps, rest-pause, PR, RPE, RIR, 1RM, MEV, MRV, AMRAP, training max, deload, driver set, waved days, stages and more.">
+<HelpLayout
+  title="Glossary"
+  next={[
+    { href: '/help/', label: 'Help', note: 'Every feature, written up.' },
+    { href: '/guides/', label: 'Guides', note: 'Walkthroughs by how you train.' },
+  ]}
+  description="Plain-English definitions of training terms and Badger's own words: set, RPE, RIR, 1RM, AMRAP, PR, training max, deload, drop set, driver set, waved days and more.">
   <div class="glossary">
   <h1>Glossary</h1>
 

@@ -40,7 +40,7 @@ const waveText = wave
   .join('. ');
 
 const description =
-  '5/3/1 calculator: enter a training max, or a recent best set, and get the weight of every set in the four-week wave, the Boring But Big sets and next cycle\'s training max.';
+  '5/3/1 calculator: enter a training max or a recent best set and get every set weight in the four-week wave, the BBB sets and next cycle\'s training max.';
 
 const faq = [
   {
@@ -62,7 +62,15 @@ const faq = [
 ];
 ---
 
-<HelpLayout title="5/3/1 calculator" description={description}>
+<HelpLayout
+  title="5/3/1 calculator"
+  description={description}
+  next={[
+    { href: '/guides/531-app/', label: '5/3/1 Boring But Big in Badger', note: 'How the program runs in the app.' },
+    { href: '/programs/', label: 'Programs', note: 'Download the 5/3/1 file.' },
+    { href: '/#download', label: 'Get the app', note: 'App Store and Google Play.' },
+  ]}
+>
   <ArticleSchema
     slot="head"
     headline="5/3/1 calculator"
