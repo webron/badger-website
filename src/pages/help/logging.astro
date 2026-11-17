@@ -39,7 +39,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>If you remove the exercise you're on, the screen moves to the next one. Removing the only exercise takes you back to Today. Your routine is not changed.</p>
 
   <h3 id="undo-deletes">Undo a delete</h3>
-  <p>Almost everything you delete in Badger comes with an <strong>Undo</strong>. A message at the bottom of the screen offers it for 8 seconds, such as <strong>Set 3 deleted</strong>. Tap <strong>Undo</strong> and the item returns to where it was. A second delete replaces the message. With TalkBack or VoiceOver on, it stays until you act on it or close it.</p>
+  <p>Almost everything you delete in Badger comes with an <strong>Undo</strong>. A message at the bottom of the screen offers it for 8 seconds, such as <strong>Set 3 deleted</strong>. Tap <strong>Undo</strong> and the item returns. Tap <strong>×</strong> to close the message sooner. A second delete replaces it. With TalkBack or VoiceOver on, it stays for 30 seconds.</p>
   <p>Deleting a whole workout, a routine, a library exercise, a machine, an attachment, a bar or an accessory asks first, then offers Undo.</p>
 
   <h3>More options (⋮ menu)</h3>
@@ -408,8 +408,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="resume-after-finish">Ended it by mistake</h3>
   <p>The summary sheet has <strong>Resume</strong> at the top. Tap it and the workout carries on as if it never stopped: the clock, the rest timer and the lock-screen notification come back.</p>
-  <p>After <strong>End</strong> or <strong>End workout</strong>, a <strong>Workout ended</strong> message with <strong>Resume</strong> shows for 8 seconds. Tap <strong>Resume</strong> to go back to the workout the same way.</p>
-  <p>Apple Health, Health Connect and your backup get the workout once you tap <strong>Done</strong> on the summary sheet, or once the message goes away.</p>
+  <p><strong>End</strong> and <strong>End workout</strong> finish the workout at once, with no message afterward. To go back, tap <strong>Resume</strong> on the <strong>Done today</strong> card or <strong>Resume workout</strong> on its summary (<a href="#resuming">more below</a>).</p>
+  <p>Apple Health, Health Connect and your backup get the workout when you tap <strong>Done</strong> on the summary sheet, or right away after <strong>End</strong> or <strong>End workout</strong>. If you resume and end it again, Health keeps the first length: it can't be changed there, and a second session isn't added.</p>
 
   <h3 id="unticked-sets">Sets you saved but didn't tick</h3>
   <p>If some sets are saved but not ticked, Badger asks before it ends the workout. <strong>Leave them out</strong> ends it as it stands: the sets stay saved and unticked, and they don't count. <strong>Count them</strong> ticks them first. Close the sheet to keep going.</p>
