@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Privacy Policy" description="Badger privacy policy - what we store, what leaves your device, and your rights.">
   <h1>Privacy Policy</h1>
 
-  <p><strong>Last updated:</strong> 2026-11-05</p>
+  <p><strong>Last updated:</strong> 2026-11-17</p>
 
   <p>
     Badger is a local-first workout tracker. Your training data lives on your device
@@ -113,12 +113,30 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     your body tracker stay there until you delete them.
   </p>
 
+  <h2>Music controls on your watch (opt-in, Android)</h2>
+  <p>
+    If you use Badger on a Wear OS watch, you can turn on <em>Music controls on your watch</em> in
+    the phone app. It is <strong>off by default</strong>. When you turn it on, Badger explains
+    what it reads and then opens Android's Notification access screen, where you allow Badger.
+    Android's wording there says this lets an app read notifications.
+  </p>
+  <ul>
+    <li><strong>What we read:</strong> on your phone only, the title, artist, play state and app name of the music session that is playing.</li>
+    <li><strong>Where it goes:</strong> only to your own watch, over Google's Wear OS link between your two devices. It is never sent to Badger or to anyone else.</li>
+    <li><strong>What we keep:</strong> nothing. Badger does not store it.</li>
+  </ul>
+  <p>
+    Turning the switch off stops Badger reading it. To remove the access completely, turn Badger
+    off in Android's Notification access screen.
+  </p>
+
   <h2>Device permissions</h2>
   <ul>
     <li><strong>Camera and photos</strong> - requested only when you choose to add a photo to a machine or attachment or take a progress photo, and only at that moment. Badger reads the single image you pick; it does not browse, index, or upload your photo library. Decline, and everything except equipment photos and the progress photo camera works exactly as before.</li>
     <li><strong>Face ID or fingerprint</strong> - used only if you turn on <em>Lock progress photos</em>. The check happens on your phone, and Badger never sees your face or fingerprint.</li>
     <li><strong>Notifications</strong> - used for the rest timer, the set timer, the active-workout notification, and the workout reminders you schedule yourself. All of them are local notifications raised by the app on your own device; none involve a server.</li>
     <li><strong>Health data</strong> - requested only when you turn on one of the Apple Health / Health Connect switches described above, and only for the specific categories that switch needs. Decline, and everything else in Badger works exactly as before.</li>
+    <li><strong>Notification access (Android)</strong> - requested only when you turn on <em>Music controls on your watch</em>, and used only for the music details described above. Decline, and everything else in Badger works exactly as before.</li>
   </ul>
 
   <h2>Third parties present in the app</h2>
