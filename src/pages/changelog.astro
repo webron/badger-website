@@ -25,6 +25,64 @@ import Footer from '../components/Footer.astro';
 // card is an eight-line cut of it.
 const releases = [
   {
+    version: '1.1.19',
+    date: 'November 2026',
+    headline: 'Weight changes carry to your next sets, and deload weeks follow your swaps',
+    groups: [
+      {
+        title: 'Workouts',
+        items: [
+          'Change a working set\'s weight and the later sets that still had the old weight follow it. A message says how many sets changed, with Undo. Weights you typed in, done sets, warm-ups and drop or myo steps stay as they are.',
+          'After an exercise\'s last set, the rest bar says "then" and the next exercise, and the Live Activity and lock screen name it with its weight and reps.',
+          'Skip remaining sets moves on to the next exercise (with Auto-advance on).',
+          'Machine settings is in the exercise menu when the exercise has a machine set. A machine of type Unspecified offers the plate calculator.',
+          'The stripe on the left marks only the next set. The set you selected has an outline.',
+          'When two pending sets tie, the earlier one keeps the possible PR tag.',
+          'Undo messages close on their own and have a close button you can see. End finishes a workout at once; the Workout ended message is gone.',
+        ],
+      },
+      {
+        title: 'Programs and deloads',
+        items: [
+          'Programs that change week to week, like 5/3/1 and GZCLP, show the targets for the week you started. Weeks 2 to 4 showed week 1\'s targets during the workout.',
+          'In a deload week, an exercise you swap in (an alternative, Plan B or one from the library) is lowered the same way.',
+          'A deload workout gives every working set the same reps: the routine\'s planned reps, or your most common reps last time.',
+          'After a long break, Settings, Coaching, Deload, After a long break has Lighter weight (40 to 70%, 60% by default) and Fewer sets (about half the working sets, on by default).',
+        ],
+      },
+      {
+        title: 'History and stats',
+        items: [
+          'Exercise history lists only sessions where you finished a working set, and only the sets you finished.',
+          'Year in review shows each distance record in the exercise\'s own unit (for example 20 m).',
+          'You shows how many active routines you have, and No active routines when all are archived.',
+        ],
+      },
+      {
+        title: 'Photos and files',
+        items: [
+          'The first progress photo offers to turn on a backup when none is on.',
+          'Android: Badger opens a .badger file even when the file app hides its name, and says so when a file is not a Badger file.',
+          'Android: Badger no longer lists the microphone permission. It never recorded audio.',
+          'Photos imported from a zip have their location and camera details removed.',
+          'Strong CSV export keeps distances to the meter.',
+          'Temporary copies of photos and exports are cleaned up.',
+        ],
+      },
+      {
+        title: 'Fixes',
+        items: [
+          'Undo after replacing an import keeps each exercise\'s logging type.',
+          'Changing an exercise\'s default logging type or merging exercises keeps goals on the right type.',
+          'Average effort per week leaves out warm-up sets.',
+          'A workout note shows on the summary as soon as you save or clear it.',
+          'Bigger tap targets for Add notes and the exercise name on the summary.',
+          'With large text, the summary\'s PR stamp, Today\'s routine rows and the completion sheet\'s title wrap cleanly.',
+        ],
+      },
+    ],
+  },
+  {
     version: '1.1.18',
     date: 'November 2026',
     headline: 'Log an exercise more than one way, import from any app, and set body goals',
