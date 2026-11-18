@@ -39,18 +39,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>If you remove the exercise you're on, the screen moves to the next one. Removing the only exercise takes you back to Today. Your routine is not changed.</p>
 
   <h3 id="undo-deletes">Undo a delete</h3>
-  <p>Almost everything you delete in Badger comes with an <strong>Undo</strong>. A message at the bottom of the screen offers it for 8 seconds, such as <strong>Set 3 deleted</strong>. Tap <strong>Undo</strong> and the item returns to where it was. A second delete replaces the message. With TalkBack or VoiceOver on, it stays until you act on it or close it.</p>
+  <p>Almost everything you delete in Badger comes with an <strong>Undo</strong>. A message at the bottom of the screen offers it for 8 seconds, such as <strong>Set 3 deleted</strong>. Tap <strong>Undo</strong> and the item returns. Tap <strong>×</strong> to close the message sooner. A second delete replaces it. With TalkBack or VoiceOver on, it stays for 30 seconds.</p>
   <p>Deleting a whole workout, a routine, a library exercise, a machine, an attachment, a bar or an accessory asks first, then offers Undo.</p>
 
   <h3>More options (⋮ menu)</h3>
   <ul>
     <li><strong>Replace exercise</strong> - Swap in a different exercise. Sets already logged stay attached. Tap <strong>Undo</strong> on the message afterward to put the original exercise back. If the new exercise uses a different equipment type, the weight planned on the sets still waiting is cleared, since a barbell's load doesn't carry to a dumbbell. Undo brings that weight back too.</li>
     <li><strong>Switch to alternative</strong> or <strong>Swap exercise</strong> - Swap for this workout only. See <a href="/help/routines/#alternatives">Alternative exercises</a>.</li>
-    <li><strong>Skip remaining sets</strong> - Skip every set on this exercise that is not done yet. It does not show once every set is done. See <a href="#missed-vs-skipped">Skip a set</a>.</li>
+    <li><strong>Skip remaining sets</strong> - Skip every set on this exercise that is not done yet, and move to the next exercise. It does not show once every set is done. See <a href="#missed-vs-skipped">Skip a set</a>.</li>
     <li><strong>Rep target…</strong> - Set a total number of reps for this exercise today. See <a href="#rep-target">Total rep target</a>.</li>
     <li><strong>Superset</strong> - Group exercises. See <a href="#supersets">Supersets</a>. Not shown on cardio.</li>
     <li><strong>Change gym</strong> - Switch which gym this workout is at.</li>
     <li><strong>Set machine</strong> - Pick the machine and attachment. <strong>New machine…</strong> and <strong>New attachment…</strong> at the bottom of each picker add one on the spot.</li>
+    <li><strong>Machine settings…</strong> - Open the machine you picked, to change its type, plate calculator, starting weight or step size. Shown once a machine is set.</li>
     <li><strong>Set bar</strong> - Pick the <a href="/help/gyms/#bars">bar</a> on a barbell exercise, at a gym that has bars. <strong>New bar…</strong> adds one.</li>
     <li><strong>1RM calculator</strong> and <strong>Plate calculator</strong> - Neither shows on cardio. The plate calculator opens with your current weight, and shows only on plate-loaded equipment: a barbell exercise, a plate-loaded machine, a plate calculator mode you set yourself, or an exercise with no equipment type. A cable, a dumbbell or a pin-stack machine never offers it. See <a href="/help/tools/">Tools</a>.</li>
     <li><strong>Exercise settings</strong> - The first item. Opens the exercise's rest, weight increment, tempo, bar, notes, muscles and display. See <a href="/help/exercises/#exercise-settings">Exercise settings</a>.</li>
@@ -83,7 +84,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Sets your routine planned, and sets copied from a past workout, are ticked the same way in both. If you came from FitNotes, Badger starts with the way you logged there. Change it any time in <a href="/help/settings/#save-set">Settings → Logging sets → Save set</a>.</p>
   <p>In Log as you go, Save set keeps you on the exercise, so you can do as many sets as you like and move on when you're ready. Ticking the last of the sets you planned still moves you to the next exercise.</p>
   <ul>
-    <li><strong>Edit a set:</strong> tap its row to load it into the fields. The line <strong>Editing set 2</strong> shows which one. Change it and tap <strong>Update</strong>; the boxes clear and the next waiting set is selected, and <strong>Set 2 updated</strong> appears with <strong>Undo</strong>. To add a new set with those numbers instead, tap <strong>New set instead</strong>. Tap the row again to let go without saving.</li>
+    <li><strong>Edit a set:</strong> tap its row to load it into the fields. The line <strong>Editing set 2</strong> shows which one. Change it and tap <strong>Update</strong>; the boxes clear and the next waiting set is selected. To change it back, edit it again. To add a new set with those numbers instead, tap <strong>New set instead</strong>. Tap the row again to let go without saving.</li>
+    <li><strong>Change the weight for the rest:</strong> log or edit a working set at a new weight, and the waiting sets after it that still had the old weight follow it. <strong>Weight updated on 2 later sets</strong> appears with <strong>Undo</strong>. Sets you gave their own weight, warmups and done sets keep theirs.</li>
     <li><strong>Delete a set:</strong> tap its row and tap <strong>Delete</strong>. The set goes at once, and <a href="#undo-deletes">Undo</a> brings it back.</li>
     <li><strong>Repeat a set:</strong> tap the <strong>Repeat last</strong> chip below your sets. It names the set it will copy, such as a weight and reps or a duration, along with its RPE or RIR.</li>
   </ul>
@@ -235,7 +237,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>The first time a rest or set timer runs, Badger asks to send notifications. Tap <strong>Allow</strong> to get an alert when a timer ends with the phone locked, or <strong>Not now</strong> to skip it.</p>
 
   <h3 id="rest-card">The rest card</h3>
-  <p>The card shows <strong>-15</strong>, the countdown, <strong>+15</strong> and <strong>Skip</strong>. <strong>REST</strong> sits above the time with the set that comes next, such as "then set 4". A line along the bottom of the card drains as the rest runs.</p>
+  <p>The card shows <strong>-15</strong>, the countdown, <strong>+15</strong> and <strong>Skip</strong>. <strong>REST</strong> sits above the time with the set that comes next, such as "then set 4". After the last set of an exercise it names the next exercise instead, such as "then Hip Adduction". A line along the bottom of the card drains as the rest runs.</p>
   <ul>
     <li><strong>Add or take off time:</strong> tap <strong>+15</strong> or <strong>-15</strong>. A <strong>-15</strong> that would pass zero ends the rest.</li>
     <li><strong>Last 10 seconds:</strong> the countdown turns amber. The sound waits for zero.</li>
@@ -327,6 +329,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="live-activity">iPhone: Live Activity</h3>
   <p>On iOS 16.2 and later, your workout shows as a Live Activity on the lock screen, and in the Dynamic Island on models that have one. Tap it to go back to your workout.</p>
   <p>Between sets it shows the exercise, the set you're on ("Set 3 of 4"), its target and how long you've been training. During rest it shows the countdown and the set that comes next, such as "Next: set 4, 80 kg &times; 8".</p>
+  <p>After the last set of an exercise it names the next exercise, such as "Next: Hip Adduction, 60 lbs &times; 15".</p>
   <p>A timed set shows its countdown, or counts up for a stopwatch, and reads "SET DONE" at the end.</p>
   <p>On iOS 17 and later the card has buttons:</p>
   <ul>
@@ -375,7 +378,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p>A skipped set stays on the training screen, struck through, and is left out of your history, all calculations, and plateau and deload detection.</p>
   <p>A short set is a real set. Aiming for 8 and getting 6? Log the 6. It counts toward volume, shows in your history and feeds plateau and deload detection. On a routine workout, the summary marks it as under plan.</p>
-  <p>Skipping the last set left on an exercise moves you to the next exercise that still has work, the same as completing it. Turn off <strong>Auto-advance to next exercise</strong> in <strong>Settings → Logging sets</strong> to stay put.</p>
+  <p>Skipping the last set left on an exercise, or using <strong>Skip remaining sets</strong>, moves you to the next exercise that still has work, the same as completing it. If nothing is left, the workout finishes. Turn off <strong>Auto-advance to next exercise</strong> in <strong>Settings → Logging sets</strong> to stay put.</p>
+  <p>The first time you skip an exercise before doing any of its sets, Badger stays on it and offers to swap it for another; close that card to move on.</p>
 
   <h2 id="rep-target">Total rep target</h2>
   <p>Set a total number of reps for an exercise, such as 30 pull-ups, and split them over as many sets as you like. Open the <strong>⋮ menu</strong> on the training screen and tap <strong>Rep target…</strong>.</p>
@@ -408,8 +412,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="resume-after-finish">Ended it by mistake</h3>
   <p>The summary sheet has <strong>Resume</strong> at the top. Tap it and the workout carries on as if it never stopped: the clock, the rest timer and the lock-screen notification come back.</p>
-  <p>After <strong>End</strong> or <strong>End workout</strong>, a <strong>Workout ended</strong> message with <strong>Resume</strong> shows for 8 seconds. Tap <strong>Resume</strong> to go back to the workout the same way.</p>
-  <p>Apple Health, Health Connect and your backup get the workout once you tap <strong>Done</strong> on the summary sheet, or once the message goes away.</p>
+  <p><strong>End</strong> and <strong>End workout</strong> finish the workout at once, with no message afterward. To go back, tap <strong>Resume</strong> on the <strong>Done today</strong> card or <strong>Resume workout</strong> on its summary (<a href="#resuming">more below</a>).</p>
+  <p>Apple Health, Health Connect and your backup get the workout when you tap <strong>Done</strong> on the summary sheet, or right away after <strong>End</strong> or <strong>End workout</strong>. If you resume and end it again, Health keeps the first length: it can't be changed there, and a second session isn't added.</p>
 
   <h3 id="unticked-sets">Sets you saved but didn't tick</h3>
   <p>If some sets are saved but not ticked, Badger asks before it ends the workout. <strong>Leave them out</strong> ends it as it stands: the sets stay saved and unticked, and they don't count. <strong>Count them</strong> ticks them first. Close the sheet to keep going.</p>
