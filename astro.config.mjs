@@ -6,6 +6,9 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://badger.fit',
+  // Astro 7 defaults to 'jsx' whitespace rules, which drop the line break before an inline
+  // link ("see<a>"). true keeps the lossless behavior Astro 6 had.
+  compressHTML: true,
   integrations: [
     pagefind(),
     // lastmod is a recrawl hint, and without it every entry is a bare <loc>
