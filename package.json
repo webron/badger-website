@@ -12,7 +12,7 @@
     "astro": "astro",
     "sheets": "node tool/sheets/index.mjs",
     "test:sheets": "node --test tool/sheets/*.test.mjs",
-    "test:anchors": "node --test src/lib/heading-anchors.test.mjs"
+    "test:anchors": "node --test src/lib/heading-anchors.test.mjs src/lib/wayfinding.test.mjs src/lib/link-integrity.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.5",
