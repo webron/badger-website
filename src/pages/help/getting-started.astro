@@ -110,7 +110,8 @@ import { APP_STORE_URL, PLAY_URL, TESTFLIGHT_URL } from '../../store-links';
     <li><strong>Needed</strong> - Date, Exercise, Weight and Reps. <strong>Continue</strong> stays off until each has a column.</li>
     <li><strong>Optional</strong> - Warm-up, Notes, RPE, Distance, Duration, Set type, Workout name and Workout length. Pick <strong>Not in this file</strong> for any your file doesn't have.</li>
   </ul>
-  <p>Tap a row to pick a different column. Badger reads the weight unit from the column name when it says (like <code>Weight (kg)</code>); otherwise pick kg or lbs. Rows with the same date and start time become one workout. If the dates have no time, each date becomes one workout.</p>
+  <p>Tap a row to pick a different column. Badger reads the weight unit from the column name when it says (like <code>Weight (kg)</code>); otherwise pick kg or lbs.</p>
+  <p>A file with a <code>weight_unit</code> column, such as Badger's own export, keeps each set in the unit its row names, so a log that switched between kg and lbs imports without converting anything. Rows with the same date and start time become one workout. If the dates have no time, each date becomes one workout.</p>
   <p>A Workout length column gives each workout its start and end time. A note that sits on every set of an exercise arrives once, on its first set.</p>
   <p>Comma-, semicolon- and tab-separated files all work, and so do decimal commas (82,5). A set type of <code>warmup</code>, <code>failure</code> or <code>drop</code> comes across as a warmup, a <a href="/help/logging/#to-failure">To failure</a> set or a <a href="/help/set-types/#importing">drop</a>. On the next screen, <strong>Columns → Change</strong> takes you back.</p>
 
