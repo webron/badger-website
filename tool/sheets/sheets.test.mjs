@@ -134,12 +134,24 @@ test('a sheet links to the app, its page and the progression help', () => {
 
 // ── 2. No drift ─────────────────────────────────────────────────────────────
 
+// An xlsx is a zip, and the compressed bytes depend on the zlib build (the
+// committed files differ byte for byte on ubuntu-latest). Compare the parts
+// inside instead: same names, same XML. A csv is plain text, so compare bytes.
+function sameContent(ext, committed, made) {
+  if (ext !== 'xlsx') return Buffer.from(committed).equals(Buffer.from(made));
+  const a = unzipSync(new Uint8Array(committed));
+  const b = unzipSync(new Uint8Array(made));
+  const names = Object.keys(a).sort();
+  if (JSON.stringify(names) !== JSON.stringify(Object.keys(b).sort())) return false;
+  return names.every((n) => Buffer.from(a[n]).equals(Buffer.from(b[n])));
+}
+
 test('the committed sheets are what the generator makes now', () => {
   for (const slug of slugs) {
     for (const [ext, data] of [['xlsx', built[slug].xlsx], ['csv', Buffer.from(built[slug].csv)]]) {
       const path = join(SHEETS_DIR, sheetName(slug, ext));
       assert.ok(existsSync(path), `${path} is missing, run npm run sheets`);
-      assert.ok(Buffer.from(readFileSync(path)).equals(Buffer.from(data)), `${path} is stale, run npm run sheets`);
+      assert.ok(sameContent(ext, readFileSync(path), data), `${path} is stale, run npm run sheets`);
     }
   }
 });
