@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Privacy Policy" searchWeight={0.1} description="Badger privacy policy: what we store, what leaves your device, how the website counts visits, and the rights you have over your data.">
   <h1>Privacy Policy</h1>
 
-  <p><strong>Last updated:</strong> 2026-11-15</p>
+  <p><strong>Last updated:</strong> 2026-11-19</p>
 
   <p>
     Badger is a local-first workout tracker. Your training data lives on your device
@@ -127,6 +127,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Apple Health / Health Connect</strong> - only used when you opt in (see above). These are your phone's own health stores; data exchanged with them stays on your device and is governed by Apple's or Google's handling of that store, not by us.</li>
     <li><strong>Apple iCloud</strong> - used automatically on iPhone unless you turn it off (see above). Your backup is stored in your own private iCloud database; we cannot read it and Apple does not share it with us.</li>
     <li><strong>Android's own backup</strong> - used automatically on Android if you have it turned on in your phone's settings (see above). Your backup is carried to your own Google account; we have no access to it.</li>
+    <li><strong>Google Play age check (Android)</strong> - where a law requires apps to ask (California from 2027), Badger asks Google Play once for the age range Play holds for the phone's user. Badger keeps nothing from the answer: it does not store it, does not change anything because of it, and sends it nowhere. It saves only a note that it asked, so it does not ask again. Badger never shows a prompt asking you to share your age.</li>
     <li><strong>Google Drive</strong> - only used when you opt in to Drive backup (see above). Data is stored in Badger's private app-data folder on <em>your</em> Drive; it is not shared with us or with any other party.</li>
   </ul>
   <p>
@@ -142,7 +143,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>No user profiling or behavioral tracking.</li>
     <li>No account required to use Badger. iCloud and Android's own backup use your existing Apple or Google account with no extra sign-in inside Badger. Google Sign-In is only used if you turn on Drive backup, and only to upload and download your own backup files to your own Drive.</li>
     <li>No workout data reaches Badger's developer, ever, live or backed up. Every backup goes only to a destination you control: your own iCloud, your own phone plus your own Google account, or your own Google Drive.</li>
-    <li>No third-party SDKs that send us anything. Apple's, Google's and Drive's services above are your own accounts, each used only when you opt in, when your phone's own backup setting is on, or when your phone chooses to show its rating sheet.</li>
+    <li>No third-party SDKs that send us anything. Apple's, Google's and Drive's services above are your own accounts, each used only when you opt in, when your phone's own backup setting is on, when your phone chooses to show its rating sheet, or when a law requires the age check.</li>
   </ul>
 
   <h2 id="website">About this website</h2>
