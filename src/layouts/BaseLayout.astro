@@ -31,13 +31,13 @@ const CF_BEACON_TOKEN = '65eb24f7d90345018e1f7b3534772943';
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- GitHub Pages cannot send headers, so the CSP is a meta tag; it only governs what
+    {/* GitHub Pages cannot send headers, so the CSP is a meta tag; it only governs what
          follows it, so it stays first. script-src names the two analytics hosts (neither
          can be pinned with SRI) so another script host cannot run if one of them is
          swapped for a lookalike or injected. 'unsafe-inline' stays because pages carry
          inline scripts (theme, JSON-LD, the 5-3-1 calculator) whose hashes change with
          every edit. 'wasm-unsafe-eval' is for Pagefind search, which compiles WebAssembly.
-         Not covered by a meta tag: frame-ancestors, and the report/sandbox directives. -->
+         Not covered by a meta tag: frame-ancestors, and the report/sandbox directives. */}
     <meta
       http-equiv="content-security-policy"
       content="script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://gc.zgo.at https://static.cloudflareinsights.com; base-uri 'self'; form-action 'none'; object-src 'none'"
