@@ -145,15 +145,31 @@ const CF_BEACON_TOKEN = '65eb24f7d90345018e1f7b3534772943';
          Cookieless (no cookies or localStorage, per Cloudflare). The site is not
          proxied through Cloudflare, so this is the manual JS snippet exactly as the
          dashboard gives it (type="module", no defer), placed before </body>. Disclosed in
-         /legal/privacy under "About this website". Production builds only. -->
+         /legal/privacy under "About this website". Production builds only.
+
+         Injected by script rather than written as a tag so Ron's own browsers can opt out.
+         Cloudflare strips IPs at the edge, so it has no IP exclusion like GoatCounter's.
+         Instead this honors GoatCounter's own per-browser switch: visiting
+         badger.fit/#toggle-goatcounter makes count.js set localStorage skipgc="t", and then
+         neither counter loads in that browser. The visit to the toggle URL itself is
+         skipped too, since count.js sets the flag only after this runs. -->
     {
       import.meta.env.PROD && CF_BEACON_TOKEN && (
-        <script
-          is:inline
-          type="module"
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon={JSON.stringify({ token: CF_BEACON_TOKEN })}
-        />
+        <script is:inline define:vars={{ cfBeacon: JSON.stringify({ token: CF_BEACON_TOKEN }) }}>
+          let skip = location.hash === '#toggle-goatcounter';
+          try {
+            skip = skip || localStorage.getItem('skipgc') === 't';
+          } catch (e) {
+            // Storage blocked: count the visit as usual.
+          }
+          if (!skip) {
+            const s = document.createElement('script');
+            s.type = 'module';
+            s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+            s.setAttribute('data-cf-beacon', cfBeacon);
+            document.body.appendChild(s);
+          }
+        </script>
       )
     }
   </body>
