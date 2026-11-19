@@ -151,8 +151,8 @@ const CF_BEACON_TOKEN = '65eb24f7d90345018e1f7b3534772943';
          Cloudflare strips IPs at the edge, so it has no IP exclusion like GoatCounter's.
          Instead this honors GoatCounter's own per-browser switch: visiting
          badger.fit/#toggle-goatcounter makes count.js set localStorage skipgc="t", and then
-         neither counter loads in that browser. The visit to the toggle URL itself is
-         skipped too, since count.js sets the flag only after this runs. -->
+         neither counter records a visit from that browser. The toggle visit itself is
+         skipped by its hash, since count.js loads async and may set the flag after this runs. -->
     {
       import.meta.env.PROD && CF_BEACON_TOKEN && (
         <script is:inline define:vars={{ cfBeacon: JSON.stringify({ token: CF_BEACON_TOKEN }) }}>
