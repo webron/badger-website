@@ -20,6 +20,12 @@ export const APP_STORE_URL = 'https://apps.apple.com/app/id6782743069';
 export const PLAY_URL = 'https://play.google.com/store/apps/details?id=fit.badger.app';
 
 /**
+ * Badger's Instagram profile (created 2026-11-17, first post 2026-11-19). Linked
+ * from the footer and listed in the home page's schema.org sameAs.
+ */
+export const INSTAGRAM_URL = 'https://www.instagram.com/badgerfit.app/';
+
+/**
  * The TestFlight invite for the iOS beta.
  *
  * Not a download affordance any more. Once iOS shipped on the App Store, the

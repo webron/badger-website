@@ -1,6 +1,7 @@
 ---
 import Stripe from './Stripe.astro';
 import { footerGroups } from '../lib/wayfinding.mjs';
+import { INSTAGRAM_URL } from '../store-links';
 
 // Three rows: Learn, Badger, Legal. Names come from src/lib/wayfinding.mjs so the
 // footer says what the header and the sidebar say. ".badger file format" is here so a
@@ -28,6 +29,13 @@ const year = new Date().getUTCFullYear();
           </div>
         ))
       }
+      <!-- Off-site, so not in footerGroups (whose entries must be pages of this site). -->
+      <div class="footer-row">
+        <span class="footer-row-label">Follow</span>
+        <span class="footer-row-links">
+          <a href={INSTAGRAM_URL} rel="noopener">Instagram</a>
+        </span>
+      </div>
     </nav>
 
     <p class="footer-copy">&copy; {year} Badger. All rights reserved.</p>
