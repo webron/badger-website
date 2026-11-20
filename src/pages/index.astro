@@ -6,7 +6,7 @@ import StoreBadges from '../components/StoreBadges.astro';
 import HomeScreen from '../components/home/HomeScreen.astro';
 import RestBar from '../components/home/RestBar.astro';
 import '../styles/home.css';
-import { APP_STORE_URL, PLAY_URL } from '../store-links';
+import { APP_STORE_URL, INSTAGRAM_URL, PLAY_URL } from '../store-links';
 
 // Kept at or under 165 characters: Google truncates the displayed snippet at
 // roughly that width, and this string is the snippet, the og:description and
@@ -29,12 +29,12 @@ const ORG_ID = 'https://badger.fit/#organization';
 // One @graph rather than two <script> blocks, so the app node can point at the
 // organization node by @id instead of restating it.
 //
-// Every claim here has to be true of the shipped product. sameAs carries the two
-// store listings: they are the public profile pages that are actually ours.
-// Badger has no social accounts, and inventing them would be the exact kind of
-// unverifiable markup that gets structured data ignored. The App Store page
-// joined the list on 2026-09-09; the retired TestFlight invite never did, since
-// a join link is not a profile.
+// Every claim here has to be true of the shipped product. sameAs carries the
+// public profile pages that are actually ours: the two store listings and the
+// Instagram account (added 2026-11-19, once it had posts). Listing accounts that
+// do not exist would be the exact kind of unverifiable markup that gets
+// structured data ignored. The App Store page joined the list on 2026-09-09; the
+// retired TestFlight invite never did, since a join link is not a profile.
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -50,7 +50,7 @@ const structuredData = {
       alternateName: 'Badger workout tracker',
       url: 'https://badger.fit',
       logo: 'https://badger.fit/assets/badger_logo_stacked.svg',
-      sameAs: [PLAY_URL, APP_STORE_URL],
+      sameAs: [PLAY_URL, APP_STORE_URL, INSTAGRAM_URL],
     },
     {
       // MobileApplication is a subtype of SoftwareApplication and is the more
