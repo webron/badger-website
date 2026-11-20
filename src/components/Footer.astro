@@ -1,5 +1,6 @@
 ---
 import Stripe from './Stripe.astro';
+import InstagramGlyph from './InstagramGlyph.astro';
 import { footerGroups } from '../lib/wayfinding.mjs';
 import { INSTAGRAM_URL } from '../store-links';
 
@@ -30,10 +31,12 @@ const year = new Date().getUTCFullYear();
         ))
       }
       <!-- Off-site, so not in footerGroups (whose entries must be pages of this site). -->
-      <div class="footer-row">
+      <div class="footer-row footer-row-follow">
         <span class="footer-row-label">Follow</span>
         <span class="footer-row-links">
-          <a href={INSTAGRAM_URL} rel="noopener">Instagram</a>
+          <a class="footer-social" href={INSTAGRAM_URL} rel="noopener" aria-label="Badger on Instagram"
+            ><InstagramGlyph size={32} /></a
+          >
         </span>
       </div>
     </nav>
@@ -130,6 +133,25 @@ const year = new Date().getUTCFullYear();
     text-decoration: underline;
   }
 
+  /* The glyph link. Instagram's rules ask for clear space of half the glyph's width
+     (16px at 32px) on every side: the 8px padding plus the row gaps around it give
+     that, and the padding makes a 48px tap target. No hover recolor: the glyph must
+     stay as drawn, so the pointer and the focus ring are the only feedback. */
+  .footer-row-follow {
+    align-items: center;
+  }
+
+  .footer-links a.footer-social {
+    display: inline-block;
+    padding: 8px;
+    line-height: 0;
+    border-radius: 10px;
+  }
+
+  .footer-links a.footer-social svg {
+    display: block;
+  }
+
   .footer-copy {
     margin: 0;
     font-size: 12px;
@@ -170,6 +192,12 @@ const year = new Date().getUTCFullYear();
     .footer-row {
       flex-direction: column;
       align-items: center;
+    }
+
+    /* Stacked, the label sits above the glyph: 8px here plus the link's 8px padding
+       keeps the 16px clear space. */
+    .footer-row-follow {
+      row-gap: 8px;
     }
   }
 </style>
