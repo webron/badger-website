@@ -306,6 +306,58 @@ def search_console(days: int) -> dict:
     }
 
 
+def search_console_detail(days: int, decline_days: int = 35) -> dict:
+    """Search Console cut two more ways, for the Near wins and Overlap panels.
+
+    Two calls in all: query by page (positions, and which URLs compete for a
+    query) and page by date (weekly clicks per page, for the decline check).
+    Same window as search_console(), so the figures line up with that panel.
+    """
+    if not os.path.exists(SC_KEY_PATH):
+        return {"error": f"No Search Console key at {SC_KEY_PATH}."}
+    try:
+        from _google_auth import access_token
+        token = access_token(SC_KEY_PATH, SC_SCOPE)
+    except Exception as exc:  # noqa: BLE001
+        return {"error": f"Search Console auth failed: {exc}"}
+
+    start, today = utc_window(days)
+    end = max(today - timedelta(days=2), start)
+    site = urllib.parse.quote(SC_PROPERTY, safe="")
+    url = f"https://searchconsole.googleapis.com/webmasters/v3/sites/{site}/searchAnalytics/query"
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+
+    # The decline check needs whole weeks ending at `end`, so page by date gets
+    # its own window of `decline_days` days (the main window loses 2 days to
+    # Search Console's reporting lag and would leave the oldest week short).
+    decline_start = end - timedelta(days=decline_days - 1)
+
+    def query(dims: list[str], since: date = start) -> list[dict]:
+        body = json.dumps({
+            "startDate": since.isoformat(), "endDate": end.isoformat(),
+            "dimensions": dims, "rowLimit": 5000,
+        }).encode()
+        return _get_json(url, headers, body).get("rows", [])
+
+    try:
+        query_page = query(["query", "page"])
+        page_date = query(["page", "date"], decline_start)
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode(errors="replace")[:200]
+        return {"error": f"Search Console returned HTTP {exc.code}: {detail}"}
+    except urllib.error.URLError as exc:
+        return {"error": f"Search Console unreachable: {exc.reason}"}
+
+    def flat(raw: list[dict], names: list[str]) -> list[dict]:
+        return [dict(zip(names, r["keys"]), clicks=r.get("clicks", 0),
+                      impressions=r.get("impressions", 0), position=r.get("position", 0))
+                for r in raw]
+
+    return {"start": start.isoformat(), "end": end.isoformat(),
+            "query_page": flat(query_page, ["query", "page"]),
+            "page_date": flat(page_date, ["page", "date"])}
+
+
 def _gcs_object(bucket: str, name: str, token: str) -> bytes:
     """Download one object through the JSON API.
 

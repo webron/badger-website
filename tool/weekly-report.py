@@ -21,6 +21,7 @@ import html
 import json
 import subprocess
 import sys
+from urllib.parse import urlsplit
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
@@ -29,6 +30,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from _ai_probe import PROMPTS, PROVIDERS, latest_summary  # noqa: E402
 from _apple_analytics import installs_and_deletions  # noqa: E402
 from _stats_sources import (  # noqa: E402
+    search_console_detail,
     STORE_EVENTS, app_store, app_store_listing, app_store_ratings,
     app_store_reviews, goatcounter, play, play_quality, play_ratings,
     search_console,
@@ -38,6 +40,10 @@ from _search_health import bing_health, google_health  # noqa: E402
 from _tracking_check import check as tracking_check, zero_run, zero_run_line  # noqa: E402
 
 DEFAULT_OUT = Path.home() / "Development/badger-artifacts/site-stats/weekly.html"
+NEAR_MIN_POS, NEAR_MAX_POS = 4.0, 20.0  # "near win": ranks just off page one or on page two
+NEAR_MIN_IMPRESSIONS = 20  # over the report window (5 weeks), so small-site noise stays out
+DECLINE_WEEKS = 4  # consecutive weekly drops in clicks
+PANEL_ROWS = 10
 WEEKS = 5  # this week plus the four it is measured against
 # App Store ratings carry no date anywhere Apple exposes, so "new this week" is
 # the change in the worldwide count since an earlier run. Kept beside the page.
@@ -215,6 +221,127 @@ def build_search_console(days: int) -> str:
         "Nothing yet."))
 
     return panel("Google search", f"{sc['start']} to {sc['end']}", "".join(parts))
+
+
+def canonical_page(url: str) -> str:
+    """Host plus path, lowercase, no scheme, www, query, fragment or trailing slash,
+    so /guides/x, /guides/x/ and /guides/x?utm=1 count as one page."""
+    u = urlsplit(url.strip())
+    host = u.netloc.lower().removeprefix("www.")
+    return f"{host}{u.path.rstrip('/')}" or host
+
+
+def merge_query_pages(rows: list[dict]) -> list[dict]:
+    """Fold rows that differ only by URL spelling; position is impression-weighted."""
+    merged: dict[tuple[str, str], dict] = {}
+    for r in rows:
+        key = (r["query"], canonical_page(r["page"]))
+        m = merged.setdefault(key, {"query": key[0], "page": key[1], "clicks": 0,
+                                    "impressions": 0, "_pos": 0.0})
+        m["clicks"] += r["clicks"]
+        m["impressions"] += r["impressions"]
+        m["_pos"] += r["position"] * r["impressions"]
+    for m in merged.values():
+        m["position"] = m.pop("_pos") / m["impressions"] if m["impressions"] else 0.0
+    return list(merged.values())
+
+
+def near_wins(rows: list[dict]) -> list[dict]:
+    hits = [r for r in rows
+            if NEAR_MIN_POS <= r["position"] <= NEAR_MAX_POS
+            and r["impressions"] >= NEAR_MIN_IMPRESSIONS]
+    return sorted(hits, key=lambda r: -r["impressions"])[:PANEL_ROWS]
+
+
+def declining_pages(page_date: list[dict], merged: list[dict], end: date) -> list[dict]:
+    """Pages whose weekly clicks fell DECLINE_WEEKS weeks running (needs
+    DECLINE_WEEKS + 1 full weeks, oldest first), with their top query."""
+    need = DECLINE_WEEKS + 1
+    weekly: dict[str, list[int]] = {}
+    for r in page_date:
+        age = (end - date.fromisoformat(r["date"])).days // 7  # 0 = newest week
+        if age >= need:
+            continue
+        weekly.setdefault(canonical_page(r["page"]), [0] * need)[need - 1 - age] += r["clicks"]
+    top: dict[str, dict] = {}
+    for m in merged:
+        if m["page"] not in top or m["impressions"] > top[m["page"]]["impressions"]:
+            top[m["page"]] = m
+    out = []
+    for page, w in weekly.items():
+        if w[0] > 0 and all(w[i] > w[i + 1] for i in range(need - 1)):
+            t = top.get(page, {"query": "", "position": 0.0, "impressions": 0})
+            out.append({"page": page, "query": t["query"], "position": t["position"],
+                        "impressions": t["impressions"], "clicks": sum(w), "weekly": w})
+    return sorted(out, key=lambda r: -r["impressions"])[:PANEL_ROWS]
+
+
+def overlaps(rows: list[dict]) -> list[dict]:
+    """Queries where 2+ distinct pages got impressions. Stronger = more clicks,
+    then better (lower) position."""
+    by_query: dict[str, list[dict]] = {}
+    for r in rows:
+        by_query.setdefault(r["query"], []).append(r)
+    out = []
+    for q, pages in by_query.items():
+        if len(pages) < 2:
+            continue
+        pages = sorted(pages, key=lambda r: (-r["clicks"], r["position"]))
+        out.append({"query": q, "pages": pages, "impressions": sum(p["impressions"] for p in pages)})
+    return sorted(out, key=lambda r: -r["impressions"])[:PANEL_ROWS]
+
+
+def build_near_wins(detail: dict) -> str:
+    # Action: refresh these pages (title, intro, headings, internal links, fresh
+    # facts) before writing new guides. Near wins are close to page one; a
+    # declining page is losing ground it already held.
+    sub = (f"Refresh these before writing new guides. {detail['start']} to {detail['end']}; "
+           f"position {NEAR_MIN_POS:.0f} to {NEAR_MAX_POS:.0f}, at least "
+           f"{NEAR_MIN_IMPRESSIONS} impressions.")
+    merged = merge_query_pages(detail["query_page"])
+    wins = near_wins(merged)
+    dec = declining_pages(detail["page_date"], merged, date.fromisoformat(detail["end"]))
+    parts = ["<h3>Near wins</h3>", rows_table(
+        ["Page", "Query", "Position", "Shown", "Clicks"],
+        [[esc(r["page"]), esc(r["query"]), f'#{r["position"]:.1f}',
+          str(r["impressions"]), str(r["clicks"])] for r in wins],
+        "none yet")]
+    parts.append(f"<h3>Clicks fell {DECLINE_WEEKS} weeks in a row</h3>")
+    parts.append(rows_table(
+        ["Page", "Top query", "Position", "Shown", "Clicks", "Weekly clicks"],
+        [[esc(r["page"]), esc(r["query"]), f'#{r["position"]:.1f}' if r["position"] else "",
+          str(r["impressions"]), str(r["clicks"]), " > ".join(map(str, r["weekly"]))]
+         for r in dec],
+        "none yet"))
+    return panel("Near wins and declines", sub, "".join(parts))
+
+
+def build_overlap(detail: dict) -> str:
+    # Action: for each query, make the stronger page the one answer (point
+    # internal links at it, differentiate or merge/redirect the weaker one).
+    sub = ("Queries where two or more of our pages were shown. Strengthen the stronger "
+           "page, then differentiate or merge the other.")
+    found = overlaps(merge_query_pages(detail["query_page"]))
+    rows = []
+    for o in found:
+        urls = "<br>".join(
+            f'{esc(p["page"])} (#{p["position"]:.1f}, {p["clicks"]} clicks)' for p in o["pages"])
+        rows.append([esc(o["query"]), urls, esc(o["pages"][0]["page"])])
+    return panel("Overlap", sub, rows_table(["Query", "Pages", "Looks stronger"], rows, "none yet"))
+
+
+def build_search_detail_panels(days: int) -> str:
+    detail = guarded(search_console_detail, "Search Console detail", days, 7 * (DECLINE_WEEKS + 1))
+    if "error" in detail:
+        return (error_panel("Near wins and declines", detail["error"])
+                + error_panel("Overlap", detail["error"]))
+    out = ""
+    for title, builder in (("Near wins and declines", build_near_wins), ("Overlap", build_overlap)):
+        try:
+            out += builder(detail)
+        except Exception as exc:  # noqa: BLE001 - never cost the rest of the report
+            out += error_panel(title, f"{title} failed ({type(exc).__name__}).")
+    return out
 
 
 def search_health_lines(google: dict, bing: dict) -> tuple[list[str], list[str]]:
@@ -682,6 +809,7 @@ def main() -> None:
     body = "".join([
         build_goatcounter(days),
         build_search_console(days),
+        build_search_detail_panels(days),
         build_search_health(),
         build_play(days),
         build_app_store(days),
