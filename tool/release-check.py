@@ -33,7 +33,7 @@ from _stats_sources import (  # noqa: E402
 )
 
 STATE = Path.home() / "Development/badger-artifacts/site-stats/release-check.json"
-SEND_MAIL = Path.home() / "Development/fastmail-hey/send_mail.py"
+SEND_MAIL = Path.home() / "Development/fastmail-tools/send_mail.py"
 TO = "claude@webron.me"
 
 WATCH_DAYS = 8       # the day+7 read, plus one for Play's lag
