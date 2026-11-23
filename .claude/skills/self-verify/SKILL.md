@@ -1,6 +1,6 @@
 ---
 name: self-verify
-description: Checks Claude runs on its own after changing any badger.fit page, layout, style, component, image or help copy, before reporting the change done, opening or updating a PR, or recording a demo video. Use when asked to verify, check, test or confirm a website change works, to run or preview the site to see a change, or before merging a site/ or release/ branch. Covers the build, internal links and #anchors, layout shift (CLS), the Lighthouse budget, the prose check and screenshots, what to do when one fails, and what output proves each check.
+description: Checks Claude runs on its own after changing any badger.fit page, layout, style, component, image or help copy, before reporting the change done, opening or updating a PR, or recording a demo video. Use when asked to verify, check, test or confirm a website change works, to run or preview the site to see a change, to prove a site bug is fixed, or before merging a site/ or release/ branch. Covers the build, internal links and #anchors, layout shift (CLS), the Lighthouse budget, the prose check, screenshots (before and after for a bug fix), auth and seed state for the preview, what to do when a check fails or is blocked, and what output proves each check.
 ---
 
 # Self-verify a badger.fit change
@@ -49,6 +49,36 @@ at 360, 390, 768 and 1280 px, in both themes (the paper/slate toggle and
 is visible. These screenshots are the dry run for the `demo-video` skill when the change is
 user-visible.
 
+## Auth and seed state
+
+**Auth.** The site has no login, accounts or API keys, so no check needs a sign-in. Never sign
+in to GitHub, GoatCounter, Cloudflare or a store console to verify a page; the stats tools in
+`tool/` are not part of this skill.
+
+**Seed state** for check 6. A fresh preview tab is the state a first-time visitor sees. Set
+these on purpose, and say which you set:
+
+- **Analytics.** `npm run preview` serves the production build, so GoatCounter and the
+  Cloudflare beacon load. count.js ignores localhost; the beacon does not. Before browsing,
+  run `localStorage.setItem('skipgc', 't')` in the preview tab and reload, so your visits are
+  not sent to Ron's numbers.
+- **Theme.** The paper/slate choice is saved in `localStorage.theme` (`light` or `dark`). With
+  no saved value the page follows `prefers-color-scheme`. Shoot the OS preference with the
+  browser's `colorScheme` (nothing saved), then the toggle. Run
+  `localStorage.removeItem('theme')` before the next page so one choice does not leak into
+  the next shot.
+- **Search.** The Pagefind index exists only after `npm run build`; `npm run dev` returns no
+  results. Check search on the preview server.
+- **Program files.** `/programs/` prints the app version read from `public/programs/*.badger`.
+  A stale version there means the files need regenerating (see `CLAUDE.md`), not a page bug.
+
+## Bug fixes: before and after
+
+For a bug fix, the proof is a pair of screenshots: one showing the bug on the base branch
+(a second worktree, since `git stash` is shared) and one showing it fixed on your branch,
+at the same URL, width and theme. Put them side by side in the PR body, labeled before and
+after. A fix with only an after shot is not proven.
+
 ## When a check fails
 
 - **Build fails:** fix the error it names. Never commit a red build; CI builds every PR.
@@ -64,6 +94,21 @@ user-visible.
 - **Prose check flags:** rewrite the sentence; follow `badger-fit/docs/writing_style.md`.
 - **A check cannot run** (exit 2, Chrome missing, port busy): say so in the report with the
   error. Never report it as passed.
+
+## When a check hits a blocker, fix this file
+
+If a check cannot run, or runs only after a workaround (a missing dependency, a changed flag,
+a busy port, a tool that needs an extra step), and you find the fix, add it to the list below
+in the same branch as your change: the symptom, the fix, and why it works, so the next
+session can handle a blocker that looks a little different. Edit or delete a line that
+turned out wrong. Problems in the page itself do not go here; fix the page.
+
+- **`Cannot find module` or `astro: command not found` in a worktree:** `node_modules` is
+  not shared between worktrees. Symlink the main checkout's (`ln -s
+  /Users/ron/Development/badger-website/node_modules`) or run `npm ci`. The worktree has only tracked files.
+- **`Port 4329 is already in use`** (check 4): a preview from an earlier run is still up.
+  Stop it (`lsof -ti :4329`, then kill that PID) and rerun. The script refuses a busy port
+  so it never measures a stale build.
 
 ## What this does not cover
 
