@@ -9,7 +9,9 @@ source that could not be read, must never look like a healthy run.
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
+import urllib.error
 import tempfile
 import unittest
 from datetime import date
@@ -48,12 +50,26 @@ class Releases(unittest.TestCase):
         state = fresh()
         rows = [rel(48, "IN_REVIEW"), rel(46, "PUBLISHED")]
         self.assertEqual(check.check_release(rows, state, date(2026, 11, 18)), [])
-        self.assertEqual(check.check_release(rows, state, date(2026, 11, 20)), [])
-        found = check.check_release(rows, state, date(2026, 11, 21))
+        self.assertEqual(check.check_release(rows, state, date(2026, 11, 21)), [])
+        found = check.check_release(rows, state, date(2026, 11, 22))
         self.assertEqual(len(found), 1)
-        self.assertIn("after 3 days", found[0])
+        self.assertIn("after 4 days", found[0])
         self.assertIn("still serves 1.1.46", found[0])
-        self.assertEqual(check.check_release(rows, state, date(2026, 11, 22)), [])
+        self.assertEqual(check.check_release(rows, state, date(2026, 11, 23)), [])
+
+    def test_states_that_need_the_developer_alert_at_once_once_each(self):
+        for name, words in (("NOT_SENT_FOR_REVIEW", "not been sent for review"),
+                            ("APPROVED_NOT_PUBLISHED", "approved but not published"),
+                            ("NOT_APPROVED", "did not approve")):
+            with self.subTest(name):
+                state = fresh()
+                found = check.check_release([rel(48, name), rel(46, "PUBLISHED")], state, TODAY)
+                self.assertEqual(len(found), 1)
+                self.assertIn(words, found[0])
+                self.assertEqual(check.check_release([rel(48, name)], state, TODAY), [])
+        state = fresh()
+        check.check_release([rel(48, "NOT_SENT_FOR_REVIEW")], state, TODAY)
+        self.assertEqual(len(check.check_release([rel(48, "APPROVED_NOT_PUBLISHED")], state, TODAY)), 1)
 
     def test_a_refusal_is_reported_the_same_day_even_after_a_wait_alert(self):
         state = fresh()
@@ -85,8 +101,10 @@ class Crashes(unittest.TestCase):
                 {"code": 49, "kind": "ANR", "reports": 5, "users": 1}]
         found = check.check_crashes(rows, live, state)
         self.assertEqual(len(found), 1)
-        self.assertIn("2 CRASH reports from 1 people", found[0])
+        self.assertIn("2 CRASH reports from at least 1 people on one day", found[0])
         self.assertIn("46: 1", found[0])
+        self.assertEqual(check.check_crashes(rows, live, state), [])
+        rows[0]["reports"] = 1  # the window slid: a smaller count is not news
         self.assertEqual(check.check_crashes(rows, live, state), [])
         rows[0]["reports"] = 3
         self.assertEqual(len(check.check_crashes(rows, live, state)), 1)
@@ -101,6 +119,92 @@ class Crashes(unittest.TestCase):
                                       row("ANR", "48", "2")])
         self.assertEqual(rows, [{"code": 48, "kind": "ANR", "reports": 2, "users": 1},
                                 {"code": 46, "kind": "CRASH", "reports": 1, "users": 1}])
+
+
+class DailyCounts(unittest.TestCase):
+    @staticmethod
+    def row(kind, code, n, users="1"):
+        return {"dimensions": [{"dimension": "reportType", "stringValue": kind},
+                               {"dimension": "versionCode", "int64Value": code}],
+                "metrics": [{"metric": "errorReportCount", "decimalValue": {"value": n}},
+                            {"metric": "distinctUsers", "decimalValue": {"value": users}}]}
+
+    def test_days_sum_reports_and_users_take_the_busiest_day(self):
+        rows = [self.row("CRASH", "48", "2", "2"), self.row("CRASH", "48", "3", "1"),
+                self.row("CRASH", "48", "1", "4")]
+        self.assertEqual(src._error_count_rows(rows),
+                         [{"code": 48, "kind": "CRASH", "reports": 6, "users": 4}])
+
+    def test_both_anr_spellings_count_as_anr(self):
+        rows = [self.row("ANR", "48", "1"), self.row("APPLICATION_NOT_RESPONDING", "48", "2")]
+        self.assertEqual(src._error_count_rows(rows),
+                         [{"code": 48, "kind": "ANR", "reports": 3, "users": 1}])
+
+    def test_an_unknown_report_type_is_an_error_not_silence(self):
+        with self.assertRaises(ValueError):
+            src._error_count_rows([self.row("SOMETHING_NEW", "48", "1")])
+        with mock.patch.object(src.os.path, "exists", return_value=True), \
+                mock.patch.dict(sys.modules, {"_google_auth": mock.Mock(
+                    access_token=mock.Mock(return_value="t"))}), \
+                mock.patch.object(src, "_get_json", side_effect=[
+                    FRESH, {"rows": [self.row("SOMETHING_NEW", "48", "1")]}]):
+            self.assertIn("SOMETHING_NEW", src.play_error_counts()["error"])
+
+    def test_the_query_is_daily_and_ends_at_the_freshness_day(self):
+        seen = []
+
+        def get(url, headers, data=None, timeout=30):
+            seen.append(data)
+            return FRESH if data is None else {"rows": [self.row("CRASH", "48", "2")]}
+        with mock.patch.object(src.os.path, "exists", return_value=True), \
+                mock.patch.dict(sys.modules, {"_google_auth": mock.Mock(
+                    access_token=mock.Mock(return_value="t"))}), \
+                mock.patch.object(src, "_get_json", side_effect=get):
+            got = src.play_error_counts(28)
+        spec = json.loads(seen[1])["timelineSpec"]
+        self.assertEqual(spec["aggregationPeriod"], "DAILY")
+        self.assertEqual(spec["endTime"], {"year": 2026, "month": 11, "day": 22})
+        self.assertEqual(spec["startTime"], {"year": 2026, "month": 10, "day": 25})
+        self.assertEqual((got["start"], got["end"]), ("2026-10-25", "2026-11-21"))
+        self.assertEqual(got["counts"][0]["reports"], 2)
+
+
+FRESH = {"freshnessInfo": {"freshnesses": [
+    {"aggregationPeriod": "DAILY", "latestEndTime": {"year": 2026, "month": 11, "day": 22}}]}}
+
+
+class PlayReleases(unittest.TestCase):
+    PAYLOAD = {"releases": [{"releaseName": "1.1.19", "releaseLifecycleState":
+                             "RELEASE_LIFECYCLE_STATE_IN_REVIEW",
+                             "activeArtifacts": [{"versionCode": "48"}]}]}
+
+    def call(self, effects):
+        sleep = mock.Mock()
+        with mock.patch.object(src.os.path, "exists", return_value=True), \
+                mock.patch.dict(sys.modules, {"_google_auth": mock.Mock(
+                    access_token=mock.Mock(return_value="t"))}), \
+                mock.patch.object(src, "_get_json", side_effect=effects) as get:
+            return src.play_releases(sleep=sleep), sleep, get
+
+    @staticmethod
+    def quota():
+        return urllib.error.HTTPError("u", 403, "quota", {}, None)
+
+    def test_a_403_is_retried_twice_with_a_pause(self):
+        got, sleep, get = self.call([self.quota(), self.quota(), self.PAYLOAD])
+        self.assertEqual(got["releases"][0]["state"], "IN_REVIEW")
+        self.assertEqual((get.call_count, [c.args for c in sleep.call_args_list]),
+                         (3, [(30,), (30,)]))
+
+    def test_a_third_403_is_returned_as_the_error(self):
+        got, sleep, get = self.call([self.quota()] * 3)
+        self.assertIn("403", got["error"])
+        self.assertEqual((get.call_count, sleep.call_count), (3, 2))
+
+    def test_other_errors_are_not_retried(self):
+        got, sleep, get = self.call([urllib.error.HTTPError("u", 500, "x", {}, None)])
+        self.assertEqual((get.call_count, sleep.call_count), (1, 0))
+        self.assertIn("500", got["error"])
 
 
 class Ratings(unittest.TestCase):
@@ -155,6 +259,37 @@ class Run(unittest.TestCase):
         self.assertEqual(self.run_with(play_ratings={"ratings": [], "note": "partial"})[1],
                          ["partial"])
 
+    def test_play_ratings_count_from_a_day_before_go_live(self):
+        state = fresh()
+        state["live_since"]["48"] = "2026-11-20"
+        row = {"id": "a", "submitted": "", "updated": "2026-11-19", "date": "2026-11-19",
+               "rating": 1, "text": "bad"}
+        problems, _ = self.run_with(state, play_ratings={"ratings": [row], "note": ""})
+        self.assertEqual(len(problems), 1)
+        row["updated"] = row["date"] = "2026-11-18"
+        self.assertEqual(self.run_with(state, play_ratings={"ratings": [row], "note": ""})[0], [])
+
+    def test_ratings_are_watched_longer_than_crashes(self):
+        state = fresh()
+        state["live_since"]["48"] = "2026-11-13"  # 10 days live
+        low = {"error": "crashes must not be read"}
+        reviews = mock.Mock(return_value={"reviews": []}, __name__="app_store_reviews")
+        ratings = mock.Mock(return_value={"ratings": [], "note": ""}, __name__="play_ratings")
+        mocks = {k: mock.Mock(return_value=v, __name__=k) for k, v in {
+            **self.sources, "play_error_counts": low,
+            "app_store_listing": {"released": "2026-11-13"}}.items()}
+        with mock.patch.multiple(check, **{**mocks, "play_ratings": ratings,
+                                           "app_store_reviews": reviews}):
+            self.assertEqual(check.run(state, TODAY), ([], []))
+        ratings.assert_called_once_with(check.RATING_DAYS + 7)
+        reviews.assert_called_once_with(check.RATING_DAYS + 7)
+
+    def test_ios_reviews_with_a_blank_reviewer_do_not_collide(self):
+        a, b = [{"date": "2026-11-20", "reviewer": "", "rating": 1, "title": t, "body": "x"}
+                for t in ("one", "two")]
+        keys = {r["key"] for r in check.ios_rows([a, b])}
+        self.assertEqual(len(keys), 2)
+
     def test_an_old_release_is_not_watched(self):
         state = fresh()
         state["live_since"]["48"] = "2026-10-01"
@@ -165,15 +300,47 @@ class Run(unittest.TestCase):
 
 
 class Main(unittest.TestCase):
-    def test_a_failed_send_keeps_the_alert_for_the_next_run(self):
+    def test_a_failed_send_keeps_dates_but_not_the_alert_marks(self):
+        def fake_run(state, today):
+            state["waiting_since"]["48"] = "2026-11-20"
+            state["alerted"]["48:waiting"] = 1
+            return ["bad"], []
         with tempfile.TemporaryDirectory() as tmp, \
                 mock.patch.object(check, "STATE", Path(tmp) / "s.json"), \
-                mock.patch.object(check, "run", return_value=(["bad"], [])), \
+                mock.patch.object(check, "run", side_effect=fake_run), \
                 mock.patch.object(check, "send", side_effect=RuntimeError("no mail")), \
-                mock.patch.object(sys, "argv", ["x"]):
-            with self.assertRaises(RuntimeError):
-                check.main()
-            self.assertFalse(check.STATE.exists())
+                mock.patch.object(sys, "argv", ["x"]), \
+                mock.patch("builtins.print") as out:
+            self.assertEqual(check.main(), 1)
+            saved = json.loads(check.STATE.read_text())
+            self.assertEqual((saved["waiting_since"], saved["alerted"]),
+                             ({"48": "2026-11-20"}, {}))
+            self.assertIn("no mail", str(out.call_args_list))
+
+    def test_a_corrupt_state_file_is_set_aside_and_the_checks_still_run(self):
+        bad = ["{not json", "[1]", '{"alerted": []}', '{"alerted": {"a": "x"}}',
+               '{"live_since": {"48": "soon"}}']
+        for text in bad:
+            with self.subTest(text), tempfile.TemporaryDirectory() as tmp, \
+                    mock.patch.object(check, "STATE", Path(tmp) / "s.json"), \
+                    mock.patch.object(check, "run", return_value=([], [])) as run, \
+                    mock.patch.object(sys, "argv", ["x"]), mock.patch("builtins.print") as out:
+                check.STATE.write_text(text)
+                self.assertEqual(check.main(), 1)
+                run.assert_called_once()
+                self.assertEqual((Path(tmp) / "s.bad").read_text(), text)
+                self.assertEqual(json.loads(check.STATE.read_text())["alerted"], {})
+                self.assertIn("error:", str(out.call_args_list))
+
+    def test_a_corrupt_state_file_is_left_alone_in_a_dry_run(self):
+        with tempfile.TemporaryDirectory() as tmp, \
+                mock.patch.object(check, "STATE", Path(tmp) / "s.json"), \
+                mock.patch.object(check, "run", return_value=([], [])), \
+                mock.patch.object(sys, "argv", ["x", "--dry-run"]), mock.patch("builtins.print"):
+            check.STATE.write_text("{not json")
+            self.assertEqual(check.main(), 1)
+            self.assertEqual(check.STATE.read_text(), "{not json")
+            self.assertFalse((Path(tmp) / "s.bad").exists())
 
     def test_dry_run_sends_and_saves_nothing(self):
         with tempfile.TemporaryDirectory() as tmp, \
@@ -196,6 +363,13 @@ class Panel(unittest.TestCase):
             html = report.play_builds_section()
         self.assertIn("in review", html)
         self.assertIn("can still miss one", html)
+
+    def test_the_people_column_says_it_is_one_day(self):
+        counts = {"start": "a", "end": "b",
+                  "counts": [{"code": 48, "kind": "CRASH", "reports": 2, "users": 1}]}
+        with mock.patch.object(report, "play_releases", return_value={"releases": []}), \
+                mock.patch.object(report, "play_error_counts", return_value=counts):
+            self.assertIn("busiest day", report.play_builds_section())
 
 
 if __name__ == "__main__":

@@ -567,23 +567,35 @@ PLAY_PUBLISHER_KEY = "/Users/ron/Development/badger-fit/tools/play_publish/play-
 PLAY_PUBLISHER_SCOPE = "https://www.googleapis.com/auth/androidpublisher"
 
 
-def play_releases(track: str = "production") -> dict:
+def play_releases(track: str = "production", sleep=time.sleep) -> dict:
     """What Play is really serving on a track, newest version code first.
 
     The edits API reports a release as "completed" the moment it is submitted,
     while Google may still be reviewing it. This endpoint has the review state,
     so it is the one to ask whether a release is live (1.1.19 read as
     "completed" on 2026-11-18 and was still in review five days later).
+
+    States: DRAFT, NOT_SENT_FOR_REVIEW (developer action), IN_REVIEW,
+    APPROVED_NOT_PUBLISHED (developer must publish), NOT_APPROVED, PUBLISHED.
+    PUBLISHED also covers staged and halted releases, so a halt cannot be seen.
+    The endpoint has a tight quota: a 403 is retried twice, 30 s apart.
     """
     if not os.path.exists(PLAY_PUBLISHER_KEY):
         return {"error": "Play publishing key not found; cannot read releases."}
     try:
         from _google_auth import access_token
         token = access_token(PLAY_PUBLISHER_KEY, PLAY_PUBLISHER_SCOPE)
-        payload = _get_json(
-            "https://androidpublisher.googleapis.com/androidpublisher/v3/applications/"
-            f"{PLAY_PACKAGE}/tracks/{track}/releases", {"Authorization": f"Bearer {token}"})
-    except urllib.error.HTTPError as exc:
+        for attempt in range(3):
+            try:
+                payload = _get_json(
+                    "https://androidpublisher.googleapis.com/androidpublisher/v3/applications/"
+                    f"{PLAY_PACKAGE}/tracks/{track}/releases", {"Authorization": f"Bearer {token}"})
+                break
+            except urllib.error.HTTPError as exc:
+                if exc.code != 403 or attempt == 2:
+                    return {"error": f"Play releases returned HTTP {exc.code}."}
+                sleep(30)
+    except urllib.error.HTTPError as exc:  # the token request
         return {"error": f"Play releases returned HTTP {exc.code}."}
     except Exception as exc:  # noqa: BLE001
         return {"error": f"Play releases failed ({type(exc).__name__})."}
@@ -606,29 +618,37 @@ def play_releases(track: str = "production") -> dict:
 
 
 def _error_count_rows(rows: list[dict]) -> list[dict]:
-    """errorCountMetricSet rows as plain crash and ANR counts, newest build first."""
-    out = []
+    """DAILY errorCountMetricSet rows as crash and ANR totals per build, newest first.
+
+    Reports are summed over the days. People are the busiest single day, never
+    a sum: the same person crashing on two days is one person. NON_FATAL is
+    dropped; any other reportType raises ValueError rather than vanishing.
+    """
+    kinds = {"CRASH": "CRASH", "ANR": "ANR", "APPLICATION_NOT_RESPONDING": "ANR"}
+    totals: dict = {}
     for row in rows:
         dims = {d.get("dimension"): d.get("stringValue") or d.get("int64Value") or ""
                 for d in row.get("dimensions", [])}
         metrics = {m.get("metric"): float((m.get("decimalValue") or {}).get("value") or 0)
                    for m in row.get("metrics", [])}
-        kind = dims.get("reportType", "")
-        if kind not in ("CRASH", "ANR"):
+        raw = dims.get("reportType", "")
+        if raw == "NON_FATAL":
             continue
-        out.append({
-            "code": int(dims.get("versionCode") or 0),
-            "kind": kind,
-            "reports": int(metrics.get("errorReportCount", 0)),
-            "users": int(metrics.get("distinctUsers", 0)),
-        })
-    return sorted(out, key=lambda r: (-r["code"], r["kind"]))
+        if raw not in kinds:
+            raise ValueError(f"unknown reportType {raw!r}")
+        total = totals.setdefault((int(dims.get("versionCode") or 0), kinds[raw]), [0, 0])
+        total[0] += int(metrics.get("errorReportCount", 0))
+        total[1] = max(total[1], int(metrics.get("distinctUsers", 0)))
+    return [{"code": code, "kind": kind, "reports": reports, "users": users}
+            for (code, kind), (reports, users) in sorted(totals.items(), key=lambda t: (-t[0][0], t[0][1]))]
 
 
 def play_error_counts(days: int = 28) -> dict:
-    """Crashes and ANRs per build. The rates in play_quality are empty for an
-    app this size; this is the one Reporting API surface that returns rows.
-    An empty list means Play reported none, which is weaker than "no crashes"."""
+    """Crashes and ANRs per build over the last `days` complete days. The rates in
+    play_quality are empty for an app this size; this is the one Reporting API
+    surface that returns rows. An empty list means Play reported none, which is
+    weaker than "no crashes". Only DAILY (America/Los_Angeles) is supported, so
+    reports are summed per build and people are the busiest single day."""
     if not os.path.exists(PLAY_PUBLISHER_KEY):
         return {"error": "Play publishing key not found; cannot read crash counts."}
     try:
@@ -643,12 +663,12 @@ def play_error_counts(days: int = 28) -> dict:
         if not end:
             return {"error": "Play crash counts have no freshness date."}
         last = date(end["year"], end["month"], end["day"])
-        first = last - timedelta(days=days)
+        first = last - timedelta(days=days)  # endTime is exclusive: `last` is the freshness
         query = {
             "metrics": ["errorReportCount", "distinctUsers"],
             "dimensions": ["reportType", "versionCode"],  # reportType is required
             "timelineSpec": {
-                "aggregationPeriod": "FULL_RANGE",
+                "aggregationPeriod": "DAILY",
                 "startTime": {"year": first.year, "month": first.month, "day": first.day},
                 "endTime": {"year": last.year, "month": last.month, "day": last.day},
             },
@@ -661,8 +681,12 @@ def play_error_counts(days: int = 28) -> dict:
             if not payload.get("nextPageToken"):
                 break
             query["pageToken"] = payload["nextPageToken"]
-        return {"start": first.isoformat(), "end": last.isoformat(),
-                "counts": _error_count_rows(rows)}
+        try:
+            counts = _error_count_rows(rows)
+        except ValueError as exc:
+            return {"error": f"Play crash counts: {exc}."}
+        return {"start": first.isoformat(), "end": (last - timedelta(days=1)).isoformat(),
+                "counts": counts}
     except urllib.error.HTTPError as exc:
         return {"error": f"Play crash counts returned HTTP {exc.code}."}
     except Exception as exc:  # noqa: BLE001

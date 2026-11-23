@@ -354,7 +354,7 @@ def play_builds_section() -> str:
         parts.append(f'<p class="error">{esc(counts["error"])}</p>')
     else:
         parts.append(rows_table(
-            ["Build", "Type", "Reports", "People"],
+            ["Build", "Type", "Reports", "People (busiest day)"],
             [[esc(c["code"]), esc(c["kind"]), esc(c["reports"]), esc(c["users"])]
              for c in counts["counts"]],
             f'Play reported no crashes or ANRs from {counts["start"]} to {counts["end"]}. '
