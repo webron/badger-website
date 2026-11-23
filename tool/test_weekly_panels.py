@@ -56,7 +56,8 @@ class PanelIsolation(unittest.TestCase):
                 "listing_visitors": 0, "listing_acquisitions": 0, "sources": []}
         with mock.patch.object(report, "play", return_value=play), \
              mock.patch.object(report, "play_ratings", return_value={"error": "r"}), \
-             mock.patch.object(report, "play_quality", side_effect=boom):
+             mock.patch.object(report, "play_quality", side_effect=boom), \
+             mock.patch.object(report, "play_builds_section", return_value=""):
             html = report.build_play(35)
         self.assertIn("Play quality stats failed (RuntimeError).", html)
         self.assertIn("Ratings and reviews", html)
