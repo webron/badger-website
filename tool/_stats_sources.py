@@ -567,6 +567,108 @@ PLAY_PUBLISHER_KEY = "/Users/ron/Development/badger-fit/tools/play_publish/play-
 PLAY_PUBLISHER_SCOPE = "https://www.googleapis.com/auth/androidpublisher"
 
 
+def play_releases(track: str = "production") -> dict:
+    """What Play is really serving on a track, newest version code first.
+
+    The edits API reports a release as "completed" the moment it is submitted,
+    while Google may still be reviewing it. This endpoint has the review state,
+    so it is the one to ask whether a release is live (1.1.19 read as
+    "completed" on 2026-11-18 and was still in review five days later).
+    """
+    if not os.path.exists(PLAY_PUBLISHER_KEY):
+        return {"error": "Play publishing key not found; cannot read releases."}
+    try:
+        from _google_auth import access_token
+        token = access_token(PLAY_PUBLISHER_KEY, PLAY_PUBLISHER_SCOPE)
+        payload = _get_json(
+            "https://androidpublisher.googleapis.com/androidpublisher/v3/applications/"
+            f"{PLAY_PACKAGE}/tracks/{track}/releases", {"Authorization": f"Bearer {token}"})
+    except urllib.error.HTTPError as exc:
+        return {"error": f"Play releases returned HTTP {exc.code}."}
+    except Exception as exc:  # noqa: BLE001
+        return {"error": f"Play releases failed ({type(exc).__name__})."}
+
+    releases = []
+    for item in payload.get("releases", []):
+        codes = [int(a["versionCode"]) for a in item.get("activeArtifacts", [])
+                 if a.get("versionCode")]
+        if codes:
+            releases.append({
+                "name": item.get("releaseName") or "",
+                "code": max(codes),
+                "state": (item.get("releaseLifecycleState") or "")
+                         .replace("RELEASE_LIFECYCLE_STATE_", ""),
+            })
+    if not releases:
+        # A production track with no release at all is a changed API, not news.
+        return {"error": "Play returned no releases for the track."}
+    return {"releases": sorted(releases, key=lambda r: r["code"], reverse=True)}
+
+
+def _error_count_rows(rows: list[dict]) -> list[dict]:
+    """errorCountMetricSet rows as plain crash and ANR counts, newest build first."""
+    out = []
+    for row in rows:
+        dims = {d.get("dimension"): d.get("stringValue") or d.get("int64Value") or ""
+                for d in row.get("dimensions", [])}
+        metrics = {m.get("metric"): float((m.get("decimalValue") or {}).get("value") or 0)
+                   for m in row.get("metrics", [])}
+        kind = dims.get("reportType", "")
+        if kind not in ("CRASH", "ANR"):
+            continue
+        out.append({
+            "code": int(dims.get("versionCode") or 0),
+            "kind": kind,
+            "reports": int(metrics.get("errorReportCount", 0)),
+            "users": int(metrics.get("distinctUsers", 0)),
+        })
+    return sorted(out, key=lambda r: (-r["code"], r["kind"]))
+
+
+def play_error_counts(days: int = 28) -> dict:
+    """Crashes and ANRs per build. The rates in play_quality are empty for an
+    app this size; this is the one Reporting API surface that returns rows.
+    An empty list means Play reported none, which is weaker than "no crashes"."""
+    if not os.path.exists(PLAY_PUBLISHER_KEY):
+        return {"error": "Play publishing key not found; cannot read crash counts."}
+    try:
+        from _google_auth import access_token
+        token = access_token(PLAY_PUBLISHER_KEY, PLAY_REPORTING_SCOPE)
+        base = ("https://playdeveloperreporting.googleapis.com/v1beta1/apps/"
+                f"{PLAY_PACKAGE}/errorCountMetricSet")
+        headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+        info = _get_json(base, headers)
+        end = next((f["latestEndTime"] for f in info.get("freshnessInfo", {}).get("freshnesses", [])
+                    if f.get("aggregationPeriod") == "DAILY" and f.get("latestEndTime")), None)
+        if not end:
+            return {"error": "Play crash counts have no freshness date."}
+        last = date(end["year"], end["month"], end["day"])
+        first = last - timedelta(days=days)
+        query = {
+            "metrics": ["errorReportCount", "distinctUsers"],
+            "dimensions": ["reportType", "versionCode"],  # reportType is required
+            "timelineSpec": {
+                "aggregationPeriod": "FULL_RANGE",
+                "startTime": {"year": first.year, "month": first.month, "day": first.day},
+                "endTime": {"year": last.year, "month": last.month, "day": last.day},
+            },
+            "pageSize": 1000,
+        }
+        rows: list[dict] = []
+        while True:
+            payload = _get_json(f"{base}:query", headers, json.dumps(query).encode())
+            rows.extend(payload.get("rows", []))
+            if not payload.get("nextPageToken"):
+                break
+            query["pageToken"] = payload["nextPageToken"]
+        return {"start": first.isoformat(), "end": last.isoformat(),
+                "counts": _error_count_rows(rows)}
+    except urllib.error.HTTPError as exc:
+        return {"error": f"Play crash counts returned HTTP {exc.code}."}
+    except Exception as exc:  # noqa: BLE001
+        return {"error": f"Play crash counts failed ({type(exc).__name__})."}
+
+
 def _review_id(link: str) -> str:
     """The reviewId out of a bulk report's Review Link, or '' for none.
 
