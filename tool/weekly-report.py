@@ -32,7 +32,7 @@ from _apple_analytics import installs_and_deletions  # noqa: E402
 from _stats_sources import (  # noqa: E402
     search_console_detail,
     STORE_EVENTS, app_store, app_store_listing, app_store_ratings,
-    app_store_reviews, goatcounter, play, play_quality, play_ratings,
+    app_store_reviews, goatcounter, play, play_error_counts, play_quality, play_ratings, play_releases,
     search_console,
 )
 from _rival_watch import panel as build_rivals  # noqa: E402
@@ -453,6 +453,8 @@ def build_play(days: int) -> str:
             [[f"{v:.2%}", esc(k)] for k, v in q.items()],
             "Nothing reported."))
 
+    parts.append(play_builds_section())
+
     note = ""
     if p["missing"]:
         # Play publishes a month's file once it has something to put in it, so a
@@ -461,6 +463,30 @@ def build_play(days: int) -> str:
                 + " yet, so the newest days may be missing.")
 
     return panel("Play Store", f"{p['start']} to {p['end']}.{note}", "".join(parts))
+
+
+def play_builds_section() -> str:
+    """Which build Play is really serving, and crashes per build."""
+    parts = ["<h3>Releases and crashes</h3>"]
+    rel = guarded(play_releases, "Play releases")
+    if "error" in rel:
+        parts.append(f'<p class="error">{esc(rel["error"])}</p>')
+    else:
+        parts.append(rows_table(
+            ["Release", "Build", "State"],
+            [[esc(r["name"]), esc(r["code"]), esc(r["state"].replace("_", " ").lower())]
+             for r in rel["releases"]], "No releases."))
+    counts = guarded(play_error_counts, "Play crash counts")
+    if "error" in counts:
+        parts.append(f'<p class="error">{esc(counts["error"])}</p>')
+    else:
+        parts.append(rows_table(
+            ["Build", "Type", "Reports", "People (busiest day)"],
+            [[esc(c["code"]), esc(c["kind"]), esc(c["reports"]), esc(c["users"])]
+             for c in counts["counts"]],
+            f'Play reported no crashes or ANRs from {counts["start"]} to {counts["end"]}. '
+            "On an app this size that can still miss one."))
+    return "".join(parts)
 
 
 def play_ratings_section(days: int) -> str:
