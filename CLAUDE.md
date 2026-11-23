@@ -2,9 +2,9 @@
 
 Astro site, deployed to GitHub Pages. The app it documents lives at
 `/Users/ron/Development/badger-fit`. Site-only changes (layout, styling, typos, build) do not
-need that repo's `CLAUDE.md` (25 KB); skip it. Open it only for questions about app behavior or the
-release, and read just the section you need (`## Current release`, `## Feature Flags`, or the
-`.claude/rules/` file for the area).
+need that repo's `CLAUDE.md`; skip it. For the current release read `badger-fit/docs/project_status.md`;
+for other questions about app behavior, open that repo's `CLAUDE.md` or the `.claude/rules/` file for the
+area.
 
 ## Two rules that bind every session here
 
