@@ -104,8 +104,10 @@ session can handle a blocker that looks a little different. Edit or delete a lin
 turned out wrong. Problems in the page itself do not go here; fix the page.
 
 - **`Cannot find module` or `astro: command not found` in a worktree:** `node_modules` is
-  not shared between worktrees. Symlink the main checkout's (`ln -s
-  /Users/ron/Development/badger-website/node_modules`) or run `npm ci`. The worktree has only tracked files.
+  not shared between worktrees, since a worktree has only tracked files. Run `npm ci`. If you
+  symlink the main checkout's instead, also add `node_modules` to `.git/info/exclude`: the
+  `.gitignore` entry `node_modules/` matches only a directory, so git would see the symlink as
+  a new file and `git add -A` would commit it.
 - **`Port 4329 is already in use`** (check 4): a preview from an earlier run is still up.
   Stop it (`lsof -ti :4329`, then kill that PID) and rerun. The script refuses a busy port
   so it never measures a stale build.
