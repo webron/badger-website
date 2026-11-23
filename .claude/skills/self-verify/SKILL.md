@@ -7,8 +7,9 @@ description: Checks Claude runs on its own after changing any badger.fit page, l
 
 Run these yourself after a change and before you say it works. Ron does not run them. The
 output of each check is the proof: quote it in the PR body or the report, never paraphrase
-it. Claude Code's built-in `run` skill (launch the app to see a change) defers to this one
-here.
+it. Claude Code has no built-in skill named verify; its closest one is `run` (launch the
+app to see a change). Use `run`, or the built-in browser's `preview_start`, to bring the site
+up for check 6; this skill adds the checks and the proof.
 
 Run from the repo root (a worktree is fine; symlink or install `node_modules` first).
 
@@ -35,6 +36,11 @@ Performance, Accessibility, Best Practices and SEO, and CLS exactly 0. A page th
 under budget on the base branch must not get worse: run check 4 on the base branch too
 (`git stash` is shared with other sessions, so use a second worktree) and compare. Known
 baseline on 2026-11-22: home Performance about 92, every other number in budget.
+
+Section 7 also asks for AA text contrast, no new client JS and no external requests. No
+script checks those. When a change touches colors, scripts or embeds, check them by hand
+(contrast of the changed token pairs; `git diff` for new `<script>` or external URLs) and say
+what you checked.
 
 **Check 6.** Run `npm run preview` through the built-in browser's `preview_start` (add a
 `.claude/launch.json` entry if there is none for preview), then screenshot each changed page

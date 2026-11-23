@@ -30,16 +30,24 @@ if (!existsSync('dist')) {
   process.exit(2);
 }
 
-const server = spawn('npx', ['astro', 'preview', '--port', String(PORT)], { stdio: 'ignore' });
-const stop = () => { try { server.kill(); } catch {} };
+async function answers() {
+  try { return (await fetch(`http://localhost:${PORT}/`)).ok; } catch { return false; }
+}
+if (await answers()) {
+  console.error(`Port ${PORT} is already in use (a stale preview?). Stop it and rerun.`);
+  process.exit(2);
+}
+
+// astro directly (no npx wrapper) in its own process group, so stopping it
+// cannot leave a child holding the port.
+const server = spawn('node_modules/.bin/astro', ['preview', '--port', String(PORT)], { stdio: 'ignore', detached: true });
+server.on('error', (e) => { console.error(`Could not start astro preview: ${e.message}`); process.exit(2); });
+const stop = () => { try { process.kill(-server.pid); } catch {} };
 process.on('exit', stop);
 
 async function waitForServer() {
   for (let i = 0; i < 60; i++) {
-    try {
-      const r = await fetch(`http://localhost:${PORT}/`);
-      if (r.ok) return;
-    } catch {}
+    if (await answers()) return;
     await new Promise((r) => setTimeout(r, 500));
   }
   throw new Error(`astro preview did not answer on port ${PORT} within 30 s`);

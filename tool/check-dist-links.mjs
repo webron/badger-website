@@ -27,6 +27,12 @@ function walk(dir) {
 
 // Pagefind's own UI bundle is generated and has no links of ours.
 const pages = walk(dist).filter((f) => f.endsWith('.html') && !/[\\/]pagefind[\\/]/.test(f));
+if (!pages.length) {
+  console.error(`No .html pages in ${dist}/. Wrong folder, or the build failed.`);
+  process.exit(2);
+}
+// A malformed %-escape is a broken link, not a crash.
+const decode = (x) => { try { return decodeURIComponent(x); } catch { return null; } };
 const idCache = new Map();
 
 function idsOf(file) {
@@ -39,7 +45,9 @@ function idsOf(file) {
 
 // URL path ('/help/logging/') -> the dist file that serves it, or null.
 function resolveTarget(urlPath) {
-  const p = decodeURIComponent(urlPath).replace(/^\//, '');
+  const d = decode(urlPath);
+  if (d === null) return null;
+  const p = d.replace(/^\//, '');
   const base = join(dist, p);
   const candidates = [base, join(base, 'index.html'), `${base}.html`];
   return candidates.find((c) => existsSync(c) && statSync(c).isFile()) || null;
@@ -76,7 +84,7 @@ for (const page of pages) {
       continue;
     }
     const frag = url.hash.slice(1);
-    if (frag && target.endsWith('.html') && !idsOf(target).has(decodeURIComponent(frag))) {
+    if (frag && target.endsWith('.html') && !idsOf(target).has(decode(frag))) {
       broken.push(`${rel}: ${raw} -> no id="${frag}" on ${posix.normalize(url.pathname)}`);
     }
   }
