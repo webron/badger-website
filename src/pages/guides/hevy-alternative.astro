@@ -25,6 +25,10 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  *   - description: the workout description lands in the workout's note, after
  *     the title (hevy_importer.dart:231-236, combineWorkoutComment)
  *   - failure sets were already kept as failure sets
+ *
+ * Re-checked 2026-11-23 for 1.1.20 against branch fix/hevy-import-dates:
+ *   - dates are read in every Hevy language, from the app and from hevy.com
+ *     (hevy_dates.dart)
  */
 
 const description =
@@ -110,7 +114,8 @@ const description =
   <p>
     In Hevy, go to <strong>Profile &rarr; Settings &rarr; Export &amp; Import Data &rarr; Export Data &rarr; Export Workouts</strong>
     (Export Measurements has no workouts in it), save the file on the phone you train with, then open <strong>Settings &rarr; Backup, import and export &rarr;
-    Import from another app &rarr; Hevy</strong> in Badger. Import each file once. The full steps are in
+    Import from another app &rarr; Hevy</strong> in Badger. A file from hevy.com works too, and so does any
+    language Hevy has; only the app's file translates exercise names. Import each file once. The full steps are in
     <a href="/help/getting-started/#importing">importing from another app</a>.
   </p>
 
