@@ -20,11 +20,6 @@ const {
 const fullTitle = fullTitleProp ?? (title === 'Badger' ? 'Badger' : `${title} - Badger`);
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageUrl = new URL('/assets/og_image.png', Astro.site).toString();
-
-// Cloudflare Web Analytics site token, trial started 2026-11-15 to compare it with
-// GoatCounter for a week (Ron's call on which one stays). Public by design: it
-// only names the site in Cloudflare's dashboard. Empty means no beacon.
-const CF_BEACON_TOKEN = '65eb24f7d90345018e1f7b3534772943';
 ---
 
 <!doctype html>
@@ -32,15 +27,15 @@ const CF_BEACON_TOKEN = '65eb24f7d90345018e1f7b3534772943';
   <head>
     <meta charset="UTF-8" />
     {/* GitHub Pages cannot send headers, so the CSP is a meta tag; it only governs what
-         follows it, so it stays first. script-src names the two analytics hosts (neither
-         can be pinned with SRI) so another script host cannot run if one of them is
+         follows it, so it stays first. script-src names the one analytics host (it
+         cannot be pinned with SRI) so another script host cannot run if it is
          swapped for a lookalike or injected. 'unsafe-inline' stays because pages carry
          inline scripts (theme, JSON-LD, the 5-3-1 calculator) whose hashes change with
          every edit. 'wasm-unsafe-eval' is for Pagefind search, which compiles WebAssembly.
          Not covered by a meta tag: frame-ancestors, and the report/sandbox directives. */}
     <meta
       http-equiv="content-security-policy"
-      content="script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://gc.zgo.at https://static.cloudflareinsights.com; base-uri 'self'; form-action 'none'; object-src 'none'"
+      content="script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://gc.zgo.at; base-uri 'self'; form-action 'none'; object-src 'none'"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
@@ -118,9 +113,8 @@ const CF_BEACON_TOKEN = '65eb24f7d90345018e1f7b3534772943';
       })();
     </script>
 
-    <!-- GoatCounter: page-view counting. The site's other external requests are
-         the Cloudflare Web Analytics trial at the end of <body> and the AppTierList
-         footer image; the fonts note above rules out font requests. Cookieless and storage-free:
+    <!-- GoatCounter: page-view counting. The site's one other external request is
+         the AppTierList footer image; the fonts note above rules out font requests. Cookieless and storage-free:
          it sends one hit per pageview (path, referrer, and a country resolved
          from the IP server-side, which is then discarded), keeps no identifier,
          and builds no cross-visit profile. Disclosed in /legal/privacy under
@@ -141,36 +135,5 @@ const CF_BEACON_TOKEN = '65eb24f7d90345018e1f7b3534772943';
   </head>
   <body>
     <slot />
-    <!-- Cloudflare Web Analytics, on trial next to GoatCounter since 2026-11-15.
-         Cookieless (no cookies or localStorage, per Cloudflare). The site is not
-         proxied through Cloudflare, so this is the manual JS snippet exactly as the
-         dashboard gives it (type="module", no defer), placed before </body>. Disclosed in
-         /legal/privacy under "About this website". Production builds only.
-
-         Injected by script rather than written as a tag so Ron's own browsers can opt out.
-         Cloudflare strips IPs at the edge, so it has no IP exclusion like GoatCounter's.
-         Instead this honors GoatCounter's own per-browser switch: visiting
-         badger.fit/#toggle-goatcounter makes count.js set localStorage skipgc="t", and then
-         neither counter records a visit from that browser. The toggle visit itself is
-         skipped by its hash, since count.js loads async and may set the flag after this runs. -->
-    {
-      import.meta.env.PROD && CF_BEACON_TOKEN && (
-        <script is:inline define:vars={{ cfBeacon: JSON.stringify({ token: CF_BEACON_TOKEN }) }}>
-          let skip = location.hash === '#toggle-goatcounter';
-          try {
-            skip = skip || localStorage.getItem('skipgc') === 't';
-          } catch (e) {
-            // Storage blocked: count the visit as usual.
-          }
-          if (!skip) {
-            const s = document.createElement('script');
-            s.type = 'module';
-            s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
-            s.setAttribute('data-cf-beacon', cfBeacon);
-            document.body.appendChild(s);
-          }
-        </script>
-      )
-    }
   </body>
 </html>
