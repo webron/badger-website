@@ -272,6 +272,10 @@ def fetch_snapshot(prev: dict | None = None, get=_get) -> dict:
                 if url in (old.get("pages") or {}):
                     cur["pages"][url] = old["pages"][url]
 
+        if cur.get("ios"):
+            _, cur["iosSeen"], since = _settle(old if old.get("ios") else cur, cur)
+            if since:
+                cur["iosSince"] = since
         snap["rivals"][name] = cur
     return snap
 
@@ -302,30 +306,60 @@ def _list_changes(a: list[str], b: list[str]) -> tuple[list[str], list[str]]:
     return added, removed
 
 
+def _readable(releases) -> list[dict]:
+    """History entries that have a version and a date, newest first. The rest are skipped."""
+    ok = [r for r in releases if isinstance(r, dict)
+          and isinstance(r.get("version"), str) and isinstance(r.get("released"), str)
+          and r["released"]] if isinstance(releases, list) else []
+    return sorted(ok, key=lambda r: r["released"], reverse=True)
+
+
+def _settle(prev: dict, cur: dict) -> tuple[list[dict], list[str], str]:
+    """What the step prev -> cur reports, and the settled state to carry on.
+
+    `iosSeen` lists versions already reported (as a "version:" target or as
+    "also released"); `iosSince` is the date the watch began. A snapshot from
+    before these were kept starts from its own version and release date.
+    A history release newer than the lookup's current one waits for the lookup.
+    """
+    a = prev.get("ios") if isinstance(prev.get("ios"), dict) else {}
+    b = cur.get("ios") if isinstance(cur.get("ios"), dict) else {}
+    seen = prev.get("iosSeen")
+    seen = {v for v in seen if isinstance(v, str)} if isinstance(seen, list) else {a.get("version")}
+    since = prev.get("iosSince")
+    if not isinstance(since, str) or not since:
+        mine = [r["released"] for r in _readable(prev.get("iosReleases")) if r["version"] == a.get("version")]
+        since = mine[0] if mine else a.get("released")
+    if not isinstance(since, str) or not since:
+        return [], sorted(v for v in seen if v), ""
+    if "version" in a and "version" in b and a["version"] != b["version"]:
+        seen.add(b["version"])
+    releases = _readable(cur.get("iosReleases"))
+    mine = [r["released"] for r in releases if r["version"] == b.get("version")]
+    cutoff = mine[0] if mine else b.get("released")
+    out = []
+    for i, r in enumerate(releases):
+        if not isinstance(cutoff, str) or not cutoff or not since < r["released"] <= cutoff \
+                or r["version"] in seen:
+            continue
+        seen.add(r["version"])
+        before = releases[i + 1].get("notes") if i + 1 < len(releases) else ""
+        added, _ = _line_changes(before if isinstance(before, str) else "",
+                                 r["notes"] if isinstance(r.get("notes"), str) else "")
+        out.append({"version": r["version"], "date": r["released"][:10],
+                    "added": [x for x in added if x.strip()]})
+    return out, sorted(v for v in seen if isinstance(v, str) and v), since
+
+
 def skipped_releases(prev: dict, cur: dict) -> list[dict]:
     """Releases between two fetches that the current-version diff cannot see.
 
-    Counted from the newest release in the previous history, so a week whose
-    history could not be read is caught up by the next one. A snapshot from
-    before the history was kept falls back to its own version's release date.
-    Notes list only lines the release before it did not have, because some rivals
-    repeat the same notes for weeks.
+    Anything already reported stays in the snapshot's `iosSeen`, so a week whose
+    lookup or history failed is caught up by a later one, once. Notes list only
+    lines the release before it did not have, because some rivals repeat the
+    same notes for weeks.
     """
-    releases = cur.get("iosReleases") or []
-    known = prev.get("iosReleases") or []
-    since = known[0]["released"] if known else (prev.get("ios") or {}).get("released", "")
-    if not since:
-        return []
-    reported = {(s.get("ios") or {}).get("version") for s in (prev, cur)}
-    out = []
-    for i, r in enumerate(releases):
-        if r["released"] <= since or r["version"] in reported:
-            continue
-        before = releases[i + 1]["notes"] if i + 1 < len(releases) else ""
-        added, _ = _line_changes(before, r["notes"])
-        out.append({"version": r["version"], "date": r["released"][:10],
-                    "added": [x for x in added if x.strip()]})
-    return out
+    return _settle(prev, cur)[0]
 
 
 def diff_snapshots(old: dict, new: dict) -> list[dict]:
@@ -338,7 +372,7 @@ def diff_snapshots(old: dict, new: dict) -> list[dict]:
     out: list[dict] = []
     for name, cur in (new.get("rivals") or {}).items():
         prev = (old.get("rivals") or {}).get(name)
-        if not prev:
+        if not prev or not isinstance(prev, dict):
             continue
         for src, fields, label in (("ios", IOS_WATCHED, "App Store"),
                                    ("play", PLAY_WATCHED, "Google Play")):
