@@ -153,7 +153,7 @@ test('every external script on the layout is https and on a host the CSP allows'
     ...layout.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["']/g),
     ...layout.matchAll(/\.src\s*=\s*["']([^"']+)["']/g),
   ].map((m) => m[1]);
-  assert.ok(srcs.length >= 1);
+  assert.ok(srcs.includes('https://gc.zgo.at/count.js'), 'the GoatCounter script is missing');
   for (const s of srcs) {
     if (!/^(https?:)?\/\//.test(s)) continue;
     const url = s.startsWith('//') ? `https:${s}` : s;
