@@ -54,7 +54,7 @@ def archive(page: str, day: date, history_dir: Path) -> None:
     """Keep a dated copy, so past weeks stay readable after the page is overwritten.
 
     A later build on the same day replaces it, so a re-run after a half-failed
-    report leaves the good one as that week's record.
+    report is what next week compares with.
     """
     target = history_dir / f"weekly-{day.isoformat()}.html"
     try:
@@ -228,7 +228,7 @@ def build_search_console(days: int) -> str:
         ["Clicks", "Shown", "Avg position", "Query"],
         [[str(r["clicks"]), str(r["impressions"]), f'#{r["position"]:.1f}', esc(r["key"])]
          for r in sc["queries"][:20]],
-        "Nothing yet. Google needs a few days after verification before it reports anything."))
+        "Google named no searches in this window."))
 
     parts.append("<h3>Pages found in search</h3>")
     parts.append(rows_table(
@@ -324,7 +324,7 @@ def build_near_wins(detail: dict) -> str:
         "none yet")]
     parts.append(f"<h3>Clicks fell {DECLINE_WEEKS} weeks in a row</h3>")
     parts.append(rows_table(
-        ["Page", "Top query", "Position", "Shown", "Clicks", "Weekly clicks"],
+        ["Page", "Top query", "Query position", "Query shown", "Page clicks", "Weekly clicks"],
         [[esc(r["page"]), esc(r["query"]), f'#{r["position"]:.1f}' if r["position"] else "",
           str(r["impressions"]), str(r["clicks"]), " > ".join(map(str, r["weekly"]))]
          for r in dec],

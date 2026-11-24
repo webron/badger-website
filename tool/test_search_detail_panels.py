@@ -88,6 +88,21 @@ class Archive(unittest.TestCase):
             report.archive("page", date(2026, 11, 23), blocker / "history")
 
 
+class ArchiveWiring(unittest.TestCase):
+    def test_only_the_default_page_is_archived(self):
+        builders = [n for n in dir(report) if n.startswith("build_")]
+        with tempfile.TemporaryDirectory() as d:
+            default = Path(d) / "weekly.html"
+            with mock.patch.multiple(report, DEFAULT_OUT=default,
+                                     **{n: mock.Mock(return_value="") for n in builders}):
+                for argv in (["x", "--no-open", "--out", str(Path(d) / "other.html")],
+                             ["x", "--no-open"]):
+                    with mock.patch.object(sys, "argv", argv), mock.patch("builtins.print"):
+                        report.main()
+                    copies = list((Path(d) / "history").glob("*"))
+                    self.assertEqual(len(copies), 0 if "--out" in argv else 1)
+
+
 class CanonicalPage(unittest.TestCase):
     def test_spellings_fold(self):
         a = report.canonical_page("https://www.badger.fit/guides/x/?utm_source=ig#top")
