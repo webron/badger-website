@@ -50,6 +50,20 @@ WEEKS = 5  # this week plus the four it is measured against
 RATINGS_HISTORY = DEFAULT_OUT.parent / "app-store-ratings.json"
 
 
+def archive(page: str, day: date, history_dir: Path) -> None:
+    """Keep a dated copy, so past weeks stay readable after the page is overwritten.
+
+    A later build on the same day replaces it, so a re-run after a half-failed
+    report leaves the good one as that week's record.
+    """
+    target = history_dir / f"weekly-{day.isoformat()}.html"
+    try:
+        history_dir.mkdir(parents=True, exist_ok=True)
+        target.write_text(page, encoding="utf-8")
+    except OSError as exc:
+        print(f"Could not keep a copy in {history_dir}: {exc}")
+
+
 def esc(value: object) -> str:
     return html.escape(str(value))
 
@@ -208,6 +222,8 @@ def build_search_console(days: int) -> str:
     ]
 
     parts.append("<h3>What people searched for</h3>")
+    parts.append('<p class="sub">Google hides rare searches, so these rows can add up to '
+                 'less than the totals above.</p>')
     parts.append(rows_table(
         ["Clicks", "Shown", "Avg position", "Query"],
         [[str(r["clicks"]), str(r["impressions"]), f'#{r["position"]:.1f}', esc(r["key"])]
@@ -858,6 +874,8 @@ def main() -> None:
 
     out.write_text(page, encoding="utf-8")
     print(f"Wrote {out}")
+    if out == DEFAULT_OUT:
+        archive(page, date.today(), out.parent / "history")
 
     if "--no-open" not in argv:
         subprocess.run(["open", str(out)], check=False)

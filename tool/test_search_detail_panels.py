@@ -6,10 +6,13 @@ Run: python3 -m unittest discover -s tool -p 'test_*.py'
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
+import tempfile
 import unittest
 from datetime import date, timedelta
 from pathlib import Path
+from unittest import mock
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -35,6 +38,54 @@ def daily(page, weekly_clicks):
         # a zero-click day earlier in the same week, so every week has more than one date
         rows.append({"page": page, "date": (END - timedelta(days=7 * age_weeks + 6)).isoformat(), "clicks": 0})
     return rows
+
+
+class SearchTotals(unittest.TestCase):
+    def test_headline_uses_the_total_not_the_visible_queries(self):
+        src = sys.modules["_stats_sources"]
+        auth = sys.modules.get("_google_auth") or __import__("_google_auth")
+
+        def fake(url, headers, body):
+            dims = json.loads(body)["dimensions"]
+            if not dims:
+                return {"rows": [{"clicks": 17, "impressions": 593, "position": 9.0}]}
+            if dims == ["query"]:
+                return {"rows": [{"keys": ["badger app"], "clicks": 0, "impressions": 116,
+                                  "position": 16.0}]}
+            return {"rows": []}
+
+        with mock.patch.object(src, "_get_json", side_effect=fake), \
+             mock.patch.object(src.os.path, "exists", return_value=True), \
+             mock.patch.object(auth, "access_token", return_value="t"):
+            sc = src.search_console(35)
+        self.assertEqual((sc["clicks"], sc["impressions"]), (17, 593))
+        self.assertEqual(sc["queries"][0]["key"], "badger app")
+
+    def test_no_rows_at_all_is_zero(self):
+        src = sys.modules["_stats_sources"]
+        auth = sys.modules.get("_google_auth") or __import__("_google_auth")
+        with mock.patch.object(src, "_get_json", return_value={}), \
+             mock.patch.object(src.os.path, "exists", return_value=True), \
+             mock.patch.object(auth, "access_token", return_value="t"):
+            sc = src.search_console(35)
+        self.assertEqual((sc["clicks"], sc["impressions"]), (0, 0))
+
+
+class Archive(unittest.TestCase):
+    def test_keeps_a_dated_copy_and_a_rerun_replaces_it(self):
+        with tempfile.TemporaryDirectory() as d:
+            hist = Path(d) / "history"
+            report.archive("bad", date(2026, 11, 23), hist)
+            report.archive("good", date(2026, 11, 23), hist)
+            report.archive("next", date(2026, 11, 30), hist)
+            self.assertEqual((hist / "weekly-2026-11-23.html").read_text(), "good")
+            self.assertEqual(len(list(hist.iterdir())), 2)
+
+    def test_an_unwritable_folder_does_not_raise(self):
+        with tempfile.TemporaryDirectory() as d:
+            blocker = Path(d) / "file"
+            blocker.write_text("x")
+            report.archive("page", date(2026, 11, 23), blocker / "history")
 
 
 class CanonicalPage(unittest.TestCase):

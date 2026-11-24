@@ -46,6 +46,17 @@ class SitemapTests(unittest.TestCase):
         self.assertEqual(r["flags"], [])
         self.assertEqual(len(r["notes"]), 1)
 
+    def test_pending_for_two_weeks_is_a_flag(self):
+        later = datetime(2026, 11, 23, 17, 0, tzinfo=timezone.utc)
+        r = sh.analyze_sitemaps([{"path": "p", "isPending": True,
+                                  "lastSubmitted": "2026-11-08T20:11:01.803Z"}], later)
+        self.assertEqual(r["notes"], [])
+        self.assertIn("not been read since it was submitted 14 days ago", r["flags"][0])
+
+    def test_pending_without_a_submit_date_stays_a_note(self):
+        r = sh.analyze_sitemaps([{"path": "p", "isPending": True}], NOW)
+        self.assertEqual((r["flags"], len(r["notes"])), ([], 1))
+
     def test_never_downloaded_and_none_submitted(self):
         self.assertTrue(sh.analyze_sitemaps([{"path": "p"}], NOW)["flags"])
         self.assertTrue(sh.analyze_sitemaps([], NOW)["flags"])

@@ -82,11 +82,14 @@ def analyze_sitemaps(sitemaps: list[dict], now: datetime) -> dict:
                      "lastDownloaded": s.get("lastDownloaded"),
                      "isPending": bool(s.get("isPending")), "errors": errors,
                      "warnings": warnings, "contents": contents})
-        if downloaded is None and s.get("isPending"):
-            # Just (re)submitted: Google has not had its turn yet. Not a fault,
-            # but next week's report flags it if it is still unread.
+        submitted_age = _age(parse_google_time(s.get("lastSubmitted")), now)
+        if downloaded is None and s.get("isPending") and (submitted_age or 0) < STALE_DAYS:
+            # Just (re)submitted: Google has not had its turn yet. Not a fault.
             notes.append(f"Google sitemap {path} is pending its first read "
                          f"(submitted {s.get('lastSubmitted')}).")
+        elif downloaded is None and s.get("isPending"):
+            flags.append(f"Google sitemap {path} has not been read since it was "
+                         f"submitted {submitted_age} days ago.")
         elif downloaded is None:
             flags.append(f"Google sitemap {path} has never been downloaded.")
         elif age > STALE_DAYS:

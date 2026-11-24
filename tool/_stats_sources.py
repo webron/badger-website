@@ -270,16 +270,19 @@ def search_console(days: int) -> dict:
     url = f"https://searchconsole.googleapis.com/webmasters/v3/sites/{site}/searchAnalytics/query"
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
-    def query(dimension: str, limit: int = 25) -> list[dict]:
+    def query(dimension: str | None, limit: int = 25) -> list[dict]:
         body = json.dumps({
             "startDate": start.isoformat(),
             "endDate": end.isoformat(),
-            "dimensions": [dimension],
+            "dimensions": [dimension] if dimension else [],
             "rowLimit": limit,
         }).encode()
         return _get_json(url, headers, body).get("rows", [])
 
     try:
+        # Asked without a dimension, because Google leaves rare queries out of
+        # the query rows: on 2026-11-23 they summed to 0 clicks of a real 17.
+        total = (query(None, 1) or [{}])[0]
         queries = query("query")
         pages = query("page", limit=15)
     except urllib.error.HTTPError as exc:
@@ -299,8 +302,8 @@ def search_console(days: int) -> dict:
     return {
         "start": start.isoformat(),
         "end": end.isoformat(),
-        "clicks": sum(r.get("clicks", 0) for r in queries),
-        "impressions": sum(r.get("impressions", 0) for r in queries),
+        "clicks": total.get("clicks", 0),
+        "impressions": total.get("impressions", 0),
         "queries": rows(queries),
         "pages": rows(pages),
     }
