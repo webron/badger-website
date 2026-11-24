@@ -40,13 +40,25 @@ def page(*lines):
         "".join("<p>%s</p>" % x for x in lines) + "</body></html>"
 
 
+def store_page(*releases):
+    """An App Store page: releases are (version, "Nov 20 2026", notes), newest first."""
+    items = [{"$kind": "TitledParagraph", "primarySubtitle": v, "text": notes,
+              "secondarySubtitle": "Fri %s 00:10:13 GMT+0000 (Coordinated Universal Time)" % when}
+             for v, when, notes in releases]
+    data = {"data": [{"data": {"shelfMapping": {"x": {"pageData": {"shelves": [{"items": items}]}}}}}]}
+    return '<html><script type="application/json" id="serialized-server-data">%s</script></html>' \
+        % json.dumps(data)
+
+
 def fake_get(version="1.0", notes="Fixed bugs", price="Free", lines=("Alpha", "Beta"),
-             count=100, fail=()):
+             count=100, fail=(), releases=(("1.0", "Nov 01 2026", "Fixed bugs"),)):
     def get(url):
         if any(f in url for f in fail):
             raise OSError("down")
         if "itunes.apple.com" in url:
             return ios(version, notes, price, count)
+        if "apps.apple.com" in url:
+            return store_page(*releases)
         if "play.google.com" in url:
             return PLAY
         return page(*lines)
@@ -115,6 +127,65 @@ class Diffing(unittest.TestCase):
         rows = rw.ratings_table(self.snap(count=100), self.snap(count=130))
         self.assertEqual(rows[0]["ios"]["delta"], 30)
         self.assertIn("(+30)", rw._stars(rows[0]["ios"]))
+
+
+class VersionHistory(unittest.TestCase):
+    R10 = ("1.0", "Nov 01 2026", "Fixed bugs")
+    R11 = ("1.1", "Nov 05 2026", "Fixed bugs\nNew widget")
+    R12 = ("1.2", "Nov 10 2026", "Fixed bugs\nNew widget")
+    R13 = ("1.3", "Nov 18 2026", "Big news")
+
+    def snap(self, version, releases, prev=None, **kw):
+        return rw.fetch_snapshot(prev, get=fake_get(version=version, releases=releases, **kw))
+
+    def skipped(self, old, new):
+        return [c for c in rw.diff_snapshots(old, new)
+                if c["rival"] == "Hevy" and c["summary"].startswith("also released")]
+
+    def test_parse_newest_first(self):
+        r = rw.parse_ios_releases(store_page(self.R10, self.R11))
+        self.assertEqual([x["version"] for x in r], ["1.1", "1.0"])
+        self.assertEqual(r[0]["released"], "2026-11-05T00:10:13Z")
+        self.assertEqual(r[0]["notes"], "Fixed bugs\nNew widget")
+
+    def test_newest_release_listed_twice_counts_once(self):
+        r = rw.parse_ios_releases(store_page(("Version 1.1",) + self.R11[1:], self.R11, self.R10))
+        self.assertEqual([x["version"] for x in r], ["1.1", "1.0"])
+
+    def test_parse_nothing_found(self):
+        self.assertEqual(rw.parse_ios_releases("<html>Not Found</html>"), [])
+        self.assertEqual(rw.parse_ios_releases(store_page(("1.0", "soon", "x"))), [])
+
+    def test_versions_between_fetches_are_reported_once(self):
+        old = self.snap("1.0", (self.R10,))
+        new = self.snap("1.3", (self.R13, self.R12, self.R11, self.R10))
+        got = self.skipped(old, new)
+        self.assertEqual([c["summary"] for c in got],
+                         ["also released 1.2 on 2026-11-10", "also released 1.1 on 2026-11-05"])
+        self.assertEqual([c["added"] for c in got], [[], ["New widget"]])
+        later = self.snap("1.3", (self.R13, self.R12, self.R11, self.R10))
+        self.assertEqual(self.skipped(new, later), [])
+
+    def test_snapshot_from_before_the_history_was_kept(self):
+        old = self.snap("1.0", (self.R10,))
+        del old["rivals"]["Hevy"]["iosReleases"]
+        new = self.snap("1.2", (self.R12, self.R11, self.R10))
+        self.assertEqual([c["summary"] for c in self.skipped(old, new)],
+                         ["also released 1.1 on 2026-11-05"])
+
+    def test_a_week_without_history_is_caught_up(self):
+        old = self.snap("1.0", (self.R10,))
+        down = self.snap("1.2", (), prev=old, fail=("apps.apple.com",))
+        self.assertTrue(any("version history" in e for e in down["errors"]))
+        self.assertEqual(self.skipped(old, down), [])
+        new = self.snap("1.3", (self.R13, self.R12, self.R11, self.R10), prev=down)
+        self.assertEqual([c["summary"] for c in self.skipped(down, new)],
+                         ["also released 1.1 on 2026-11-05"])
+
+    def test_page_with_no_history_is_an_error(self):
+        snap = self.snap("1.0", ())
+        self.assertTrue(any("no version history" in e for e in snap["errors"]))
+        self.assertNotIn("iosReleases", snap["rivals"]["Hevy"])
 
 
 class AndroidOnly(unittest.TestCase):

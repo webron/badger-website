@@ -281,7 +281,7 @@ def search_console(days: int) -> dict:
 
     try:
         # Asked without a dimension, because Google leaves rare queries out of
-        # the query rows: on 2026-11-23 they summed to 0 clicks of a real 17.
+        # the query rows, so their sum can be far below the real total.
         total = (query(None, 1) or [{}])[0]
         queries = query("query")
         pages = query("page", limit=15)
