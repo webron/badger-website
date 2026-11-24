@@ -59,10 +59,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Remove from workout</strong> - Take this exercise and its sets out of the workout. See <a href="#remove-exercise">Remove an exercise</a>.</li>
   </ul>
 
-  <h3>Exercise notes</h3>
-  <p>A notes card sits above the set input for an exercise that has notes or instructions. The info icon in the top bar shows or hides it. The card opens by itself when the exercise has notes of your own, and the first time you log an exercise that has instructions.</p>
-  <p>Long text is cut short: tap it to read the rest, and tap again to shorten it. To edit, tap the pencil on the card, which opens <a href="/help/exercises/#exercise-settings">Exercise settings</a> at the notes. For an exercise with neither notes nor instructions, the info icon opens Exercise settings directly.</p>
+  <h3 id="exercise-notes">Exercise notes</h3>
+  <p>A notes card sits above the set input for an exercise that has notes, instructions or a note in its routine. The info icon in the top bar shows or hides it. The card opens by itself when the exercise has notes of your own or a routine note, and the first time you log an exercise that has instructions.</p>
+  <p>Long text is cut short: tap it to read the rest, and tap again to shorten it. To edit, tap the pencil on the card, which opens <a href="/help/exercises/#exercise-settings">Exercise settings</a> at the notes. For an exercise with nothing to show, the info icon opens Exercise settings directly.</p>
   <ul>
+    <li><strong>ROUTINE</strong> - The note this exercise has in the routine you started from. Edit it in the routine, under <a href="/help/routines/#exercise-notes">Per-exercise settings</a>. A free workout shows none, and neither does an exercise you swapped in, unless that day of the routine includes it too. Swap back and the note returns.</li>
     <li><strong>NOTES</strong> - Your own reminders: form cues, seat settings.</li>
     <li><strong>INSTRUCTIONS</strong> - Built-in technique cues.</li>
     <li><strong>GRIP</strong> - The grip you've selected, when the machine uses grips.</li>
