@@ -132,10 +132,10 @@ test('the CSP meta tag comes before every script, link and the viewport, since i
   }
 });
 
-test('script-src allows only self and the two analytics hosts, with no wildcard or bare scheme', () => {
+test('script-src allows only self and the analytics host, with no wildcard or bare scheme', () => {
   const sources = directive('script-src').split(/\s+/).slice(1);
   const hosts = sources.filter((s) => !s.startsWith("'"));
-  assert.deepEqual(hosts.sort(), ['https://gc.zgo.at', 'https://static.cloudflareinsights.com']);
+  assert.deepEqual(hosts.sort(), ['https://gc.zgo.at']);
   assert.ok(sources.includes("'self'"));
   assert.ok(!sources.some((s) => ['*', 'https:', 'http:', 'data:', 'blob:'].includes(s)));
 });
@@ -153,7 +153,7 @@ test('every external script on the layout is https and on a host the CSP allows'
     ...layout.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["']/g),
     ...layout.matchAll(/\.src\s*=\s*["']([^"']+)["']/g),
   ].map((m) => m[1]);
-  assert.ok(srcs.length >= 2);
+  assert.ok(srcs.length >= 1);
   for (const s of srcs) {
     if (!/^(https?:)?\/\//.test(s)) continue;
     const url = s.startsWith('//') ? `https:${s}` : s;
