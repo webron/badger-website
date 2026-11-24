@@ -5,7 +5,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Exercises" description="How to use the A-Z exercise library, search and filter exercises, and create custom exercises in Badger.">
   <h1>Exercises</h1>
 
-  <p>Badger comes with around 370 exercises in 8 categories. Use them as they are, edit them, add your own exercises, or add categories of your own.</p>
+  <p>Badger comes with around 400 exercises in 8 categories. Use them as they are, edit them, add your own exercises, or add categories of your own.</p>
 
   <hr />
 
@@ -70,6 +70,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>The record key</strong> at the top, beside the illustration, shows your best set and the estimated one-rep max it works out to. Tap it for the full progress screen, with the graph and the rest of your records.</li>
     <li><strong>Muscles worked</strong> opens to an anatomy diagram of the primary and secondary muscles.</li>
     <li><strong>Notes &amp; instructions</strong> shows your notes for the exercise and the built-in technique cues. Tap it once it's open to edit your notes. It appears only when there's something to show.</li>
+    <li id="link"><strong>Link</strong> shows the video or article you saved for the exercise. Tap it to open the page in your browser or its app. To add one, fill in <strong>Video / Link</strong> on the edit screen. Badger doesn't load or preview the page.</li>
     <li>The <strong>pencil</strong> in the top bar opens the edit screen. <strong>⋮ → Exercise settings</strong> opens the exercise's <a href="#exercise-settings">settings</a>.</li>
   </ul>
 
@@ -102,6 +103,8 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Default increment</strong> - How much weight the progressive overload suggestion adds.</li>
     <li><strong>Default rest (working sets)</strong> - Rest timer length after a working set. A routine's own rest for the exercise wins over it; see <a href="/help/logging/#rest-ladder">How long the rest is</a>.</li>
     <li><strong>Default rest (warmup sets)</strong> - Rest timer length after a warmup set.</li>
+    <li><strong>Rest timer</strong> - Turn it off and no rest starts after this exercise's sets. See <a href="/help/logging/#rest-off">Turn rest off for one exercise</a>.</li>
+    <li><strong>Video / Link</strong> - A video or article of your own. It opens from the <a href="#link">exercise's page</a>.</li>
     <li><strong>Primary &amp; secondary muscles</strong> - Picked on the body diagram. Used for muscle balance and filtering.</li>
     <li><strong>Plate calculator mode</strong> - Dual-loaded (barbell, leg press) or Single-loaded (T-bar, landmine). Sets how the <a href="/help/tools/">plate calculator</a> splits the weight. Shown for barbell and machine exercises.</li>
     <li><strong>Bar weight</strong> - Replaces the default bar weight in the plate calculator. Shown for barbell and machine exercises.</li>
@@ -261,9 +264,9 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Open <strong>Exercise settings</strong> from the first item in the ⋮ menu on the training screen or on the exercise's page. The pencil on the notes card opens it at the notes. Changes apply to the exercise from now on, in every workout. The sections, in order:</p>
   <ul>
     <li><strong>Exercise Type</strong> - at the top, when you open it from a workout and the exercise has more than one type. See <a href="/help/logging/#switch-type">Switch type in a workout</a>.</li>
-    <li><strong>Logging</strong> - rest (working and warm-up), weight increment and <a href="/help/logging/#tempo">tempo</a>.</li>
+    <li><strong>Logging</strong> - the rest timer switch, rest (working and warm-up), weight increment and <a href="/help/logging/#tempo">tempo</a>.</li>
     <li><strong>Weights</strong> - the bar or starting weight, per side, and the plate calculator mode.</li>
-    <li><strong>Notes and instructions</strong> - your notes and the built-in technique cues.</li>
+    <li><strong>Notes and instructions</strong> - your notes, your link and the built-in technique cues.</li>
     <li><strong>Muscles</strong> - the muscles the exercise works.</li>
     <li><strong>Display</strong> - how the exercise shows up.</li>
   </ul>

@@ -261,6 +261,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>A warm-up set follows a shorter list: just this workout, this set, the exercise's warm-up rest, the warm-up default in Settings → Timers and sounds, then 1:00. A rest you set for working sets never lands after a warm-up.</p>
   <p>The routine's rest sits above the exercise's own default. The exercise default still applies in a free workout and in every routine that has no rest of its own for that exercise.</p>
 
+  <h3 id="rest-off">Turn rest off for one exercise</h3>
+  <p>In <strong>Exercise settings</strong>, or on the exercise's edit screen, turn <strong>Rest timer</strong> off. In a free workout you can also tap the rest chip and choose <strong>Turn off rest for (exercise)</strong>. No rest starts after that exercise's sets, warm-ups included, and the chip reads <strong>Rest: off &middot; exercise</strong>.</p>
+  <p>A rest you planned still runs: just this workout, a set's own rest, or the routine's <strong>Rest between sets</strong>. In a superset, no rest starts when the exercise that closes the round has rest off.</p>
+  <p>To turn it back on, use the same switch, or save a rest to the exercise from the chip. Your old rest lengths are kept.</p>
+
   <h3 id="rest-chip">Where the number came from</h3>
   <p>The rest chip under the input fields shows the rest that starts when you save the set, and where it came from: <strong>Rest: 2:00 · routine</strong>. The running timer names the same source, such as <strong>After set 2 · Routine</strong>. Times read in minutes and seconds.</p>
   <ul>
@@ -268,6 +273,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li><strong>Rest: 5:00 · this set</strong> - planned on the set.</li>
     <li><strong>Rest: 2:00 · routine</strong> - the exercise's rest in this routine.</li>
     <li><strong>Rest: 1:30 · exercise</strong> - the exercise's default.</li>
+    <li><strong>Rest: off · exercise</strong> - <a href="#rest-off">rest is off</a> for this exercise.</li>
     <li><strong>Rest: 1:30 · Settings</strong> - the Settings default.</li>
     <li><strong>Rest: 1:30 · last</strong> - the last duration you used.</li>
     <li><strong>Rest: 1:00 · warm-up</strong> - after a warm-up set.</li>
