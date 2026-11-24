@@ -10,10 +10,11 @@ as a change; and a redesigned page must collapse to one line, not hundreds.
 from __future__ import annotations
 
 import json
+import random
 import sys
 import tempfile
 import unittest
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -40,13 +41,25 @@ def page(*lines):
         "".join("<p>%s</p>" % x for x in lines) + "</body></html>"
 
 
+def store_page(*releases):
+    """An App Store page: releases are (version, "Nov 20 2026", notes), newest first."""
+    items = [{"$kind": "TitledParagraph", "primarySubtitle": v, "text": notes,
+              "secondarySubtitle": "Fri %s 00:10:13 GMT+0000 (Coordinated Universal Time)" % when}
+             for v, when, notes in releases]
+    data = {"data": [{"data": {"shelfMapping": {"x": {"pageData": {"shelves": [{"items": items}]}}}}}]}
+    return '<html><script type="application/json" id="serialized-server-data">%s</script></html>' \
+        % json.dumps(data)
+
+
 def fake_get(version="1.0", notes="Fixed bugs", price="Free", lines=("Alpha", "Beta"),
-             count=100, fail=()):
+             count=100, fail=(), releases=(("1.0", "Nov 01 2026", "Fixed bugs"),)):
     def get(url):
         if any(f in url for f in fail):
             raise OSError("down")
         if "itunes.apple.com" in url:
             return ios(version, notes, price, count)
+        if "apps.apple.com" in url:
+            return store_page(*releases)
         if "play.google.com" in url:
             return PLAY
         return page(*lines)
@@ -115,6 +128,162 @@ class Diffing(unittest.TestCase):
         rows = rw.ratings_table(self.snap(count=100), self.snap(count=130))
         self.assertEqual(rows[0]["ios"]["delta"], 30)
         self.assertIn("(+30)", rw._stars(rows[0]["ios"]))
+
+
+class VersionHistory(unittest.TestCase):
+    R10 = ("1.0", "Nov 01 2026", "Fixed bugs")
+    R11 = ("1.1", "Nov 05 2026", "Fixed bugs\nNew widget")
+    R12 = ("1.2", "Nov 10 2026", "Fixed bugs\nNew widget")
+    R13 = ("1.3", "Nov 18 2026", "Big news")
+
+    def snap(self, version, releases, prev=None, **kw):
+        return rw.fetch_snapshot(prev, get=fake_get(version=version, releases=releases, **kw))
+
+    def skipped(self, old, new):
+        return [c for c in rw.diff_snapshots(old, new)
+                if c["rival"] == "Hevy" and c["summary"].startswith("also released")]
+
+    def test_parse_newest_first(self):
+        r = rw.parse_ios_releases(store_page(self.R10, self.R11))
+        self.assertEqual([x["version"] for x in r], ["1.1", "1.0"])
+        self.assertEqual(r[0]["released"], "2026-11-05T00:10:13Z")
+        self.assertEqual(r[0]["notes"], "Fixed bugs\nNew widget")
+
+    def test_newest_release_listed_twice_counts_once(self):
+        r = rw.parse_ios_releases(store_page(("Version 1.1",) + self.R11[1:], self.R11, self.R10))
+        self.assertEqual([x["version"] for x in r], ["1.1", "1.0"])
+
+    def test_parse_nothing_found(self):
+        self.assertEqual(rw.parse_ios_releases("<html>Not Found</html>"), [])
+        self.assertEqual(rw.parse_ios_releases(store_page(("1.0", "soon", "x"))), [])
+
+    def test_versions_between_fetches_are_reported_once(self):
+        old = self.snap("1.0", (self.R10,))
+        new = self.snap("1.3", (self.R13, self.R12, self.R11, self.R10))
+        got = self.skipped(old, new)
+        self.assertEqual([c["summary"] for c in got],
+                         ["also released 1.2 on 2026-11-10", "also released 1.1 on 2026-11-05"])
+        self.assertEqual([c["added"] for c in got], [[], ["New widget"]])
+        later = self.snap("1.3", (self.R13, self.R12, self.R11, self.R10))
+        self.assertEqual(self.skipped(new, later), [])
+
+    def test_snapshot_from_before_the_history_was_kept(self):
+        old = self.snap("1.0", (self.R10,))
+        del old["rivals"]["Hevy"]["iosReleases"]
+        new = self.snap("1.2", (self.R12, self.R11, self.R10))
+        self.assertEqual([c["summary"] for c in self.skipped(old, new)],
+                         ["also released 1.1 on 2026-11-05"])
+
+    def test_a_week_without_history_is_caught_up(self):
+        old = self.snap("1.0", (self.R10,))
+        down = self.snap("1.2", (), prev=old, fail=("apps.apple.com",))
+        self.assertTrue(any("version history" in e for e in down["errors"]))
+        self.assertEqual(self.skipped(old, down), [])
+        new = self.snap("1.3", (self.R13, self.R12, self.R11, self.R10), prev=down)
+        self.assertEqual([c["summary"] for c in self.skipped(down, new)],
+                         ["also released 1.1 on 2026-11-05"])
+
+    def weeks(self, *steps):
+        """Snapshots after each (version, releases, fail) step; fail names a source that is down."""
+        snaps, prev = [], None
+        for version, releases, fail in steps:
+            prev = self.snap(version, releases, prev=prev, fail=fail)
+            snaps.append(prev)
+        return snaps
+
+    def reported(self, snaps):
+        """Every version the diffs name, as a "version:" target or "also released"."""
+        got = []
+        for a, b in zip(snaps, snaps[1:]):
+            for c in rw.diff_snapshots(a, b):
+                if c["rival"] != "Hevy":
+                    continue
+                if c["summary"].startswith("version: "):
+                    got.append(c["summary"].split(" → ")[1])
+                elif c["summary"].startswith("also released "):
+                    got.append(c["summary"].split()[2])
+        return got
+
+    def test_history_ahead_of_lookup_waits(self):
+        snaps = self.weeks(("1.0", (self.R10,), ()),
+                           ("1.0", (self.R11, self.R10), ()),
+                           ("1.1", (self.R11, self.R10), ()))
+        self.assertEqual(self.reported(snaps), ["1.1"])
+
+    def test_lookup_down_for_a_week_does_not_repeat(self):
+        snaps = self.weeks(("1.0", (self.R10,), ()),
+                           ("1.0", (self.R12, self.R11, self.R10), ("itunes.apple.com",)),
+                           ("1.2", (self.R12, self.R11, self.R10), ()))
+        self.assertEqual(sorted(self.reported(snaps)), ["1.1", "1.2"])
+
+    def test_history_down_for_weeks_while_lookup_moves(self):
+        r14 = ("1.4", "Nov 20 2026", "x")
+        full = (r14, self.R13, self.R12, self.R11, self.R10)
+        snaps = self.weeks(("1.0", (self.R10,), ()),
+                           ("1.2", (), ("apps.apple.com",)),
+                           ("1.4", (), ("apps.apple.com",)),
+                           ("1.4", full, ()))
+        self.assertEqual(sorted(self.reported(snaps)), ["1.1", "1.2", "1.3", "1.4"])
+
+    def test_history_ahead_then_several_releases_in_one_week(self):
+        r14 = ("1.4", "Nov 20 2026", "x")
+        snaps = self.weeks(("1.0", (self.R10,), ()),
+                           ("1.0", (self.R12, self.R11, self.R10), ()),
+                           ("1.2", (self.R12, self.R11, self.R10), ()),
+                           ("1.4", (r14, self.R13, self.R12, self.R11, self.R10), ()))
+        self.assertEqual(sorted(self.reported(snaps)), ["1.1", "1.2", "1.3", "1.4"])
+
+    def test_odd_saved_history_does_not_raise(self):
+        old = self.snap("1.0", (self.R10,))
+        new = self.snap("1.2", (self.R12, self.R11, self.R10))
+        for odd in ([{"version": "1"}], [None, "x", {"released": 5}], "junk", 7):
+            old["rivals"]["Hevy"]["iosReleases"] = odd
+            old["rivals"]["Hevy"]["iosSeen"] = odd
+            self.assertIsInstance(rw.diff_snapshots(old, new), list)
+        new["rivals"]["Hevy"]["iosReleases"] = [{"version": "1.1"}, {"released": "2026-11-05T00:00:00Z"}]
+        self.assertIsInstance(rw.diff_snapshots(self.snap("1.0", (self.R10,)), new), list)
+
+    def test_random_weeks_report_every_release_once(self):
+        rnd = random.Random(1123)
+        for trial in range(30):
+            days = [date(2026, 10, 1) + timedelta(days=3 * i) for i in range(40)]
+            rel = lambda i: ("1.%d" % i, days[i].strftime("%b %d %Y"), "n%d" % i)
+
+            def get(li, hi, down):
+                def g(url):
+                    if any(d in url for d in down):
+                        raise OSError("down")
+                    if "itunes.apple.com" in url:
+                        return json.dumps({"results": [{
+                            "trackName": "App", "version": "1.%d" % li,
+                            "currentVersionReleaseDate": days[li].strftime("%Y-%m-%dT00:10:13Z")}]})
+                    if "apps.apple.com" in url:
+                        return store_page(*[rel(i) for i in range(hi, -1, -1)])
+                    return PLAY if "play.google" in url else page("Alpha")
+                return g
+
+            latest = li = hi = 0
+            prev = rw.fetch_snapshot(None, get=get(0, 0, ()))
+            snaps, n = [prev], rnd.randint(4, 9)
+            for week in range(n + 2):
+                healthy = week >= n
+                latest = min(latest + (0 if healthy else rnd.choice([0, 0, 1, 1, 2, 3])), 39)
+                down = [] if healthy else [u for u in ("itunes.apple.com", "apps.apple.com")
+                                           if rnd.random() < 0.35]
+                lag = lambda: 0 if healthy else rnd.choice([0, 0, 1, 2])
+                li, hi = max(li, latest - lag()), max(hi, latest - lag())
+                if healthy:
+                    li = hi = latest
+                prev = rw.fetch_snapshot(prev, get=get(li, hi, down))
+                snaps.append(prev)
+            got = self.reported(snaps)
+            self.assertEqual(sorted(got), sorted("1.%d" % i for i in range(1, latest + 1)),
+                             "trial %d" % trial)
+
+    def test_page_with_no_history_is_an_error(self):
+        snap = self.snap("1.0", ())
+        self.assertTrue(any("no version history" in e for e in snap["errors"]))
+        self.assertNotIn("iosReleases", snap["rivals"]["Hevy"])
 
 
 class AndroidOnly(unittest.TestCase):

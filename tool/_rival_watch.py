@@ -22,7 +22,8 @@ Run it alone to see the result as text:
     python3 tool/_rival_watch.py --force    # fetch now
 
 Watched, per rival: the App Store record (version, release notes, price,
-description, rating), the Google Play listing (title, description, rating), and
+description, rating) and the version history on its App Store page, so a release
+that came and went between two fetches is still reported, the Google Play listing (title, description, rating), and
 one or two public pages (home or pricing, a support page). Add a rival or a page
 by editing RIVALS. A package name or app id that stops resolving shows up in the
 panel as an error instead of silently going quiet.
@@ -38,7 +39,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import date
+from datetime import date, datetime
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -155,6 +156,42 @@ def parse_ios(payload: dict) -> dict:
     }
 
 
+def parse_ios_releases(markup: str) -> list[dict]:
+    """The version history in an App Store page, newest first, or [] if none.
+
+    The lookup record only holds the current version. The page carries the last
+    25 in its embedded data; this reads the entries by shape (version, date,
+    text) rather than by path, since the path around them is not documented.
+    """
+    m = re.search(r'<script[^>]*id="serialized-server-data"[^>]*>(.*?)</script>', markup, re.S)
+    if not m:
+        return []
+    found: dict[str, dict] = {}
+
+    def walk(node) -> None:
+        if isinstance(node, list):
+            for child in node:
+                walk(child)
+        elif isinstance(node, dict):
+            version, when = node.get("primarySubtitle"), node.get("secondarySubtitle")
+            if isinstance(version, str) and isinstance(when, str):
+                try:
+                    stamp = datetime.strptime(when[:24], "%a %b %d %Y %H:%M:%S")
+                except ValueError:
+                    stamp = None
+                if stamp:
+                    # The newest release appears twice, once as "Version 3.2.8".
+                    version = version.removeprefix("Version ").strip()
+                    found[version] = {"version": version,
+                                      "released": stamp.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                      "notes": str(node.get("text") or "").strip()}
+            for child in node.values():
+                walk(child)
+
+    walk(json.loads(m.group(1)))
+    return sorted(found.values(), key=lambda r: r["released"], reverse=True)
+
+
 def parse_play(markup: str) -> dict:
     """Title, description and rating from a Play listing, or {} if none found.
 
@@ -201,6 +238,18 @@ def fetch_snapshot(prev: dict | None = None, get=_get) -> dict:
                 cur["ios"] = old["ios"]
 
         try:
+            if cfg.get("ios"):
+                releases = parse_ios_releases(get(
+                    "https://apps.apple.com/us/app/id%s" % cfg["ios"]))
+                if not releases:
+                    raise ValueError("no version history for app id %s" % cfg["ios"])
+                cur["iosReleases"] = releases
+        except Exception as e:  # noqa: BLE001
+            snap["errors"].append("%s App Store version history: %s" % (name, _short(e)))
+            if old.get("iosReleases"):
+                cur["iosReleases"] = old["iosReleases"]
+
+        try:
             data = parse_play(get(
                 "https://play.google.com/store/apps/details?id=%s&hl=en_US&gl=US"
                 % urllib.parse.quote(cfg["play"])))
@@ -223,6 +272,10 @@ def fetch_snapshot(prev: dict | None = None, get=_get) -> dict:
                 if url in (old.get("pages") or {}):
                     cur["pages"][url] = old["pages"][url]
 
+        if cur.get("ios"):
+            _, cur["iosSeen"], since = _settle(old if old.get("ios") else cur, cur)
+            if since:
+                cur["iosSince"] = since
         snap["rivals"][name] = cur
     return snap
 
@@ -253,6 +306,62 @@ def _list_changes(a: list[str], b: list[str]) -> tuple[list[str], list[str]]:
     return added, removed
 
 
+def _readable(releases) -> list[dict]:
+    """History entries that have a version and a date, newest first. The rest are skipped."""
+    ok = [r for r in releases if isinstance(r, dict)
+          and isinstance(r.get("version"), str) and isinstance(r.get("released"), str)
+          and r["released"]] if isinstance(releases, list) else []
+    return sorted(ok, key=lambda r: r["released"], reverse=True)
+
+
+def _settle(prev: dict, cur: dict) -> tuple[list[dict], list[str], str]:
+    """What the step prev -> cur reports, and the settled state to carry on.
+
+    `iosSeen` lists versions already reported (as a "version:" target or as
+    "also released"); `iosSince` is the date the watch began. A snapshot from
+    before these were kept starts from its own version and release date.
+    A history release newer than the lookup's current one waits for the lookup.
+    """
+    a = prev.get("ios") if isinstance(prev.get("ios"), dict) else {}
+    b = cur.get("ios") if isinstance(cur.get("ios"), dict) else {}
+    seen = prev.get("iosSeen")
+    seen = {v for v in seen if isinstance(v, str)} if isinstance(seen, list) else {a.get("version")}
+    since = prev.get("iosSince")
+    if not isinstance(since, str) or not since:
+        mine = [r["released"] for r in _readable(prev.get("iosReleases")) if r["version"] == a.get("version")]
+        since = mine[0] if mine else a.get("released")
+    if not isinstance(since, str) or not since:
+        return [], sorted(v for v in seen if v), ""
+    if "version" in a and "version" in b and a["version"] != b["version"]:
+        seen.add(b["version"])
+    releases = _readable(cur.get("iosReleases"))
+    mine = [r["released"] for r in releases if r["version"] == b.get("version")]
+    cutoff = mine[0] if mine else b.get("released")
+    out = []
+    for i, r in enumerate(releases):
+        if not isinstance(cutoff, str) or not cutoff or not since < r["released"] <= cutoff \
+                or r["version"] in seen:
+            continue
+        seen.add(r["version"])
+        before = releases[i + 1].get("notes") if i + 1 < len(releases) else ""
+        added, _ = _line_changes(before if isinstance(before, str) else "",
+                                 r["notes"] if isinstance(r.get("notes"), str) else "")
+        out.append({"version": r["version"], "date": r["released"][:10],
+                    "added": [x for x in added if x.strip()]})
+    return out, sorted(v for v in seen if isinstance(v, str) and v), since
+
+
+def skipped_releases(prev: dict, cur: dict) -> list[dict]:
+    """Releases between two fetches that the current-version diff cannot see.
+
+    Anything already reported stays in the snapshot's `iosSeen`, so a week whose
+    lookup or history failed is caught up by a later one, once. Notes list only
+    lines the release before it did not have, because some rivals repeat the
+    same notes for weeks.
+    """
+    return _settle(prev, cur)[0]
+
+
 def diff_snapshots(old: dict, new: dict) -> list[dict]:
     """Changes between two snapshots, each {rival, source, summary, added, removed}.
 
@@ -263,7 +372,7 @@ def diff_snapshots(old: dict, new: dict) -> list[dict]:
     out: list[dict] = []
     for name, cur in (new.get("rivals") or {}).items():
         prev = (old.get("rivals") or {}).get(name)
-        if not prev:
+        if not prev or not isinstance(prev, dict):
             continue
         for src, fields, label in (("ios", IOS_WATCHED, "App Store"),
                                    ("play", PLAY_WATCHED, "Google Play")):
@@ -281,6 +390,11 @@ def diff_snapshots(old: dict, new: dict) -> list[dict]:
                                 "summary": "%s changed" % ("release notes" if f == "releaseNotes" else f),
                                 "added": [_clip(x) for x in added[:MAX_LINES]],
                                 "removed": [_clip(x) for x in removed[:MAX_LINES]]})
+        for r in skipped_releases(prev, cur):
+            out.append({"rival": name, "source": "App Store",
+                        "summary": "also released %s on %s" % (r["version"], r["date"]),
+                        "added": [_clip(x) for x in r["added"][:MAX_LINES]],
+                        "removed": []})
         for url, lines in (cur.get("pages") or {}).items():
             before = (prev.get("pages") or {}).get(url)
             if before is None or before == lines:

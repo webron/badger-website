@@ -25,6 +25,9 @@ import ArticleSchema from '../../components/ArticleSchema.astro';
  * page-view analytics (GoatCounter); the claim here is scoped to the app and
  * the site's own counting is stated plainly rather than omitted.
  * The "catch" section is deliberately as long as the good news.
+ * 2026-11-23: the Strong row no longer says an account is required. Strong 6.6.0
+ * notes mention guest accounts, and whether a new user can skip sign-up is not
+ * confirmed. The rest of the table was not re-checked, so its date stays.
  * 2026-09-24 voice pass: the "If free makes you suspicious" section merged into
  * "Why there is nothing to charge for"; its id sits on that paragraph.
  */
@@ -43,7 +46,7 @@ const others = [
   },
   {
     name: 'Strong',
-    body: 'The long-established one. The free tier is limited to a small number of routine templates, and the rest sits behind Strong Pro. It also requires an account to use.',
+    body: 'The long-established one. The free tier is limited to a small number of routine templates, and the rest sits behind Strong Pro.',
   },
   {
     name: 'StrongLifts 5x5',
@@ -57,7 +60,7 @@ const others = [
     slot="head"
     headline="A workout tracker with no subscription"
     description={description}
-    dateModified="2026-09-24"
+    dateModified="2026-11-23"
     about={['Workout tracking', 'Free software']}
   />
 
