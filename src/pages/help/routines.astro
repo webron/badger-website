@@ -211,11 +211,11 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ol>
   <p>Each alternative row's own <strong>⋮ menu</strong> can remove it (<strong>Remove alternative</strong>, with <strong>Undo</strong>) or make it the default.</p>
   <p>To swap during the workout, open the training screen's <strong>⋮ menu</strong> and tap <strong>Switch to alternative…</strong>. The original is listed too, labeled <strong>(original)</strong>, so you can switch back. You can also pick an alternative before you start, from the swap icon on the routine log preview.</p>
-  <p>A swap lasts for that workout only. The new exercise comes in with its own recent weights, your routine stays the same, and your history records what you actually did.</p>
+  <p>A swap lasts for that workout only. The new exercise comes in with its own recent weights, your routine stays the same, and your history records what you actually did. When the workout ends you can <a href="#keep-changes">keep the swap in the routine</a>.</p>
 
   <h3 id="swap-exercise">Swap exercise: when there's no alternative set up</h3>
   <p>Open the training screen's <strong>⋮ menu</strong> and tap <strong>Swap exercise</strong> (it reads <strong>Switch to alternative…</strong> when alternatives exist, and opens the same sheet). This works in free workouts too.</p>
-  <p>If you skip an exercise before logging a set on it, a card asks <strong>Equipment taken?</strong> and offers the same sheet with a <strong>Swap exercise</strong> button. A swap is for today only.</p>
+  <p>If you skip an exercise before logging a set on it, a card asks <strong>Equipment taken?</strong> and offers the same sheet with a <strong>Swap exercise</strong> button. A swap is for today only, unless you <a href="#keep-changes">keep it</a> when you finish.</p>
   <p>The <strong>Suggestions</strong> section lists up to eight substitutes:</p>
   <ul>
     <li>They share a <strong>primary muscle</strong> with the exercise you're replacing.</li>
@@ -231,6 +231,37 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h4>Make an alternative the permanent default</h4>
   <p>For a longer stretch (an injury, travel, a machine that's gone), open the alternative's <strong>⋮ menu</strong> on the Manage alternatives screen and tap <strong>Make default</strong>. It becomes the routine's exercise, and the old one moves into the alternatives list so you can switch back later.</p>
   <p>The confirmation offers to set the new exercise's target weights from its own history. Its machine, attachment and grip defaults reset; the set and rep scheme stays.</p>
+
+  <h2 id="keep-changes">Keep today's changes in the routine</h2>
+  <p>When you finish a workout you started from a routine, the day can keep what you did differently. Nothing changes unless you pick it.</p>
+  <ol>
+    <li>On the completion sheet, tap the line that counts the changes, for example <em>3 changes from Push A</em>.</li>
+    <li>Pick what to keep.</li>
+    <li>Tap <strong>Done</strong>. The button counts what it will save: <em>Done, save 2 to Push A</em>.</li>
+  </ol>
+  <p>A message says the day was updated. Tap <strong>Undo</strong> in it to put everything back. If you edited the day in the meantime, it stays as it is.</p>
+  <p>If you end the workout from Today, the same list is on the workout summary. Pick there, then tap <strong>Update routine</strong>.</p>
+  <table>
+    <thead>
+      <tr><th>What you did</th><th>What the day can keep</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Swapped an exercise</td><td><strong>Alternative</strong> adds the new exercise to the slot's alternatives. <strong>Replace</strong> plans the new exercise with the weights you used, and the old one becomes its alternative if there's room. <strong>Just today</strong> keeps the day as it is.</td></tr>
+      <tr><td>Did more sets than planned</td><td>The new number of sets. Fewer sets are never offered.</td></tr>
+      <tr><td>Added an exercise</td><td>The exercise with its sets, after the one you did it after.</td></tr>
+      <tr><td>Removed an exercise</td><td>Takes it out of the day. An exercise you didn't get to isn't offered.</td></tr>
+    </tbody>
+  </table>
+  <p><em>also on</em> and a date mark a change you made the last time you did this day too.</p>
+
+  <h3>What isn't offered</h3>
+  <ul>
+    <li>An exercise with a progression rule, a training max, percentage sets or sets that change by week keeps its sets and its place. A swap there can only become an alternative, and a line says why.</li>
+    <li>An exercise you did lighter that day, from the <a href="#energy-check-in">energy check-in</a>, keeps its plan too.</li>
+    <li>A deload workout, a free workout, a copied workout, and a workout started before this feature offer nothing.</li>
+    <li>An exercise you edited in the routine after you started the workout is left out.</li>
+  </ul>
+  <p>Heavier weights are in the same list when <a href="/help/progression/#auto-progress">Auto-progress routine weights</a> is on. To stop the offer for everything else, turn off <a href="/help/settings/#keep-changes">Offer to keep changes</a>.</p>
 
   <h2>Duplicate a routine</h2>
   <p>In the routine list, tap the routine's <strong>⋮</strong>, tap <strong>Duplicate</strong> and name the copy. It includes all days, exercises, planned sets and groups.</p>
