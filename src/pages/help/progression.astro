@@ -19,7 +19,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
       <tr><td><a href="#rules">Progression rule</a></td><td>The routine log preview, as a proposal you can change</td><td>On an exercise in a routine, or built into a program</td></tr>
       <tr><td><a href="/help/routines/#weight-source">Last-performance prefill</a></td><td>Starting weights copied from your last session</td><td>The routine's weight source</td></tr>
       <tr><td><a href="#progressive-overload">Progressive overload suggestion</a></td><td>A <strong>Suggested</strong> line above the weight field while you log</td><td><a href="/help/settings/#coaching">Settings → Coaching</a></td></tr>
-      <tr><td><a href="#auto-progress">Auto-progress</a></td><td>The workout summary, as an offer to update the routine</td><td><a href="/help/settings/#coaching">Settings → Coaching</a> (off by default)</td></tr>
+      <tr><td><a href="#auto-progress">Auto-progress</a></td><td>The completion sheet or the workout summary, as an offer to update the routine day</td><td><a href="/help/settings/#coaching">Settings → Coaching</a> (off by default)</td></tr>
       <tr><td><a href="/help/tools/#deload">Deload week</a></td><td>A banner on the Today screen, and lighter weights in the preview</td><td><a href="/help/settings/#coaching">Settings → Coaching → Deload</a></td></tr>
     </tbody>
   </table>
@@ -257,10 +257,10 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Auto-progress offers to write heavier weights you lifted back into the routine, so the next session starts from them. It's off by default: turn on <strong>Auto-progress routine weights</strong> in <a href="/help/settings/#coaching">Settings → Coaching</a>.</p>
   <ol>
     <li>Finish a workout you started from a routine.</li>
-    <li>On the workout summary, the <strong>Update [Routine] &middot; [Day]?</strong> section lists each exercise you lifted heavier than planned, for example <em>80 → 82.5 kg</em>.</li>
-    <li>Uncheck anything you don't want to keep, then tap <strong>Update routine</strong>.</li>
+    <li>On the completion sheet, the <strong>Update [Day]?</strong> card lists each exercise you lifted heavier than planned, for example <em>80 → 82.5 kg</em>.</li>
+    <li>Uncheck anything you don't want to keep, then tap <strong>Done</strong>. A message confirms it, with <strong>Undo</strong>.</li>
   </ol>
-  <p>If <strong>Workout timer auto-stop</strong> is on, the same section also appears on the pop-up when you finish your last set.</p>
+  <p>If you end the workout from Today, the same card is on the workout summary, with an <strong>Update routine</strong> button. The card can also list <a href="/help/routines/#keep-changes">other changes you made</a>, such as a swap or an added exercise.</p>
   <p>An exercise is offered only when you completed every planned working set, it's the exercise the routine planned (not an alternative you swapped in), and it has no progression rule.</p>
   <p>Weights only go up. Sets are compared one by one, so a pyramid or back-off scheme keeps its shape and only the sets you beat change. Warmups don't count.</p>
 </HelpLayout>
