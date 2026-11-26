@@ -5,12 +5,24 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 <HelpLayout title="Gyms and equipment" description="How to pick your gym, machine, bar, accessories and grip during a workout, and how to set up gyms, machines, attachments, bars and dumbbell racks in Badger.">
   <h1>Gyms and equipment</h1>
 
-  <p>Record the gym, machine, bar and attachment you use, and Badger keeps a separate history for each: a cable row on the low pulley doesn't compete with one on the high pulley. This page starts with picking equipment during a workout, then covers setting up gyms, machines, attachments, bars, bands and chains, dumbbell racks, and sharing a gym.</p>
+  <p>Record the gym, machine, bar, attachment and grip you use for each exercise. This page starts with picking equipment during a workout, then covers setting up gyms, machines, attachments, bars, bands and chains, dumbbell racks, and sharing a gym.</p>
 
   <hr />
 
   <h2 id="workout-context">Picking equipment during a workout</h2>
-  <p>The gym shows in the training screen's header. Bar, accessories and grip show as chips in the context row above your sets. Tap a chip to change it, or use the <strong>⋮</strong> menu.</p>
+  <p>The line under the exercise name shows the routine and the gym, such as <strong>Pull Day &middot; Iron Vault</strong>. Your equipment sits on the <strong>setup line</strong> just above <strong>Last</strong>, which lists only what you've set: <strong>Cable stack 2 &middot; Rope &middot; Neutral</strong>.</p>
+  <p>With nothing set, the line reads <strong>Add setup</strong> with up to three things you could set, such as <em>attachment, grip, tempo</em>. Tap the line to open the Setup sheet.</p>
+
+  <h3 id="setup-sheet">The Setup sheet</h3>
+  <p>The sheet shows only the rows that apply to the exercise:</p>
+  <ul>
+    <li><strong>Machine</strong> - tap to pick one. The settings button beside it opens the machine's page.</li>
+    <li><strong>Attachment</strong> - tiles for the <a href="#attachments">attachments</a> at this gym, your own first. Tap a tile to pick it, and tap it again to clear it.</li>
+    <li><strong>Grip</strong> - five hand tiles and three width chips. See <a href="#grip-types">Grip</a>.</li>
+    <li><strong>Bar</strong> and <strong>Accessories</strong> - see <a href="#picking-a-bar">Bar</a> and <a href="#picking-accessories">Bands, chains and straps</a>.</li>
+    <li><strong>Tempo</strong> - opens the <a href="/help/logging/#tempo">tempo picker</a>.</li>
+    <li><strong>Show grip and attachment while training</strong> - the exercise's switch for the grip and attachment rows.</li>
+  </ul>
 
   <h3>Gym</h3>
   <p>Badger picks the gym when the workout starts:</p>
@@ -22,21 +34,29 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>To change it, tap <strong>⋮ → Change gym…</strong>.</p>
 
   <h3>Machine and attachment</h3>
-  <p>Tap <strong>⋮ → Set machine…</strong>. Machines marked compatible with the exercise at your current gym come first. <strong>Other machines at this gym</strong> lists the rest, and picking one there marks it compatible for next time.</p>
-  <p>If the machine has <strong>Uses attachments</strong> on, pick the attachment in the same picker. Badger remembers the last attachment you used for each exercise and machine and selects it next time. Notes on the machine and the attachment show in the training screen's notes card.</p>
+  <p>Tap <strong>Machine</strong> in the Setup sheet, or <strong>⋮ → Set machine…</strong>. Machines marked compatible with the exercise at your current gym come first. <strong>Other machines at this gym</strong> lists the rest, and picking one there marks it compatible for next time.</p>
+  <p>Pick the attachment from the tiles in the Setup sheet. They appear on cable and machine exercises while the exercise's <strong>Show grip and attachment while training</strong> switch is on, and on any machine with <strong>Uses attachments</strong> on.</p>
+  <p>Changing the machine keeps the attachment. Badger remembers the last attachment you used for each exercise and machine and selects it next time. Notes on the machine and the attachment show in the training screen's notes card.</p>
 
   <h3 id="picking-a-bar">Bar</h3>
-  <p>On a barbell exercise, at a gym with bars linked, tap the <strong>bar chip</strong> (or <strong>⋮ → Set bar…</strong>) and pick a bar. Each shows its weight in your logging unit.</p>
+  <p>On a barbell exercise, at a gym with bars linked, tap <strong>Bar</strong> in the Setup sheet (or <strong>⋮ → Set bar…</strong>) and pick a bar. Each shows its weight in your logging unit.</p>
   <p>For a bar you haven't added yet, tap <strong>New bar…</strong> at the bottom. It only asks for a name, and you can weigh it later on its own page.</p>
   <p>The bar shows in History and on the workout summary. To change it afterwards, tap the equipment line there.</p>
 
   <h3 id="picking-accessories">Bands, chains and straps</h3>
-  <p>The <strong>accessories chip</strong> appears on a barbell or bodyweight exercise at a gym with accessories linked. On a machine it appears only when the machine has <strong>Supports bands</strong> on, and then only bands are offered.</p>
+  <p>The <strong>Accessories</strong> row appears on a barbell or bodyweight exercise at a gym with accessories linked. On a machine it appears only when the machine has <strong>Supports bands</strong> on, and then only bands are offered.</p>
   <p>You can pick several; tap <strong>Done</strong> when finished. To clear them, uncheck everything and tap Done. Backing out changes nothing.</p>
-  <p>The chip then shows a count with the colors beside it ("2 bands", "1 chain", or "3 accessories" for mixed kinds), and History and the workout summary show the same. Sets with an accessory don't count toward records (see <a href="#accessories-and-records">Accessories and personal records</a>).</p>
+  <p>The setup line then names them. History and the workout summary show a count with the colors beside it ("2 bands", "1 chain", or "3 accessories" for mixed kinds). Sets with an accessory don't count toward records (see <a href="#accessories-and-records">Accessories and personal records</a>).</p>
 
   <h3 id="grip-types">Grip</h3>
-  <p>On a machine with <strong>Uses grip types</strong> on, a <strong>grip chip</strong> appears in the context row. Tap it to choose Overhand, Underhand, Neutral, Wide, Close or Hammer, before or after logging sets. Tap <strong>No grip</strong> to clear it. Your grip shows in History.</p>
+  <p>A grip is a hand and a width. In the Setup sheet, tap a hand (<strong>Overhand</strong>, <strong>Underhand</strong>, <strong>Neutral</strong>, <strong>Angled</strong> or <strong>Mixed</strong>) and a width (<strong>Close</strong>, <strong>Standard</strong> or <strong>Wide</strong>). Pick one, both or neither, before or after logging sets, and tap a selected one again to clear it.</p>
+  <p>The setup line then reads like <strong>Neutral, close</strong>.</p>
+  <p>Grip works on any equipment, barbell and dumbbells included. Turn on <strong>Show grip and attachment while training</strong> in the Setup sheet or in <strong>⋮ → Exercise settings</strong>. It starts on for cable exercises and off for the rest. A machine with <strong>Uses grip types</strong> on offers a grip either way.</p>
+  <p>Grip and attachment don't split records. Picking an attachment fills in the grip: the grip you last used with that attachment, or else the attachment's usual grip (a rope is neutral). With neither, your current grip stays.</p>
+
+  <h3 id="setup-history">Last time on the same setup</h3>
+  <p>The <a href="/help/logging/#plan-reference">Last</a> line and the first set's starting numbers come from your latest session with the same attachment, grip and bar. A setting you leave empty matches any session.</p>
+  <p>The first time you use a setup, they come from your latest session of the exercise, and the line says so: <strong>No V-bar yet. Last 12 @ 45 lbs, 2 days ago &middot; Rope</strong>.</p>
 
   <h3>Dumbbells and kettlebells</h3>
   <p>If the gym has a <a href="#racks">rack</a> set up, <strong>+</strong> and <strong>−</strong> step through the weights on it.</p>
@@ -112,13 +132,19 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <h3 id="deleting-equipment">Deleting a machine</h3>
   <p>A machine used in a logged workout or a routine default can be deleted only after you remove it from those. Otherwise, deleting it also removes it from every gym and exercise link. Attachments, bars and accessories delete the same way. Deleting asks you to confirm, then <strong>Undo</strong> on the message brings it back with its gyms, links and photo. See <a href="/help/logging/#undo-deletes">Undo a delete</a>.</p>
 
-  <h2>Attachments</h2>
-  <p>Attachments are the handles you clip to a cable: straight bar, rope, V-bar, D-handle. Go to <strong>You → Attachments</strong>.</p>
+  <h2 id="attachments">Attachments</h2>
+  <p>Attachments are the handles you clip to a cable. Eight come built in, each with a drawing: <strong>Rope</strong>, <strong>Straight bar</strong>, <strong>V-bar</strong>, <strong>D-handle</strong>, <strong>Lat bar</strong>, <strong>EZ bar</strong>, <strong>Ankle strap</strong> and <strong>Wide neutral bar</strong>. They're at every gym until you mark one as missing.</p>
+
+  <h3 id="attachments-at-gym">Mark what a gym doesn't have</h3>
+  <p>In the Setup sheet, tap <strong>Not at (gym name)…</strong> and set each attachment the gym lacks to <strong>Not at this gym</strong>. It stays at your other gyms. With no gym on the workout, every attachment is listed.</p>
+
+  <h3 id="your-attachments">Add your own</h3>
+  <p>Tap <strong>+ New attachment</strong> in the Setup sheet and give it a name, or go to <strong>You → Attachments</strong>:</p>
   <ul>
     <li>Tap <strong>+</strong>, name it and pick its gyms (skipped with one gym), then finish on its page.</li>
     <li>Change its gyms under <strong>Available at</strong>. An attachment with no gym isn't offered while you train.</li>
-    <li>Attachments are offered only on machines with <strong>Uses attachments</strong> on.</li>
   </ul>
+  <p>If one of your own has the same name as a built-in, such as your "Rope", Badger uses yours and doesn't list the built-in twice.</p>
 
   <h2 id="bars">Bars</h2>
   <p>Add each bar you lift with (the Olympic bar, the trap bar, the EZ curl, the worn 45 that actually weighs 44) and pick one per exercise. Go to <strong>You → Bars</strong>.</p>
@@ -173,7 +199,6 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   <p>Add a photo to a machine, attachment or bar so you can recognize it on the floor. Open it and tap the photo panel at the top to <strong>take a photo</strong> or <strong>choose from your gallery</strong>. Tap again to replace or remove it. <strong>Photo removed</strong> appears with <strong>Undo</strong>. Accessories have no photo; their color identifies them.</p>
   <p>Badger asks for camera or photo library access only the first time you add a photo.</p>
   <ul>
-    <li>Attachment photos also show as thumbnails in the attachment picker during a workout.</li>
     <li>An iCloud or Drive backup leaves photos out unless you turn on <strong>Back up equipment photos</strong> on the <a href={`/help/settings/#cloud-backup`}>Backup</a> screen (the on-phone copies Android keeps never include them). Without it, a restore onto a new phone brings your machines, attachments and bars back without their pictures. Photos make backups much larger.</li>
     <li>Deleting a machine, attachment or bar deletes its photo too, unless you tap <strong>Undo</strong>.</li>
   </ul>

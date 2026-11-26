@@ -431,6 +431,15 @@ const description =
             most libraries already sort them.
           </td>
         </tr>
+        <tr>
+          <td><code>show_grip_attachment</code></td>
+          <td>boolean</td>
+          <td>
+            The exercise's "Show grip and attachment while training" switch. Left out, the exercise
+            uses the default: on for a cable exercise, off for the rest. Applied only to an exercise
+            the import creates. Needs Badger 1.1.20 or later.
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -502,9 +511,21 @@ const description =
           <td><code>default_grip_type</code></td>
           <td>string</td>
           <td>
-            The slot's default grip: one of <code>overhand</code>, <code>underhand</code>,
-            <code>neutral</code>, <code>wide</code>, <code>close</code>, <code>hammer</code>. Absent
-            means no default grip. Any other value is ignored.
+            The hand of the slot's default grip: one of <code>overhand</code>,
+            <code>underhand</code>, <code>neutral</code>, <code>angled</code>, <code>mixed</code>.
+            Files from before 1.1.20 may hold <code>wide</code>, <code>close</code> or
+            <code>hammer</code>, still read as a wide grip, a close grip and a neutral hand. Absent
+            means no default hand. Any other value is ignored. <code>angled</code> and
+            <code>mixed</code> need Badger 1.1.20 or later.
+          </td>
+        </tr>
+        <tr>
+          <td><code>default_grip_width</code></td>
+          <td>string</td>
+          <td>
+            The width of the slot's default grip: <code>close</code>, <code>standard</code> or
+            <code>wide</code>. Absent means no default width. Any other value is ignored. Needs
+            Badger 1.1.20 or later.
           </td>
         </tr>
         <tr>
@@ -1161,7 +1182,7 @@ const description =
       <tbody>
         <tr><td><code>gym</code></td><td><code>Gym</code>, required</td><td>A <code>Gym</code> is just <code>&#123; "name": "..." &#125;</code>.</td></tr>
         <tr><td><code>machines</code></td><td>array of <a href="#machine"><code>Machine</code></a></td><td>The same <code>Machine</code> objects a routine payload carries.</td></tr>
-        <tr><td><code>attachments</code></td><td>array of <code>Attachment</code></td><td>An <code>Attachment</code> is a <code>name</code> and optional <code>notes</code>.</td></tr>
+        <tr><td><code>attachments</code></td><td>array of <code>Attachment</code></td><td>An <code>Attachment</code> is a <code>name</code>, optional <code>notes</code>, and for a built-in attachment a <code>seed_slug</code>: <code>rope</code>, <code>straight_bar</code>, <code>v_bar</code>, <code>d_handle</code>, <code>lat_bar</code>, <code>ez_bar</code>, <code>ankle_strap</code> or <code>wide_neutral_bar</code>. <code>seed_slug</code> is left out for your own attachments and needs Badger 1.1.20 or later.</td></tr>
         <tr><td><code>bars</code></td><td>array of <a href="#bar"><code>Bar</code></a></td><td>Named bars. Omitted when the gym has none.</td></tr>
         <tr><td><code>accessories</code></td><td>array of <a href="#accessory"><code>Accessory</code></a></td><td>Bands, chains, and straps. Omitted when the gym has none.</td></tr>
         <tr><td><code>gym_machines</code></td><td>array of strings</td><td>Names of the machines that belong to this gym.</td></tr>
@@ -1437,6 +1458,12 @@ const description =
       again ignoring case and spaces.
     </li>
     <li>
+      <strong>Built-in attachments are never added twice.</strong> An attachment with a
+      <code>seed_slug</code> matches the recipient's attachment carrying that slug first, then the
+      name. A new gym whose file lists <code>gym_attachments</code> gets exactly those; with no list,
+      it also keeps the built-ins every gym starts with.
+    </li>
+    <li>
       <strong>A routine name collision does not merge.</strong> Importing a routine whose name you
       already use gives you "Name (imported)", then "Name (imported) 2", and so on. You keep both.
     </li>
@@ -1470,7 +1497,7 @@ const description =
   <ul>
     <li><strong>No history.</strong> No workouts, no logged sets, no PRs. To move your own history to a new phone, use a backup instead: see <a href="/help/phone-migration/">moving to a new phone</a>.</li>
     <li><strong>No per-day notes, and no exercise-level notes.</strong> Routine notes and a slot's own <code>notes_override</code> travel; per-day notes and an exercise's own notes do not. In a gym file, notes on a machine, attachment, bar or accessory do travel. The setup cues you save against one exercise on one machine never do.</li>
-    <li><strong>No default attachment or default bar</strong> on a slot (a slot's <code>default_grip_type</code> does travel), and no superset group <strong>color</strong>; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel.)</li>
+    <li><strong>No default attachment or default bar</strong> on a slot (a slot's <code>default_grip_type</code> and <code>default_grip_width</code> do travel), and no superset group <strong>color</strong>; the recipient's palette assigns it. (An <a href="#accessory">accessory's</a> color does travel.)</li>
     <li>
       <strong>No training max, and no progress against a rule.</strong> A slot's
       <a href="#progression">progression rule</a> travels. The training max it multiplies does not,
