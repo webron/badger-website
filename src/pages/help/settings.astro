@@ -146,12 +146,12 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h3 id="workout-reminders">Workout reminders</h3>
   <p>Turn on <strong>Workout reminders</strong> to get a notification on your training days. Badger asks for notification permission when you turn the switch on. If notifications are off for Badger, the row says so and shows <strong>Open settings</strong>.</p>
-  <p>Which days it uses depends on your active program:</p>
+  <p>Which days it uses depends on your active routine:</p>
   <ul>
-    <li><strong>The active program has days set.</strong> Reminders follow those days, and Settings shows them read-only, for example "Mon, Wed, Fri from Upper/Lower. Change them in the routine." To change them, <a href={`/help/routines/#schedule-a-day`}>change the scheduled days</a> in the routine.</li>
+    <li><strong>The active routine has days set.</strong> Reminders follow those days, and Settings shows them read-only, for example "Mon, Wed, Fri from Upper/Lower. Change them in the routine." To change them, <a href={`/help/routines/#schedule-a-day`}>change the scheduled days</a> in the routine.</li>
     <li><strong>Otherwise.</strong> Tap the weekday chips to pick your days. They start from the weekdays you trained in the last 3 weeks.</li>
   </ul>
-  <p><strong>Remind me at</strong> sets the time. Only the active program counts: another routine's scheduled days send no reminders and don't show on the calendar.</p>
+  <p><strong>Remind me at</strong> sets the time. Only the active routine counts: another routine's scheduled days send no reminders and don't show on the calendar.</p>
   <p>The reminder reads "Workout day" and names your last workout, such as "Last time: Lat Pulldown, Chest Press, Leg Press." When the day comes from a routine, the day's name comes first.</p>
   <p>After two weeks with no workout, reminders pause. Log a workout and they start again.</p>
 
@@ -212,7 +212,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h3 id="ai-context">Copying your context for an AI</h3>
-  <p><strong>Copy context for AI</strong> puts together a short plain-text briefing on your training: your <a href={`#training-notes`}>training notes</a>, your active program and its current targets, your last ten sessions (with each exercise's tempo), your records, the equipment at your current gym, and anything you've marked as avoided.</p>
+  <p><strong>Copy context for AI</strong> puts together a short plain-text briefing on your training: your <a href={`#training-notes`}>training notes</a>, your active routine and its current targets, your last ten sessions (with each exercise's tempo), your records, the equipment at your current gym, and anything you've marked as avoided.</p>
   <p>It ends with instructions telling the AI how to read it, including how to write a routine back as a <a href={`/badger-format/`}><code>.badger</code> file</a>.</p>
   <p>Read it, then tap <strong>Copy</strong> or <strong>Share</strong>. Body measurements, health data, workout and set comments, and exercise notes aren't included.</p>
   <p>The briefing is trimmed to fit a chat window. If you train a lot, older sessions go first, then equipment, then records, and your notes last. Anything you've marked as avoided and the closing instructions always stay. Empty sections are left out.</p>
@@ -236,6 +236,6 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
 
   <h2 id="training-notes">Training notes</h2>
   <p><strong>You → Training notes</strong> is one free-text page for your own context: goals, injuries, training history, anything worth remembering. It saves as you type.</p>
-  <p>Training notes are in your <a href={`#backup`}>backup</a>, so they come back when you restore on a new phone. They aren't included when you export data or share a routine. Notes about one program belong on the routine instead; see <a href={`/help/routines/#routine-notes`}>Routine notes</a>.</p>
-  <p><strong>Copy for AI</strong>, at the bottom of the page, bundles these notes with your program, recent training, records and equipment. See <a href={`#ai-context`}>Copying your context for an AI</a>.</p>
+  <p>Training notes are in your <a href={`#backup`}>backup</a>, so they come back when you restore on a new phone. They aren't included when you export data or share a routine. Notes about one routine belong on the routine itself; see <a href={`/help/routines/#routine-notes`}>Routine notes</a>.</p>
+  <p><strong>Copy for AI</strong>, at the bottom of the page, bundles these notes with your active routine, recent training, records and equipment. See <a href={`#ai-context`}>Copying your context for an AI</a>.</p>
 </HelpLayout>
