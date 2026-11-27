@@ -159,6 +159,34 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
   <p><strong>Rest between sets</strong> on the exercise in a routine sets the rest for every set that has none of its own, in minutes and seconds. It beats the exercise's own default rest, which still applies in a free workout and in routines that leave this empty. See <a href="/help/logging/#rest-ladder">How long the rest is</a>.</p>
 
+  <h2 id="sets-a-week">Sets a week per muscle</h2>
+  <p>The <strong>Muscle coverage</strong> card on a routine has two views. <strong>Map</strong> shades the muscles each day trains. <strong>Sets a week</strong> counts the working sets you planned for each muscle in one week, so you can see a thin spot while you build the routine.</p>
+  <p>Each muscle gets a bar and a number. With a guide picked, its range shows as a band behind the bar, and the row says <strong>low</strong> or <strong>high</strong> only when the count is under the bottom of the range or over the top. Anywhere inside it, the row says nothing.</p>
+  <p>Under each day card, a muted line shows what that one day adds, such as <strong>This day: Back 7 · Chest 4</strong>. One day is not a week, so it never says low or high.</p>
+
+  <h3 id="sets-a-week-counting">How sets are counted</h3>
+  <ul>
+    <li>A planned working set counts 1 for each main muscle of its exercise and ½ for each helper muscle. A row of 3 sets of rows adds 3 to Back and 1½ to Biceps.</li>
+    <li>Warm-ups don't count. A drop, myo-reps or rest-pause set counts once.</li>
+    <li>A set counts once per muscle, even when the exercise lists two parts of it.</li>
+    <li>Not counted: cardio, an exercise with no planned sets, and one planned by total reps. The card names those under the list.</li>
+    <li>An exercise with no muscles listed counts under its category. A leg exercise with none listed goes in its own <strong>Legs</strong> row, which never gets a low or high.</li>
+  </ul>
+  <p>How often a day runs comes from its scheduled weekdays: a day on Monday and Thursday counts twice. A routine with no weekdays shows a <strong>Workouts a week</strong> stepper. Set it, and the count spreads those workouts over the days; until then each day counts once. The note under the list says which of these it used.</p>
+  <p>A routine with week variants, such as 5/3/1, shows a chip per week. It opens on the week the routine is on; tap another week to count that one.</p>
+
+  <h3 id="sets-a-week-guides">Pick a guide</h3>
+  <p>Tap <strong>Pick a guide</strong> under the list (or <strong>Change</strong> once you have one) to open <strong>Weekly set ranges</strong>. No guide is picked at first, so the card shows the numbers only. The guides disagree, so each one names its source:</p>
+  <ul>
+    <li><strong>RP Strength</strong> (Renaissance Periodization): a range per muscle, from the low end of the minimum to the high end of the maximum. It has no number for back, shoulders or glutes, so those rows say nothing.</li>
+    <li><strong>Stronger by Science, short on time</strong> (Greg Nuckols): about 10 a week for every muscle, as a floor. It never says high.</li>
+    <li><strong>Stronger by Science, most growth</strong>: 15 to 25.</li>
+    <li><strong>Jeff Nippard</strong>: beginner 4 to 12, intermediate 8 to 15, advanced 12 to 20.</li>
+    <li><strong>Eric Helms</strong> (The Muscle and Strength Pyramid): 10 to 20.</li>
+    <li><strong>Your own ranges</strong>: set a From and To for each muscle. They start from the guide you had picked.</li>
+  </ul>
+  <p>Turn a muscle <strong>Off</strong> to keep counting it without a low or high, say for calves you don't train on purpose. The guide applies to all your routines. The Volume view on the Progress tab is separate: it counts the sets you logged, against its own targets.</p>
+
   <h2>Organize days and routines</h2>
   <h3 id="schedule-a-day">Schedule a day</h3>
   <p>Open the day's <strong>Day options</strong> and set <strong>Scheduled days</strong> to pick weekdays. A <strong>calendar icon</strong> then appears on the day row - tap it to change them. The day shows as scheduled on the Today screen on those days, and as short labels (Mon, Wed, Fri) on the row.</p>
