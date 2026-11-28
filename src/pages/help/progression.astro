@@ -18,7 +18,7 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <tbody>
       <tr><td><a href="#rules">Progression rule</a></td><td>The routine log preview, as a proposal you can change</td><td>On an exercise in a routine, or built into a program</td></tr>
       <tr><td><a href="/help/routines/#weight-source">Last-performance prefill</a></td><td>Starting weights copied from your last session</td><td>The routine's weight source</td></tr>
-      <tr><td><a href="#progressive-overload">Progressive overload suggestion</a></td><td>A <strong>Suggested</strong> line above the weight field while you log</td><td><a href="/help/settings/#coaching">Settings → Coaching</a></td></tr>
+      <tr><td><a href="#progressive-overload">Progressive overload suggestion</a></td><td>A <strong>Next:</strong> line above the weight field while you log</td><td><a href="/help/settings/#coaching">Settings → Coaching</a></td></tr>
       <tr><td><a href="#auto-progress">Auto-progress</a></td><td>The completion sheet or the workout summary, as an offer to update the routine day</td><td><a href="/help/settings/#coaching">Settings → Coaching</a> (off by default)</td></tr>
       <tr><td><a href="/help/tools/#deload">Deload week</a></td><td>A banner on the Today screen, and lighter weights in the preview</td><td><a href="/help/settings/#coaching">Settings → Coaching → Deload</a></td></tr>
     </tbody>
@@ -213,9 +213,13 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
   </ul>
 
   <h2 id="progressive-overload">Progressive overload suggestion</h2>
-  <p>On an exercise without a rule, a <strong>Suggested: 82.5 kg</strong> line appears above the weight field once you've completed all your working sets in each of your last few sessions. <strong>Progressive overload trigger</strong> in <a href="/help/settings/#coaching">Settings → Coaching</a> sets how many (default 3).</p>
+  <p>On an exercise without a rule, a <strong>Next:</strong> line appears above the weight field once you've completed all your working sets in each of your last few sessions. <strong>Progressive overload trigger</strong> in <a href="/help/settings/#coaching">Settings → Coaching</a> sets how many (default 3).</p>
+  <p>It offers the two usual ways to progress: <strong>Next: 25 kg, or 13 reps at 20 kg</strong>. Pick either one. A line under it says what you did last time: <strong>20 kg × 12 for 3 sessions. Fewer reps at 25 kg is normal.</strong></p>
   <ul>
-    <li>The suggestion is your last session's heaviest weight plus the exercise's increment, rounded to a weight your equipment can make. With a machine set, the machine's step is used.</li>
+    <li>The heavier weight is the next one your gym can load: the next dumbbell or kettlebell on your <a href="/help/gyms/#racks">rack</a>, the next plate step on the bar, or the machine's next step. With none of those set up, it's your exercise's increment, in your unit: 135 lb goes to 140 lb.</li>
+    <li>The more-reps option goes up to 12 reps, or 15 on cable, band and machine exercises. Past that, only the weight is offered. On an exercise with a planned rep range or target, the plan sets the reps and only the weight is offered.</li>
+    <li>At the top of your rack, with nothing heavier set up, it offers the reps only and says <strong>Nothing heavier is set up here.</strong></li>
+    <li>Tap <strong>Don't have 25 kg?</strong> to fix your equipment where it lives: the rack, your plates, the machine, or the exercise's increment. The suggestion updates once you save.</li>
     <li>It reads history for the machine you have set. Switch machines and the suggestion comes from that machine's history.</li>
     <li>Tap × to dismiss it for this session.</li>
     <li>With <a href="#hold-after-all-out-set">Hold after an all-out set</a> on, the suggestion keeps your weight when your last top set went all out.</li>
