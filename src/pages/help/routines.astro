@@ -18,8 +18,15 @@ import HelpLayout from '../../layouts/HelpLayout.astro';
     <li>Tap an exercise row to <a href="#predefined-sets">plan its sets</a>: fill them in, or add and remove sets. Removing a planned set offers <strong>Undo</strong>.</li>
   </ol>
   <p>Have a plan written down? Your AI can turn it into a Badger routine. See <a href="/guides/ai/#prompts">Use your own AI</a>.</p>
-  <p>To change an exercise later, open its <strong>⋮ menu</strong> and tap <strong>Replace exercise</strong>. If the exercise has a <a href="/help/progression/#rules">progression rule</a>, Badger asks <strong>Replace (exercise)?</strong> first, because the new exercise starts without the rule and without its training max. Tap <strong>Replace</strong> to go ahead or <strong>Cancel</strong> to keep it.</p>
   <p>To turn workouts you've already logged into a routine, see <a href="#create-from-history">Create a routine from your history</a>.</p>
+  <h3 id="replace-exercise">Replace an exercise</h3>
+  <p>To change an exercise later, open its <strong>⋮ menu</strong> and tap <strong>Replace exercise</strong>. If the exercise has a <a href="/help/progression/#rules">progression rule</a>, Badger asks what happens to the rule after you pick the new exercise:</p>
+  <ul>
+    <li><strong>Keep the rule</strong> moves the rule to the new exercise. Its increment, rep targets and misses before a deload stay the same. Its progress starts fresh, so the first weights come from your history with the new exercise.</li>
+    <li><strong>Replace without it</strong> swaps the exercise and deletes the rule.</li>
+    <li><strong>Cancel</strong> changes nothing, so you can pick again.</li>
+  </ul>
+  <p>An exercise in one of the <a href="#programs">built-in programs</a> can't keep its rule, because the rule is tied to its place in the program. Badger asks <strong>Replace (exercise)?</strong> before you pick: tap <strong>Replace</strong> to go ahead without the rule and its training max, or <strong>Cancel</strong> to keep it.</p>
 
   <h2 id="starting">Start a workout from a routine</h2>
   <ol>
